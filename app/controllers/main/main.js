@@ -1,0 +1,3 @@
+vood.Controller('main/main', {
+
+});

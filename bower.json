@@ -1,0 +1,8 @@
+{
+  "name": "broccoli-sample-app",
+  "dependencies": {
+    "handlebars": "~1.1.2",
+    "jquery": "~1.9.1",
+    "lodash": "3.0.0-pre"
+  }
+}
