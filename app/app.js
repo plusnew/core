@@ -1,13 +1,11 @@
-vood.create({
+vood.init({
 	viewHelper: {
-		entrance: '#main'
+		entrance: '#app'
 	}
 });
 
-var app = vood.Obj({
-	create: function() {
-		this.get('keys');
-	}
-});
+app.init = function() {
+	console.log('foo');
+};
 
 export default app;

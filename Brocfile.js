@@ -22,7 +22,7 @@ var sourceTrees = [app, vood, vendor];
 sourceTrees = sourceTrees.concat(findBowerTrees());
 
 var appAndDependencies = new mergeTrees(sourceTrees, { overwrite: true });
-console.log(appAndDependencies.inputTrees);
+
 var appJs = compileES6(appAndDependencies, {
 	loaderFile: 'loader.js',
 	inputFiles: [ // Change that to recursive

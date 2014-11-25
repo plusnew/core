@@ -17,15 +17,16 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>VOOD - Presentation</title>
+    <title>vood 0.9</title>
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
     <script src="/assets/app.js"></script>
     <link href="/assets/app.css" rel="stylesheet" type="text/css" media="all">
   </head>
   <body>
     <script>
-      window.vood = require('voodkit/app').default;
-      window.app  = require('appkit/app').default.create();
+      require('voodkit/app').default;
+      require('appkit/app').default.init();
     </script>
+    <div id="app"></div>
   </body>
 </html>

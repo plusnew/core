@@ -1,3 +1,5 @@
+var util = require('voodkit/util/helper').default;
+
 var defaults = {
 	_meta: {
 		contentSpace: 'content',
@@ -22,19 +24,15 @@ var defaults = {
 	}
 };
 
-var meta = function(opt) {
+var meta = function() {
 	var obj = arguments[arguments.length - 1];
-
-	for(var index in defaults) {
-		if(defaults.hasOwnProperty(index) && !obj[index]) {
-			obj[index] = defaults[index];
-		}
-	}
+	var properties = _.cloneDeep(defaults);
+	util.merge(obj, properties);
 	if(arguments.length > 1) {
-		obj.type = opt[0];
+		obj._meta.type = arguments[0];
 	}
 	if(arguments.length > 2) {
-		obj.path = opt[1];
+		obj._meta.path = arguments[1];
 	}
 	return obj;
 };
