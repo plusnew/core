@@ -4,12 +4,17 @@ export default vood.Obj({
 	anons: {},
 	create: function(path) {
 		this.id++;
-		this.anons[this.id]           = this.getEntity(path);
-		this.anons[this.id]._meta.uid = this.id;
+		this.anons[this.id]                 = this.getEntity(path);
+		this.anons[this.id]._meta.uid       = this.id;
+		this.anons[this.id].view            = vood.viewHelper.create(path);
+		this.anons[this.id].view.controller = this.anons[this.id];
+
+		return this.id;
 	},
 	getEntity: function(path) {
 		if(!this.list[path]) {
-			throw path + ' does not exist';
+			console.log('Controller ' + path + ' does not exist');
+			vood.Controller(path, {_meta: {pseudo: true}});
 		}
 		return _.cloneDeep(this.list[path]);
 	},

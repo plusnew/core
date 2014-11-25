@@ -34,7 +34,7 @@ window.vood = Obj({
 		console.log('blargs');
 		_.merge(vood, opt);
 		this.executeInit();
-
+		vood.controllerHelper.create('main/app');
 	},
 	get: function(path) {
 		return this.controllerHelper.get(path);

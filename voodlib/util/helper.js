@@ -8,8 +8,8 @@ var obj = {
 				if(obj.hasOwnProperty(index)) {
 					if(!target[index]) {
 						target[index] = obj[index];
-					} else if(_.isObject(target[index]) && _.isObject(obj[index])) {
-						
+					} else if(_.isObject(target[index]) && _.isObject(obj[index]) && !_.isFunction(target[index]) && !_.isFunction(obj[index])) {
+						this.merge(target[index], obj[index]);
 					}
 				}
 			}
