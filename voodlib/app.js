@@ -29,12 +29,15 @@ var Obj = require(voodPrefix + 'obj/class').default;
 
 window.vood = Obj({
 	Obj: Obj,
-	types: ['util', 'View', 'Controller', 'Helper'],
+	types: ['util', 'view', 'controller', 'helper'],
 	init: function(opt) {
 		console.log('blargs');
 		_.merge(vood, opt);
 		this.executeInit();
 
+	},
+	get: function(path) {
+		return this.controllerHelper.get(path);
 	},
 	executeInit: function() {
 		for(var index in this) {
