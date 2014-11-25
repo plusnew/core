@@ -17,7 +17,7 @@ export default vood.Obj({
 		var result = [];
 		for(var i in this.anons) {
 			if(this.anons.hasOwnProperty(i)) {
-				if(path == i || this.anons[i]._meta.path == path) {
+				if(path == i || this.anons[i]._meta.path == path || path == '*') {
 					result.push(this.anons[i]);
 				}
 			}
