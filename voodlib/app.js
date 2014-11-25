@@ -29,7 +29,7 @@ var Obj = require(voodPrefix + 'obj/class').default;
 
 window.vood = Obj({
 	Obj: Obj,
-	types: ['util', 'view', 'controller', 'widget', 'helper'],
+	types: ['util', 'view', 'controller', 'mixin', 'widget', 'helper'],
 	init: function(opt) {
 		console.log('blargs');
 		_.merge(vood, opt);
