@@ -1,6 +1,9 @@
 var classContent = {
-	_specialControllerFunction: function() {
-
+	send: function(opt) {
+		vood.utilAdapter.send(opt);
+	},
+	subscribe: function(opt) {
+		vood.utilAdapter.subscribe(opt);
 	}
 };
 

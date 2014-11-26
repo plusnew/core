@@ -21,6 +21,10 @@ var defaults = {
 	},
 	_set: function(key, value) {
 		this[this._meta.getKey(key)] = value; // @TODO
+	},
+	addJob: function(opt) {
+		opt.uid = this._meta.uid;
+		vood.utilRunloop.addJob(opt);
 	}
 };
 

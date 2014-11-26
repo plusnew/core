@@ -2,6 +2,12 @@ export default vood.Obj({
 	id: 0,
 	list: {},
 	anons: {},
+	garbageCollection: true,
+	init: function() {
+		if(this.garbageCollection !== false) {
+			this.addJob({callback: this.garbage});
+		}
+	},
 	create: function(path) {
 		this.id++;
 		this.anons[this.id]                 = this.getEntity(path);
@@ -28,5 +34,8 @@ export default vood.Obj({
 			}
 		}
 		return result;
+	},
+	garbage: function() {
+		
 	}
 });
