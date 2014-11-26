@@ -31,10 +31,9 @@ window.vood = Obj({
 	Obj: Obj,
 	types: ['util', 'view', 'controller', 'mixin', 'widget', 'helper'],
 	init: function(opt) {
-		console.log('blargs');
+		console.log('Can I haz some voods?');
 		_.merge(vood, opt);
 		this.executeInit();
-		vood.controllerHelper.create('main/app');
 	},
 	get: function(path) {
 		return this.controllerHelper.get(path);

@@ -5,7 +5,7 @@ vood.init({
 });
 
 app.init = function() {
-	console.log('foo');
+	// Some initialization is possible
 };
 
 export default app;
