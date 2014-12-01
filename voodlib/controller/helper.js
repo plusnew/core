@@ -14,7 +14,8 @@ export default vood.Obj({
 		this.anons[this.id]._meta.uid       = this.id;
 		this.anons[this.id].view            = vood.viewHelper.create(path);
 		this.anons[this.id].view.controller = this.anons[this.id];
-
+		this.anons[this.id].init();
+		this.anons[this.id].view.init();
 		return this.id;
 	},
 	getEntity: function(path) {

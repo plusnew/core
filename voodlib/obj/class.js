@@ -10,15 +10,100 @@ var defaults = {
 			return key;
 		}
 	},
+	init: function() {},
 	get: function(key, opt) {
 		return this._handleData('get', key, null, opt);
 	},
 	set: function(key, value, opt) {
 		return this._handleData('set', key, value, opt);
 	},
+	push: function(key, opt) {
+		return this._handleData('push', key, null, opt);
+	},
+	pushOnce: function(key, value, opt) {
+		return this._handleData('pushOnce', key, value, opt);
+	},
+	pop: function(key, value, opt) {
+		return this._handleData('pop', key, value, opt);
+	},
 	_handleData: function(type, key, value, opt) {
-		var result = null;
+		if(!opt) {opt = {};}
+		key = this._generateRealpath(key, opt);
+		return this._handleRealData(type, key, value, opt);
+	},
+	_handleRealData: function(type, key, value, opt) {
+		var keyParts = key.split('.');
+
+		var partClone = _.clone(keyParts);
+		var result   = this._isQuery(key) ? [] : undefined;
+
+		for(var i = 0; i < keyParts.length; i++) {
+			var part = keyParts[i];
+			var previous = partClone.slice(0, i);
+			var lastKey  = previous[previous.length - 1];
+
+			// Addto registry
+			if(this._isQuery(part)) {
+				var obj      = this._getReference(previous)[lastKey];
+				if(_.isArray(obj)) {
+					for(var arrIndex = 0; i < obj.length; i++) {
+						if(this._isTrue(obj[arrIndex], part)) {
+							opt.addReg = false;
+							partClone[i] = arrIndex;
+							result.push(this._handleRealData(type, partClone.join('.'), value, opt));
+						}
+					}
+				} else {
+					var msg = keyParts.splice(0, i).join('.') + ' is not an array';
+					if(opt.exception === false) {
+						console.warn(msg);
+					} else {
+						throw msg;
+					}
+				}
+				return result;
+			} else if(i + 1 == keyParts.length){
+				// @todo add switch
+				return this._getReference(previous)[lastKey];
+			}
+		}
 		return result;
+	},
+	_isTrue: function(obj, query) {
+		return true;
+	},
+	_getReference: function(keyParts) {
+		var content = this[keyParts[0]];
+		for(var i = 1; i < keyParts.length; i++) {
+			var part = keyParts[i];
+
+			if(i == keyParts.length - 1) {
+				// @todo check if the comment is correct
+				return content; // sadly i cant return the property-value itself, reference would get lost
+			}
+
+			if(!content[part] && i + 1 < keyParts.length) { // @TODO Check for sideeffects -> === undefined was it before
+				content[part] = {};
+				content = content[part];
+				console.info(keyParts.slice(0, i + 1).join('.') + ' did not exist, so I created it for you');
+			} else {
+				content = content[part];
+			}
+		}
+	},
+	_isQuery: function(key) {
+		var res = false;
+		if(key.indexOf('=') !== -1 || key.indexOf('@') !== -1) {
+			res = true;
+		}
+		return res;
+	},
+	_generateRealpath: function(key, opt) {
+		if(opt.contentSpace) {
+			return opt.contentSpace + '.' + key;
+		} else {
+			return this._meta.contentSpace + '.' + key;
+		}
 	},
 	addJob: function(opt) {
 		opt.uid = this._meta.uid;

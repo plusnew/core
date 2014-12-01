@@ -1,4 +1,7 @@
 var classContent = {
+	_meta: {
+		type: 'view'
+	},
 	_render: function() {
 		this.obj('root').replaceWith(this._compile());
 

@@ -1,4 +1,7 @@
 var classContent = {
+	_meta: {
+		type: 'view'
+	},
 	send: function(opt) {
 		vood.utilAdapter.send(opt);
 	},
