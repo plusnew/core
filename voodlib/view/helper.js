@@ -1,3 +1,5 @@
+require('jade/runtime');
+
 export default vood.Obj({
 	templatePrefix: 'templates/',
 	jst: {},

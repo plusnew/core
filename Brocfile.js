@@ -65,6 +65,7 @@ var appJs = compileES6(appAndDependencies, {
 		'appkit/**/*.js',
 		'appkit/**/**/*.js',
 		'templates/**/*.js',
+		'jade/runtime.js'
 	],
 	legacyFilesToAppend: [
 		'jquery.js',
