@@ -2,8 +2,10 @@ var mergeTrees = require('broccoli-merge-trees');
 var compileES6 = require('broccoli-es6-concatenator');
 var pickFiles = require('broccoli-static-compiler');
 var findBowerTrees = require('broccoli-bower');
+var Filter = require('broccoli-filter');
 var env = require('broccoli-env').getEnv();
-var jade = require('broccoli-jade');
+var Filter = require('broccoli-filter');
+var jade = require('jade');
 
 var app = 'app';
 app = pickFiles(app, {
@@ -18,6 +20,7 @@ vood = pickFiles(vood, {
 });
 
 var vendor = 'vendor';
+var bower = 'bower_components';
 
 var templates = 'app/templates';
 templates = pickFiles(templates, {
@@ -25,12 +28,30 @@ templates = pickFiles(templates, {
 	destDir: 'templates' // move under appkit namespace
 });
 
-jade.prototype.targetExtension = 'js';
 
-templates = jade(templates, {client: true});
-console.log(templates);
+function JadeFilter(inputTree, options) {
+	if (!(this instanceof JadeFilter)) {
+		return new JadeFilter(inputTree, options);
+	}
 
-var sourceTrees = [app, vood, vendor, templates];
+	this.inputTree = inputTree;
+	this.options = options || {};
+}
+
+JadeFilter.prototype = Object.create(Filter.prototype);
+JadeFilter.prototype.constructor = JadeFilter;
+
+JadeFilter.prototype.extensions = ['jade'];
+JadeFilter.prototype.targetExtension = 'js';
+
+JadeFilter.prototype.processString = function (str, filename) {
+	this.options.filename = filename;
+	return jade.compileClient(str, this.options) + ';\nexport default template;';
+};
+
+templates = JadeFilter(templates, {});
+
+var sourceTrees = [app, vood, vendor, bower, templates];
 sourceTrees = sourceTrees.concat(findBowerTrees());
 
 var appAndDependencies = new mergeTrees(sourceTrees, { overwrite: true });
@@ -43,10 +64,11 @@ var appJs = compileES6(appAndDependencies, {
 		'appkit/*.js',
 		'appkit/**/*.js',
 		'appkit/**/**/*.js',
+		'templates/**/*.js',
 	],
 	legacyFilesToAppend: [
 		'jquery.js',
-		'lodash.js'
+		'lodash.compat.js'
 	],
 	wrapInEval: env !== 'production',
 	outputFile: '/assets/app.js'

@@ -48,18 +48,21 @@ window.vood = Obj({
 	loadAll: function() {
 		window.app = vood.Obj({});
 
-		this.load(this, voodPrefix);
-		this.load(app, 'appkit/');
+		this.load(this, voodPrefix, 'default', true);
+		this.load(null, 'appkit/');
 	},
-	load: function(space, prefix) {
+	load: function(space, prefix, property, transform) {
 		var seen = requirejs._eak_seen;
 		for(var i = 0; i < this.types.length; i++) {
 			for(var seenIndex in seen) {
 				var type = prefix + this.types[i].toLowerCase();
 				if(seenIndex.search(type) === 0) {
-					if(voodPrefix == prefix) {
-						var path = seenIndex.replace(prefix, '');
-						space[this.transform(seenIndex, prefix)] = require(seenIndex).default;
+					var name = seenIndex;
+					if(space) {
+						if(transform) {
+							name = this.transform(seenIndex, prefix);
+						}
+						space[name] = require(seenIndex)[property];
 					} else {
 						require(seenIndex);
 					}

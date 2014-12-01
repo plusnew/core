@@ -5,7 +5,7 @@ var classContent = {
 	},
 	_compile: function() {
 		var id     = this.controller._meta.uid;
-		var result = vood.viewHelper.compileJade(this.controller.content, this.controller._meta.path);
+		var result = vood.viewHelper.compileJade(this.controller._meta.path, this.controller.content);
 
 		return result;
 	},

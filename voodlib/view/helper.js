@@ -1,5 +1,6 @@
 export default vood.Obj({
 	templatePrefix: 'templates/',
+	jst: {},
 	entrance: 'body',
 	startPath: 'main/app',
 	uidAttrStart: 'data-begin',
@@ -7,10 +8,19 @@ export default vood.Obj({
 	list: {},
 	init: function() {
 		this.checkValidity();
+		this.insertTemplates();
 		this.insertApp();
 	},
 	create: function(path) {
 		return this.getEntity(path);
+	},
+	insertTemplates: function() {
+		var seen = requirejs._eak_seen;
+		for(var seenIndex in seen) {
+			if(seenIndex.search(this.templatePrefix) === 0) {
+				this.jst[seenIndex] = require(seenIndex).default;
+			}
+		}
 	},
 	insertApp: function() {
 		var id      = vood.controllerHelper.create(this.startPath, {});
@@ -29,7 +39,13 @@ export default vood.Obj({
 		return _.cloneDeep(this.list[path]);
 	},
 	compileJade: function(path, content) {
-		return '<div class="first">foo</div><div class="second">bar</div>';
+		var name = this.templatePrefix + path;
+		if(this.jst[name]) {
+			return this.jst[name](content);
+		} else {
+			console.error(path + ' no such template');
+			return '';
+		}
 	},
 	
 	scriptStart: function(id) {

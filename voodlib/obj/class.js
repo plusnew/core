@@ -10,17 +10,15 @@ var defaults = {
 			return key;
 		}
 	},
-	get: function(key) {
-		return this._get(key);
+	get: function(key, opt) {
+		return this._handleData('get', key, null, opt);
 	},
-	set: function(key, value) {
-		return this._set(key);
+	set: function(key, value, opt) {
+		return this._handleData('set', key, value, opt);
 	},
-	_get: function(key) {
-		return this[this._meta.getKey(key)]; // @TODO
-	},
-	_set: function(key, value) {
-		this[this._meta.getKey(key)] = value; // @TODO
+	_handleData: function(type, key, value, opt) {
+		var result = null;
+		return result;
 	},
 	addJob: function(opt) {
 		opt.uid = this._meta.uid;
