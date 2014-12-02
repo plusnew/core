@@ -10,7 +10,7 @@ var defaults = {
 			return key;
 		}
 	},
-	init: function() {},
+	init: function() {}, // Not really used, only that i don't have to check if its exitent
 	get: function(key, opt) {
 		return this._handleData('get', key, null, opt);
 	},
@@ -33,20 +33,19 @@ var defaults = {
 	},
 	_handleRealData: function(type, key, value, opt) {
 		var keyParts = key.split('.');
-
 		var partClone = _.clone(keyParts);
 		var result   = vood.objHelper._isQuery(key) ? [] : undefined;
 
+		// @TODO add to registry
 		for(var i = 0; i < keyParts.length; i++) {
 			var part = keyParts[i];
 			var previous = partClone.slice(0, i);
 			var lastKey  = previous[previous.length - 1];
 
-			// Addto registry
 			if(vood.objHelper._isQuery(part)) {
 				var obj      = this._getReference(previous)[lastKey];
 				if(_.isArray(obj)) {
-					for(var arrIndex = 0; i < obj.length; i++) {
+					for(var arrIndex = 0; arrIndex < obj.length; arrIndex++) {
 						if(vood.objHelper._isTrue(obj[arrIndex], part)) {
 							opt.addReg = false;
 							partClone[i] = arrIndex;
@@ -63,8 +62,8 @@ var defaults = {
 				}
 				return result;
 			} else if(i + 1 == keyParts.length){
-				// @todo add switch
-				return this._getReference(previous)[lastKey];
+				// @TODO add switch
+				return this._getReference(keyParts)[keyParts[keyParts.length - 1]];
 			}
 		}
 		return result;
@@ -75,7 +74,7 @@ var defaults = {
 			var part = keyParts[i];
 
 			if(i == keyParts.length - 1) {
-				// @todo check if the comment is correct
+				// @TODO check if the comment is correct
 				return content; // sadly i cant return the property-value itself, reference would get lost
 			}
 
