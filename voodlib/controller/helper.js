@@ -8,12 +8,19 @@ export default vood.Obj({
 			this.addJob({callback: this.garbage});
 		}
 	},
-	create: function(path) {
+	create: function(path, content, opt) {
 		this.id++;
+		opt.id = this.id;
 		this.anons[this.id]                 = this.getEntity(path);
 		this.anons[this.id]._meta.uid       = this.id;
-		this.anons[this.id].view            = vood.viewHelper.create(path);
+		if(content) {
+			// @TODO logic is propably wrong
+			_.merge(this.anons[this.id].content, content);
+		}
+		// this.anons[this.id].construct();
+		this.anons[this.id].view            = vood.viewHelper.create(path, opt);
 		this.anons[this.id].view.controller = this.anons[this.id];
+		this.anons[this.id].view._render();
 		this.anons[this.id].init();
 		this.anons[this.id].view.init();
 		return this.id;

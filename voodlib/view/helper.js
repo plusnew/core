@@ -16,7 +16,8 @@ export default vood.Obj({
 		this.insertTemplates();
 		this.insertApp();
 	},
-	create: function(path) {
+	create: function(path, opt) {
+		this.addId($(opt.selector), opt.id); // @TODO has to be moved inside create
 		return this.getEntity(path);
 	},
 	insertTemplates: function() {
@@ -28,9 +29,7 @@ export default vood.Obj({
 		}
 	},
 	insertApp: function() {
-		var id      = vood.controllerHelper.create(this.startPath, {});
-		this.addId($(this.entrance), id);
-		vood.controllerHelper.get(id)[0].view._render();
+		vood.controllerHelper.create(this.startPath, {}, {selector: this.entrance});
 	},
 	addId: function(obj, id) {
 		obj.first().before(this.scriptStart(id));
