@@ -35,7 +35,7 @@ var defaults = {
 		var keyParts = key.split('.');
 
 		var partClone = _.clone(keyParts);
-		var result   = this._isQuery(key) ? [] : undefined;
+		var result   = vood.objHelper._isQuery(key) ? [] : undefined;
 
 		for(var i = 0; i < keyParts.length; i++) {
 			var part = keyParts[i];
@@ -43,11 +43,11 @@ var defaults = {
 			var lastKey  = previous[previous.length - 1];
 
 			// Addto registry
-			if(this._isQuery(part)) {
+			if(vood.objHelper._isQuery(part)) {
 				var obj      = this._getReference(previous)[lastKey];
 				if(_.isArray(obj)) {
 					for(var arrIndex = 0; i < obj.length; i++) {
-						if(this._isTrue(obj[arrIndex], part)) {
+						if(vood.objHelper._isTrue(obj[arrIndex], part)) {
 							opt.addReg = false;
 							partClone[i] = arrIndex;
 							result.push(this._handleRealData(type, partClone.join('.'), value, opt));
@@ -69,9 +69,6 @@ var defaults = {
 		}
 		return result;
 	},
-	_isTrue: function(obj, query) {
-		return true;
-	},
 	_getReference: function(keyParts) {
 		var content = this[keyParts[0]];
 		for(var i = 1; i < keyParts.length; i++) {
@@ -90,13 +87,6 @@ var defaults = {
 				content = content[part];
 			}
 		}
-	},
-	_isQuery: function(key) {
-		var res = false;
-		if(key.indexOf('=') !== -1 || key.indexOf('@') !== -1) {
-			res = true;
-		}
-		return res;
 	},
 	_generateRealpath: function(key, opt) {
 		if(opt.contentSpace) {
