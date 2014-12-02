@@ -13,6 +13,7 @@ export default vood.Obj({
 	},
 	create: function(path, content, opt) {
 		this.id++;
+		if(!opt) { opt = {};}
 		opt.id = this.id;
 		this.anons[this.id]                 = this.getEntity(path);
 		this.anons[this.id]._meta.uid       = this.id;
@@ -28,7 +29,7 @@ export default vood.Obj({
 		return {uid: this.id, html: html};
 	},
 	callInits: function() {
-		for(var i = 0; i < vood.controllerHelper.inits; i++) {
+		for(var i = 0; i < vood.controllerHelper.inits.length; i++) {
 			var id = vood.controllerHelper.inits[i];
 			vood.controllerHelper.anons[id].init();
 			vood.controllerHelper.anons[id].view.init();
