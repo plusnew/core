@@ -62,8 +62,35 @@ var defaults = {
 				}
 				return result;
 			} else if(i + 1 == keyParts.length){
-				// @TODO add switch
-				return this._getReference(keyParts)[keyParts[keyParts.length - 1]];
+				return this._handleTypes(type, keyParts, value, opt);
+			}
+		}
+		return result;
+	},
+	_handleTypes: function(type, keyParts, value, opt) {
+		var changed = false;
+		var result = false;
+		switch (type) {
+			case 'get':
+				result = this._getReference(keyParts)[keyParts[keyParts.length - 1]];
+				break;
+			case 'set':
+				var current = this._getReference(keyParts)[keyParts[keyParts.length - 1]];
+				if(current != value) {
+					this._getReference(keyParts)[keyParts[keyParts.length - 1]] = value;
+					result = true;
+					changed = true;
+				}
+				break;
+			default:
+				throw 'type ' + type + ' is not defined';
+		}
+
+		if(changed && this.view) {
+			if(vood.viewHelper.dirtyHandling !== false) {
+				this.view._meta.dirty = true;
+			} else {
+				this.view._render();
 			}
 		}
 		return result;

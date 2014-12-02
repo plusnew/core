@@ -1,5 +1,6 @@
 vood.init({
 	viewHelper: {
+		dirtyHandling: false,
 		entrance: '#app'
 	}
 });

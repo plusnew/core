@@ -9,6 +9,9 @@ export default vood.Obj({
 	uidAttrEnd: 'data-end',
 	list: {},
 	init: function() {
+		if(this.dirtyHandling !== false) {
+			this.addJob({callback: this.dirtyChecking});
+		}
 		this.checkValidity();
 		this.insertTemplates();
 		this.insertApp();
@@ -63,5 +66,8 @@ export default vood.Obj({
 		if(!this.entrance) {
 			throw "App entrance is not defined";
 		}
+	},
+	dirtyChecking: function() {
+		
 	}
 });

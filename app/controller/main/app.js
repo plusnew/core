@@ -5,5 +5,6 @@ vood.Controller('main/app', {
 	},
 	init: function() {
 		console.log(this.get('list.foo=foo1'));
+		this.set('title', 'I want some voodz!');
 	},
 });
