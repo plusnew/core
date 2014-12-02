@@ -16,6 +16,10 @@ var classContent = {
 
 		return result;
 	},
+	_compileComplete: function() {
+		var id = this.controller._meta.uid;
+		return vood.viewHelper.scriptStart(id) + this._compile() + vood.viewHelper.scriptEnd(id);
+	},
 	obj: function(path) {
 		var selector = null;
 		var id = this.controller._meta.uid;

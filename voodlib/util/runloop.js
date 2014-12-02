@@ -1,6 +1,6 @@
 export default vood.Obj({
 	jobs: [],
-	ticks: 1500,
+	ticks: 10,
 	init: function() {
 		this.loop();
 	},
