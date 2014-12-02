@@ -13,20 +13,21 @@ export default vood.Obj({
 	},
 	create: function(path, content, opt) {
 		this.id++;
+		var id = this.id;
+		this.inits.push(id);
 		if(!opt) { opt = {};}
-		opt.id = this.id;
-		this.anons[this.id]                 = this.getEntity(path);
-		this.anons[this.id]._meta.uid       = this.id;
+		opt.id = id;
+		this.anons[id]                 = this.getEntity(path);
+		this.anons[id]._meta.uid       = id;
 		if(content) {
 			// @TODO logic is propably wrong
-			_.merge(this.anons[this.id].content, content);
+			_.merge(this.anons[id].content, content);
 		}
-		// this.anons[this.id].construct();
-		this.anons[this.id].view            = vood.viewHelper.create(path, opt);
-		this.anons[this.id].view.controller = this.anons[this.id];
-		var html                            = this.anons[this.id].view._compileComplete();
-		this.inits.push(this.id);
-		return {uid: this.id, html: html};
+		// this.anons[id].construct();
+		this.anons[id].view            = vood.viewHelper.create(path, opt);
+		this.anons[id].view.controller = this.anons[id];
+		var html                            = this.anons[id].view._compileComplete();
+		return {uid: id, html: html};
 	},
 	callInits: function() {
 		for(var i = 0; i < vood.controllerHelper.inits.length; i++) {

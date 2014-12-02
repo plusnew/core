@@ -46,7 +46,17 @@ JadeFilter.prototype.targetExtension = 'js';
 
 JadeFilter.prototype.processString = function (str, filename) {
 	this.options.filename = filename;
-	return jade.compileClient(str, this.options) + ';\nexport default template;';
+	var compiled = jade.compileClient(str, this.options) + ';\nexport default template;';
+
+	var parts = compiled.split(';');
+	var found = false;
+	for(var i = 0; i < parts.length; i++) {
+		if(parts[i].search('jade_mixins') != -1 && found === false) {
+			parts[i] += ';vood.viewJade.addMixins(jade_mixins, buf)';
+			found = true;
+		}
+	}
+	return parts.join(';');
 };
 
 templates = JadeFilter(templates, {});
