@@ -90,8 +90,10 @@ var defaults = {
 	_generateRealpath: function(key, opt) {
 		if(opt.contentSpace) {
 			return opt.contentSpace + '.' + key;
-		} else {
+		} else if(this._meta.contentSpace){
 			return this._meta.contentSpace + '.' + key;
+		} else {
+			return key;
 		}
 	},
 	addJob: function(opt) {

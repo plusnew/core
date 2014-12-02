@@ -3,6 +3,9 @@ var classContent = {
 		type: 'view'
 	},
 	_render: function() {
+		while(this.obj('root').length > 1) {
+			this.obj('root').last().remove(); // I want only one object to get replaced, else its possible to have the content dubled
+		}
 		this.obj('root').replaceWith(this._compile());
 
 	},
