@@ -1,11 +1,12 @@
-var mergeTrees = require('broccoli-merge-trees');
-var compileES6 = require('broccoli-es6-concatenator');
-var pickFiles = require('broccoli-static-compiler');
+var mergeTrees     = require('broccoli-merge-trees');
+var compileES6     = require('broccoli-es6-concatenator');
+var pickFiles      = require('broccoli-static-compiler');
 var findBowerTrees = require('broccoli-bower');
-var Filter = require('broccoli-filter');
-var env = require('broccoli-env').getEnv();
-var Filter = require('broccoli-filter');
-var jade = require('jade');
+var Filter         = require('broccoli-filter');
+var env            = require('broccoli-env').getEnv();
+var Filter         = require('broccoli-filter');
+var jade           = require('jade');
+var jadeCompiler   = require('./node_modules/jade/lib/compiler.js');
 
 var app = 'app';
 app = pickFiles(app, {
@@ -28,6 +29,25 @@ templates = pickFiles(templates, {
 	destDir: 'templates' // move under appkit namespace
 });
 
+function Compiler(node, options) {
+	this.options = options = options || {};
+	this.node = node;
+	this.hasCompiledDoctype = false;
+	this.hasCompiledTag = false;
+	this.pp = options.pretty || false;
+	this.debug = false !== options.compileDebug;
+	this.indents = 0;
+	this.parentIndents = 0;
+	this.terse = false;
+	this.mixins = {};
+	this.dynamicMixins = true;
+	if (options.doctype) this.setDoctype(options.doctype);
+}
+
+for(var index in jadeCompiler.prototype) {
+	Compiler.prototype[index] = jadeCompiler.prototype[index];
+}
+
 
 function JadeFilter(inputTree, options) {
 	if (!(this instanceof JadeFilter)) {
@@ -49,17 +69,22 @@ JadeFilter.prototype.processString = function (str, filename) {
 	var compiled = jade.compileClient(str, this.options) + ';\nexport default template;';
 
 	var parts = compiled.split(';');
-	var found = false;
+	var foundAdd      = false;
+	var foundFinished = false;
 	for(var i = 0; i < parts.length; i++) {
-		if(parts[i].search('jade_mixins') != -1 && found === false) {
+		if(parts[i].search('jade_mixins') != -1 && foundAdd === false) {
 			parts[i] += ';vood.viewJade.addMixins(jade_mixins, buf)';
-			found = true;
+			foundAdd = true;
+		}
+		if(parts[i].search('return buf.join') !== -1 && foundFinished === false) {
+			parts[i - 1] += ';vood.viewJade.mixinFinished(jade_mixins)';
+			foundFinished = true;
 		}
 	}
 	return parts.join(';');
 };
 
-templates = JadeFilter(templates, {});
+templates = JadeFilter(templates, {compiler: Compiler});
 
 var sourceTrees = [app, vood, vendor, bower, templates];
 sourceTrees = sourceTrees.concat(findBowerTrees());

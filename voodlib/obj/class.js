@@ -2,6 +2,7 @@ var util = require('voodkit/util/helper').default;
 
 var defaults = {
 	_meta: {
+		registry: false,
 		contentSpace: 'content',
 		getKey: function(key) {
 			if(this.contentSpace) {

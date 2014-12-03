@@ -1,5 +1,5 @@
 String.prototype.capitalize = function() {
-  return this[0].toUpperCase() + this.slice(1, this.length);
+	return this[0].toUpperCase() + this.slice(1, this.length);
 };
 
 var obj = {
@@ -13,6 +13,9 @@ var obj = {
 					}
 				}
 			}
+	},
+	insertAt: function(src, index, str) {
+		return src.substr(0, index) + str + src.substr(index);
 	}
 };
 

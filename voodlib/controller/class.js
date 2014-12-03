@@ -1,5 +1,7 @@
 var classContent = {
 	_meta: {
+		registry: true,
+		contentSpace: 'content',
 		type: 'view'
 	},
 	send: function(opt) {
