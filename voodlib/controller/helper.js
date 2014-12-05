@@ -12,20 +12,18 @@ export default vood.Obj({
 
 	},
 	create: function(path, content, opt) {
-		this.id++;
-		var id = this.id;
+		var id = ++this.id;
 		this.inits.push(id);
-		if(!opt) { opt = {};}
-		opt.id = id;
 		this.anons[id]                 = this.getEntity(path);
 		this.anons[id]._meta.uid       = id;
 		if(content) {
 			// @TODO logic is propably wrong
 			_.merge(this.anons[id].content, content);
 		}
-		// this.anons[id].construct();
 		this.anons[id].view            = vood.viewHelper.create(path, opt);
 		this.anons[id].view.controller = this.anons[id];
+		this.anons[id].construct();
+		this.anons[id].view.construct();
 		var html                            = this.anons[id].view._compileComplete();
 		return {uid: id, html: html};
 	},

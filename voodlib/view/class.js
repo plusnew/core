@@ -2,6 +2,7 @@ var classContent = {
 	_meta: {
 		type: 'view'
 	},
+	construct: function() {}, // Gets triggered before template gets rendered
 	_render: function() {
 		this._meta.dirty = false;
 		while(this.obj('root').length > 1) {

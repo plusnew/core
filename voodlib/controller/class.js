@@ -4,6 +4,7 @@ var classContent = {
 		contentSpace: 'content',
 		type: 'view'
 	},
+	construct: function() {}, // Gets triggered before template gets rendered
 	send: function(opt) {
 		vood.utilAdapter.send(opt);
 	},
