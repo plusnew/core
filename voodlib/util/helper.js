@@ -16,6 +16,17 @@ var obj = {
 	},
 	insertAt: function(src, index, str) {
 		return src.substr(0, index) + str + src.substr(index);
+	},
+	safeCall: function(scope, func) {
+		if(app.debug) {
+			scope[func]();
+		} else {
+			try {
+				scope[func]();
+			} catch(err) {
+				console.error(err);
+			}
+		}
 	}
 };
 

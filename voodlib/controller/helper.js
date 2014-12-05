@@ -22,16 +22,16 @@ export default vood.Obj({
 		}
 		this.anons[id].view            = vood.viewHelper.create(path, opt);
 		this.anons[id].view.controller = this.anons[id];
-		this.anons[id].construct();
-		this.anons[id].view.construct();
+		vood.utilHelper.safeCall(this.anons[id], 'construct');
+		vood.utilHelper.safeCall(this.anons[id].view, 'construct');
 		var html                            = this.anons[id].view._compileComplete();
 		return {uid: id, html: html};
 	},
 	callInits: function() {
 		for(var i = 0; i < vood.controllerHelper.inits.length; i++) {
 			var id = vood.controllerHelper.inits[i];
-			vood.controllerHelper.anons[id].init();
-			vood.controllerHelper.anons[id].view.init();
+			vood.utilHelper.safeCall(vood.controllerHelper.anons[id], 'init');
+			vood.utilHelper.safeCall(vood.controllerHelper.anons[id].view, 'init');
 		}
 		vood.controllerHelper.inits = [];
 	},
