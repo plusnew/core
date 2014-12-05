@@ -17,7 +17,8 @@ var obj = {
 	insertAt: function(src, index, str) {
 		return src.substr(0, index) + str + src.substr(index);
 	},
-	safeCall: function(scope, func) {
+	safeCall: function(scope, func, args) {
+		// @TODO add arguments
 		if(app.debug) {
 			scope[func]();
 		} else {
