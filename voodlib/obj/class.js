@@ -7,11 +7,11 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// default initfunction
-	init: function() {},
+	init: function(){},
 	////-----------------------------------------------------------------------------------------
 	// default destroyfunction, gets called before instance gets terminated
 	// @TODO not yet implemented
-	destroy: function() {},
+	destroy: function(){},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for getting content
 	get: function( key, opt ){
@@ -52,7 +52,7 @@ var defaults = {
 		var result    = vood.objHelper._isQuery( key ) ? [] : undefined;
 
 		// @TODO add to registry
-		for( var i = 0; i < keyParts.length; i++ ) {
+		for( var i = 0; i < keyParts.length; i++ ){
 			var part = keyParts[ i ];
 			var previous = partClone.slice( 0, i );
 			var lastKey  = previous[ previous.length - 1 ];
@@ -87,15 +87,15 @@ var defaults = {
 	_handleTypes: function( type, keyParts, value, opt ){
 		var changed = false;
 		var result = false;
-		switch (type) {
+		switch (type){
 			case 'get':
-				result = this._getReference(keyParts)[keyParts[keyParts.length - 1]];
+				result = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
 				break;
 			case 'set':
-				var current = this._getReference(keyParts)[keyParts[keyParts.length - 1]];
-				if(current != value) {
-					this._getReference(keyParts)[keyParts[keyParts.length - 1]] = value;
-					result = true;
+				var current = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
+				if( current != value ){
+					this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]] = value;
+					result  = true;
 					changed = true;
 				}
 				break;
@@ -103,8 +103,8 @@ var defaults = {
 				throw 'type ' + type + ' is not defined';
 		}
 
-		if(changed && this.view) {
-			if(vood.viewHelper.dirtyHandling !== false) {
+		if( changed && this.view ){
+			if( vood.viewHelper.dirtyHandling !== false ){
 				this.view._meta.dirty = true;
 			} else {
 				this.view._render();
@@ -114,30 +114,30 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent
-	_getReference: function(keyParts) {
-		var content = this[keyParts[0]];
-		for(var i = 1; i < keyParts.length; i++) {
-			var part = keyParts[i];
+	_getReference: function( keyParts ){
+		var content = this[ keyParts[ 0 ]];
+		for( var i = 1; i < keyParts.length; i++ ){
+			var part = keyParts[ i ];
 
-			if(i == keyParts.length - 1) {
+			if( i == keyParts.length - 1 ){
 				return content; // sadly i cant return the property-value itself, reference would get lost
 			}
 
-			if(!content[part] && i + 1 < keyParts.length) { // @TODO Check for sideeffects -> === undefined was it before
-				content[part] = {};
-				content = content[part];
-				console.info(keyParts.slice(0, i + 1).join('.') + ' did not exist, so I created it for you');
+			if( !content[ part ] && i + 1 < keyParts.length ){ // @TODO Check for sideeffects -> === undefined was it before
+				content[ part ] = {};
+				content = content[ part ];
+				console.info( keyParts.slice( 0, i + 1 ).join( '.' ) + ' did not exist, so I created it for you');
 			} else {
-				content = content[part];
+				content = content[ part ];
 			}
 		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// adds (optional) prefix to path
-	_generateRealpath: function(key, opt) {
-		if(opt.contentSpace) {
+	_generateRealpath: function( key, opt ){
+		if( opt.contentSpace ){
 			return opt.contentSpace + '.' + key;
-		} else if(this._meta.contentSpace){
+		} else if( this._meta.contentSpace ){
 			return this._meta.contentSpace + '.' + key;
 		} else {
 			return key;
@@ -145,21 +145,21 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// adds runloopjobs with including uid of the jobs, for removage if controller gets destroyed
-	addJob: function(opt) {
+	addJob: function( opt ){
 		opt.uid = this._meta.uid;
 		vood.utilRunloop.addJob(opt);
 	}
 };
 
-var meta = function() {
-	var obj = arguments[arguments.length - 1];
-	var properties = _.cloneDeep(defaults);
-	util.merge(obj, properties);
-	if(arguments.length > 1) {
-		obj._meta.type = arguments[0];
+var meta = function(){
+	var obj = arguments[ arguments.length - 1 ];
+	var properties = _.cloneDeep( defaults );
+	util.merge( obj, properties );
+	if( arguments.length > 1 ){
+		obj._meta.type = arguments[ 0 ];
 	}
-	if(arguments.length > 2) {
-		obj._meta.path = arguments[1];
+	if( arguments.length > 2 ){
+		obj._meta.path = arguments[ 1 ];
 	}
 	return obj;
 };

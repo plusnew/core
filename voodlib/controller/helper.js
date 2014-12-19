@@ -6,8 +6,8 @@ export default vood.Obj({
 	garbageCollection: true,
 	////-----------------------------------------------------------------------------------------
 	// Init adds needed runloop jobs
-	init: function() {
-		if(this.garbageCollection !== false) {
+	init: function(){
+		if( this.garbageCollection !== false ){
 			this.addJob( {callback: this.garbage} );
 		}
 		this.addJob( {callback: this.callInits} );
@@ -33,7 +33,7 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Is a runloop jobs, for calling the init of new controllers, needs to be called after instanciating
-	callInits: function() {
+	callInits: function(){
 		for( var i = 0; i < vood.controllerHelper.inits.length; i++ ){
 			var id = vood.controllerHelper.inits[ i ];
 			vood.utilHelper.safeCall( vood.controllerHelper.anons[id], 'init' );
@@ -44,7 +44,7 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// Returns the class
 	getEntity: function( path ){
-		if( !this.list[ path ] ) {
+		if( !this.list[ path ] ){
 			console.log( 'Controller ' + path + ' does not exist' );
 			vood.Controller( path, {_meta: {pseudo: true}} );
 		}
@@ -54,10 +54,10 @@ export default vood.Obj({
 	// returns instances of fitting controllers
 	get: function( path ){
 		var result = [];
-		for(var i in this.anons) {
-			if(this.anons.hasOwnProperty(i)) {
-				if(path == i || this.anons[i]._meta.path == path || path == '*') {
-					result.push(this.anons[i]);
+		for(var i in this.anons){
+			if( this.anons.hasOwnProperty( i )){
+				if( path == i || this.anons[ i ]._meta.path == path || path == '*' ){
+					result.push( this.anons[ i ] );
 				}
 			}
 		}
@@ -65,7 +65,7 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if the instanciated controllers are represented in the dom
-	garbage: function() {
+	garbage: function(){
 		
 	}
 });

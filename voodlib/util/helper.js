@@ -1,7 +1,7 @@
 ////-----------------------------------------------------------------------------------------
 // Uppercases the first letter of an string
 
-String.prototype.capitalize = function() {
+String.prototype.capitalize = function(){
 	return this[0].toUpperCase() + this.slice(1, this.length);
 };
 
@@ -13,7 +13,7 @@ var obj = {
 				if( obj.hasOwnProperty( index )){
 					if( !target[ index ] ){
 						target[ index ] = obj[ index ];
-					} else if( _.isObject( target[ index ] ) && _.isObject( obj[ index ] ) && !_.isFunction( target[ index ] ) && !_.isFunction( obj[ index] )) {
+					} else if( _.isObject( target[ index ] ) && _.isObject( obj[ index ] ) && !_.isFunction( target[ index ] ) && !_.isFunction( obj[ index] )){
 						this.merge( target[ index ], obj[ index ] );
 					}
 				}
@@ -28,12 +28,12 @@ var obj = {
 	// Triggers e.g. init-functions, without breaking stuff. on debug mode it throws the errors
 	safeCall: function( scope, func, args ){
 		// @TODO add arguments
-		if(app.debug) {
-			scope[func]();
+		if(app.debug){
+			scope[ func ]();
 		} else {
 			try {
 				scope[ func ]();
-			} catch(err) {
+			} catch( err ){
 				console.error( err );
 			}
 		}

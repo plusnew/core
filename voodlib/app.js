@@ -39,13 +39,13 @@ window.vood = Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
-	get: function( path ) {
+	get: function( path ){
 		return this.controllerHelper.get( path );
 	},
 	////-----------------------------------------------------------------------------------------
 	// calls inits of the core-modules
-	executeInit: function() {
-		for(var index in this) {
+	executeInit: function(){
+		for( var index in this ){
 			if( _.isObject( this[ index ] ) && _.isFunction( this[index].init )){
 				this[index].init();
 			}
@@ -53,7 +53,7 @@ window.vood = Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// loads core and app
-	loadAll: function() {
+	loadAll: function(){
 		window.app = vood.Obj({});
 
 		this.load( this, voodPrefix, 'default', true );
@@ -63,7 +63,7 @@ window.vood = Obj({
 	// loading of core or app
 	load: function( space, prefix, property, transform ){
 		var seen = requirejs._eak_seen;
-		for( var i = 0; i < this.types.length; i++ ){
+		for( var i = 0; i < this.types.length; i++  ){
 			for( var seenIndex in seen ){
 				var type = prefix + this.types[ i ].toLowerCase();
 				if( seenIndex.search( type ) === 0 ){

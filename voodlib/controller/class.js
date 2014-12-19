@@ -6,7 +6,7 @@ var classContent = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// Gets triggered before template gets rendered, this.content can be manipulated without consequences
-	construct: function() {},
+	construct: function(){},
 	////-----------------------------------------------------------------------------------------
 	// triggers the adaper and creates request reference
 	send: function( opt ){
