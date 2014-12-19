@@ -18,17 +18,17 @@ export default vood.Obj({
 	create: function( path, content, opt ){
 		var id = ++this.id;
 		this.inits.push( id );
-		this.anons[id]                 = this.getEntity( path );
-		this.anons[id]._meta.uid       = id;
+		this.anons[ id ]                 = this.getEntity( path );
+		this.anons[ id ]._meta.uid       = id;
 		if( content ){
 			// @TODO logic is propably wrong
 			_.merge(this.anons[id].content, content);
 		}
-		this.anons[id].view            = vood.viewHelper.create(path, opt);
-		this.anons[id].view.controller = this.anons[id];
-		vood.utilHelper.safeCall(this.anons[id], 'construct');
-		vood.utilHelper.safeCall(this.anons[id].view, 'construct');
-		var html                            = this.anons[id].view._compileComplete();
+		this.anons[ id ].view            = vood.viewHelper.create( path, opt );
+		this.anons[ id ].view.controller = this.anons[ id ];
+		vood.utilHelper.safeCall(this.anons[ id ], 'construct' );
+		vood.utilHelper.safeCall(this.anons[ id ].view, 'construct' );
+		var html                            = this.anons[ id ].view._compileComplete();
 		return {uid: id, html: html};
 	},
 	////-----------------------------------------------------------------------------------------
@@ -36,8 +36,8 @@ export default vood.Obj({
 	callInits: function(){
 		for( var i = 0; i < vood.controllerHelper.inits.length; i++ ){
 			var id = vood.controllerHelper.inits[ i ];
-			vood.utilHelper.safeCall( vood.controllerHelper.anons[id], 'init' );
-			vood.utilHelper.safeCall( vood.controllerHelper.anons[id].view, 'init' );
+			vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ], 'init' );
+			vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ].view, 'init' );
 		}
 		vood.controllerHelper.inits = [];
 	},
