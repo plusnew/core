@@ -4,19 +4,23 @@ export default vood.Obj({
 	anons: {},
 	inits: [],
 	garbageCollection: true,
+	////-----------------------------------------------------------------------------------------
+	// Init adds needed runloop jobs
 	init: function() {
 		if(this.garbageCollection !== false) {
-			this.addJob({callback: this.garbage});
+			this.addJob( {callback: this.garbage} );
 		}
-		this.addJob({callback: this.callInits});
+		this.addJob( {callback: this.callInits} );
 
 	},
-	create: function(path, content, opt) {
+	////-----------------------------------------------------------------------------------------
+	// Creates the controller-instance of the class, returns the html
+	create: function( path, content, opt ){
 		var id = ++this.id;
-		this.inits.push(id);
-		this.anons[id]                 = this.getEntity(path);
+		this.inits.push( id );
+		this.anons[id]                 = this.getEntity( path );
 		this.anons[id]._meta.uid       = id;
-		if(content) {
+		if( content ){
 			// @TODO logic is propably wrong
 			_.merge(this.anons[id].content, content);
 		}
@@ -27,22 +31,28 @@ export default vood.Obj({
 		var html                            = this.anons[id].view._compileComplete();
 		return {uid: id, html: html};
 	},
+	////-----------------------------------------------------------------------------------------
+	// Is a runloop jobs, for calling the init of new controllers, needs to be called after instanciating
 	callInits: function() {
-		for(var i = 0; i < vood.controllerHelper.inits.length; i++) {
-			var id = vood.controllerHelper.inits[i];
-			vood.utilHelper.safeCall(vood.controllerHelper.anons[id], 'init');
-			vood.utilHelper.safeCall(vood.controllerHelper.anons[id].view, 'init');
+		for( var i = 0; i < vood.controllerHelper.inits.length; i++ ){
+			var id = vood.controllerHelper.inits[ i ];
+			vood.utilHelper.safeCall( vood.controllerHelper.anons[id], 'init' );
+			vood.utilHelper.safeCall( vood.controllerHelper.anons[id].view, 'init' );
 		}
 		vood.controllerHelper.inits = [];
 	},
-	getEntity: function(path) {
-		if(!this.list[path]) {
-			console.log('Controller ' + path + ' does not exist');
-			vood.Controller(path, {_meta: {pseudo: true}});
+	////-----------------------------------------------------------------------------------------
+	// Returns the class
+	getEntity: function( path ){
+		if( !this.list[ path ] ) {
+			console.log( 'Controller ' + path + ' does not exist' );
+			vood.Controller( path, {_meta: {pseudo: true}} );
 		}
 		return _.cloneDeep(this.list[path]);
 	},
-	get: function(path) {
+	////-----------------------------------------------------------------------------------------
+	// returns instances of fitting controllers
+	get: function( path ){
 		var result = [];
 		for(var i in this.anons) {
 			if(this.anons.hasOwnProperty(i)) {
@@ -53,6 +63,8 @@ export default vood.Obj({
 		}
 		return result;
 	},
+	////-----------------------------------------------------------------------------------------
+	// Checks if the instanciated controllers are represented in the dom
 	garbage: function() {
 		
 	}

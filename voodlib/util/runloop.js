@@ -1,12 +1,19 @@
 export default vood.Obj({
 	jobs: [],
 	ticks: 10,
+	////-----------------------------------------------------------------------------------------
+	// Gets the runloop started
 	init: function() {
 		this.loop();
 	},
+	////-----------------------------------------------------------------------------------------
+	// Calls runloop jobs
+	// @TODO call not every controller on each tick but depending on there interval
+	// @TODO remove job when 
 	loop: function() {
-		for(var i = 0; i < this.jobs.length; i++) {
-			if(true) {
+		for( var i = 0; i < this.jobs.length; i++ ){
+			// @TODO use safecall
+			if( true ) {
 				this.jobs[i].callback();
 			} else {
 				try {
@@ -18,7 +25,10 @@ export default vood.Obj({
 		}
 		setTimeout(this.loop.bind(this), this.ticks);
 	},
+	////-----------------------------------------------------------------------------------------
+	// add a job to the list
+	// @TODO validation
 	addJob: function(job) {
-		this.jobs.push(job);
+		return this.jobs.push(job);
 	}
 });
