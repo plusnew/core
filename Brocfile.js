@@ -29,6 +29,10 @@ templates = pickFiles(templates, {
 	destDir: 'templates' // move under appkit namespace
 });
 
+function insertAt( src, position, str ){
+	return src.substr( 0, position ) + str + src.substr( position );
+}
+
 function Compiler(node, options) {
 	this.options = options = options || {};
 	this.node = node;
@@ -64,19 +68,35 @@ JadeFilter.prototype.constructor = JadeFilter;
 JadeFilter.prototype.extensions = ['jade'];
 JadeFilter.prototype.targetExtension = 'js';
 
-JadeFilter.prototype.processString = function (str, filename) {
+JadeFilter.prototype.processString = function( str, filename  ){
 	this.options.filename = filename;
-	var compiled = jade.compileClient(str, this.options) + ';\nexport default template;';
+	var compiled = jade.compileClient( str, this.options ) + ';\nexport default template;';
 
-	var parts = compiled.split(';');
+	var parts = compiled.split( ';' );
 	var foundAdd      = false;
 	var foundFinished = false;
-	for(var i = 0; i < parts.length; i++) {
-		if(parts[i].search('jade_mixins') != -1 && foundAdd === false) {
-			parts[i] += ';vood.viewJade.addMixins(jade_mixins, buf)';
+	for( var i = 0; i < parts.length; i++ ){
+		var isMixin = parts[ i ].search( 'jade_mixins' ) != -1;
+		if( isMixin && foundAdd === false ){ // Adds global mixins to this template
+			parts[ i ] += ';vood.viewJade.addMixins(jade_mixins, buf)';
 			foundAdd = true;
+		} else if( isMixin ){ // Manipulates the mixin calls to add the parameter 'buf'
+			var functionBegin = parts[ i ].search(/\(/) + 1;
+			var functionEnd   = parts[ i ].search(/\)/);
+			var parameter     = parts[ i ].substring(functionBegin, functionEnd);
+			var newParam      = 'buf';
+			if(parameter) {
+				newParam += ', ';
+			}
+			parts[ i ] = insertAt(parts[i], functionBegin, newParam);
+			console.log(parts [ i]);
+			// Checks if its a definition of a mixin, or a call
+			if(parts[ i ].search( '=' ) != -1) {
+
+			}
+			
 		}
-		if(parts[i].search('return buf.join') !== -1 && foundFinished === false) {
+		if( parts[ i ].search('return buf.join') !== -1 && foundFinished === false ){
 			parts[i - 1] += ';vood.viewJade.mixinFinished(jade_mixins)';
 			foundFinished = true;
 		}

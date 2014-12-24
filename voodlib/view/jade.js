@@ -3,8 +3,8 @@ export default vood.Obj({
 	buf: [],
 	addMixins: function( mixins, buf ){
 		this.buf = buf;
-		this.mixins.spawn = function( path, opt ){
-			vood.viewJade.buf.push( vood.controllerHelper.create( path ).html );
+		this.mixins.spawn = function( buf, path, opt ){
+			buf.push( vood.controllerHelper.create( path ).html );
 		};
 		for( var index in this.mixins ){
 			if( !mixins[ index ] ) {

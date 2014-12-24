@@ -5,7 +5,7 @@ export default vood.Obj({
 	inits: [],
 	garbageCollection: true,
 	////-----------------------------------------------------------------------------------------
-	// Init adds needed runloop jobs
+	// Init adds needed runloop jobs (garbage collection, and async calling of controller-inits)
 	init: function(){
 		if( this.garbageCollection !== false ){
 			this.addJob( {callback: this.garbage} );

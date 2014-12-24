@@ -37,6 +37,11 @@ var obj = {
 				console.error( err );
 			}
 		}
+	},
+	////-----------------------------------------------------------------------------------------
+	// If you don't like slashes inside the namespace/module pattern, you can make your transition here
+	transformNamespace: function( name ){
+		return name;
 	}
 };
 
