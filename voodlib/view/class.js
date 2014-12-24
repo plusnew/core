@@ -41,8 +41,8 @@ var classContent = {
 };
 
 function view( path, obj ){
-	vood.viewHelper.list[path] = vood.Obj('view', path, obj);
-	vood.utilHelper.merge(vood.viewHelper.list[path], classContent);
+	vood.viewHelper.list[ path ] = vood.Obj( 'view', path, obj );
+	vood.utilHelper.merge( vood.viewHelper.list[ path ], classContent );
 }
 
 export default view;

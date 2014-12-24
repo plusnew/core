@@ -22,12 +22,12 @@ export default vood.Obj({
 		this.anons[ id ]._meta.uid       = id;
 		if( content ){
 			// @TODO logic is propably wrong
-			_.merge(this.anons[id].content, content);
+			_.merge( this.anons[ id ].content, content );
 		}
 		this.anons[ id ].view            = vood.viewHelper.create( path, opt );
 		this.anons[ id ].view.controller = this.anons[ id ];
-		vood.utilHelper.safeCall(this.anons[ id ], 'construct' );
-		vood.utilHelper.safeCall(this.anons[ id ].view, 'construct' );
+		vood.utilHelper.safeCall( this.anons[ id ], 'construct' );
+		vood.utilHelper.safeCall( this.anons[ id ].view, 'construct' );
 		var html                            = this.anons[ id ].view._compileComplete();
 		return {uid: id, html: html};
 	},
@@ -48,13 +48,13 @@ export default vood.Obj({
 			console.log( 'Controller ' + path + ' does not exist' );
 			vood.Controller( path, {_meta: {pseudo: true}} );
 		}
-		return _.cloneDeep(this.list[path]);
+		return _.cloneDeep( this.list[ path ] );
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
 	get: function( path ){
 		var result = [];
-		for(var i in this.anons){
+		for( var i in this.anons ){
 			if( this.anons.hasOwnProperty( i )){
 				if( path == i || this.anons[ i ]._meta.path == path || path == '*' ){
 					result.push( this.anons[ i ] );

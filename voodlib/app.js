@@ -86,7 +86,9 @@ window.vood = Obj({
 	transform: function( name, prefix ){
 		var transform = '',
 			upper     = false;
+
 		name          = name.replace( prefix, '' );
+
 		for( var index in name ){
 			if( name.hasOwnProperty( index )){
 				var character = name[ index ];
