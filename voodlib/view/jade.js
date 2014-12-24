@@ -10,11 +10,9 @@ export default vood.Obj({
 		// @TODO creating a controller without the anon array. pseudoevents should not iterate over these
 		widget: function( buf, path, opt ){}
 	},
-	buf: [],
 	////-----------------------------------------------------------------------------------------
 	// Adds global mixins to local
 	addMixins: function( mixins, buf ){
-		this.buf = buf;
 		for( var index in this.mixins ){
 			if( !mixins[ index ] ) {
 				mixins[ index ] = this.mixins[ index ];
