@@ -40,9 +40,15 @@ var classContent = {
 	}
 };
 
+////-----------------------------------------------------------------------------------------
+// Function for creating classes
 function view( path, obj ){
-	vood.viewHelper.list[ path ] = vood.Obj( 'view', path, obj );
-	vood.utilHelper.merge( vood.viewHelper.list[ path ], classContent );
+	if( vood.viewHelper.list[ path ] ){
+		console.warn( 'The View for ' + path + ' already exists' );
+	} else {
+		vood.viewHelper.list[ path ] = vood.Obj( 'view', path, obj );
+		vood.utilHelper.merge( vood.viewHelper.list[ path ], classContent );
+	}
 }
 
 export default view;

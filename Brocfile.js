@@ -89,12 +89,6 @@ JadeFilter.prototype.processString = function( str, filename  ){
 				newParam += ', ';
 			}
 			parts[ i ] = insertAt(parts[i], functionBegin, newParam);
-			console.log(parts [ i]);
-			// Checks if its a definition of a mixin, or a call
-			if(parts[ i ].search( '=' ) != -1) {
-
-			}
-			
 		}
 		if( parts[ i ].search('return buf.join') !== -1 && foundFinished === false ){
 			parts[i - 1] += ';vood.viewJade.mixinFinished(jade_mixins)';

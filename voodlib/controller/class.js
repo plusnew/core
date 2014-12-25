@@ -1,8 +1,14 @@
 var classContent = {
 	_meta: {
+		////-----------------------------------------------------------------------------------------
+		// Flag if an internal registry should be used
 		registry: true,
+		////-----------------------------------------------------------------------------------------
+		// Prefix where setter and getter should view
 		contentSpace: 'content',
-		type: 'view'
+		////-----------------------------------------------------------------------------------------
+		// Just some debugging info
+		type: 'controller'
 	},
 	////-----------------------------------------------------------------------------------------
 	// Gets triggered before template gets rendered, this.content can be manipulated without consequences
@@ -21,10 +27,16 @@ var classContent = {
 	}
 };
 
+////-----------------------------------------------------------------------------------------
+// Function for creating classes
 function controller( path, obj ){
-	vood.controllerHelper.list[ path ] = vood.Obj( 'controller', path, obj );
-	vood.controllerHelper.list[ path ]._meta.path = path;
-	vood.utilHelper.merge( vood.controllerHelper.list[ path ], classContent );
+	if( vood.controllerHelper.list[ path ] ){
+		console.warn( 'The Controller for ' + path + ' already exists' );
+	} else {
+		vood.controllerHelper.list[ path ] = vood.Obj( 'controller', path, obj );
+		vood.controllerHelper.list[ path ]._meta.path = path;
+		vood.utilHelper.merge( vood.controllerHelper.list[ path ], classContent );
+	}
 }
 
 export default controller;

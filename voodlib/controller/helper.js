@@ -1,8 +1,18 @@
 export default vood.Obj({
+	////-----------------------------------------------------------------------------------------
+	// Increment of the upcoming controller-ids
 	id: 0,
+	////-----------------------------------------------------------------------------------------
+	// Existing classes collection
 	list: {},
+	////-----------------------------------------------------------------------------------------
+	// Controller Instances
 	anons: {},
+	////-----------------------------------------------------------------------------------------
+	// Ids of the controller, which need a init() call
 	inits: [],
+	////-----------------------------------------------------------------------------------------
+	// Flag if the garbagecollection should be enabled
 	garbageCollection: true,
 	////-----------------------------------------------------------------------------------------
 	// Init adds needed runloop jobs (garbage collection, and async calling of controller-inits)
@@ -11,7 +21,6 @@ export default vood.Obj({
 			this.addJob( {callback: this.garbage} );
 		}
 		this.addJob( {callback: this.callInits} );
-
 	},
 	////-----------------------------------------------------------------------------------------
 	// Creates the controller-instance of the class, returns the html
@@ -65,6 +74,7 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if the instanciated controllers are represented in the dom
+	// @TODO implementation
 	garbage: function(){
 		
 	}

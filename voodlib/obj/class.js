@@ -2,7 +2,11 @@ var util = require('voodkit/util/helper').default;
 
 var defaults = {
 	_meta: {
+		////-----------------------------------------------------------------------------------------
+		// Flag if an internal registry should be used
 		registry: false,
+		////-----------------------------------------------------------------------------------------
+		// Prefix where setter and getter should view
 		contentSpace: 'content'
 	},
 	////-----------------------------------------------------------------------------------------

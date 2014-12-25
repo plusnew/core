@@ -1,12 +1,25 @@
 require('jade/runtime');
 
 export default vood.Obj({
+	////-----------------------------------------------------------------------------------------
 	templatePrefix: 'templates/',
+	////-----------------------------------------------------------------------------------------
+	// object where all template functions are stored
 	jst: {},
+	////-----------------------------------------------------------------------------------------
+	// Jquery selector where the this.startPath controller/view is added
 	entrance: 'body',
+	////-----------------------------------------------------------------------------------------
+	// Controller which is added at startup
 	startPath: 'main/app',
+	////-----------------------------------------------------------------------------------------
+	// domnode-attribute for start uid node
 	uidAttrStart: 'data-begin',
+	////-----------------------------------------------------------------------------------------
+	// domnode-attribute for end uid node
 	uidAttrEnd: 'data-end',
+	////-----------------------------------------------------------------------------------------
+	// Existing classes collection
 	list: {},
 	////-----------------------------------------------------------------------------------------
 	// adds dirtychecking to runloop and inserts first view this.startPath

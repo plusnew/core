@@ -22,6 +22,7 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// Adds local mixins to global
 	mixinFinished: function( mixins ){
+		// @TODO overwrite notes should be triggered
 		for( var index in mixins ){
 			this.mixins[ index ] = mixins[ index ];
 		}
