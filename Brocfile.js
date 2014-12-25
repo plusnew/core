@@ -15,7 +15,7 @@ app = pickFiles(app, {
 });
 
 var vood = 'voodlib';
-vood = pickFiles(vood, {
+vood = pickFiles( vood, {
 	srcDir: '/',
 	destDir: 'voodkit' // move under appkit namespace
 });
@@ -24,7 +24,7 @@ var vendor = 'vendor';
 var bower = 'bower_components';
 
 var templates = 'app/templates';
-templates = pickFiles(templates, {
+templates = pickFiles( templates, {
 	srcDir: '/',
 	destDir: 'templates' // move under appkit namespace
 });
@@ -48,27 +48,27 @@ function Compiler(node, options) {
 	if (options.doctype) this.setDoctype(options.doctype);
 }
 
-for(var index in jadeCompiler.prototype) {
+for( var index in jadeCompiler.prototype ) {
 	Compiler.prototype[index] = jadeCompiler.prototype[index];
 }
 
 
-function JadeFilter(inputTree, options) {
-	if (!(this instanceof JadeFilter)) {
-		return new JadeFilter(inputTree, options);
+function JadeFilter( inputTree, options ){
+	if( !( this instanceof JadeFilter )){
+		return new JadeFilter( inputTree, options );
 	}
 
 	this.inputTree = inputTree;
 	this.options = options || {};
 }
 
-JadeFilter.prototype = Object.create(Filter.prototype);
+JadeFilter.prototype = Object.create( Filter.prototype );
 JadeFilter.prototype.constructor = JadeFilter;
 
-JadeFilter.prototype.extensions = ['jade'];
+JadeFilter.prototype.extensions = [ 'jade' ];
 JadeFilter.prototype.targetExtension = 'js';
 
-JadeFilter.prototype.processString = function( str, filename  ){
+JadeFilter.prototype.processString = function( str, filename ){
 	this.options.filename = filename;
 	var compiled = jade.compileClient( str, this.options ) + ';\nexport default template;';
 
@@ -81,31 +81,31 @@ JadeFilter.prototype.processString = function( str, filename  ){
 			parts[ i ] += ';vood.viewJade.addMixins(jade_mixins, buf)';
 			foundAdd = true;
 		} else if( isMixin ){ // Manipulates the mixin calls to add the parameter 'buf'
-			var functionBegin = parts[ i ].search(/\(/) + 1;
-			var functionEnd   = parts[ i ].search(/\)/);
+			var functionBegin = parts[ i ].search( /\(/ ) + 1;
+			var functionEnd   = parts[ i ].search( /\)/ );
 			var parameter     = parts[ i ].substring(functionBegin, functionEnd);
 			var newParam      = 'buf';
 			if(parameter) {
 				newParam += ', ';
 			}
-			parts[ i ] = insertAt(parts[i], functionBegin, newParam);
+			parts[ i ] = insertAt( parts[ i ], functionBegin, newParam );
 		}
 		if( parts[ i ].search('return buf.join') !== -1 && foundFinished === false ){
 			parts[i - 1] += ';vood.viewJade.mixinFinished(jade_mixins)';
 			foundFinished = true;
 		}
 	}
-	return parts.join(';');
+	return parts.join( ';' );
 };
 
-templates = JadeFilter(templates, {compiler: Compiler});
+templates = JadeFilter( templates, {compiler: Compiler} );
 
-var sourceTrees = [app, vood, vendor, bower, templates];
-sourceTrees = sourceTrees.concat(findBowerTrees());
+var sourceTrees = [ app, vood, vendor, bower, templates ];
+sourceTrees = sourceTrees.concat( findBowerTrees() );
 
-var appAndDependencies = new mergeTrees(sourceTrees, { overwrite: true });
+var appAndDependencies = new mergeTrees( sourceTrees, { overwrite: true } );
 
-var appJs = compileES6(appAndDependencies, {
+var appJs = compileES6( appAndDependencies, {
 	loaderFile: 'loader.js',
 	inputFiles: [ // Change that to recursive
 		'voodkit/*.js',
@@ -128,4 +128,4 @@ var appJs = compileES6(appAndDependencies, {
 
 var publicFiles = 'public';
 
-module.exports = mergeTrees([appJs, publicFiles]);
+module.exports = mergeTrees( [ appJs, publicFiles ] );

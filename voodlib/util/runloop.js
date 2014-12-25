@@ -13,7 +13,7 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// Calls runloop jobs
 	// @TODO call not every controller on each tick but depending on there interval
-	// @TODO remove job when 
+	// @TODO remove job when not needed
 	loop: function(){
 		for( var i = 0; i < this.jobs.length; i++ ){
 			// @TODO use safecall
