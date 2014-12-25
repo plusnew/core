@@ -8,7 +8,7 @@ export default vood.Obj({
 	// object where all template functions are stored
 	jst: {},
 	////-----------------------------------------------------------------------------------------
-	// Jquery selector where the this.startPath controller/view is added
+	// Jquery selector where the this.startPath controller and view are added
 	entrance: 'body',
 	////-----------------------------------------------------------------------------------------
 	// Controller which is added at startup
@@ -51,7 +51,12 @@ export default vood.Obj({
 	// inserts first view to this.entrance
 	insertApp: function(){
 		var result = vood.controllerHelper.create( this.startPath, null, {} );
-		$( this.entrance ).replaceWith( result.html );
+		var dom = $( this.entrance );
+		if( dom.length === 1 ) {
+			$( this.entrance ).replaceWith( result.html );
+		} else {
+			console.error( 'vood.viewHelper.entrance was not represented in dom properly', dom );
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// gets class and returns instance
