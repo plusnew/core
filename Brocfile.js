@@ -11,13 +11,13 @@ var jadeCompiler   = require('./node_modules/jade/lib/compiler.js');
 var app = 'app';
 app = pickFiles(app, {
 	srcDir: '/',
-	destDir: 'appkit' // move under appkit namespace
+	destDir: 'appkit' // move app under appkit namespace
 });
 
 var vood = 'voodlib';
 vood = pickFiles( vood, {
 	srcDir: '/',
-	destDir: 'voodkit' // move under appkit namespace
+	destDir: 'voodkit' // move voodlib under voodkit namespace
 });
 
 var vendor = 'vendor';
