@@ -15,6 +15,9 @@ export default vood.Obj({
 	startPath: 'main/app',
 	////-----------------------------------------------------------------------------------------
 	// domnode-attribute for start uid node
+	uidDomNode: 'script',
+	////-----------------------------------------------------------------------------------------
+	// domnode-attribute for start uid node
 	uidAttrStart: 'data-begin',
 	////-----------------------------------------------------------------------------------------
 	// domnode-attribute for end uid node
@@ -23,7 +26,10 @@ export default vood.Obj({
 	// Existing classes collection
 	list: {},
 	////-----------------------------------------------------------------------------------------
-	// adds dirtychecking to runloop and inserts first view this.startPath
+	// JQuery events which the framework is listening for
+	eventString: 'click submit change slide mouseover mouseout slideend mousemove mouseup mousedown keyup keydown drag dragstart dragover ',
+	////-----------------------------------------------------------------------------------------
+	// adds dirtychecking to runloop and inserts first view this.startPath and starts document event listener
 	init: function(){
 		if( this.dirtyHandling !== false ){
 			this.addJob( {callback: this.dirtyChecking} );
@@ -31,7 +37,9 @@ export default vood.Obj({
 		this.checkValidity();
 		this.insertTemplates();
 		this.insertApp();
+		this.addEvents();
 	},
+
 	////-----------------------------------------------------------------------------------------
 	// creates instance of view
 	create: function( path, opt ){
@@ -69,7 +77,7 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// compiles the template with the corresponding content
-	compileJade: function( path, content ){
+	compile: function( path, content ){
 		var name = this.templatePrefix + path;
 		if( this.jst[ name ] ){
 			return this.jst[ name ]( content );
@@ -81,12 +89,12 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// start uid
 	scriptStart: function( id ){
-		return '<script ' + this.uidAttrStart + '="' + id + '"></script>';
+		return '<' +this.uidDomNode+ ' ' + this.uidAttrStart + '="' + id + '"></' +this.uidDomNode+ '>';
 	},
 	////-----------------------------------------------------------------------------------------
 	// end uid
 	scriptEnd: function( id ){
-		return '<script ' + this.uidAttrEnd   + '="' + id + '"></script>';
+		return '<' +this.uidDomNode+ ' ' + this.uidAttrEnd   + '="' + id + '"></' +this.uidDomNode+ '>';
 	},
 	trigger: function( controllers, namespace, entity ){
 
@@ -100,7 +108,41 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// checks which views are dirty, to asynchronoesly render them
+	// @TODO
 	dirtyChecking: function(){
 		
+	},
+	// iterates through all dom-nodes to the top and returns an array of controllers
+	getParents: function( obj ){
+		var result = [];
+		while( obj.length > 0 ){
+			// Needed handling with prev() instead of siblings(), to keep the order of the uids
+			var prevObj = obj.prev();
+			while( prevObj.length > 0 ){
+				var uid = this.isUidObj( prevObj );
+				if( uid ){
+					result.push( uid );
+				}
+				prevObj = prevObj.prev();
+			}
+			obj = obj.parent();
+		}
+		return result;
+	},
+	// checks if dom-node is an uid-obj
+	isUidObj: function( obj ){
+		if( obj.is( this.uidDomNode + '[' + this.uidAttrStart + ']' )) {
+			return obj.attr( this.uidAttrStart );
+		}
+	},
+	////-----------------------------------------------------------------------------------------
+	// adds all dom events which the framework ist listening for
+	addEvents: function() {
+		$('body').on(this.eventString, function(evt) {
+			vood.viewHelper.handleEvent(evt);
+		});
+	},
+	handleEvent: function( evt ){
+
 	}
 });

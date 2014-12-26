@@ -19,7 +19,7 @@ var classContent = {
 	////-----------------------------------------------------------------------------------------
 	// Trigger jade compiler
 	_compile: function(){
-		return vood.viewHelper.compileJade( this.controller._meta.path, this.controller.content );
+		return vood.viewHelper.compile( this.controller._meta.path, this.controller.content );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Triggers compilefunction but adds script-tags with uid
@@ -33,7 +33,7 @@ var classContent = {
 		var selector = null;
 		var id = this.controller._meta.uid;
 		if( path !== 'root' ){
-			if( !this[ path ]){
+			if( !this[ path ] ){
 				throw 'Couldnt get you the obj because of missing definition';
 			}
 			selector = this[ path ];
