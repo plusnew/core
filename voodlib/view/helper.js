@@ -29,6 +29,17 @@ export default vood.Obj({
 	// JQuery events which the framework is listening for
 	eventString: 'click submit change slide mouseover mouseout slideend mousemove mouseup mousedown keyup keydown drag dragstart dragover ',
 	////-----------------------------------------------------------------------------------------
+	// maps e.g. keypresses to trigger shortevents for enter and escape-keys
+	eventMap: {
+		keyup: {
+			keyCode: {
+				13: 'enterkey',
+				27: 'escapekey'
+			}
+			
+		}
+	},
+	////-----------------------------------------------------------------------------------------
 	// adds dirtychecking to runloop and inserts first view this.startPath and starts document event listener
 	init: function(){
 		if( this.dirtyHandling !== false ){
@@ -69,11 +80,11 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// gets class and returns instance
 	getEntity: function( path ){
-		if(!this.list[ path ]){
+		if( !this.list[ path ]){
 			console.log( 'View ' + path + ' does not exist' );
 			vood.View( path, {_meta: {pseudo: true}} );
 		}
-		return _.cloneDeep(this.list[path]);
+		return _.cloneDeep( this.list[ path ] );
 	},
 	////-----------------------------------------------------------------------------------------
 	// compiles the template with the corresponding content
@@ -89,15 +100,12 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// start uid
 	scriptStart: function( id ){
-		return '<' +this.uidDomNode+ ' ' + this.uidAttrStart + '="' + id + '"></' +this.uidDomNode+ '>';
+		return '<' +this.uidDomNode+ ' ' +this.uidAttrStart+ '="' +id+ '"></' +this.uidDomNode+ '>';
 	},
 	////-----------------------------------------------------------------------------------------
 	// end uid
 	scriptEnd: function( id ){
-		return '<' +this.uidDomNode+ ' ' + this.uidAttrEnd   + '="' + id + '"></' +this.uidDomNode+ '>';
-	},
-	trigger: function( controllers, namespace, entity ){
-
+		return '<' +this.uidDomNode+ ' ' +this.uidAttrEnd+ '="' +id + '"></' +this.uidDomNode+ '>';
 	},
 	////-----------------------------------------------------------------------------------------
 	// some basic checking if values are correct
@@ -112,8 +120,9 @@ export default vood.Obj({
 	dirtyChecking: function(){
 		
 	},
+	////-----------------------------------------------------------------------------------------
 	// iterates through all dom-nodes to the top and returns an array of controllers
-	getParents: function( obj ){
+	getUids: function( obj ){
 		var result = [];
 		while( obj.length > 0 ){
 			// Needed handling with prev() instead of siblings(), to keep the order of the uids
@@ -129,6 +138,7 @@ export default vood.Obj({
 		}
 		return result;
 	},
+	////-----------------------------------------------------------------------------------------
 	// checks if dom-node is an uid-obj
 	isUidObj: function( obj ){
 		if( obj.is( this.uidDomNode + '[' + this.uidAttrStart + ']' )) {
@@ -138,11 +148,44 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// adds all dom events which the framework ist listening for
 	addEvents: function() {
-		$('body').on(this.eventString, function(evt) {
-			vood.viewHelper.handleEvent(evt);
+		$( 'body' ).on( this.eventString, function( evt ) {
+			return vood.viewHelper.handleEvent( evt );
 		});
 	},
+	////-----------------------------------------------------------------------------------------
+	// wrapper for triggering events, selects corresponding parent-controllers
 	handleEvent: function( evt ){
-
+		var uids = this.getUids( $(evt.target) );
+		this.triggerExtra( evt );
+		return this.trigger( evt.type, evt, {controllers: uids, pseudo: false} );
+	},
+	////-----------------------------------------------------------------------------------------
+	// handles all the events
+	trigger: function( type, evt, opt ){
+		opt = this.prepareEventOpt( opt );
+		if(opt.pseudo) debugger;
+	},
+	////-----------------------------------------------------------------------------------------
+	// triggers eventmaps like keypresses to shortevents like "enterkey" and escapekey
+	triggerExtra: function( evt ){
+		if( this.eventMap[ evt.type ] ){
+			for( var index in this.eventMap[ evt.type ] ) {
+				var eventValue = evt[ index ];
+				if( eventValue ) {
+					var mapValue = this.eventMap[ evt.type ][ index ][ eventValue ];
+					if( mapValue ){
+						this.trigger( mapValue, _.clone( evt ));
+					}
+				}
+			}
+		}
+	},
+	////-----------------------------------------------------------------------------------------
+	// makes some default values for events
+	prepareEventOpt: function( opt ){
+		if( !opt ) opt = {};
+		if( opt.pseudo !== false ) opt.pseudo = true;
+		if( !opt.controllers ) opt.controllers = [ '*' ];
+		return opt;
 	}
 });

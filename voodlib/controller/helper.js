@@ -62,15 +62,20 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
 	get: function( path ){
-		var result = [];
-		for( var i in this.anons ){
-			if( this.anons.hasOwnProperty( i )){
-				if( path == i || this.anons[ i ]._meta.path == path || path == '*' ){
-					result.push( this.anons[ i ] );
+		var id = window.parseInt( path, 10 );
+		if(isNaN(id) || !this.anons[ id ] ){
+			var result = [];
+			for( var i in this.anons ){
+				if( this.anons.hasOwnProperty( i )){
+					if( this.anons[ i ]._meta.path == path || path == '*' ){
+						result.push( this.anons[ i ] );
+					}
 				}
 			}
+			return result;
+		} else {
+			return [this.anons [ id ]];
 		}
-		return result;
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if the instanciated controllers are represented in the dom
