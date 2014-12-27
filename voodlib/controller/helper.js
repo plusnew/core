@@ -74,7 +74,7 @@ export default vood.Obj({
 	getEntity: function( path ){
 		if( !this.list[ path ] ){
 			console.log( 'Controller ' + path + ' does not exist' );
-			vood.Controller( path, {_meta: {pseudo: true}} );
+			vood.Controller( path, {_meta: { pseudo: true }} );
 		}
 		return _.cloneDeep( this.list[ path ] );
 	},
@@ -109,8 +109,7 @@ export default vood.Obj({
 			return result;
 		} else {
 			if( call ) {
-				return [ vood.utilHelper.safeCall( this.anons[ id ], call, [path, call] ) ];
-
+				return [ vood.utilHelper.safeCall( this.anons[ id ], call, args ) ];
 			} else {
 				return [ this.anons[ id ]];
 			}

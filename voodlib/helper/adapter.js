@@ -12,6 +12,9 @@ export default vood.Obj({
 		// port used for the api-call, you can set it to null to use default if wanted
 		port: 2901,
 		////-----------------------------------------------------------------------------------------
+		// path prefix used for the api-call, you can set it to an empty string
+		path: '/api',
+		////-----------------------------------------------------------------------------------------
 		// takes this.host and this.port and builds a domain
 		getDomain: function() {
 			var url = this.protocol + '://' + this.host;
@@ -23,7 +26,7 @@ export default vood.Obj({
 		////-----------------------------------------------------------------------------------------
 		// builds url
 		buildUrl: function( opt ){
-			return this.getDomain() + '/' + opt.model.controller + '/' + opt.model.action;
+			return this.getDomain() + this.path + '/' + opt.model.controller + '/' + opt.model.action;
 		},
 		////-----------------------------------------------------------------------------------------
 		// actually sends the request
@@ -33,14 +36,24 @@ export default vood.Obj({
 		},
 		////-----------------------------------------------------------------------------------------
 		// takes the successresponse
-		success: function( result, foo, bar, foobar ){
-			debugger;
+		success: function( response, status, xhr ){
+			var requestId = xhr.requestId;
+			// try {
+				vood.helperAdapter.emit( requestId, { result: JSON.parse( response ) } );
+			// } catch( err ) {
+			// 	vood.helperAdapter.emit( requestId, { error: '500', result: 'API response was not valid' } );
+			// }
+			
 		},
 		////-----------------------------------------------------------------------------------------
 		// takes the errorresponse
-		error: function( result, error, response ){
-			var requestId = result.requestId;
-			vood.helperAdapter.emit( requestId, { error: result.status, result: response } );
+		error: function( xhr, status, response ){
+			var requestId = xhr.requestId;
+			try {
+				vood.helperAdapter.emit( requestId, { error: xhr.status, result: response } );
+			} catch( err ) {
+				vood.helperAdapter.emit( requestId, { error: '500', result: 'API response was not valid' } );
+			}
 		}
 	},
 	////-----------------------------------------------------------------------------------------

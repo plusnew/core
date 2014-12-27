@@ -75,15 +75,21 @@ var classContent = {
 		return vood.utilAdapter.subscribe( opt );
 	},
 	////-----------------------------------------------------------------------------------------
-	// 
-	_modelSuccess: function( result ){
+	// handles this.model callback
+	_modelSuccess: function( response ){
+		
 		this._meta.modelFinished = true;
+		this.setAll( response.result, this.model.opt );
 		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
 	},
-	_modelError: function( result ){
+	////-----------------------------------------------------------------------------------------
+	// handles this.model errorcallback
+	_modelError: function( response ){
 		this._meta.modelFinished = true;
 		this.set( 'error', true );
+		this.set( 'message', response.result );
 		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
+		console.warn( this._meta.path + ' got an error ', response );
 	}
 };
 

@@ -27,6 +27,19 @@ var defaults = {
 		return this._handleData( 'set', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
+	// metafunction for setting content, returns if value has changed and if it gets rendered
+	setAll: function(value, opt ){
+		var key = this._meta.contentSpace;
+		if( !opt ) opt = {};
+		if( opt.contentSpace !== undefined ) {
+			key = opt.contentSpace;
+		}
+		opt.contentSpace = false;
+
+		return this._handleData( 'set', key, value, opt );
+	},
+
+	////-----------------------------------------------------------------------------------------
 	// metafunction for pushing content, only for arrays
 	push: function( key, opt ){
 		return this._handleData( 'push', key, null, opt );
@@ -119,27 +132,34 @@ var defaults = {
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent
 	_getReference: function( keyParts ){
-		var content = this[ keyParts[ 0 ]];
-		for( var i = 1; i < keyParts.length; i++ ){
-			var part = keyParts[ i ];
+		if(keyParts.length === 1) { // @FIXME whithout this hack, function returns null
+			return this;
+		} else {
+			var content = this[ keyParts[ 0 ]];
+			for( var i = 1; i < keyParts.length; i++ ){
+				var part = keyParts[ i ];
 
-			if( i == keyParts.length - 1 ){
-				return content; // sadly i cant return the property-value itself, reference would get lost
-			}
+				if( i == keyParts.length - 1 ){
+					return content; // sadly i cant return the property-value itself, reference would get lost
+				}
 
-			if( !content[ part ] && i + 1 < keyParts.length ){ // @TODO Check for sideeffects -> === undefined was it before
-				content[ part ] = {};
-				content = content[ part ];
-				console.info( keyParts.slice( 0, i + 1 ).join( '.' ) + ' did not exist, so I created it for you');
-			} else {
-				content = content[ part ];
+				if( !content[ part ] && i + 1 < keyParts.length ){ // @TODO Check for sideeffects -> === undefined was it before
+					content[ part ] = {};
+					content = content[ part ];
+					console.info( keyParts.slice( 0, i + 1 ).join( '.' ) + ' did not exist, so I created it for you');
+				} else {
+					content = content[ part ];
+				}
 			}
 		}
+		
 	},
 	////-----------------------------------------------------------------------------------------
 	// adds (optional) prefix to path
 	_generateRealpath: function( key, opt ){
-		if( opt.contentSpace ){
+		if( opt.contentSpace === false ){
+			return key;
+		} else if( opt.contentSpace ){
 			return opt.contentSpace + '.' + key;
 		} else if( this._meta.contentSpace ){
 			return this._meta.contentSpace + '.' + key;
