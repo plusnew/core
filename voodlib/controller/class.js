@@ -53,6 +53,8 @@ var classContent = {
 			return false;
 		}
 	},
+	////-----------------------------------------------------------------------------------------
+	// Checks if given requestId is associated with this controller instance
 	_checkRequest: function( incomingId, result ) {
 		for( var requestId in this._meta.requests) {
 			if( requestId == incomingId ) {

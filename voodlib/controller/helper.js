@@ -80,7 +80,17 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
-	get: function( path, call, args ){
+	get: function( path ) {
+		return this._iterate( path );
+	},
+	////-----------------------------------------------------------------------------------------
+	// Calls the matching controllers with the function
+	call: function( path, call, args ) {
+		return this._iterate( path, call, args );
+	},
+	////-----------------------------------------------------------------------------------------
+	// Metafunction for getting and calling controllers, please only use this function with get/call. the api mostlikely changes
+	_iterate: function( path, call, args ){
 		var id = window.parseInt( path, 10 );
 		if( isNaN( id ) || !this.anons[ id ] ){ // Check is not necessary, could be done with iteration as well, but this is faster at large scale
 			var result = [];
@@ -105,10 +115,6 @@ export default vood.Obj({
 				return [ this.anons[ id ]];
 			}
 		}
-	},
-	// Calls the matching controllers with the function
-	call: function( path, call, args ) {
-		return this.get( path, call, args );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if the instanciated controllers are represented in the dom
