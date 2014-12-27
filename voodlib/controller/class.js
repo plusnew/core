@@ -8,7 +8,10 @@ var classContent = {
 		contentSpace: 'content',
 		////-----------------------------------------------------------------------------------------
 		// Just some debugging info
-		type: 'controller'
+		type: 'controller',
+		////-----------------------------------------------------------------------------------------
+		// holds all send requests and keeps there state
+		requests: {}
 	},
 	////-----------------------------------------------------------------------------------------
 	// Object which the template accesses
@@ -22,10 +25,10 @@ var classContent = {
 	////-----------------------------------------------------------------------------------------
 	// triggers the adaper and creates request reference
 	send: function( opt ){
-		// @TODO add validity check
-		// @TODO add request to _reqs
-		debugger;
-		return vood.utilAdapter.send( opt );
+		var id = vood.helperAdapter.send( opt );
+		// opt is a reference and got a property named requestId from the adapter
+		this._meta.requests[ id ] = opt;
+		return id;
 	},
 	////-----------------------------------------------------------------------------------------
 	// triggers the this._loadModel function to reload content
