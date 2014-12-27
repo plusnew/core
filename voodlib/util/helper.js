@@ -26,12 +26,12 @@ var obj = {
 	////-----------------------------------------------------------------------------------------
 	// Triggers e.g. init-functions, without breaking stuff. on debug mode it throws the errors
 	safeCall: function( scope, func, args ){
-		// @TODO add arguments
+		if(!args) args = [];
 		if(app.debug){
-			scope[ func ]();
+			return scope[ func ]( args[0], args[1], args[2], args[3] ); // @TODO make this dynamic without eval
 		} else {
 			try {
-				scope[ func ]();
+				return scope[ func ]( args[0], args[1], args[2], args[3] ); // @TODO make this dynamic without eval
 			} catch( err ){
 				console.error( err );
 			}

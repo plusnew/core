@@ -58,7 +58,6 @@ export default vood.Obj({
 					result.push( id );
 				}
 			}
-			
 		}
 		vood.controllerHelper.inits = result;
 	},
@@ -81,21 +80,35 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
-	get: function( path ){
+	get: function( path, call, args ){
 		var id = window.parseInt( path, 10 );
 		if( isNaN( id ) || !this.anons[ id ] ){ // Check is not necessary, could be done with iteration as well, but this is faster at large scale
 			var result = [];
 			for( var i in this.anons ){
 				if( this.anons.hasOwnProperty( i ) ){
 					if( this.anons[ i ]._meta.path == path || path == '*' ){
-						result.push( this.anons[ i ] );
+						if( call ) {
+							var value = vood.utilHelper.safeCall( this.anons[ i ], call, args );
+							result.push( value );
+						} else {
+							result.push( this.anons[ i ] );
+						}
 					}
 				}
 			}
 			return result;
 		} else {
-			return [ this.anons [ id ]];
+			if( call ) {
+				return [ vood.utilHelper.safeCall( this.anons[ id ], call, [path, call] ) ];
+
+			} else {
+				return [ this.anons[ id ]];
+			}
 		}
+	},
+	// Calls the matching controllers with the function
+	call: function( path, call, args ) {
+		return this.get( path, call, args );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if the instanciated controllers are represented in the dom

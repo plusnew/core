@@ -53,6 +53,20 @@ var classContent = {
 			return false;
 		}
 	},
+	_checkRequest: function( incomingId, result ) {
+		for( var requestId in this._meta.requests) {
+			if( requestId == incomingId ) {
+				var request = this._meta.requests[ requestId ];
+				var func = request.success;
+				if(result.error) {
+					func = request.error;
+				}
+				this[ func ]( result );
+				delete this._meta.requests[ requestId ];
+			}
+		}
+
+	},
 	////-----------------------------------------------------------------------------------------
 	// triggers the adaper and creates request reference
 	subscribe: function( opt ){
@@ -62,12 +76,12 @@ var classContent = {
 	// 
 	_modelSuccess: function( result ){
 		this._meta.modelFinished = true;
-		ion.controllerHelper.callInits(); // Not really needed, but fastens things up
+		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
 	},
 	_modelError: function( result ){
 		this._meta.modelFinished = true;
 		this.set( 'error', true );
-		ion.controllerHelper.callInits(); // Not really needed, but fastens things up
+		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
 	}
 };
 

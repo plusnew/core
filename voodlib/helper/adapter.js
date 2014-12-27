@@ -7,7 +7,7 @@ export default vood.Obj({
 		protocol: 'http',
 		////-----------------------------------------------------------------------------------------
 		// host used for the api-call
-		host: window.location.host,
+		host: window.location.hostname,
 		////-----------------------------------------------------------------------------------------
 		// port used for the api-call, you can set it to null to use default if wanted
 		port: 2901,
@@ -23,22 +23,24 @@ export default vood.Obj({
 		////-----------------------------------------------------------------------------------------
 		// builds url
 		buildUrl: function( opt ){
-			return this.getDomain() + '/' + opt.controller + '/' + opt.action;
+			return this.getDomain() + '/' + opt.model.controller + '/' + opt.model.action;
 		},
 		////-----------------------------------------------------------------------------------------
 		// actually sends the request
 		sendRequest: function( opt ){
-			$.ajax( this.buildUrl(opt), { success: this.success, error: this.error } );
+			var request = $.ajax( this.buildUrl(opt), { success: this.success, error: this.error } );
+			request.requestId = opt.requestId;
 		},
 		////-----------------------------------------------------------------------------------------
 		// takes the successresponse
-		success: function( result ){
+		success: function( result, foo, bar, foobar ){
 			debugger;
 		},
 		////-----------------------------------------------------------------------------------------
 		// takes the errorresponse
-		error: function( result ){
-			debugger;
+		error: function( result, error, response ){
+			var requestId = result.requestId;
+			vood.helperAdapter.emit( requestId, { error: result.status, result: response } );
 		}
 	},
 	////-----------------------------------------------------------------------------------------
@@ -59,29 +61,43 @@ export default vood.Obj({
 	// sets up runloop job for sending
 	// @TODO
 	init: function() {
-
+		this.addJob( {callback: this.trigger} );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Takes new requests
 	send: function( opt ){
-		this.checkValidity();
+		this.checkValidity(opt);
 		opt.requestState = this.states.pending;
 		opt.requestId = ++this.id;
 		this.requests[ this.id ] = opt;
+		return this.id;
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks validity of the request
-	// @TODO
 	checkValidity: function( opt ){
-		return true;
+		if( !opt.model || !opt.model.controller || !opt.model.action ){
+			throw 'Your given request is not valid';
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// Collects pending requests and triggers this.sendRequest
 	trigger: function() {
-		for( var id in this.requests ){
-			if( this.requests[ id ].requestState === this.states.pending ) {
-				this.adapterImplementation.sendRequest( this.requests[ id ] );
+		for( var id in vood.helperAdapter.requests ){
+			if( vood.helperAdapter.requests[ id ].requestState === vood.helperAdapter.states.pending ) {
+				vood.helperAdapter.requests[ id ].requestState = vood.helperAdapter.states.sended;
+				vood.helperAdapter.adapterImplementation.sendRequest( vood.helperAdapter.requests[ id ] );
 			}
 		}
+	},
+	////-----------------------------------------------------------------------------------------
+	// Collects pending requests and triggers this.sendRequest
+	emit: function( id, response ){
+		if( this.requests[ id ] ){
+			this.requests[ id ].requestState = this.states.finished;
+			vood.controllerHelper.call('*', '_checkRequest', [ id, response ] );
+		} else {
+			throw 'There was no request with id ' + id;
+		}
+
 	}
 });
