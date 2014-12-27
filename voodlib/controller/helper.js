@@ -42,13 +42,33 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Is a runloop jobs, for calling the init of new controllers, needs to be called after instanciating
-	callInits: function(){
+	callInits: function( force ){
+		var result = [];
 		for( var i = 0; i < vood.controllerHelper.inits.length; i++ ){
 			var id = vood.controllerHelper.inits[ i ];
-			vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ], 'init' );
-			vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ].view, 'init' );
+			if( vood.controllerHelper.controllerExists( id )) {
+				if( ! vood.controllerHelper.anons[ id ]._loadModel( id )) {
+					if( vood.controllerHelper.anons[ id ].get( 'loading' )) {
+						vood.controllerHelper.anons[ id ].set( 'loading', false );
+					}
+					vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ], 'init' );
+					vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ].view, 'init' );
+				} else {
+					// If modelloading is not finished, then we want to keep the id
+					result.push( id );
+				}
+			}
+			
 		}
-		vood.controllerHelper.inits = [];
+		vood.controllerHelper.inits = result;
+	},
+	////-----------------------------------------------------------------------------------------
+	// Checks if controller exists, when it doesnt, it warns the console
+	controllerExists: function( id ) {
+		if( vood.controllerHelper.anons[ id ] ) {
+			return true;
+		}
+		console.error( 'Controller does not exist', id );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Returns the class
@@ -63,10 +83,10 @@ export default vood.Obj({
 	// returns instances of fitting controllers
 	get: function( path ){
 		var id = window.parseInt( path, 10 );
-		if(isNaN(id) || !this.anons[ id ] ){
+		if( isNaN( id ) || !this.anons[ id ] ){ // Check is not necessary, could be done with iteration as well, but this is faster at large scale
 			var result = [];
 			for( var i in this.anons ){
-				if( this.anons.hasOwnProperty( i )){
+				if( this.anons.hasOwnProperty( i ) ){
 					if( this.anons[ i ]._meta.path == path || path == '*' ){
 						result.push( this.anons[ i ] );
 					}
@@ -74,7 +94,7 @@ export default vood.Obj({
 			}
 			return result;
 		} else {
-			return [this.anons [ id ]];
+			return [ this.anons [ id ]];
 		}
 	},
 	////-----------------------------------------------------------------------------------------

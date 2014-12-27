@@ -90,6 +90,7 @@ export default vood.Obj({
 	// compiles the template with the corresponding content
 	compile: function( path, content ){
 		var name = this.templatePrefix + path;
+
 		if( this.jst[ name ] ){
 			return this.jst[ name ]( content );
 		} else {

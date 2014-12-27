@@ -11,10 +11,12 @@ var classContent = {
 	// handles replacement of content and triggers compile function
 	_render: function(){
 		this._meta.dirty = false;
+		// @TODO remove subcontrollers
 		while( this.obj( 'root' ).length > 1 ){
 			this.obj( 'root' ).last().remove(); // I want only one object to get replaced, else its possible to have the content dubled
 		}
 		this.obj( 'root' ).replaceWith( this._compile() );
+		// @TODO safecall on controller.notify()
 	},
 	////-----------------------------------------------------------------------------------------
 	// Trigger jade compiler

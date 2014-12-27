@@ -53,7 +53,7 @@ var defaults = {
 	_handleRealData: function( type, key, value, opt ){
 		var keyParts  = key.split( '.' );
 		var partClone = _.clone( keyParts );
-		var result    = vood.objHelper._isQuery( key ) ? [] : undefined;
+		var result    = vood.objHelper.isQuery( key ) ? [] : undefined;
 
 		// @TODO add to registry
 		for( var i = 0; i < keyParts.length; i++ ){
@@ -61,11 +61,11 @@ var defaults = {
 			var previous = partClone.slice( 0, i );
 			var lastKey  = previous[ previous.length - 1 ];
 
-			if( vood.objHelper._isQuery( part )){
+			if( vood.objHelper.isQuery( part )){
 				var obj      = this._getReference( previous )[ lastKey ];
 				if( _.isArray( obj )){
 					for( var arrIndex = 0; arrIndex < obj.length; arrIndex++ ){
-						if( vood.objHelper._isTrue( obj[ arrIndex ], part )){
+						if( vood.objHelper.isTrue( obj[ arrIndex ], part )){
 							opt.addReg     = false;
 							partClone[ i ] = arrIndex;
 							result.push( this._handleRealData( type, partClone.join( '.' ), value, opt ));
@@ -89,7 +89,7 @@ var defaults = {
 	////-----------------------------------------------------------------------------------------
 	// actual handling of the data (without queries)
 	_handleTypes: function( type, keyParts, value, opt ){
-		var changed = false;
+		var changed = opt.forceRender || false;
 		var result = false;
 		switch (type){
 			case 'get':
