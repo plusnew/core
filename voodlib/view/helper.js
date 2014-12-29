@@ -165,9 +165,18 @@ export default vood.Obj({
 	trigger: function( type, evt, opt ){
 		opt = this.prepareEventOpt( opt );
 		var result = [];
-		// ControllerHelper was not used, because of propagation
 		for( var i = 0; i < opt.controllers.length; i++){
-			// var controller = 
+			var uid = opt.controllers[i];
+			var controllers = vood.controllerHelper.get( uid );
+			for( var controllerIndex = 0; controllerIndex < controllers.length; controllerIndex++ ){
+				var value = controllers[ controllerIndex ].view._checkForEvent( type, evt, opt );
+				if( value.found ) result.push(value.result);
+				if( !opt.pseudo && evt.propagation === false ) break;
+			}
+			if( !opt.pseudo && evt.propagation === false ) break;
+		}
+		if( opt.pseudo || (!opt.pseudo && evt.type == 'click' )) {
+			console.warn( 'There was no eventdefinition found ' + type );
 		}
 		return result;
 	},

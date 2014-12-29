@@ -5,8 +5,15 @@ var classContent = {
 		type: 'view'
 	},
 	////-----------------------------------------------------------------------------------------
+	// array of eventdefinitions
+	events: [],
+	////-----------------------------------------------------------------------------------------
 	// Gets triggered before template gets rendered
 	construct: function(){},
+	_checkForEvent: function() {
+		var result =  {found: false, result: null};
+		return result;
+	},
 	////-----------------------------------------------------------------------------------------
 	// handles replacement of content and triggers compile function
 	_render: function(){
