@@ -175,7 +175,9 @@ export default vood.Obj({
 			}
 			if( !opt.pseudo && evt.propagation === false ) break;
 		}
-		if( opt.pseudo || (!opt.pseudo && evt.type == 'click' )) {
+
+		// Warn only when it either was a clickevent, or an pseudoevent
+		if( !result.length && (opt.pseudo || (!opt.pseudo && evt.type == 'click' ))) {
 			console.warn( 'There was no eventdefinition found ' + type );
 		}
 		return result;

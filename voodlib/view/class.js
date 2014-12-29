@@ -1,3 +1,4 @@
+
 var classContent = {
 	_meta: {
 		////-----------------------------------------------------------------------------------------
@@ -10,8 +11,30 @@ var classContent = {
 	////-----------------------------------------------------------------------------------------
 	// Gets triggered before template gets rendered
 	construct: function(){},
-	_checkForEvent: function() {
+	////-----------------------------------------------------------------------------------------
+	// Checks if this view has a fitting event-definition
+	_checkForEvent: function( type, evt, opt ) {
 		var result =  {found: false, result: null};
+		for( var i = 0; i < this.events.length; i++) {
+			var eventDefinition = this.events[ i ];
+			
+			if(eventDefinition.type == type) {
+				// If not an pseudo-event selector has to fit
+				if( !(opt.pseudo || $( evt.target ).is( eventDefinition.selector ))) {
+					continue;
+				}
+				var data = {};
+				if( _.isFunction( this.controller[ eventDefinition.action ] )) {
+					result.found = true;
+					result.result = this.controller[ eventDefinition.action ]( evt );
+				}
+				if( _.isFunction( this[ eventDefinition.action ] )) {
+					result.found = true;
+					result.result = this[ eventDefinition.action ]( evt );
+				}
+				if( !result.found ) console.error( 'Found an eventdefinition ' + type + ' but the corresponding action ' + eventDefinition.action + ' was not found' );
+			}
+		}
 		return result;
 	},
 	////-----------------------------------------------------------------------------------------

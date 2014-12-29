@@ -81,15 +81,15 @@ var classContent = {
 	// handles this.model callback
 	_modelSuccess: function( response ){
 		this._meta.modelFinished = true;
-		response = this.preprocess( response );
+		response = this.preprocess( response.result );
 		if( _.isArray( response )){ // this.content should always be an object, thatfor i put arrays into this.content.values
 			this.meta.key = 'values';
 			console.info( this._meta.path + ' had an model which returned an array. Put it instead of content, to content.values' );
 		}
 		if( this.model.key ){ // Model-Value does not have to be on top-layer of this._meta.contentSpace
-			this.set( this.model.key, response.result, this.model.opt );
+			this.set( this.model.key, response, this.model.opt );
 		} else {
-			this.setAll( response.result, this.model.opt );
+			this.setAll( response, this.model.opt );
 		}
 		this.set( 'loading', false );
 
