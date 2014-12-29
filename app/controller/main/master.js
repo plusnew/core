@@ -7,7 +7,7 @@ vood.Controller('main/master', {
 		selected: '*',
 	},
 	preprocess: function( response ) {
-		return _.merge( this.content, response );
+		return _.merge( _.clone(this.content), response );
 	},
 	init: function() {
 		this.triggerSelection();

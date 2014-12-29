@@ -12,6 +12,6 @@ vood.Controller('main/detail', {
 		}
 	},
 	notify: function() {
-		debugger;
+		// debugger;
 	}
 });

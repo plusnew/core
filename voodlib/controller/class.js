@@ -24,7 +24,8 @@ var classContent = {
 	// Gets triggered each time after the template got rerendered
 	notify: function() {},
 	////-----------------------------------------------------------------------------------------
-	// Function to modify the modelresponse, e.g. merge current content
+	// Function to modify the modelresponse, e.g. merge current 
+	// If you use that, be careful if this.content is an reference, than it would say "nothing changed, no render"
 	preprocess: function( response ) { return response; },
 	////-----------------------------------------------------------------------------------------
 	// triggers the adaper and creates request reference
@@ -91,7 +92,6 @@ var classContent = {
 		} else {
 			this.setAll( response, this.model.opt );
 		}
-
 		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
 	},
 	////-----------------------------------------------------------------------------------------

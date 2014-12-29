@@ -132,7 +132,8 @@ var defaults = {
 		}
 
 		if( changed && this.view ){
-			if( opt.contentSpace === undefined || opt.contentSpace === this._meta.contentSpace ){
+			// Only rerender when its relevant to the template
+			if( keyParts[ 0 ] === this._meta.contentSpace ){
 				if( vood.viewHelper.dirtyHandling !== false ){
 					this.view._meta.dirty = true;
 				} else {
