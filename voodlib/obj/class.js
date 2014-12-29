@@ -34,7 +34,7 @@ var defaults = {
 		if( opt.contentSpace !== undefined ) {
 			key = opt.contentSpace;
 		}
-		opt.contentSpace = false;
+		opt.contentSpace = false; // Needs to be done, to don't get a prefix, but set the complete content
 
 		return this._handleData( 'set', key, value, opt );
 	},

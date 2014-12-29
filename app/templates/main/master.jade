@@ -1,5 +1,5 @@
-li.master
-		ul all
+ul.master
+	li all
 	if podcasts
-		each podcasts as podcast
-			ul #{podcast}
+		each podcast in podcasts
+			li #{podcast}
