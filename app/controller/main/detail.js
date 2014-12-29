@@ -10,5 +10,8 @@ vood.Controller('main/detail', {
 		if( this.set( 'model.payload.podcast', selected, {contentSpace: false} )){ // Only returns true when value changed
 			this.fetch();
 		}
+	},
+	notify: function() {
+		debugger;
 	}
 });

@@ -48,9 +48,6 @@ export default vood.Obj({
 			var id = vood.controllerHelper.inits[ i ];
 			if( vood.controllerHelper.controllerExists( id )) {
 				if( ! vood.controllerHelper.anons[ id ]._loadModel( id )) {
-					if( vood.controllerHelper.anons[ id ].get( 'loading' )) {
-						vood.controllerHelper.anons[ id ].set( 'loading', false );
-					}
 					vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ], 'init' );
 					vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ].view, 'init' );
 				} else {

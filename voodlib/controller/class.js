@@ -18,6 +18,7 @@ var classContent = {
 	content: {},
 	////-----------------------------------------------------------------------------------------
 	// Gets triggered before template gets rendered, this.content can be manipulated without consequences
+	// Be careful when you trigger events, subcontroller/siblings will not be exitent
 	construct: function(){},
 	////-----------------------------------------------------------------------------------------
 	// Gets triggered each time after the template got rerendered
@@ -47,7 +48,6 @@ var classContent = {
 		if( this.model && !this._meta.modelFinished ){
 			if(!this._meta.modelLoading) {
 				this._meta.modelLoading = true;
-				this.set( 'loading', true ); // Only used for templates which want to show a waitloader or something similar
 				var model = this.model;
 				this.send( {model: model, success: '_modelSuccess', error: '_modelError' } );
 			}
@@ -91,7 +91,6 @@ var classContent = {
 		} else {
 			this.setAll( response, this.model.opt );
 		}
-		this.set( 'loading', false );
 
 		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
 	},
@@ -99,7 +98,6 @@ var classContent = {
 	// handles this.model errorcallback
 	_modelError: function( response ){
 		this._meta.modelFinished = true;
-		this.set( 'loading', false );
 		this.set( 'error', true );
 		this.set( 'message', response.result );
 		vood.controllerHelper.callInits(); // Not really needed, but fastens things up

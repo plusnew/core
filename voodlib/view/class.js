@@ -12,6 +12,9 @@ var classContent = {
 	// Gets triggered before template gets rendered
 	construct: function(){},
 	////-----------------------------------------------------------------------------------------
+	// Gets triggered each time after the template got rerendered
+	notify: function(){},
+	////-----------------------------------------------------------------------------------------
 	// Checks if this view has a fitting event-definition
 	_checkForEvent: function( type, evt, opt ) {
 		var result =  {found: false, result: null};
@@ -46,7 +49,8 @@ var classContent = {
 			this.obj( 'root' ).last().remove(); // I want only one object to get replaced, else its possible to have the content dubled
 		}
 		this.obj( 'root' ).replaceWith( this._compile() );
-		// @TODO safecall on controller.notify()
+		vood.utilHelper.safeCall( this.controller, 'notify' );
+		vood.utilHelper.safeCall( this, 'notify' );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Trigger jade compiler

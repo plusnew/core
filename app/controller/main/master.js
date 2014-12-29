@@ -6,9 +6,6 @@ vood.Controller('main/master', {
 	content: {
 		selected: '*',
 	},
-	construct: function() {
-		this.triggerSelection();
-	},
 	preprocess: function( response ) {
 		return _.merge( this.content, response );
 	},
