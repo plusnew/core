@@ -1,5 +1,5 @@
 ul.master
-	li all
+	li(data-id='*') all
 	if podcasts
 		each podcast in podcasts
-			li #{podcast}
+			li(data-id=podcast.id) #{podcast.id}

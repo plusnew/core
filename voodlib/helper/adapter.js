@@ -31,7 +31,8 @@ export default vood.Obj({
 		////-----------------------------------------------------------------------------------------
 		// actually sends the request
 		sendRequest: function( opt ){
-			var request = $.ajax( this.buildUrl(opt), { success: this.success, error: this.error } );
+			var data = JSON.stringify(opt.model.payload);
+			var request = $.ajax( this.buildUrl(opt), { success: this.success, error: this.error, data: data, processData: false, type: 'post' } );
 			request.requestId = opt.requestId;
 		},
 		////-----------------------------------------------------------------------------------------

@@ -14,5 +14,9 @@ vood.Controller('main/master', {
 	},
 	triggerSelection: function() {
 		this.trigger( 'changePodcast', this.get( 'selected' ));
+	},
+	changePodcast: function( data, evt, target) {
+		this.set( 'selected', data.id);
+		this.trigger( 'changePodcast', this.get( 'selected' ));
 	}
 });

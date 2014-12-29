@@ -197,6 +197,37 @@ export default vood.Obj({
 			}
 		}
 	},
+	getAttributes: function(target, result) {
+		if(!result) result = {};
+
+		if(target) {
+			var attributes = target[0].attributes;
+
+			if(result.id === undefined && target.attr('id') && attributes['data-id'] === undefined) {
+				result.id = target.attr('id');
+			}
+
+			var excludes = ['ember-extension'];
+
+			for (var index in attributes) {
+				if (attributes.hasOwnProperty(index)) {
+					var name  = attributes[index].name,
+						value = attributes[index].value;
+					if(name && name.search('data-') === 0) {
+						var key = name.replace(/data-/, '');
+						if(result[key] === undefined && excludes.indexOf(key) == -1) { // SHould only overwrite when not set
+							result[key] = value || null;
+						}
+					}
+				}
+			}
+			var parent = target.parent();
+			if(parent.length > 0) {
+				result = this.getAttributes(parent, result);
+			}
+		}
+		return result;
+	},
 	////-----------------------------------------------------------------------------------------
 	// makes some default values for events
 	prepareEventOpt: function( opt ){
