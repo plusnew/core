@@ -132,10 +132,12 @@ var defaults = {
 		}
 
 		if( changed && this.view ){
-			if( vood.viewHelper.dirtyHandling !== false ){
-				this.view._meta.dirty = true;
-			} else {
-				this.view._render();
+			if( opt.contentSpace === undefined || opt.contentSpace === this._meta.contentSpace ){
+				if( vood.viewHelper.dirtyHandling !== false ){
+					this.view._meta.dirty = true;
+				} else {
+					this.view._render();
+				}
 			}
 		}
 		return result;
