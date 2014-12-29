@@ -107,7 +107,7 @@ export default vood.Obj({
 	emit: function( id, response ){
 		if( this.requests[ id ] ){
 			this.requests[ id ].requestState = this.states.finished;
-			vood.controllerHelper.call('*', '_checkRequest', [ id, response ] );
+			vood.controllerHelper.call( '*', '_checkRequest', [ id, response ] );
 		} else {
 			throw 'There was no request with id ' + id;
 		}

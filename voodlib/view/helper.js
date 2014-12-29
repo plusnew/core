@@ -164,7 +164,12 @@ export default vood.Obj({
 	// handles all the events
 	trigger: function( type, evt, opt ){
 		opt = this.prepareEventOpt( opt );
-		if(opt.pseudo) debugger;
+		var result = [];
+		// ControllerHelper was not used, because of propagation
+		for( var i = 0; i < opt.controllers.length; i++){
+			// var controller = 
+		}
+		return result;
 	},
 	////-----------------------------------------------------------------------------------------
 	// triggers eventmaps like keypresses to shortevents like "enterkey" and escapekey

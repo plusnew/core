@@ -96,7 +96,8 @@ export default vood.Obj({
 			var result = [];
 			for( var i in this.anons ){
 				if( this.anons.hasOwnProperty( i ) ){
-					if( this.anons[ i ]._meta.path == path || path == '*' ){
+					// path can either be the namespace, or the uid
+					if( this.anons[ i ]._meta.path == path || path == '*' || this.anons[ i ]._meta.uid == path ){
 						if( call ) {
 							var value = vood.utilHelper.safeCall( this.anons[ i ], call, args );
 							result.push( value );

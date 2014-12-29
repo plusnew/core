@@ -23,6 +23,9 @@ var classContent = {
 	// Gets triggered each time after the template got rerendered
 	notify: function() {},
 	////-----------------------------------------------------------------------------------------
+	// Function to modify the modelresponse, e.g. merge current content
+	preprocess: function( response ) { return response; },
+	////-----------------------------------------------------------------------------------------
 	// triggers the adaper and creates request reference
 	send: function( opt ){
 		var id = vood.helperAdapter.send( opt );
@@ -77,9 +80,9 @@ var classContent = {
 	////-----------------------------------------------------------------------------------------
 	// handles this.model callback
 	_modelSuccess: function( response ){
-		
 		this._meta.modelFinished = true;
-		if( _.isArray( response )) { // this.content should always be an object, thatfor i put arrays into this.content.values
+		response = this.preprocess( response );
+		if( _.isArray( response )){ // this.content should always be an object, thatfor i put arrays into this.content.values
 			this.meta.key = 'values';
 			console.info( this._meta.path + ' had an model which returned an array. Put it instead of content, to content.values' );
 		}
@@ -88,13 +91,15 @@ var classContent = {
 		} else {
 			this.setAll( response.result, this.model.opt );
 		}
-		this.setAll( response.result, this.model.opt );
+		this.set( 'loading', false );
+
 		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles this.model errorcallback
 	_modelError: function( response ){
 		this._meta.modelFinished = true;
+		this.set( 'loading', false );
 		this.set( 'error', true );
 		this.set( 'message', response.result );
 		vood.controllerHelper.callInits(); // Not really needed, but fastens things up

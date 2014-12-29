@@ -27,6 +27,12 @@ var defaults = {
 		return this._handleData( 'set', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
+	// adds runloopjobs with including uid of the jobs, for removage if controller gets destroyed
+	addJob: function( opt ){
+		opt.uid = this._meta.uid;
+		vood.utilRunloop.addJob(opt);
+	},
+	////-----------------------------------------------------------------------------------------
 	// metafunction for setting content, returns if value has changed and if it gets rendered
 	setAll: function(value, opt ){
 		var key = this._meta.contentSpace;
@@ -53,6 +59,11 @@ var defaults = {
 	// metafunction for pop index of an array/obj
 	pop: function( key, value, opt ){
 		return this._handleData( 'pop', key, value, opt );
+	},
+	////-----------------------------------------------------------------------------------------
+	// handles all the events
+	trigger: function( type, evt, opt ){
+		return vood.viewHelper.trigger( type, evt, opt);
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for handling data-operations
@@ -167,12 +178,7 @@ var defaults = {
 			return key;
 		}
 	},
-	////-----------------------------------------------------------------------------------------
-	// adds runloopjobs with including uid of the jobs, for removage if controller gets destroyed
-	addJob: function( opt ){
-		opt.uid = this._meta.uid;
-		vood.utilRunloop.addJob(opt);
-	}
+
 };
 
 var meta = function(){
