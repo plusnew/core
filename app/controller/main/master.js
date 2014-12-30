@@ -13,10 +13,10 @@ vood.Controller('main/master', {
 		this.triggerSelection();
 	},
 	triggerSelection: function() {
-		this.trigger( 'changePodcast', this.get( 'selected' ));
+		this.trigger( 'url', [ 'podcast', this.get( 'selected' ) ] );
 	},
 	changePodcast: function( data, evt, target) {
 		this.set( 'selected', data.id);
-		this.trigger( 'changePodcast', this.get( 'selected' ));
+		this.triggerSelection();
 	}
 });

@@ -15,51 +15,6 @@ var classContent = {
 	// Gets triggered each time after the template got rerendered
 	notify: function(){},
 	////-----------------------------------------------------------------------------------------
-	// Checks if this view has a fitting event-definition
-	_checkForEvent: function( type, evt, opt ) {
-		var result =  {found: false, result: null};
-		for( var i = 0; i < this.events.length; i++) {
-			var eventDefinition = this.events[ i ];
-			
-			if(eventDefinition.type == type) {
-				// If not an pseudo-event selector has to fit
-				var target = null;
-				if( !opt.pseudo) {
-					var parents =  $( evt.target ).parents( eventDefinition.selector );
-					if( $( evt.target ).is( eventDefinition.selector )){
-						target = $( evt.target );
-					} else if( parents.length ){
-						target = parents;
-					} else {
-						continue;
-					}
-				}
-				var data = vood.viewHelper.getAttributes( target );
-				// Sorry for doubled code
-				if( _.isFunction( this.controller[ eventDefinition.action ] )) {
-					result.found = true;
-					if( opt.pseudo ) {
-						result.result = this.controller[ eventDefinition.action ]( evt );
-					} else {
-						result.result = this.controller[ eventDefinition.action ]( data, evt, target );
-						if(result.result === false) evt.propagation = false;
-					}
-				}
-				if( _.isFunction( this[ eventDefinition.action ] )) {
-					result.found = true;
-					if( opt.pseudo ) {
-						result.result = this.controller[ eventDefinition.action ]( evt );
-					} else {
-						result.result = this.controller[ eventDefinition.action ]( data, evt, target );
-						if(result.result === false) evt.propagation = false;
-					}
-				}
-				if( !result.found ) console.error( 'Found an eventdefinition ' + type + ' but the corresponding action ' + eventDefinition.action + ' was not found' );
-			}
-		}
-		return result;
-	},
-	////-----------------------------------------------------------------------------------------
 	// handles replacement of content and triggers compile function
 	_triggerEvent: function( func, data, event, target ){
 

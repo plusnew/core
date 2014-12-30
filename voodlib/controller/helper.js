@@ -15,6 +15,9 @@ export default vood.Obj({
 	// Flag if the garbagecollection should be enabled
 	garbageCollection: true,
 	////-----------------------------------------------------------------------------------------
+	// Flag if the garbagecollection should be enabled
+	systemLoaded: false,
+	////-----------------------------------------------------------------------------------------
 	// Init adds needed runloop jobs (garbage collection, and async calling of controller-inits)
 	init: function(){
 		if( this.garbageCollection !== false ){
@@ -55,6 +58,10 @@ export default vood.Obj({
 					result.push( id );
 				}
 			}
+		}
+		if( result.length && !vood.controllerHelper.systemLoaded) {
+			vood.controllerHelper.systemLoaded = true;
+			vood.helperHelper.callInits();
 		}
 		vood.controllerHelper.inits = result;
 	},

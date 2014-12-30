@@ -1,6 +1,6 @@
 vood.View('main/detail', {
 	events: [{
 		action: 'changePodcast',
-		type: 'changePodcast'
+		type: 'podcasts/:id'
 	}]
 });

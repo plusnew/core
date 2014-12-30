@@ -26,6 +26,9 @@ export default vood.Obj({
 	// Existing classes collection
 	list: {},
 	////-----------------------------------------------------------------------------------------
+	// Decides which instances are asked for handling events
+	eventSpaces: [ 'controllerHelper', 'helperHelper' ],
+	////-----------------------------------------------------------------------------------------
 	// JQuery events which the framework is listening for
 	eventString: 'click submit change slide mouseover mouseout slideend mousemove mouseup mousedown keyup keydown drag dragstart dragover ',
 	////-----------------------------------------------------------------------------------------
@@ -152,6 +155,9 @@ export default vood.Obj({
 		$( 'body' ).on( this.eventString, function( evt ) {
 			return vood.viewHelper.handleEvent( evt );
 		});
+		$( window ).on( 'hashchange', function() {
+			vood.viewHelper.trigger( 'hashchange', location.hash );
+		});
 	},
 	////-----------------------------------------------------------------------------------------
 	// wrapper for triggering events, selects corresponding parent-controllers
@@ -167,10 +173,19 @@ export default vood.Obj({
 		var result = [];
 		for( var i = 0; i < opt.controllers.length; i++){
 			var uid = opt.controllers[i];
-			var controllers = vood.controllerHelper.get( uid );
-			for( var controllerIndex = 0; controllerIndex < controllers.length; controllerIndex++ ){
-				var value = controllers[ controllerIndex ].view._checkForEvent( type, evt, opt );
-				if( value.found ) result.push(value.result);
+			for( var spaceIndex = 0; spaceIndex < this.eventSpaces.length; spaceIndex++ ) {
+				// debugger;
+				var controllers = vood[ this.eventSpaces[ spaceIndex] ].get( uid );
+				for( var controllerIndex = 0; controllerIndex < controllers.length; controllerIndex++ ){
+					var value = null;
+					if(controllers[ controllerIndex ].view) {
+						value = controllers[ controllerIndex ].view._checkForEvent( type, evt, opt );
+					} else {
+						value = controllers[ controllerIndex ]._checkForEvent( type, evt, opt );
+					}
+					if( value.found ) result.push(value.result);
+					if( !opt.pseudo && evt.propagation === false ) break;
+				}
 				if( !opt.pseudo && evt.propagation === false ) break;
 			}
 			if( !opt.pseudo && evt.propagation === false ) break;
