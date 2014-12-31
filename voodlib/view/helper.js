@@ -169,6 +169,8 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// handles all the events
 	trigger: function( type, evt, opt ){
+		if( !evt ) evt = {};
+		if( type.search(':') != -1) throw 'events are not allowed to have a : inside' ;
 		opt = this.prepareEventOpt( opt );
 		var result = [];
 		for( var i = 0; i < opt.controllers.length; i++){
@@ -212,7 +214,46 @@ export default vood.Obj({
 			}
 		}
 	},
-	getAttributes: function(target, result) {
+	////-----------------------------------------------------------------------------------------
+	// Checks variables inside the eventdefition
+	checkEventMatch: function( definition, type, opt ) {
+		var reserved = ':';
+		if(definition == type) {
+			return true;
+		} else {
+			var pos  = definition.search(reserved);
+			var diff = 0;
+			var params = {};
+			while( pos != -1 ){
+				var leftoverDefinition = definition.substring( pos + 1, definition.length );
+				var leftover           = type.substring( pos, type.length );
+				var lengthDefinition   = leftoverDefinition.search( /\W/ );
+				var length             = leftover.search( /\W/ );
+				if( lengthDefinition === -1 ) lengthDefinition = leftoverDefinition.length;
+				if( length === -1 ) length = leftover.length;
+				var key                = leftoverDefinition.substring( 0, lengthDefinition);
+				var value              = leftover.substring( 0, length);
+				var reg                = new RegExp(':'+key);
+				definition             = definition.replace(reg, value);
+				pos                    = definition.search(reserved);
+				params[ key ] = value;
+				
+			}
+
+
+			if(definition === type) {
+
+				for( var i in params ) {
+					opt[ i ] = params[ i ];
+				}
+				return true;
+			}
+			
+		}
+	},
+	////-----------------------------------------------------------------------------------------
+	// recusively goes upside in the dom, to collect dataattributes
+	getAttributes: function( target, result ){
 		if(!result) result = {};
 
 		if(target) {

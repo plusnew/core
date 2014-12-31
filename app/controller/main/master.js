@@ -4,7 +4,7 @@ vood.Controller('main/master', {
 		action: 'list'
 	},
 	content: {
-		selected: '*',
+		selected: 'dashboard',
 	},
 	preprocess: function( response ) {
 		return _.merge( _.clone(this.content), response );
@@ -13,7 +13,7 @@ vood.Controller('main/master', {
 		this.triggerSelection();
 	},
 	triggerSelection: function() {
-		this.trigger( 'url', [ 'podcast', this.get( 'selected' ) ] );
+		this.trigger( 'url', [ 'podcasts', this.get( 'selected' ) ] );
 	},
 	changePodcast: function( data, evt, target) {
 		this.set( 'selected', data.id);

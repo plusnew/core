@@ -79,7 +79,7 @@ var defaults = {
 		for( var i = 0; i < this.events.length; i++) {
 			var eventDefinition = this.events[ i ];
 			
-			if(eventDefinition.type == type) {
+			if( vood.viewHelper.checkEventMatch( eventDefinition.type, type, evt )) {
 				// If not an pseudo-event selector has to fit
 				var target = null;
 				if( !opt.pseudo) {
