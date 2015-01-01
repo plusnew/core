@@ -44,13 +44,13 @@ export default vood.Helper( 'statemanager', {
 	triggerUrl: function() {
 		var url    = this.getUrl();
 		var result = null;
-		if(url.length) {
-			result = this.trigger(url);
+		if( url.length ){
+			result = this.trigger( '/' + url );
 		} else {
-			result = this.trigger('/');
+			result = this.trigger( '/' );
 		}
 		if(result.length === 0) {
-			this.trigger('404');
+			this.trigger('/404');
 		}
 	}
 });

@@ -47,8 +47,10 @@ export default vood.Obj({
 	// Is a runloop jobs, for calling the init of new controllers, needs to be called after instanciating
 	callInits: function( force ){
 		var result = [];
+		var found  = false;
 		for( var i = 0; i < vood.controllerHelper.inits.length; i++ ){
 			var id = vood.controllerHelper.inits[ i ];
+			found = true;
 			if( vood.controllerHelper.controllerExists( id )) {
 				if( ! vood.controllerHelper.anons[ id ]._loadModel( id )) {
 					vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ], 'init' );
@@ -59,7 +61,7 @@ export default vood.Obj({
 				}
 			}
 		}
-		if( result.length && !vood.controllerHelper.systemLoaded) {
+		if( found && result.length === 0 && !vood.controllerHelper.systemLoaded){ // Finish should only be called when inits where called, and models are finished
 			vood.controllerHelper.systemLoaded = true;
 			vood.helperHelper.callInits();
 		}
