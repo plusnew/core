@@ -16,13 +16,20 @@ export default vood.Helper( 'statemanager', {
 	////-----------------------------------------------------------------------------------------
 	// This init is called, when the application startup is done
 	init: function() {
-		// Needs improvement, if the hash changed inside the startup
-		this.change( location.hash );
+		var parts = this.parseUrl();
+		if( !this.changed ){
+			this.change( location.hash );
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// Can be called via this.trigger( 'changeUrl', ['foo', 'bar'])
 	changeUrl: function( parts ) {
-		location.hash = parts.join( this.delimiter );
+		var newHash = parts.join( this.delimiter );
+		if( location.hash != '#' + newHash ){
+			location.hash = newHash;
+			return true;
+		}
+		
 	},
 	////-----------------------------------------------------------------------------------------
 	// Tells the browser hash/state
@@ -35,13 +42,19 @@ export default vood.Helper( 'statemanager', {
 		return this.state.join( this.delimiter );
 	},
 	////-----------------------------------------------------------------------------------------
+	// parses the hash
+	parseUrl: function() {
+		var newUrl = location.hash.substring( 1,location.hash.length );
+		return newUrl.split( this.delimiter );
+	},
+	////-----------------------------------------------------------------------------------------
 	// listens to the hachchange event from the browser
 	change: function( hash ){
-		var newUrl = hash.substring( 1, hash.length);
-		this.state = newUrl.split( this.delimiter );
+		this.state = this.parseUrl();
 		this.triggerUrl();
 	},
 	triggerUrl: function() {
+		this.changed = true;
 		var url    = this.getUrl();
 		var result = null;
 		if( url.length ){

@@ -39,12 +39,14 @@ export default vood.Obj({
 		// takes the successresponse
 		success: function( response, status, xhr ){
 			var requestId = xhr.requestId;
+			var parse     = null;
 			try {
-				vood.helperAdapter.emit( requestId, { result: JSON.parse( response ) } );
+				parse     = JSON.parse( response );
 			} catch( err ) {
 				vood.helperAdapter.emit( requestId, { error: '500', result: 'API response was not valid' } );
+				return false;
 			}
-			
+			vood.helperAdapter.emit( requestId, { result: parse} );
 		},
 		////-----------------------------------------------------------------------------------------
 		// takes the errorresponse
