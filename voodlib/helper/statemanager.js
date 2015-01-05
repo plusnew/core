@@ -13,10 +13,15 @@ export default vood.Helper( 'statemanager', {
 	////-----------------------------------------------------------------------------------------
 	// This init is called, when the application startup is done
 	init: function() {
-		var parts = this.parseUrl();
 		if( !this.changed ){
 			this.change( location.hash );
 		}
+	},
+	////-----------------------------------------------------------------------------------------
+	// parses the hash and return the state
+	getState: function() {
+		var newUrl = location.hash.substring( 1,location.hash.length );
+		return newUrl.split( this.delimiter );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Can be called via this.trigger( 'changeUrl', ['foo', 'bar'])
@@ -39,15 +44,9 @@ export default vood.Helper( 'statemanager', {
 		return state.join( this.delimiter );
 	},
 	////-----------------------------------------------------------------------------------------
-	// parses the hash
-	parseUrl: function() {
-		var newUrl = location.hash.substring( 1,location.hash.length );
-		return newUrl.split( this.delimiter );
-	},
-	////-----------------------------------------------------------------------------------------
 	// listens to the hachchange event from the browser
 	change: function( hash ){
-		this.triggerUrl( this.parseUrl() );
+		this.triggerUrl( this.getState() );
 	},
 	triggerUrl: function( state ) {
 		this.changed = true;

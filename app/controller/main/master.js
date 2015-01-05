@@ -10,7 +10,14 @@ vood.Controller('main/master', {
 		return _.merge( _.clone(this.content), response );
 	},
 	init: function() {
+		this.getSelection();
 		this.triggerSelection();
+	},
+	getSelection: function(){
+		var state = app.helper.statemanager.getState();
+		if( state[0] === 'podcasts' && state.length >= 2){
+			this.set( 'selected', state[1] );
+		}
 	},
 	triggerSelection: function() {
 		this.trigger( 'url', [ 'podcasts', this.get( 'selected' ) ] );
