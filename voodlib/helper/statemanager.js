@@ -11,9 +11,6 @@ export default vood.Helper( 'statemanager', {
 	// how should the hash be formed?
 	delimiter: '/',
 	////-----------------------------------------------------------------------------------------
-	// Keeps the urlparts inside the memory
-	state: [],
-	////-----------------------------------------------------------------------------------------
 	// This init is called, when the application startup is done
 	init: function() {
 		var parts = this.parseUrl();
@@ -38,8 +35,8 @@ export default vood.Helper( 'statemanager', {
 	},
 	////-----------------------------------------------------------------------------------------
 	// tells the url of the state
-	getUrl: function() {
-		return this.state.join( this.delimiter );
+	getUrl: function( state ) {
+		return state.join( this.delimiter );
 	},
 	////-----------------------------------------------------------------------------------------
 	// parses the hash
@@ -50,13 +47,12 @@ export default vood.Helper( 'statemanager', {
 	////-----------------------------------------------------------------------------------------
 	// listens to the hachchange event from the browser
 	change: function( hash ){
-		this.state = this.parseUrl();
-		this.triggerUrl();
+		this.triggerUrl( this.parseUrl() );
 	},
-	triggerUrl: function() {
+	triggerUrl: function( state ) {
 		this.changed = true;
-		var url    = this.getUrl();
 		var result = null;
+		var url = this.getUrl( state );
 		if( url.length ){
 			result = this.trigger( '/' + url );
 		} else {
