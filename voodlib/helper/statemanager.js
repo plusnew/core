@@ -53,6 +53,8 @@ export default vood.Helper( 'statemanager', {
 	change: function( hash ){
 		this.triggerUrl( this.getState() );
 	},
+	////-----------------------------------------------------------------------------------------
+	// triggers events and checks if there was an listener for it, if not it triggers a /404
 	triggerUrl: function( state ) {
 		this.changed = true;
 		var result = null;
@@ -63,7 +65,7 @@ export default vood.Helper( 'statemanager', {
 			result = this.trigger( '/' );
 		}
 		if(result.length === 0) {
-			this.trigger('/404');
+			this.trigger( '/404' );
 		}
 	}
 });

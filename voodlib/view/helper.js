@@ -253,9 +253,7 @@ export default vood.Obj({
 				
 			}
 
-
 			if(definition === type) {
-
 				for( var i in params ) {
 					opt[ i ] = params[ i ];
 				}

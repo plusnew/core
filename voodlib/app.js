@@ -28,7 +28,11 @@ var voodPrefix = 'voodkit/';
 var Obj = require( voodPrefix + 'obj/class' ).default;
 
 window.vood = Obj({
+	////-----------------------------------------------------------------------------------------
+	// abstract class of everything
 	Obj: Obj,
+	////-----------------------------------------------------------------------------------------
+	// a list of prefixes of all modules which should be loaded
 	types: [ 'obj', 'util', 'view', 'controller', 'mixin', 'widget', 'helper' ],
 	////-----------------------------------------------------------------------------------------
 	// Overwriting of core-modules and calling inits of modules
@@ -86,7 +90,6 @@ window.vood = Obj({
 	transform: function( name, prefix ){
 		var transform = '',
 			upper     = false;
-
 		name          = name.replace( prefix, '' );
 
 		for( var index in name ){

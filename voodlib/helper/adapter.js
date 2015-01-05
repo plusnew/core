@@ -114,6 +114,5 @@ export default vood.Obj({
 		} else {
 			throw 'There was no request with id ' + id;
 		}
-
 	}
 });
