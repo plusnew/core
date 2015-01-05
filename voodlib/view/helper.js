@@ -127,19 +127,25 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// iterates through all dom-nodes to the top and returns an array of controllers
 	getUids: function( obj ){
-		var result = [];
+		var result    = [];
+		var excludes  = [];
 		while( obj.length > 0 ){
 			// Needed handling with prev() instead of siblings(), to keep the order of the uids
 			var prevObj = obj.prev();
 			while( prevObj.length > 0 ){
+				var endUid = this.isUidEndObj( prevObj );
 				var uid = this.isUidObj( prevObj );
-				if( uid ){
+
+				if( endUid ){
+					excludes.push(endUid); // Needed to handle siblings, which do not surround the target
+				} else if( uid && excludes.indexOf( uid ) === -1 ){
 					result.push( uid );
 				}
 				prevObj = prevObj.prev();
 			}
 			obj = obj.parent();
 		}
+
 		return result;
 	},
 	////-----------------------------------------------------------------------------------------
@@ -147,6 +153,13 @@ export default vood.Obj({
 	isUidObj: function( obj ){
 		if( obj.is( this.uidDomNode + '[' + this.uidAttrStart + ']' )) {
 			return obj.attr( this.uidAttrStart );
+		}
+	},
+	////-----------------------------------------------------------------------------------------
+	// checks if dom-node is an uid-end-obj
+	isUidEndObj: function( obj ){
+		if( obj.is( this.uidDomNode + '[' + this.uidAttrEnd + ']' )) {
+			return obj.attr( this.uidAttrEnd );
 		}
 	},
 	////-----------------------------------------------------------------------------------------
@@ -162,7 +175,7 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// wrapper for triggering events, selects corresponding parent-controllers
 	handleEvent: function( evt ){
-		var uids = this.getUids( $(evt.target) );
+		var uids = this.getUids( $(evt.target));
 		this.triggerExtra( evt );
 		return this.trigger( evt.type, evt, {controllers: uids, pseudo: false} );
 	},
