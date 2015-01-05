@@ -3,7 +3,7 @@ vood.Controller('main/detail', {
 		controller: 'podcasts',
 		action: 'detail',
 		payload: {
-			podcast: '*'
+			podcast: 'dashboard'
 		}
 	},
 	changePodcast: function( evt ) {
