@@ -7,7 +7,7 @@ vood.Controller('main/master', {
 		selected: 'dashboard',
 	},
 	preprocess: function( response ) {
-		return _.merge( _.clone(this.content), response );
+		return _.merge( _.clone( this.content ), response );
 	},
 	init: function() {
 		this.getSelection();
@@ -15,7 +15,7 @@ vood.Controller('main/master', {
 	},
 	getSelection: function(){
 		var state = app.helper.statemanager.getState();
-		if( state[0] === 'podcasts' && state.length >= 2){
+		if( state[0] === 'podcasts' && state.length >= 2 ){
 			this.set( 'selected', state[1] );
 		}
 	},

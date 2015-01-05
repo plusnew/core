@@ -21,7 +21,12 @@ export default vood.Helper( 'statemanager', {
 	// parses the hash and return the state
 	getState: function() {
 		var newUrl = location.hash.substring( 1,location.hash.length );
-		return newUrl.split( this.delimiter );
+		var parts = newUrl.split( this.delimiter );
+		while( parts.length > 0 && parts[ parts.length - 1] === '' ){ // Removes trailing slashes
+			parts.pop();
+		}
+
+		return parts;
 	},
 	////-----------------------------------------------------------------------------------------
 	// Can be called via this.trigger( 'changeUrl', ['foo', 'bar'])
