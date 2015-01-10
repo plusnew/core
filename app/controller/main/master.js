@@ -6,6 +6,7 @@ vood.Controller('main/master', {
 	content: {
 		selected: 'dashboard',
 	},
+
 	preprocess: function( response ) {
 		return _.merge( _.clone( this.content ), response );
 	},
