@@ -3,4 +3,5 @@ if podcast
 
 if items
 	ul.detail
-		li #{items.url}
+		each item in items
+			li #{item.title}
