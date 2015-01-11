@@ -1,7 +1,6 @@
 if podcast
-	span #{podcast}
-
-if items
+	span #{podcast.title}
 	ul.detail
-		each item in items
-			li #{item.title}
+	if podcast.item
+		each item in podcast.item
+			li #{item.title} | #{item.pubDate}

@@ -1,5 +1,5 @@
 vood.Controller('main/detail', {
-	changePodcast: function( evt ) {
+	changePodcast: function( evt ){
 		var model = {
 			controller: 'podcasts',
 			action: 'detail',
