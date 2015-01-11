@@ -2,5 +2,5 @@ if podcast
 	span #{podcast.title}
 	ul.detail
 	if podcast.item
-		each item in podcast.item
-			li #{item.title} | #{item.pubDate}
+		each item, index in podcast.item
+			li(data-index="#{index}", data-guid="item.guid.content") #{item.title} | #{item.pubDate}
