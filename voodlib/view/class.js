@@ -3,7 +3,10 @@ var classContent = {
 	_meta: {
 		////-----------------------------------------------------------------------------------------
 		// Just some debugging info
-		type: 'view'
+		type: 'view',
+		////-----------------------------------------------------------------------------------------
+		// Prefix where setter and getter should view
+		contentSpace: 'controller.content',
 	},
 	////-----------------------------------------------------------------------------------------
 	// array of eventdefinitions
@@ -54,13 +57,17 @@ var classContent = {
 		var id = this.controller._meta.uid;
 		var startUid = vood.viewHelper.uidDomNode + '[' + vood.viewHelper.uidAttrStart + '=' + id + ']';
 		var endUid   = vood.viewHelper.uidDomNode + '[' + vood.viewHelper.uidAttrEnd + '=' + id +']';
+		var root = $( startUid ).nextUntil( endUid);
 		if( path !== 'root' ){
 			if( !this[ path ] ){
 				throw 'Couldnt get you the obj because of missing definition';
 			}
 			selector = this[ path ];
+			return $.merge( root.filter( selector ), root.children( selector )); // we want the top and the children
+		} else {
+			return root;
 		}
-		return $( startUid ).nextUntil( endUid, selector );
+		
 	}
 };
 

@@ -118,7 +118,10 @@ var appJs = compileES6( appAndDependencies, {
 	],
 	legacyFilesToAppend: [
 		'jquery.js',
-		'lodash.compat.js'
+		'lodash.compat.js',
+		'mediaelement/build/mediaelement-and-player.min.js',
+		'podlove-web-player/podlove-web-player.js'
+
 	],
 	wrapInEval: env !== 'production',
 	outputFile: '/assets/app.js'

@@ -1,6 +1,6 @@
 div
 	if item
-		audio(controls)
+		audio#podlove
 			source(src="#{item.enclosure.attributes.url}", type="#{item.enclosure.attributes.type}")
 			| Your browser does not support the audio element.
 		span #{item.description}
