@@ -3,4 +3,4 @@ if podcast
 	ul.detail
 	if podcast.item
 		each item, index in podcast.item
-			li(data-index="#{index}", data-guid="item.guid.content") #{item.title} | #{item.pubDate}
+			li(data-index="#{index}", data-guid="#{item.guid.content}") #{item.title} | #{item.pubDate}
