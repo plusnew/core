@@ -66,9 +66,8 @@ export default vood.Obj({
 	// Holds the pending requests
 	requests: {},
 	////-----------------------------------------------------------------------------------------
-	// Checks validity of the adapter itself, does application set an custom adapter?
+	// Checks validity of the adapter itself, does application set an custom adapter? @TODO
 	// sets up runloop job for sending
-	// @TODO
 	init: function() {
 		this.addJob( {callback: this.trigger} );
 	},

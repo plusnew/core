@@ -14,7 +14,7 @@ vood.View( 'player/container', {
 		// this.podlove();
 		if( this.controller.get( 'item' )){
 			var player = this.obj( 'player' );
-			player.podlovewebplayer();
+			// player.podlovewebplayer();
 		}
 
 	}

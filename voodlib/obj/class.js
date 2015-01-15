@@ -3,6 +3,9 @@ var util = require('voodkit/util/helper').default;
 var defaults = {
 	_meta: {
 		////-----------------------------------------------------------------------------------------
+		// Handles the internal registry for setters
+		regs: [],
+		////-----------------------------------------------------------------------------------------
 		// Flag if an internal registry should be used
 		registry: false,
 		////-----------------------------------------------------------------------------------------
@@ -123,7 +126,6 @@ var defaults = {
 		var partClone = _.clone( keyParts );
 		var result    = vood.objHelper.isQuery( key ) ? [] : undefined;
 
-		// @TODO add to registry
 		for( var i = 0; i < keyParts.length; i++ ){
 			var part = keyParts[ i ];
 			var previous = partClone.slice( 0, i );
@@ -134,7 +136,7 @@ var defaults = {
 				if( _.isArray( obj )){
 					for( var arrIndex = 0; arrIndex < obj.length; arrIndex++ ){
 						if( vood.objHelper.isTrue( obj[ arrIndex ], part )){
-							opt.addReg     = false;
+							opt.addRegistry     = false;
 							partClone[ i ] = arrIndex;
 							result.push( this._handleRealData( type, partClone.join( '.' ), value, opt ));
 						}
@@ -166,6 +168,7 @@ var defaults = {
 			case 'set':
 				var current = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
 				if( current != value ){
+					this._addReg( keyParts.join( '.'), value, opt );
 					this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]] = value;
 					result  = true;
 					changed = true;
@@ -186,6 +189,30 @@ var defaults = {
 			}
 		}
 		return result;
+	},
+	////-----------------------------------------------------------------------------------------
+	// Builds a registry-array
+	_addReg: function( key, value, opt ) {
+		if( opt.addRegistry !== false ){
+			var result  = [];
+			var later   =  [];
+			var history = false;
+			for( var i = 0; i < this._meta.regs.length; i++ ){
+				var register = this._meta.regs[ i ];
+				if( key === register.key && history){
+
+				} else if( vood.objHelper.isKeyChild( key, register.key )) {
+					if( opt.keepChilds ) {
+						later.push( register );
+					}
+				} else {
+					result.push( register );
+				}
+			}
+			result.push( {key: key, value: value, opt: opt} );
+			// if(this._meta.path = 'main/app') debugger;
+			this._meta.regs = result.concat( later );
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent

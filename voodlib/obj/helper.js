@@ -14,4 +14,10 @@ export default vood.Obj({
 		}
 		return res;
 	},
+	////-----------------------------------------------------------------------------------------
+	// checks if the key is a sub
+	isKeyChild: function( key, check ){
+		return true;
+	}
+
 });
