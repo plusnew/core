@@ -163,7 +163,8 @@ var defaults = {
 		var result = false;
 		switch (type){
 			case 'get':
-				result = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
+				// added cloneDeep to remove reference, when setter is made, we want a rerender not a reference
+				result = _.cloneDeep( this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]] );
 				break;
 			case 'set':
 				var current = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
