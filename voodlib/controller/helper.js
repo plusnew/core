@@ -80,7 +80,7 @@ export default vood.Obj({
 	getEntity: function( path ){
 		if( !this.list[ path ] ){
 			console.log( 'Controller ' + path + ' does not exist' );
-			vood.Controller( path, {_meta: { pseudo: true }} );
+			vood.Controller( path, {_meta: { pseudo: true , path: path}} );
 		}
 		return _.cloneDeep( this.list[ path ] );
 	},

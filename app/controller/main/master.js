@@ -15,13 +15,13 @@ vood.Controller('main/master', {
 		this.triggerSelection();
 	},
 	getSelection: function(){
-		var state = app.helper.statemanager.getState();
+		var state = app.helper.router.getState();
 		if( state[0] === 'podcasts' && state.length >= 2 ){
 			this.set( 'selected', state[1] );
 		}
 	},
 	triggerSelection: function() {
-		this.trigger( 'url', [ 'podcasts', this.get( 'selected' ) ] );
+		this.trigger( 'route', [ 'podcasts', this.get( 'selected' ) ] );
 	},
 	changePodcast: function( data, evt, target) {
 		this.set( 'selected', data.id);

@@ -1,11 +1,11 @@
-export default vood.Helper( 'statemanager', {
+export default vood.Helper( 'router', {
 	// Helper goes into userspace, because he propably wants to overwrite it
 	events: [{
 		action: 'change',
 		type: 'hashchange'
 	}, {
 		action: 'changeUrl',
-		type: 'url'
+		type: 'route'
 	}],
 	////-----------------------------------------------------------------------------------------
 	// how should the hash be formed?

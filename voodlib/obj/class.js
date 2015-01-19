@@ -210,7 +210,6 @@ var defaults = {
 				}
 			}
 			result.push( {key: key, value: value, opt: opt} );
-			// if(this._meta.path = 'main/app') debugger;
 			this._meta.regs = result.concat( later );
 		}
 	},
