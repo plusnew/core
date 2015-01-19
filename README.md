@@ -8,7 +8,7 @@ api
 ```js
 vood.controllerHelper.create('main/app' {
   filter: function(data) {
-    this.set('items.@each.show', false');
+    this.set('items.@each.show', false);
     // sets all entities inside the array *items* with matching expression,
     // with the property *show* to true;
     this.set('items.propertyName==' + data.value +'.show', true);
