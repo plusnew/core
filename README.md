@@ -6,7 +6,7 @@ lightweight mvc-framework with queries :3
 api
 ---
 ```js
-vood.controllerHelper.create('main/app' {
+vood.Controller('main/app' {
   filter: function(data) {
     this.set('items.@each.show', false);
     // sets all entities inside the array items with matching expression,
@@ -18,9 +18,20 @@ vood.controllerHelper.create('main/app' {
   }
 });
 
+vood.View('main/app' {
+  events: [{
+    // Gets checked when dom-event is inside the context of the view
+    selector: 'li',
+    // Defines what-the eventtype is
+    type: 'click',
+    // what function should it try to call (can be inside the view and in the controller)
+    action: 'filter'
+  }]
+});
+
 vood.get('main/app'); // Returns all controllers matching the path
 vood.get(1);          // Returns the controller with the id
-vood.get('*');        // Returns all controllers
+vood.get('@each');        // Returns all controllers
 
 
 ```
