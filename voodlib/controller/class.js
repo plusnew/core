@@ -92,6 +92,8 @@ var classContent = {
 		} else {
 			this.setAll( response, this.model.opt );
 		}
+
+		// @TODO call render method of view, init should only be called after rendering
 		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
 	},
 	////-----------------------------------------------------------------------------------------
