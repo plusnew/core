@@ -133,20 +133,11 @@ var defaults = {
 
 			if( vood.objHelper.isQuery( part )){
 				var obj      = this._getReference( previous )[ lastKey ];
-				if( _.isArray( obj )){
-					for( var arrIndex = 0; arrIndex < obj.length; arrIndex++ ){
-						if( vood.objHelper.isTrue( obj[ arrIndex ], part )){
-							opt.addRegistry     = false;
-							partClone[ i ] = arrIndex;
-							result.push( this._handleRealData( type, partClone.join( '.' ), value, opt ));
-						}
-					}
-				} else {
-					var msg = keyParts.splice( 0, i ).join( '.' ) + ' is not an array';
-					if( opt.exception === false ){
-						console.warn( msg );
-					} else {
-						throw msg;
+				for( var arrIndex in obj ){
+					if( obj.hasOwnProperty( arrIndex) && vood.objHelper.isTrue( obj[ arrIndex ], part, opt.query )){
+						opt.addRegistry     = false;
+						partClone[ i ] = arrIndex;
+						result.push( this._handleRealData( type, partClone.join( '.' ), value, opt ));
 					}
 				}
 				return result;
