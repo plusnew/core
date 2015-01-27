@@ -24,7 +24,7 @@ export default vood.Obj({
 		var parts = query.split(type.delimiter);
 		for( var partIndex = 0; partIndex < parts.length; partIndex++ ){
 			var queryParts = this.getLogicParts(parts[ partIndex ]);
-			if(!this.objCheck( obj, queryParts, variables )) {
+			if(this.objCheck( obj, queryParts, variables ) != type.defaultValue) {
 				result = !result;
 				break;
 			}
