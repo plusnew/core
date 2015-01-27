@@ -24,12 +24,21 @@ export default vood.Obj({
 		var parts = query.split(type.delimiter);
 		for( var partIndex = 0; partIndex < parts.length; partIndex++ ){
 			var queryParts = this.getLogicParts(parts[ partIndex ]);
-			if(this.objCheck( obj, queryParts, variables ) != type.defaultValue) {
+			if(this.getVariableName( queryParts.value )){ // Variable handling
+				var variableName = this.getVariableName(queryParts.value);
+				this.variableValidation(variableName, variables);
+				
+			} else if(this.objCheck( obj, queryParts, variables ) != type.defaultValue) {
 				result = !result;
 				break;
 			}
 		}
 		return result;
+	},
+	getVariableName: function( key ) {
+		if( key[ 0 ] == '{' && key[ key.length - 1 ] == '}'){
+			return key.slice( 1, key.length - 1 );
+		}
 	},
 	objCheck: function( obj, query, variables ) {
 		var result = null;
@@ -92,6 +101,10 @@ export default vood.Obj({
 			res = true;
 		}
 		return res;
+	},
+	variableValidation: function( key, variables ){
+		if(!variables || variables[ key ] === undefined) throw key + ' was not set in opt: {query: {}}';
+		if( !_.isArray( variables[ key ])) throw key + ' query has to be an array';
 	},
 	////-----------------------------------------------------------------------------------------
 	// checks if the key is a sub, needed for registry removal if parent gets set
