@@ -7,6 +7,10 @@ export default vood.Obj({
 	}, {
 		delimiter: '||',
 		defaultValue: false
+	}, {
+		delimiter: '@each',
+		defaultValue: true,
+		skip: true
 	}],
 	////-----------------------------------------------------------------------------------------
 	// First matching type is taken, so >= has to be in this array, before >
@@ -16,6 +20,7 @@ export default vood.Obj({
 	isTrue: function( obj, query, variables ){
 		var type = this.getType(query);
 		var result = type.defaultValue;
+		if(type.skip) return result;
 		var parts = query.split(type.delimiter);
 		for( var partIndex = 0; partIndex < parts.length; partIndex++ ){
 			var queryParts = this.getLogicParts(parts[ partIndex ]);
@@ -47,7 +52,7 @@ export default vood.Obj({
 				}
 				break;
 			default:
-				throw "Type " + query[ 1 ] + ' is not yet implemented, please contact https://github.com/plusgut/vood/issues';
+				throw "Type " + query.key + ' is not yet implemented, please contact https://github.com/plusgut/vood/issues';
 		}
 		return result;
 	},
