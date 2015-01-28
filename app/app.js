@@ -6,7 +6,8 @@ app.init = function() {
 	vood.init({
 		viewHelper: {
 			dirtyHandling: false,
-			entrance: '#app'
+			entrance: '#app', // Defines on what entrance point the vood-container should be added
+			startPath: 'main/app' // Defines which template should be compiled as the entrance
 		}
 	});
 };
