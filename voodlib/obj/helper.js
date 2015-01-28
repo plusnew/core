@@ -24,7 +24,7 @@ export default vood.Obj({
 		var parts = query.split(type.delimiter);
 		for( var partIndex = 0; partIndex < parts.length; partIndex++ ){
 			var queryParts = this.getLogicParts(parts[ partIndex ]);
-			if(this.objCheck( obj, queryParts, variables ) != type.defaultValue) {
+			if( this.objCheck( obj, queryParts, variables ) != type.defaultValue ){
 				result = !result;
 				break;
 			}
@@ -48,7 +48,7 @@ export default vood.Obj({
 			this.variableValidation( variableName, variables );
 			values = variables[ variableName ];
 		}
-		for(var i = 0; i < values.length; i++) {
+		for( var i = 0; i < values.length; i++ ){
 			var value = values[ i ];
 			result = this.valueCompare( obj[ query.key ], value, query.type );
 			if( result ) break;
@@ -90,14 +90,14 @@ export default vood.Obj({
 		return result;
 	},
 	////-----------------------------------------------------------------------------------------
-	// returns an array of the query elements, ['title', '==', 'value']
-	getLogicParts: function(query) {
+	// returns an object of query elements {key: key: type: '==', value: value}
+	getLogicParts: function( query ){
 		var delimiter = null;
 		for( var i = 0; i < this.types.length; i++ ){
 			var type = this.types[ i ];
 			if( query.indexOf( type ) != -1 ){
 				var parts = query.split( type );
-				if(parts.length != 2) throw 'Your logic operator was there mutliple times ' + query;
+				if( parts.length != 2 ) throw 'Your logic operator was there mutliple times ' + query;
 				return {key: parts[ 0 ], type: type, value: parts[ 1 ]};
 			}
 		}
@@ -107,10 +107,10 @@ export default vood.Obj({
 	// decides wheather to use && or || and returns the defaultvalues of it
 	getType: function(query) {
 		var type = null;
-		for( var i = this.logicOperators.length; i > 0; i-- ) {
+		for( var i = this.logicOperators.length; i > 0; i-- ){
 			var logicOperator = this.logicOperators[ i - 1 ];
 			// Checks if delimter occours, or if its the last checkable object (for setting default)
-			if( query.indexOf(logicOperator.delimiter) != -1 || (i === 1 && !type )){
+			if( query.indexOf( logicOperator.delimiter ) != -1 || (i === 1 && !type )){
 				if(type) throw "You can not use multiple types";
 				type = logicOperator;
 			}
@@ -127,7 +127,7 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// checks if all necessary values are correct
 	variableValidation: function( key, variables ){
-		if(!variables || variables[ key ] === undefined) throw key + ' was not set in opt: {query: {}}';
+		if( !variables || variables[ key ] === undefined ) throw key + ' was not set in opt: {query: {}}';
 		if( !_.isArray( variables[ key ])) throw key + ' query has to be an array';
 	},
 	////-----------------------------------------------------------------------------------------
