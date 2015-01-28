@@ -1,6 +1,6 @@
 export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
-	// First matching type is taken, hen nothing fits, first operator will be used
+	// First matching type is taken, when nothing fits, first operator will be used
 	logicOperators: [{
 		delimiter: '&&',
 		defaultValue: true
@@ -120,18 +120,19 @@ export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// checks if the string is an query
 	isQuery: function( key ){
-		var res = false;
 		if( key.indexOf( '=' ) !== -1 || key.indexOf( '@' ) !== -1 ){
-			res = true;
+			return true;
 		}
-		return res;
 	},
+	////-----------------------------------------------------------------------------------------
+	// checks if all necessary values are correct
 	variableValidation: function( key, variables ){
 		if(!variables || variables[ key ] === undefined) throw key + ' was not set in opt: {query: {}}';
 		if( !_.isArray( variables[ key ])) throw key + ' query has to be an array';
 	},
 	////-----------------------------------------------------------------------------------------
 	// checks if the key is a sub, needed for registry removal if parent gets set
+	// @TODO
 	isKeyChild: function( key, check ){
 		return true;
 	}
