@@ -61,21 +61,31 @@ export default vood.Obj({
 		var result = null;
 		switch( type ){
 			case '==':
-				if( source == target ) {
-					result = true;
-				} else {
-					result = false;
-				}
+				if( source === target ) result = true;
+				else result = false;
 				break;
 			case '!=':
-				if( source != target ) {
-					result = true;
-				} else {
-					result = false;
-				}
+				if( source !== target ) result = true;
+				else result = false;
+				break;
+			case '>=':
+				if( source >= target ) result = true;
+				else result = false;
+				break;
+			case '<=':
+				if( source <= target ) result = true;
+				else result = false;
+				break;
+			case '>':
+				if( source > target ) result = true;
+				else result = false;
+				break;
+			case '<':
+				if( source < target ) result = true;
+				else result = false;
 				break;
 			default:
-				throw "Type " + type + ' is not yet implemented, please contact https://github.com/plusgut/vood/issues';
+				throw "Type " + type + ' is not implemented, please contact https://github.com/plusgut/vood/issues';
 		}
 		return result;
 	},
