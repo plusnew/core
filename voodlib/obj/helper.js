@@ -24,44 +24,51 @@ export default vood.Obj({
 		var parts = query.split(type.delimiter);
 		for( var partIndex = 0; partIndex < parts.length; partIndex++ ){
 			var queryParts = this.getLogicParts(parts[ partIndex ]);
-			if(this.getVariableName( queryParts.value )){ // Variable handling
-				var variableName = this.getVariableName(queryParts.value);
-				this.variableValidation(variableName, variables);
-				
-			} else if(this.objCheck( obj, queryParts, variables ) != type.defaultValue) {
+			if(this.objCheck( obj, queryParts, variables ) != type.defaultValue) {
 				result = !result;
 				break;
 			}
 		}
 		return result;
 	},
+	////-----------------------------------------------------------------------------------------
+	// Returns variables which are in the query {variableName}
 	getVariableName: function( key ) {
 		if( key[ 0 ] == '{' && key[ key.length - 1 ] == '}'){
 			return key.slice( 1, key.length - 1 );
 		}
 	},
+	////-----------------------------------------------------------------------------------------
+	// Checks if querypart fits to corresponding object, when variables are used it checks them as an array
 	objCheck: function( obj, query, variables ) {
 		var result = null;
-		// @TODO implement bool and int casting
-		// @TODO implement >=
-		// @TODO implement variables
-		switch (query.type) {
-			case '==':
-				if( obj[ query.key ] == query.value ) {
-					result = true;
-				} else {
-					result = false;
-				}
-				break;
-			case '!=':
-				if( obj[ query.key ] != query.value ) {
-					result = true;
-				} else {
-					result = false;
-				}
-				break;
-			default:
-				throw "Type " + query.key + ' is not yet implemented, please contact https://github.com/plusgut/vood/issues';
+		var variableName = this.getVariableName( query.value );
+		var values = [query.value];
+		if( variableName ){
+			this.variableValidation( variableName, variables );
+			values = variables[ variableName ];
+		}
+		for(var i = 0; i < values.length; i++) {
+			var value = values[ i ];
+			switch (query.type) {
+				case '==':
+					if( obj[ query.key ] == value ) {
+						result = true;
+					} else {
+						result = false;
+					}
+					break;
+				case '!=':
+					if( obj[ query.key ] != value ) {
+						result = true;
+					} else {
+						result = false;
+					}
+					break;
+				default:
+					throw "Type " + query.key + ' is not yet implemented, please contact https://github.com/plusgut/vood/issues';
+			}
+			if( result ) break;
 		}
 		return result;
 	},

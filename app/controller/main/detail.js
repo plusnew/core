@@ -12,5 +12,9 @@ vood.Controller('main/detail', {
 	},
 	changeItem: function( data ){
 		this.trigger( 'changeItem', this.content.podcast.item[data.index] );
+	},
+	notify: function() {
+		var res = this.get('podcast.item.title=={title}', {query: {title: ['LNP129 Ureinwanderer', 'LNP126 Ich wollte ja zur Revolution, aber war voll']}});
+		console.log(res);
 	}
 });
