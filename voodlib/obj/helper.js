@@ -50,25 +50,32 @@ export default vood.Obj({
 		}
 		for(var i = 0; i < values.length; i++) {
 			var value = values[ i ];
-			switch (query.type) {
-				case '==':
-					if( obj[ query.key ] == value ) {
-						result = true;
-					} else {
-						result = false;
-					}
-					break;
-				case '!=':
-					if( obj[ query.key ] != value ) {
-						result = true;
-					} else {
-						result = false;
-					}
-					break;
-				default:
-					throw "Type " + query.key + ' is not yet implemented, please contact https://github.com/plusgut/vood/issues';
-			}
+			result = this.valueCompare( obj[ query.key ], value, query.type );
 			if( result ) break;
+		}
+		return result;
+	},
+	////-----------------------------------------------------------------------------------------
+	// compares two values depending on the logicoperator-type
+	valueCompare: function( source, target, type ) {
+		var result = null;
+		switch( type ){
+			case '==':
+				if( source == target ) {
+					result = true;
+				} else {
+					result = false;
+				}
+				break;
+			case '!=':
+				if( source != target ) {
+					result = true;
+				} else {
+					result = false;
+				}
+				break;
+			default:
+				throw "Type " + type + ' is not yet implemented, please contact https://github.com/plusgut/vood/issues';
 		}
 		return result;
 	},
