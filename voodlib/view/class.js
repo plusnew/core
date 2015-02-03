@@ -48,7 +48,7 @@ var classContent = {
 	// Triggers compilefunction but adds script-tags with uid
 	_compileComplete: function(){
 		var id = this.controller._meta.uid;
-		return vood.viewHelper.scriptStart( id ) + this._compile() + vood.viewHelper.scriptEnd( id );
+		return vood.viewHelper.scriptStart( id, this._meta.path ) + this._compile() + vood.viewHelper.scriptEnd( id );
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns jquery object depending selector

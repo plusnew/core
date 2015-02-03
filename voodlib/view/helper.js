@@ -103,8 +103,8 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// start uid
-	scriptStart: function( id ){
-		return '<' +this.uidDomNode+ ' ' +this.uidAttrStart+ '="' +id+ '"></' +this.uidDomNode+ '>';
+	scriptStart: function( id, path ){
+		return '<' +this.uidDomNode+ ' ' +this.uidAttrStart+ '="' +id+ '" data-template="' + path + '"></' +this.uidDomNode+ '>';
 	},
 	////-----------------------------------------------------------------------------------------
 	// end uid
