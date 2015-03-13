@@ -17,6 +17,6 @@
     "jade": "^1.0.1"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "postinstall": "node ./node_modules/bower/bin/bower install"
   }
 }
