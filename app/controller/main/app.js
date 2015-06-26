@@ -1,1 +1,0 @@
-vood.Controller( 'main/app', {});

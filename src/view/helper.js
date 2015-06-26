@@ -30,7 +30,7 @@ export default vood.Obj({
 	eventSpaces: [ 'controllerHelper', 'helperHelper' ],
 	////-----------------------------------------------------------------------------------------
 	// JQuery events which the framework is listening for
-	eventString: 'click submit change slide mouseover mouseout slideend mousemove mouseup mousedown keyup keydown drag dragstart dragover ',
+	eventString: 'click submit change mouseover mouseout mousemove mouseup mousedown keyup keydown drag dragstart dragover mousewheel',
 	////-----------------------------------------------------------------------------------------
 	// maps e.g. keypresses to trigger shortevents for enter and escape-keys
 	eventMap: {
@@ -103,6 +103,7 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// start uid
+	// @TODO move this to the templating engine
 	scriptStart: function( id, path ){
 		return '<' +this.uidDomNode+ ' ' +this.uidAttrStart+ '="' +id+ '" data-template="' + path + '"></' +this.uidDomNode+ '>';
 	},
@@ -181,6 +182,7 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles all the events
+	// @TODO move this to the eventhandler
 	trigger: function( type, evt, opt ){
 		if( !evt ) evt = {};
 		if( type.search(':') != -1) throw 'events are not allowed to have a : inside' ;
@@ -213,6 +215,7 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// triggers eventmaps like keypresses to shortevents like "enterkey" and escapekey
+	// @TODO make this deprecated
 	triggerExtra: function( evt ){
 		if( this.eventMap[ evt.type ] ){
 			for( var index in this.eventMap[ evt.type ] ) {
@@ -228,6 +231,7 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks variables inside the eventdefition
+	// @TODO make this deprecated, and move it to the view-class
 	checkEventMatch: function( definition, type, opt ) {
 		var reserved = ':';
 		if(definition == type) {

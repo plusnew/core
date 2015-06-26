@@ -1,6 +1,0 @@
-if podcast
-	span #{podcast.title}
-	ul.detail
-		if podcast.item
-			each item, index in podcast.item
-				li(data-index="#{index}") #{item.title} | #{item.pubDate}
