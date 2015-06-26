@@ -2,18 +2,27 @@
   "name": "vood",
   "version": "1.9.0",
   "description": "VOOD lightweight MVC-Framework with queries",
-  "main": "",
+  "main": "dist/vood.js",
   "devDependencies": {
-    "bower": "^1.2.8",
-    "broccoli": "^0.10.0",
-    "broccoli-env": "0.0.1",
-    "broccoli-static-compiler": "^0.1.4",
-    "broccoli-uglify-js": "^0.1.0",
-    "broccoli-es6-concatenator": "^0.1.4",
-    "broccoli-template": "^0.1.0",
-    "broccoli-merge-trees": "^0.1.3",
-    "broccoli-bower": "^0.2.0",
-    "broccoli-filter": "^0.1.6",
-    "jade": "^1.0.1"
-  }
+    "tempart": "^0.1.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plusgut/vood.git"
+  },
+  "keywords": [
+    "mvc",
+    "events",
+    "binding"
+  ],
+  "author": "Carlo Jeske",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plusgut/vood/issues"
+  },
+  "homepage": "https://github.com/plusgut/vood#readme"
 }
