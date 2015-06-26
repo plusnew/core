@@ -4,7 +4,7 @@
   "description": "VOOD lightweight MVC-Framework with queries",
   "main": "dist/vood.js",
   "devDependencies": {
-    "tempart": "^0.1.0"
+    "tempart": "*"
   },
   "dependencies": {},
   "scripts": {
