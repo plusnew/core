@@ -4,9 +4,14 @@
   "description": "VOOD lightweight MVC-Framework with queries",
   "main": "dist/vood.js",
   "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-babel": "^5.0.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "load-grunt-tasks": "^3.2.0"
+  },
+  "dependencies": {
     "tempart": "*"
   },
-  "dependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
