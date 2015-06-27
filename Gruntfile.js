@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 		concat: {
 			dist: {
 				src: fileSelector,
-				dest: 'dist/concat.js'
+				dest: 'tmp/concat.js'
 			}
 		},
 		babel: {
@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'dist/vood.js': 'dist/concat.js'
+					'dist/vood.js': 'tmp/concat.js'
 				}
 			}
 		},
