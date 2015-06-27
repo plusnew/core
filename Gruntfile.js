@@ -1,25 +1,33 @@
 module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
+	var fileSelector = ['src/*', 'src/**/*'];
+
 	grunt.initConfig({
+		concat: {
+			dist: {
+				src: fileSelector,
+				dest: 'dist/concat.js'
+			}
+		},
 		babel: {
 			options: {
 				sourceMap: true
 			},
 			dist: {
 				files: {
-					'dist/app.js': 'src/app.js'
+					'dist/vood.js': 'dist/concat.js'
 				}
 			}
 		},
 		watch: {
 			scripts: {
-				files: 'src/app.js',
-				tasks: ['babel']
+				files: fileSelector,
+				tasks: ['concat', 'babel']
 			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.registerTask('default', ['babel']);
+	grunt.registerTask('default', ['concat', 'babel']);
 };
