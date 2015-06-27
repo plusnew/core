@@ -14,7 +14,7 @@ export default vood.Helper( 'router', {
 	// This init is called, when the application startup is done
 	init: function() {
 		if( !this.changed ){
-			this.change( location.hash );
+			this.change( location.hash ); // @TODO make this work at server environment
 		}
 	},
 	////-----------------------------------------------------------------------------------------

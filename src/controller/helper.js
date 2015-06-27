@@ -86,7 +86,7 @@ export default vood.Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
-	get: function( path ) {
+	find: function( path ) {
 		return this._iterate( path );
 	},
 	////-----------------------------------------------------------------------------------------

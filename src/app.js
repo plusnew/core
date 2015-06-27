@@ -43,8 +43,8 @@ window.vood = Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
-	get: function( path ){
-		return this.controllerHelper.get( path );
+	find: function( path ){
+		return this.controllerHelper.find( path );
 	},
 	////-----------------------------------------------------------------------------------------
 	// calls inits of the core-modules
