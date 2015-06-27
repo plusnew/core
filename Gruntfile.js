@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
-	var fileSelector = ['src/*', 'src/**/*'];
+	var fileSelector = ['./src/*', './src/**/*'];
 
 	grunt.initConfig({
 		concat: {
@@ -10,24 +10,29 @@ module.exports = function(grunt) {
 				dest: 'tmp/concat.js'
 			}
 		},
-		babel: {
+		browserify: {
 			options: {
-				sourceMap: true
+				debug: true
 			},
 			dist: {
+				options: {
+					debug: true,
+					transform: [
+						["babelify", {loose: "all"}]
+					],
+				},
 				files: {
-					'dist/vood.js': 'tmp/concat.js'
+					'./dist/vood.js': fileSelector
 				}
 			}
 		},
-		watch: {
-			scripts: {
-				files: fileSelector,
-				tasks: ['concat', 'babel']
+		clean: {
+			dist: {
+				src: ['dist']
 			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.registerTask('default', ['concat', 'babel']);
+	grunt.registerTask('default', ['clean', 'browserify']);
 };

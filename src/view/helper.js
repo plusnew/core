@@ -1,5 +1,3 @@
-require('jade/runtime');
-
 export default vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// In which package does requirejs use the templates

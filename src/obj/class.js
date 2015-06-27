@@ -1,4 +1,4 @@
-var util = require('voodkit/util/helper').default;
+// var util = require('dest/util/helper').default;
 
 var defaults = {
 	_meta: {

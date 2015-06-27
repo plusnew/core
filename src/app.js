@@ -25,8 +25,8 @@
 */
 
 var voodPrefix = 'voodkit/';
-var Obj = require( voodPrefix + 'obj/class' ).default;
-
+// var Obj = require( voodPrefix + 'obj/class' ).default;
+// debugger;
 window.vood = Obj({
 	////-----------------------------------------------------------------------------------------
 	// abstract class of everything

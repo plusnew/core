@@ -1,3 +1,4 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*
                   VOOD
        very object oriented design
@@ -26,12 +27,10 @@
 
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-	value: true
-});
+exports.__esModule = true;
 var voodPrefix = 'voodkit/';
-var Obj = require(voodPrefix + 'obj/class')['default'];
-
+// var Obj = require( voodPrefix + 'obj/class' ).default;
+debugger;
 window.vood = Obj({
 	////-----------------------------------------------------------------------------------------
 	// abstract class of everything
@@ -123,7 +122,12 @@ window.vood = Obj({
 vood.loadAll();
 
 exports['default'] = vood;
+module.exports = exports['default'];
 
+},{}],2:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
 var classContent = {
 	_meta: {
 		////-----------------------------------------------------------------------------------------
@@ -249,6 +253,12 @@ function controller(path, obj) {
 }
 
 exports['default'] = controller;
+module.exports = exports['default'];
+
+},{}],3:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
 exports['default'] = vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// Increment of the upcoming controller-ids
@@ -380,6 +390,25 @@ exports['default'] = vood.Obj({
 	// @TODO implementation
 	garbage: function garbage() {}
 });
+module.exports = exports['default'];
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+(function () {
+	if (typeof module === 'object') {
+		module.exports.vood = {};
+	} else if (typeof window === 'object') {
+		window.vood = {};
+	} else {
+		var vood = {};
+	}
+})();
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
 exports['default'] = vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// You should overwrite this with the vood.init({helperAdapter: adapterImplementation: {host: 'localhost', port: '8080'}})
@@ -490,7 +519,12 @@ exports['default'] = vood.Obj({
 		}
 	}
 });
+module.exports = exports['default'];
 
+},{}],6:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
 vood.helper = vood.Obj({});
 ////-----------------------------------------------------------------------------------------
 // creating helper class
@@ -504,6 +538,12 @@ function helper(path, obj) {
 }
 
 exports['default'] = helper;
+module.exports = exports['default'];
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
 exports['default'] = vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// returns helpers as an array, for better eventhandling at the viewhelper
@@ -525,6 +565,12 @@ exports['default'] = vood.Obj({
 	}
 
 });
+module.exports = exports['default'];
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
 exports['default'] = vood.Helper('router', {
 	// Helper goes into userspace, because he propably wants to overwrite it
 	events: [{
@@ -596,9 +642,14 @@ exports['default'] = vood.Helper('router', {
 		}
 	}
 });
+module.exports = exports['default'];
 
-var util = require('voodkit/util/helper')['default'];
+},{}],9:[function(require,module,exports){
+// var util = require('dest/util/helper').default;
 
+'use strict';
+
+exports.__esModule = true;
 var defaults = {
 	_meta: {
 		////-----------------------------------------------------------------------------------------
@@ -860,6 +911,12 @@ var meta = function meta() {
 };
 
 exports['default'] = meta;
+module.exports = exports['default'];
+
+},{}],10:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
 exports['default'] = vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// First matching type is taken, when nothing fits, first operator will be used
@@ -993,9 +1050,14 @@ exports['default'] = vood.Obj({
 		return true;
 	}
 });
+module.exports = exports['default'];
 
+},{}],11:[function(require,module,exports){
 ////-----------------------------------------------------------------------------------------
 // Uppercases the first letter of an string
+"use strict";
+
+exports.__esModule = true;
 String.prototype.capitalize = function () {
 	return this[0].toUpperCase() + this.slice(1, this.length);
 };
@@ -1040,8 +1102,14 @@ var obj = {
 	}
 };
 
-exports['default'] = window.vood ? vood.Obj(obj) : obj;
-exports['default'] = vood.Obj({
+exports["default"] = window.vood ? vood.Obj(obj) : obj;
+module.exports = exports["default"];
+
+},{}],12:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+exports["default"] = vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// Active jobs-array
 	jobs: [],
@@ -1079,6 +1147,12 @@ exports['default'] = vood.Obj({
 		return this.jobs.push(job);
 	}
 });
+module.exports = exports["default"];
+
+},{}],13:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
 
 var classContent = {
 	_meta: {
@@ -1162,9 +1236,12 @@ function view(path, obj) {
 }
 
 exports['default'] = view;
+module.exports = exports['default'];
 
-require('jade/runtime');
+},{}],14:[function(require,module,exports){
+'use strict';
 
+exports.__esModule = true;
 exports['default'] = vood.Obj({
 	////-----------------------------------------------------------------------------------------
 	// In which package does requirejs use the templates
@@ -1470,4 +1547,5 @@ exports['default'] = vood.Obj({
 	}
 });
 module.exports = exports['default'];
-//# sourceMappingURL=vood.js.map
+
+},{}]},{},[1,4,2,3,5,6,7,8,9,10,11,12,13,14]);
