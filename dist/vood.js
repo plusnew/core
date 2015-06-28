@@ -30,7 +30,7 @@
 exports.__esModule = true;
 var voodPrefix = 'voodkit/';
 // var Obj = require( voodPrefix + 'obj/class' ).default;
-debugger;
+// debugger;
 window.vood = Obj({
 	////-----------------------------------------------------------------------------------------
 	// abstract class of everything
@@ -395,19 +395,6 @@ module.exports = exports['default'];
 },{}],4:[function(require,module,exports){
 'use strict';
 
-(function () {
-	if (typeof module === 'object') {
-		module.exports.vood = {};
-	} else if (typeof window === 'object') {
-		window.vood = {};
-	} else {
-		var vood = {};
-	}
-})();
-
-},{}],5:[function(require,module,exports){
-'use strict';
-
 exports.__esModule = true;
 exports['default'] = vood.Obj({
 	////-----------------------------------------------------------------------------------------
@@ -521,7 +508,7 @@ exports['default'] = vood.Obj({
 });
 module.exports = exports['default'];
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -540,7 +527,7 @@ function helper(path, obj) {
 exports['default'] = helper;
 module.exports = exports['default'];
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -567,7 +554,7 @@ exports['default'] = vood.Obj({
 });
 module.exports = exports['default'];
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -644,7 +631,7 @@ exports['default'] = vood.Helper('router', {
 });
 module.exports = exports['default'];
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // var util = require('dest/util/helper').default;
 
 'use strict';
@@ -913,7 +900,7 @@ var meta = function meta() {
 exports['default'] = meta;
 module.exports = exports['default'];
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1052,7 +1039,7 @@ exports['default'] = vood.Obj({
 });
 module.exports = exports['default'];
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 ////-----------------------------------------------------------------------------------------
 // Uppercases the first letter of an string
 "use strict";
@@ -1105,7 +1092,7 @@ var obj = {
 exports["default"] = window.vood ? vood.Obj(obj) : obj;
 module.exports = exports["default"];
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1149,7 +1136,7 @@ exports["default"] = vood.Obj({
 });
 module.exports = exports["default"];
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1238,7 +1225,7 @@ function view(path, obj) {
 exports['default'] = view;
 module.exports = exports['default'];
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1548,4 +1535,4 @@ exports['default'] = vood.Obj({
 });
 module.exports = exports['default'];
 
-},{}]},{},[1,4,2,3,5,6,7,8,9,10,11,12,13,14]);
+},{}]},{},[1,2,3,4,5,6,7,8,9,10,11,12,13]);

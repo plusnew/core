@@ -4,19 +4,9 @@ module.exports = function(grunt) {
 	var fileSelector = ['./src/*', './src/**/*'];
 
 	grunt.initConfig({
-		concat: {
-			dist: {
-				src: fileSelector,
-				dest: 'tmp/concat.js'
-			}
-		},
 		browserify: {
-			options: {
-				debug: true
-			},
 			dist: {
 				options: {
-					debug: true,
 					transform: [
 						["babelify", {loose: "all"}]
 					],
@@ -34,5 +24,5 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.registerTask('default', ['clean', 'browserify']);
+	grunt.registerTask('default', ['browserify']);
 };
