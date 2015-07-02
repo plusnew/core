@@ -2,6 +2,10 @@ vood
 ====
 
 lightweight mvc-framework with queries :3
+unlike other frameworks we don't render the whole template each time
+data changed in your component. The Templating engine
+[tempart](https://github.com/plusgut/tempart) notifies the view what
+actually changed, without the need to diff between different states.
 
 api
 ---
@@ -31,7 +35,7 @@ vood.View('main/app' {
 
 vood.get('main/app'); // Returns all controllers matching the path
 vood.get(1);          // Returns the controller with the id
-vood.get('@each');        // Returns all controllers
+vood.get('@each');    // Returns all controllers
 
 
 ```
