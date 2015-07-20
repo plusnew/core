@@ -1,19 +1,23 @@
 module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
-	var fileSelector = ['./src/*', './src/**/*'];
+	var srcFileSelector = ['src/app.js', 'src/*/*'];
+	var tmpFileSelector = ['src/app.js', 'src/*/*'];
 
 	grunt.initConfig({
-		browserify: {
+		babel: {
+			all: {
+				files: [{
+					expand: true,
+					src: srcFileSelector,
+					dest: 'tmp'
+				}]
+			}
+		},
+		concat: {
 			dist: {
-				options: {
-					transform: [
-						["babelify", {loose: "all"}]
-					],
-				},
-				files: {
-					'./dist/vood.js': fileSelector
-				}
+				src: tmpFileSelector,
+				dest: 'dist/vood.js'
 			}
 		},
 		clean: {
@@ -24,5 +28,5 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.registerTask('default', ['browserify']);
+	grunt.registerTask('default', ['clean', 'babel', 'concat']);
 };
