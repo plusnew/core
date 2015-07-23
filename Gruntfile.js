@@ -1,14 +1,21 @@
 module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
-	var srcFileSelector = ['src/app.js', 'src/*/*'];
-	var tmpFileSelector = ['src/app.js', 'src/*/*'];
+	var srcFileSelector = ['app.js', '*/*'];
+	var tmpFileSelector = ['tmp/app.js', 'tmp/*/*'];
 
 	grunt.initConfig({
 		babel: {
+			options: {
+				modules: 'amd',
+				moduleIds: true,
+				sourceRoot: 'src',
+				moduleRoot: 'vood'
+			},
 			all: {
 				files: [{
 					expand: true,
+					cwd: 'src',
 					src: srcFileSelector,
 					dest: 'tmp'
 				}]
@@ -22,7 +29,14 @@ module.exports = function(grunt) {
 		},
 		clean: {
 			dist: {
-				src: ['dist']
+				src: ['tmp', 'dist']
+			}
+		},
+
+		watch: {
+			scripts: {
+				files: srcFileSelector,
+				tasks: ['clean', 'babel', 'concat']
 			}
 		}
 	});
