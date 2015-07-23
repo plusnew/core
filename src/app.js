@@ -30,7 +30,7 @@ import Controller from 'vood/controller/class';
 import controllerHelper from 'vood/controller/helper';
 import Helper from 'vood/helper/class';
 import helperHelper from 'vood/helper/helper';
-import adapterHelper from 'vood/helper/adapter';
+// import adapterHelper from 'vood/helper/adapter';
 import routerHelper from 'vood/helper/router';
 import utilHelper from 'vood/util/helper';
 import utilRunloop from 'vood/util/runloop';
@@ -44,19 +44,19 @@ var vood = Obj({
 	// abstract class of everything
 	Obj: Obj,
 	////-----------------------------------------------------------------------------------------
-	// a list of prefixes of all modules which should be loaded
-	types: [ 'obj', 'util', 'view', 'controller', 'mixin', 'widget', 'helper' ],
-	////-----------------------------------------------------------------------------------------
 	// Overwriting of core-modules and calling inits of modules
 	init: function( opt ){
+		if(!window.app) {
+			window.app = {};
+		}
 		console.log( 'Can I haz some voods?' );
 		_.merge( vood, opt );
 		this.executeInit();
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
-	find: function( path ){
-		return this.controllerHelper.find( path );
+	search: function( path ){
+		return this.controllerHelper.search( path );
 	},
 	////-----------------------------------------------------------------------------------------
 	// calls inits of the core-modules
@@ -100,15 +100,12 @@ var vood = Obj({
 	},
 });
 
-
-window.vood = vood;
-
 vood.objHelper        = objHelper;
 vood.Controller       = Controller;
 vood.controllerHelper = controllerHelper;
 vood.Helper           = Helper;
 vood.helperHelper     = helperHelper;
-vood.adapterHelper    = adapterHelper;
+// vood.adapterHelper    = adapterHelper;
 vood.routerHelper     = routerHelper;
 vood.utilHelper       = utilHelper;
 vood.utilRunloop      = utilRunloop;

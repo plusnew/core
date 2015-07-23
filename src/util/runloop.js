@@ -1,3 +1,5 @@
+// @TODO move this to helper/runloop
+
 import Obj from 'vood/obj/class';
 
 export default Obj({

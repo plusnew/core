@@ -88,7 +88,7 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
-	find: function( path ) {
+	search: function( path ) {
 		return this._iterate( path );
 	},
 	////-----------------------------------------------------------------------------------------

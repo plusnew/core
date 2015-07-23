@@ -191,7 +191,7 @@ export default Obj({
 		for( var i = 0; i < opt.controllers.length; i++){
 			var uid = opt.controllers[i];
 			for( var spaceIndex = 0; spaceIndex < this.eventSpaces.length; spaceIndex++ ) {
-				var controllers = vood[ this.eventSpaces[ spaceIndex] ].get( uid );
+				var controllers = vood[ this.eventSpaces[ spaceIndex] ].search( uid );
 				for( var controllerIndex = 0; controllerIndex < controllers.length; controllerIndex++ ){
 					var value = null;
 					if(controllers[ controllerIndex ].view) {

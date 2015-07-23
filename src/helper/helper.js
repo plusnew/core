@@ -3,7 +3,7 @@ import Obj from 'vood/obj/class';
 export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// returns helpers as an array, for better eventhandling at the viewhelper
-	get: function() {
+	search: function() {
 		var result = [];
 		for( var i in app.helper ) {
 			result.push( app.helper[ i ] );

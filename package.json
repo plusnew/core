@@ -4,7 +4,6 @@
   "description": "VOOD lightweight MVC-Framework with queries",
   "main": "dist/vood.js",
   "devDependencies": {
-    "babelify": "^6.1.2",
     "grunt": "^0.4.5",
     "grunt-babel": "^5.0.1",
     "grunt-contrib-clean": "^0.6.0",
