@@ -1,4 +1,6 @@
-export default vood.Helper( 'router', {
+import Obj from 'vood/obj/class';
+
+export default Obj({
 	// Helper goes into userspace, because he propably wants to overwrite it
 	events: [{
 		action: 'change',

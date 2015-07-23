@@ -1,4 +1,6 @@
-export default vood.Obj({
+import Obj from 'vood/obj/class';
+
+export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// In which package does requirejs use the templates
 	templatePrefix: 'templates/',

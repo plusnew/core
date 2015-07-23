@@ -1,4 +1,6 @@
-export default vood.Obj({
+import Obj from 'vood/obj/class';
+
+export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// Increment of the upcoming controller-ids
 	id: 0,

@@ -24,9 +24,20 @@
             (_(_(_,' '._)_)_)
 */
 
-var voodPrefix = 'vood/';
-
 import Obj from 'vood/obj/class';
+import objHelper from 'vood/obj/helper';
+import Controller from 'vood/controller/class';
+import controllerHelper from 'vood/controller/helper';
+import Helper from 'vood/helper/class';
+import helperHelper from 'vood/helper/helper';
+import adapterHelper from 'vood/helper/adapter';
+import routerHelper from 'vood/helper/router';
+import utilHelper from 'vood/util/helper';
+import utilRunloop from 'vood/util/runloop';
+import View from 'vood/view/class';
+import viewHelper from 'vood/view/helper';
+import Template from 'vood/template/class';
+import templateHelper from 'vood/template/helper';
 
 var vood = Obj({
 	////-----------------------------------------------------------------------------------------
@@ -53,36 +64,6 @@ var vood = Obj({
 		for( var index in this ){
 			if( _.isObject( this[ index ] ) && _.isFunction( this[index].init )){
 				this[index].init();
-			}
-		}
-	},
-	////-----------------------------------------------------------------------------------------
-	// loads core and app
-	loadAll: function(){
-		window.app = vood.Obj({});
-
-		this.load( this, voodPrefix, 'default', true );
-		this.load( null, 'appkit/' );
-	},
-	////-----------------------------------------------------------------------------------------
-	// loading of core or app
-	load: function( space, prefix, property, transform ){
-		var seen = requirejs._eak_seen;
-		for( var i = 0; i < this.types.length; i++  ){
-			for( var seenIndex in seen ){
-				var type = prefix + this.types[ i ].toLowerCase();
-				if( seenIndex.search( type ) === 0 ){
-					var name = seenIndex;
-					if( space ){
-						if( transform ){
-							name = this.transform( seenIndex, prefix );
-						}
-						space[ name ] = require( seenIndex )[ property ];
-					} else {
-						require( seenIndex );
-					}
-					
-				}
 			}
 		}
 	},
@@ -119,6 +100,21 @@ var vood = Obj({
 	},
 });
 
-// vood.loadAll();
+
+window.vood = vood;
+
+vood.objHelper        = objHelper;
+vood.Controller       = Controller;
+vood.controllerHelper = controllerHelper;
+vood.Helper           = Helper;
+vood.helperHelper     = helperHelper;
+vood.adapterHelper    = adapterHelper;
+vood.routerHelper     = routerHelper;
+vood.utilHelper       = utilHelper;
+vood.utilRunloop      = utilRunloop;
+vood.View             = View;
+vood.viewHelper       = viewHelper;
+vood.Template         = Template;
+vood.templateHelper   = templateHelper;
 
 export default vood;

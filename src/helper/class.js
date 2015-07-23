@@ -1,4 +1,3 @@
-vood.helper = vood.Obj({});
 ////-----------------------------------------------------------------------------------------
 // creating helper class
 function helper( path, obj ){

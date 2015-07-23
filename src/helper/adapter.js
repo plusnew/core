@@ -1,4 +1,6 @@
-export default vood.Obj({
+import Obj from 'vood/obj/class';
+
+export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// You should overwrite this with the vood.init({helperAdapter: adapterImplementation: {host: 'localhost', port: '8080'}})
 	adapterImplementation: {

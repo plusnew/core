@@ -1,4 +1,6 @@
-export default vood.Obj({
+import Obj from 'vood/obj/class';
+
+export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// returns helpers as an array, for better eventhandling at the viewhelper
 	get: function() {
