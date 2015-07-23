@@ -35,7 +35,10 @@ module.exports = function(grunt) {
 
 		watch: {
 			scripts: {
-				files: srcFileSelector,
+				files: [
+					'src/*',
+					'src/*/*'
+				],
 				tasks: ['clean', 'babel', 'concat']
 			}
 		}
