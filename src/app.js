@@ -24,10 +24,11 @@
             (_(_(_,' '._)_)_)
 */
 
-var voodPrefix = 'voodkit/';
-// var Obj = require( voodPrefix + 'obj/class' ).default;
-// debugger;
-window.vood = Obj({
+var voodPrefix = 'vood/';
+
+import Obj from 'vood/obj/class';
+
+var vood = Obj({
 	////-----------------------------------------------------------------------------------------
 	// abstract class of everything
 	Obj: Obj,
@@ -118,6 +119,6 @@ window.vood = Obj({
 	},
 });
 
-vood.loadAll();
+// vood.loadAll();
 
 export default vood;

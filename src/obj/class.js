@@ -1,4 +1,4 @@
-// var util = require('dest/util/helper').default;
+import util from 'vood/util/helper';
 
 var defaults = {
 	_meta: {
