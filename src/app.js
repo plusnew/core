@@ -44,8 +44,12 @@ var vood = Obj({
 	// abstract class of everything
 	Obj: Obj,
 	////-----------------------------------------------------------------------------------------
+	// A flag needed to advice an application programmer
+	didInit: false,
+	////-----------------------------------------------------------------------------------------
 	// Overwriting of core-modules and calling inits of modules
 	init: function( opt ){
+		this.didInit = true;
 		if(!window.app) {
 			window.app = {};
 		}
@@ -113,5 +117,9 @@ vood.View             = View;
 vood.viewHelper       = viewHelper;
 vood.Template         = Template;
 vood.templateHelper   = templateHelper;
+
+setTimeout(function() {
+	if(!vood.didInit) console.log('To setup a vood application you should call vood.init({})');
+}, 10);
 
 export default vood;

@@ -5,11 +5,8 @@ export default Obj({
 	// In which package does requirejs use the templates
 	templatePrefix: 'templates/',
 	////-----------------------------------------------------------------------------------------
-	// object where all template functions are stored
-	jst: {},
-	////-----------------------------------------------------------------------------------------
 	// Jquery selector where the this.startPath controller and view are added
-	entrance: 'body',
+	entrance: '#app',
 	////-----------------------------------------------------------------------------------------
 	// Controller which is added at startup
 	startPath: 'main/app',
@@ -49,7 +46,6 @@ export default Obj({
 			this.addJob( {callback: this.dirtyChecking} );
 		}
 		this.checkValidity();
-		this.insertTemplates();
 		this.insertApp();
 		this.addEvents();
 	},
@@ -58,16 +54,6 @@ export default Obj({
 	// creates instance of view
 	create: function( path, opt ){
 		return this.getEntity(path);
-	},
-	////-----------------------------------------------------------------------------------------
-	// searches for jade templates and adds to this.jst
-	insertTemplates: function(){
-		var seen = requirejs._eak_seen;
-		for( var seenIndex in seen ){
-			if( seenIndex.search( this.templatePrefix ) === 0 ){
-				this.jst[ seenIndex ] = require( seenIndex ).default;
-			}
-		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// inserts first view to this.entrance
@@ -92,14 +78,7 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// compiles the template with the corresponding content
 	compile: function( path, content ){
-		var name = this.templatePrefix + path;
-
-		if( this.jst[ name ] ){
-			return this.jst[ name ]( content );
-		} else {
-			console.error( path + ' no such template' );
-			return '';
-		}
+		return 
 	},
 	////-----------------------------------------------------------------------------------------
 	// start uid
