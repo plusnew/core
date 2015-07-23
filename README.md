@@ -33,9 +33,9 @@ vood.View('main/app' {
   }]
 });
 
-vood.get('main/app'); // Returns all controllers matching the path
-vood.get(1);          // Returns the controller with the id
-vood.get('@each');    // Returns all controllers
+vood.search('main/app'); // Returns all controllers matching the path
+vood.search(1);          // Returns the controller with the id
+vood.search('@each');    // Returns all controllers
 
 
 ```
