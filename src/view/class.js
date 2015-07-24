@@ -7,6 +7,12 @@ var classContent = {
 		////-----------------------------------------------------------------------------------------
 		// Prefix where setter and getter should view
 		contentSpace: 'controller.content',
+		////-----------------------------------------------------------------------------------------
+		// current values for checking context
+		currentValues: [],
+		////-----------------------------------------------------------------------------------------
+		// Keeps in mind what keys did get dirty, to only change that
+		dirty: []
 	},
 	////-----------------------------------------------------------------------------------------
 	// array of eventdefinitions
@@ -25,30 +31,28 @@ var classContent = {
 	////-----------------------------------------------------------------------------------------
 	// handles replacement of content and triggers compile function
 	_render: function(){
-		this._meta.dirty = false;
-		var startUid = vood.viewHelper.uidDomNode + '[' + vood.viewHelper.uidAttrStart + '=' + this.controller._meta.uid + ']';
-		var begin    = $( startUid );
-		// @TODO remove subcontrollers
-		while( this.obj( 'root' ).length > 1 ){
-			this.obj( 'root' ).last().remove(); // I want only one object to get replaced, else its possible to have the content dubled
-		}
-		if( this.obj( 'root').length=== 0 && begin.length === 1) { // Needed, if the template had nothing to return previously
-			begin.after('<span></span>'); // We shortly add a span to have an entrance point
-		}
-		this.obj( 'root').replaceWith( this._compile() );
+		this._compile( this._meta.dirty );
+		this._meta.dirty = []; // There will everything be in
+
 		vood.utilHelper.safeCall( this.controller, 'notify' );
 		vood.utilHelper.safeCall( this, 'notify' );
 	},
 	////-----------------------------------------------------------------------------------------
-	// Trigger jade compiler
-	_compile: function(){
-		return vood.viewHelper.compile( this.controller._meta.path, this.controller.content );
+	// Trigger templateHelper
+	_compile: function(dirties){
+		return vood.templateHelper.compile(
+			this.controller._meta.path,
+			this.controller._meta.uid,
+			this.controller.content,
+			this._meta.currentValues,
+			dirties
+		);
 	},
 	////-----------------------------------------------------------------------------------------
 	// Triggers compilefunction but adds script-tags with uid
 	_compileComplete: function(){
 		var id = this.controller._meta.uid;
-		return vood.viewHelper.scriptStart( id, this._meta.path ) + this._compile() + vood.viewHelper.scriptEnd( id );
+		return vood.viewHelper.scriptStart( id, this._meta.path ) + this._compile('*') + vood.viewHelper.scriptEnd( id );
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns jquery object depending selector

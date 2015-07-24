@@ -174,7 +174,7 @@ var defaults = {
 			// Only rerender when its relevant to the template
 			if( keyParts[ 0 ] === this._meta.contentSpace ){
 				if( vood.viewHelper.dirtyHandling !== false ){
-					this.view._meta.dirty = true;
+					this.view._meta.dirty = true; // @TODO change to array-behaviour. what exactly did change?
 				} else {
 					this.view._render();
 				}

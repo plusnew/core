@@ -77,8 +77,9 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// compiles the template with the corresponding content
-	compile: function( path, content ){
-		return 
+	compile: function( path, content, context = ['*']){
+		debugger;
+		return vood.templateHelper.compile(path, content, context);
 	},
 	////-----------------------------------------------------------------------------------------
 	// start uid
