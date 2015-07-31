@@ -7,10 +7,10 @@ export default Obj({
 	//// ------------------------------------------------------------
 	// Layer for comunnicate with tempart
 	compile: function( path, uid, content, currentValues, dirties ){
-		if( !this.list[ path ] ){
-			throw 'Template does not exist';
+		if( this.list[ path ] ){
+			return tempartCompiler.compile( this.list[ path ], content, currentValues, dirties, path );
 		} else {
-			return tempartCompiler.compile( this.list[ path ], content, currentValues, dirties );
+			throw 'Template ' + path + ' does not exist';
 		}
 	}
 });

@@ -42,6 +42,7 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// adds dirtychecking to runloop and inserts first view this.startPath and starts document event listener
 	init: function(){
+		tempartCompiler.partial = this.partialHandling; // Thats how you configure tempart...
 		if( this.dirtyHandling !== false ){
 			this.addJob( {callback: this.dirtyChecking} );
 		}
@@ -49,7 +50,11 @@ export default Obj({
 		this.insertApp();
 		this.addEvents();
 	},
-
+	////-----------------------------------------------------------------------------------------
+	// adds dirtychecking to runloop and inserts first view this.startPath and starts document event listener
+	partialHandling: function( block, context, currentValues, dirties, opt ) {
+		return vood.controllerHelper.create( block.path, context ).html;
+	},
 	////-----------------------------------------------------------------------------------------
 	// creates instance of view
 	create: function( path, opt ){
@@ -78,7 +83,6 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// compiles the template with the corresponding content
 	compile: function( path, content, context = ['*']){
-		debugger;
 		return vood.templateHelper.compile(path, content, context);
 	},
 	////-----------------------------------------------------------------------------------------
