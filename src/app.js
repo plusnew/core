@@ -65,8 +65,17 @@ var vood = Obj({
 	////-----------------------------------------------------------------------------------------
 	// calls inits of the core-modules
 	executeInit: function(){
+		var setups = ['eventsystem', 'viewHelper'];
+		// viewhelper should be initted first - it creates all the controllers and views
+		// which should be able to listen to helper trigger()
+		for( var setupIndex in setups ){
+			if( setups.hasOwnProperty( setupIndex )){
+				vood[ setups[ setupIndex]].init();
+			}
+		}
+
 		for( var index in this ){
-			if( _.isObject( this[ index ] ) && _.isFunction( this[index].init )){
+			if( _.isObject( this[ index ] ) && _.isFunction( this[index].init ) && setups.indexOf( index ) === -1 ){
 				this[index].init();
 			}
 		}
