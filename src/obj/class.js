@@ -65,8 +65,8 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles all the events
-	trigger: function( type, evt, opt ){
-		return vood.viewHelper.trigger( type, evt, opt);
+	trigger: function( type, ...args ){
+		return vood.eventsystem.trigger( type, '*', args );
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for handling data-operations

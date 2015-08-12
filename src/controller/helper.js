@@ -20,12 +20,15 @@ export default Obj({
 	// Flag if the garbagecollection should be enabled
 	systemLoaded: false,
 	////-----------------------------------------------------------------------------------------
+	// holds the registrations of other modules, which will be triggered for creation
+	_registers: {},
+	////-----------------------------------------------------------------------------------------
 	// Init adds needed runloop jobs (garbage collection, and async calling of controller-inits)
 	init: function(){
 		if( this.garbageCollection !== false ){
 			this.addJob( {callback: this.garbage} );
 		}
-		this.addJob( {callback: this.callInits} );
+		this.addJob( {callback: this._callInits} );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Creates the controller-instance of the class, returns the html
@@ -40,6 +43,7 @@ export default Obj({
 		}
 		this.anons[ id ].view            = vood.viewHelper.create( path, opt );
 		this.anons[ id ].view.controller = this.anons[ id ];
+		this._handleRegisters( this.anons[ id ], opt );
 		vood.utilHelper.safeCall( this.anons[ id ], 'construct' );
 		vood.utilHelper.safeCall( this.anons[ id ].view, 'construct' );
 		var html                            = this.anons[ id ].view._compileComplete();
@@ -47,7 +51,7 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Is a runloop jobs, for calling the init of new controllers, needs to be called after instanciating
-	callInits: function( force ){
+	_callInits: function( force ){
 		var result = [];
 		var found  = false;
 		for( var i = 0; i < vood.controllerHelper.inits.length; i++ ){
@@ -122,6 +126,23 @@ export default Obj({
 			} else {
 				return [ this.anons[ id ]];
 			}
+		}
+	},
+	////-----------------------------------------------------------------------------------------
+	// 
+	_addRegister: function( namespace, func ){
+		if( !this._registers[namespace] ){
+			this._registers[namespace] = func;
+		} else {
+			console.warn( namespace + ' has already an registration')
+		}
+	},
+	////-----------------------------------------------------------------------------------------
+	// triggers the registers
+	_handleRegisters: function( instance ){
+		for( var index in this._registers ){
+			var func = this._registers[ index ];
+			vood[ index ][ func ]( instance, 'controller' );
 		}
 	},
 	////-----------------------------------------------------------------------------------------
