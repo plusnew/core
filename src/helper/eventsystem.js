@@ -15,10 +15,30 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Handles the triggering of the events
-	trigger: function( namespace, ids, args ){
+	trigger: function( type, ids, args ){
+		// @TODO improve, this doesn't look performative
 		var result = [];
-		if(!result.length) {
-			console.warn( 'There was no eventdefinition found ' + namespace );
+		if( this._list[ type ] ){
+			for(var namespace in this._list[ type ]){
+				for(var id in this._list[ type ][ namespace ]) {
+					var events   = this._list[ type ][ namespace ][ id ];
+					var instances = vood[namespace + 'Helper'].search(id);
+					for(var instanceIndex = 0; instanceIndex < instances.length; instanceIndex++ ){
+						var instance = instances[ instanceIndex ];
+						for( var i = 0; i < events.length; i++ ){
+							var evt = events[ i ];
+							if(instance[ evt.action ]) {
+								result.push(instance[ evt.action ]( type, ...args ));
+							} else {
+								console.error( 'The ' + namespace + ' does not have the function ' + evt.action, id );
+							}
+						}
+					}
+				}
+			}
+		}
+		if( !result.length ){
+			console.warn( 'There was no eventdefinition found ' + type );
 		}
 		return result;
 	},
