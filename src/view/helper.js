@@ -23,6 +23,9 @@ export default Obj({
 	// Existing classes collection
 	list: {},
 	////-----------------------------------------------------------------------------------------
+	// saves which views changed
+	dirties: [],
+	////-----------------------------------------------------------------------------------------
 	// Decides which instances are asked for handling events
 	eventSpaces: [ 'controllerHelper', 'helperHelper' ],
 	////-----------------------------------------------------------------------------------------
@@ -38,6 +41,9 @@ export default Obj({
 			}
 			
 		}
+	},
+	_meta: {
+		contentSpace: false
 	},
 	////-----------------------------------------------------------------------------------------
 	// adds dirtychecking to runloop and inserts first view this.startPath and starts document event listener

@@ -4,7 +4,7 @@ var defaults = {
 	_meta: {
 		////-----------------------------------------------------------------------------------------
 		// Prefix where setter and getter should view
-		contentSpace: 'content'
+		contentSpace: false
 	},
 	////-----------------------------------------------------------------------------------------
 	// default initfunction
@@ -44,8 +44,8 @@ var defaults = {
 
 	////-----------------------------------------------------------------------------------------
 	// metafunction for pushing content, only for arrays
-	push: function( key, opt ){
-		return this._handleData( 'push', key, null, opt );
+	push: function( key, value, opt ){
+		return this._handleData( 'push', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for pushing content, return true when added to array, returns false when it was already added
@@ -115,11 +115,12 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// query management of data-handling
-	_handleRealData: function( type, key, value, opt ){
+	_handleRealData: function( type, key, value, opt, objType ){
 		var keyParts  = key.split( '.' );
 		var partClone = _.clone( keyParts );
 		var result    = vood.objHelper.isQuery( key ) ? [] : undefined;
 
+		// @FIXME is the getter-logic from tempart useful? Then no clone and slice is needed
 		for( var i = 0; i < keyParts.length; i++ ){
 			var part = keyParts[ i ];
 			var previous = partClone.slice( 0, i );
@@ -129,7 +130,6 @@ var defaults = {
 				var obj      = this._getReference( previous )[ lastKey ];
 				for( var arrIndex in obj ){
 					if( obj.hasOwnProperty( arrIndex) && vood.objHelper.isTrue( obj[ arrIndex ], part, opt.query )){
-						opt.addRegistry     = false;
 						partClone[ i ] = arrIndex;
 						result.push( this._handleRealData( type, partClone.join( '.' ), value, opt ));
 					}
@@ -159,6 +159,15 @@ var defaults = {
 					changed = true;
 				}
 				break;
+			case 'push':
+			case 'pushOnce':
+				var current = this._getReference( keyParts, 'arr' )[ keyParts[ keyParts.length - 1 ]];
+				if( type != 'pushOnce' || current.indexOf( value ) === -1 ){
+					current.push( value );
+					result = true;
+					changed = true;
+				}
+				break;
 			default:
 				throw 'type ' + type + ' is not defined';
 		}
@@ -167,7 +176,7 @@ var defaults = {
 			// Only rerender when its relevant to the template
 			if( keyParts[ 0 ] === this._meta.contentSpace ){
 				if( vood.viewHelper.dirtyHandling !== false ){
-					this.view._meta.dirty = true; // @TODO change to array-behaviour. what exactly did change?
+					this.view._addDirty( keyParts.join( '.'), type );
 				} else {
 					this.view._render();
 				}
@@ -177,33 +186,51 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent
-	_getReference: function( keyParts ){
-		if(keyParts.length === 1) { // @FIXME whithout this hack, function returns null
-			return this;
+	_getReference: function( keyParts, type ){
+		console.log(keyParts.join('.'))
+		var content = null;
+		var start   = null; // @FIXME improve this start thingi
+		if(keyParts.length === 1) {
+			content = this;
+			start = 0;
 		} else {
-			var content = this[ keyParts[ 0 ]];
-			for( var i = 1; i < keyParts.length; i++ ){
-				var part = keyParts[ i ];
+			content = this[ keyParts[ 0 ]]; // @FIXME when initial value is not defined, nothing works
+			start = 1;
+		}
+		for( var i = start; i < keyParts.length; i++ ){
+			var part = keyParts[ i ];
+			console.log('sup?');
 
-				if( i == keyParts.length - 1 ){
-					return content; // sadly i cant return the property-value itself, reference would get lost
-				}
-
-				if( !content[ part ] && i + 1 < keyParts.length ){ // @TODO Check for sideeffects -> === undefined was it before
-					content[ part ] = {};
-					content = content[ part ];
-					console.info( keyParts.slice( 0, i + 1 ).join( '.' ) + ' did not exist, so I created it for you');
+			// if(keyParts)
+			if( !content[ part ] ){ // @TODO Check for sideeffects -> === undefined was it before
+				console.log('CREATION!');
+				if( type == 'arr' ) {
+					content[ part ] = [];
 				} else {
-					content = content[ part ];
+					content[ part ] = obj;
+				}
+				
+				content = content[ part ];
+				console.info( keyParts.slice( 0, i + 1 ).join( '.' ) + ' did not exist, so I created it for you');
+			} else if( i !== keyParts.length - 1){
+				console.log('OVERWRITE!');
+				content = content[ part ];
+			}
+
+			if( i == keyParts.length - 1){
+				if(keyParts.length === 1) {
+					return this;
+				} else {
+					return content; // sadly i cant return the property-value itself, reference would get lost
 				}
 			}
 		}
-		
+		throw 'Something went totally wrong at getting the references';
 	},
 	////-----------------------------------------------------------------------------------------
 	// adds (optional) prefix to path
 	_generateRealpath: function( key, opt ){
-		if( opt.contentSpace === false ){
+		if( opt.contentSpace === false || this._meta.contentSpace === false){
 			return key;
 		} else if( opt.contentSpace ){
 			return opt.contentSpace + '.' + key;

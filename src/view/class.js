@@ -55,13 +55,18 @@ var classContent = {
 		return vood.viewHelper.scriptStart( id, this._meta.path ) + this._compile('*') + vood.viewHelper.scriptEnd( id );
 	},
 	////-----------------------------------------------------------------------------------------
+	// Registers what keys got dirty
+	_addDirty: function( key, type ) {
+		vood.viewHelper.pushOnce('dirties', this.controller._meta.uid);
+	},
+	////-----------------------------------------------------------------------------------------
 	// returns jquery object depending selector
 	obj: function( path ){
 		var selector = null;
 		var id = this.controller._meta.uid;
 		var startUid = vood.viewHelper.uidDomNode + '[' + vood.viewHelper.uidAttrStart + '=' + id + ']';
 		var endUid   = vood.viewHelper.uidDomNode + '[' + vood.viewHelper.uidAttrEnd + '=' + id +']';
-		var root = $( startUid ).nextUntil( endUid);
+		var root = $( startUid ).nextUntil( endUid );
 		if( path !== 'root' ){
 			if( !this[ path ] ){
 				throw 'Couldnt get you the obj because of missing definition';
