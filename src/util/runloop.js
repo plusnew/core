@@ -24,6 +24,7 @@ export default Obj({
 			if( true ){
 				this.jobs[ i ].callback();
 			} else {
+				// @FIXME propably it should be not capsulated by trycatch but with a setTimeout
 				try {
 					this.jobs[ i ].callback();
 				} catch( err ){
@@ -36,7 +37,8 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// add a job to the list
 	// @TODO validation
-	addJob: function( job ){
+	_addJob: function( job ){
+		// @FIXME dont take just the callbacks, but the scope
 		return this.jobs.push( job );
 	}
 });

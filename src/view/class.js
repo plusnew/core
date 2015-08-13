@@ -12,7 +12,7 @@ var classContent = {
 		currentValues: [],
 		////-----------------------------------------------------------------------------------------
 		// Keeps in mind what keys did get dirty, to only change that
-		dirty: []
+		dirty: {}
 	},
 	////-----------------------------------------------------------------------------------------
 	// array of eventdefinitions
@@ -32,7 +32,7 @@ var classContent = {
 	// handles replacement of content and triggers compile function
 	_render: function(){
 		this._compile( this._meta.dirty );
-		this._meta.dirty = []; // There will everything be in
+		this._meta.dirty = {}; // There will everything be in
 
 		vood.utilHelper.safeCall( this.controller, 'notify' );
 		vood.utilHelper.safeCall( this, 'notify' );
@@ -45,7 +45,8 @@ var classContent = {
 			this.controller._meta.uid,
 			this.controller.content,
 			this._meta.currentValues,
-			dirties
+			dirties,
+			this._meta.path
 		);
 	},
 	////-----------------------------------------------------------------------------------------
@@ -56,8 +57,18 @@ var classContent = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// Registers what keys got dirty
-	_addDirty: function( key, type ) {
+	_addDirty: function( key, type, value ) {
+		if(!this._meta.dirty[key] || type === 'set') this._meta.dirty[key] = [];
+		// @TODO add handling for pop/shift + push/unshift
+		this._meta.dirty[key].push({type, value});
 		vood.viewHelper.pushOnce('dirties', this.controller._meta.uid);
+	},
+	////-----------------------------------------------------------------------------------------
+	// Works the dirties
+	_handleDirties: function() {
+		// @TODO this._meta.dirty needs grouping for unsift and push
+		// this._compile(this._meta.dirty);
+		this._meta.dirty = {};
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns jquery object depending selector

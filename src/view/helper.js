@@ -58,8 +58,8 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// adds dirtychecking to runloop and inserts first view this.startPath and starts document event listener
-	partialHandling: function( block, context, currentValues, dirties, opt ) {
-		return vood.controllerHelper.create( block.path, context ).html;
+	partialHandling: function( block, context, currentValues, dirties, path ) {
+		return vood.controllerHelper.create( path, context ).html;
 	},
 	////-----------------------------------------------------------------------------------------
 	// creates instance of view
@@ -87,11 +87,6 @@ export default Obj({
 		return _.cloneDeep( this.list[ path ] );
 	},
 	////-----------------------------------------------------------------------------------------
-	// compiles the template with the corresponding content
-	compile: function( path, content, context = ['*']){
-		return vood.templateHelper.compile(path, content, context);
-	},
-	////-----------------------------------------------------------------------------------------
 	// start uid
 	// @TODO move this to the templating engine
 	scriptStart: function( id, path ){
@@ -111,9 +106,19 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// checks which views are dirty, to asynchronoesly render them
-	// @TODO
 	dirtyChecking: function(){
-		
+		if(vood.viewHelper.dirties) {
+			// console.log(vood.viewHelper.dirties.length);
+			for( var i = 0; i < vood.viewHelper.dirties.length; i++ ){
+				var uid = vood.viewHelper.dirties[i];
+				var controllers = vood.controllerHelper.search(uid);
+				for( var controllerIndex = 0; controllerIndex < controllers.length; controllerIndex++ ){
+					var controller = controllers[ controllerIndex ];
+					controller.view._handleDirties();
+				}
+			}
+			vood.viewHelper.dirties = [];
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// iterates through all dom-nodes to the top and returns an array of controllers

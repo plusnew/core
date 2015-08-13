@@ -27,7 +27,7 @@ var defaults = {
 	// adds runloopjobs with including uid of the jobs, for removage if controller gets destroyed
 	addJob: function( opt ){
 		opt.uid = this._meta.uid;
-		vood.utilRunloop.addJob(opt);
+		vood.utilRunloop._addJob(opt);
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for setting content, returns if value has changed and if it gets rendered
@@ -176,7 +176,7 @@ var defaults = {
 			// Only rerender when its relevant to the template
 			if( keyParts[ 0 ] === this._meta.contentSpace ){
 				if( vood.viewHelper.dirtyHandling !== false ){
-					this.view._addDirty( keyParts.join( '.'), type );
+					this.view._addDirty( keyParts.join( '.'), type, value );
 				} else {
 					this.view._render();
 				}
