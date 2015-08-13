@@ -187,7 +187,6 @@ var defaults = {
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent
 	_getReference: function( keyParts, type ){
-		console.log(keyParts.join('.'))
 		var content = null;
 		var start   = null; // @FIXME improve this start thingi
 		if(keyParts.length === 1) {
@@ -199,11 +198,9 @@ var defaults = {
 		}
 		for( var i = start; i < keyParts.length; i++ ){
 			var part = keyParts[ i ];
-			console.log('sup?');
 
 			// if(keyParts)
 			if( !content[ part ] ){ // @TODO Check for sideeffects -> === undefined was it before
-				console.log('CREATION!');
 				if( type == 'arr' ) {
 					content[ part ] = [];
 				} else {
@@ -213,7 +210,6 @@ var defaults = {
 				content = content[ part ];
 				console.info( keyParts.slice( 0, i + 1 ).join( '.' ) + ' did not exist, so I created it for you');
 			} else if( i !== keyParts.length - 1){
-				console.log('OVERWRITE!');
 				content = content[ part ];
 			}
 
