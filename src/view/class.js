@@ -9,7 +9,7 @@ var classContent = {
 		contentSpace: 'controller.content',
 		////-----------------------------------------------------------------------------------------
 		// current values for checking context
-		currentValues: [],
+		currentValues: {},
 		////-----------------------------------------------------------------------------------------
 		// Keeps in mind what keys did get dirty, to only change that
 		dirty: {}
@@ -46,7 +46,7 @@ var classContent = {
 			this.controller.content,
 			this._meta.currentValues,
 			dirties,
-			this._meta.path
+			this.controller._meta.uid
 		);
 	},
 	////-----------------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ var classContent = {
 	// Works the dirties
 	_handleDirties: function() {
 		// @TODO this._meta.dirty needs grouping for unsift and push
-		// this._compile(this._meta.dirty);
+		var foo = this._compile(this._meta.dirty);
 		this._meta.dirty = {};
 	},
 	////-----------------------------------------------------------------------------------------

@@ -200,11 +200,11 @@ var defaults = {
 			var part = keyParts[ i ];
 
 			// if(keyParts)
-			if( !content[ part ] ){ // @TODO Check for sideeffects -> === undefined was it before
+			if( !content[ part ] && i + 1 < keyParts.length){ // @TODO Check for sideeffects -> === undefined was it before
 				if( type == 'arr' ) {
 					content[ part ] = [];
 				} else {
-					content[ part ] = obj;
+					content[ part ] = {};
 				}
 				
 				content = content[ part ];
