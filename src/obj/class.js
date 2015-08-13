@@ -3,12 +3,6 @@ import util from 'vood/util/helper';
 var defaults = {
 	_meta: {
 		////-----------------------------------------------------------------------------------------
-		// Handles the internal registry for setters
-		regs: [],
-		////-----------------------------------------------------------------------------------------
-		// Flag if an internal registry should be used
-		registry: false,
-		////-----------------------------------------------------------------------------------------
 		// Prefix where setter and getter should view
 		contentSpace: 'content'
 	},
@@ -160,7 +154,6 @@ var defaults = {
 			case 'set':
 				var current = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
 				if( current != value ){
-					this._addReg( keyParts.join( '.'), value, opt );
 					this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]] = value;
 					result  = true;
 					changed = true;
@@ -181,29 +174,6 @@ var defaults = {
 			}
 		}
 		return result;
-	},
-	////-----------------------------------------------------------------------------------------
-	// Builds a registry-array
-	_addReg: function( key, value, opt ) {
-		if( opt.addRegistry !== false ){
-			var result  = [];
-			var later   =  [];
-			var history = false;
-			for( var i = 0; i < this._meta.regs.length; i++ ){
-				var register = this._meta.regs[ i ];
-				if( key === register.key && history){
-
-				} else if( vood.objHelper.isKeyChild( key, register.key )) {
-					if( opt.keepChilds ) {
-						later.push( register );
-					}
-				} else {
-					result.push( register );
-				}
-			}
-			result.push( {key: key, value: value, opt: opt} );
-			this._meta.regs = result.concat( later );
-		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent

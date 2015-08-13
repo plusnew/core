@@ -54,10 +54,10 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// Handles the internal registry for events
 	addEvent: function( evt, id, namespace ){
-		if( !this._list[ evt.type ])				this._list[ evt.type ] = {};
-		if( !this._list[ evt.type ][namespace])		this._list[ evt.type ][namespace] = {};
-		if( !this._list[ evt.type ][namespace][id])	this._list[ evt.type ][namespace][id] = [];
-		this._list[ evt.type ][namespace][id].push(evt);
+		if( !this._list[ evt.type ])					this._list[ evt.type ] = {};
+		if( !this._list[ evt.type ][ namespace ])		this._list[ evt.type ][namespace] = {};
+		if( !this._list[ evt.type ][ namespace ][id])	this._list[ evt.type ][namespace][id] = [];
+		this._list[ evt.type ][ namespace ][ id ].push( evt );
 	},
 	//
 	////-----------------------------------------------------------------------------------------
@@ -65,13 +65,13 @@ export default Obj({
 	validateEvent: function(evt, context) {
 		var valid  = true;
 		var length = 0;
-		for(var index in evt) {
+		for( var index in evt ){
 			if(evt.hasOwnProperty(index)) {
-				if(this._eventParts.indexOf(index) === -1) {
+				if( this._eventParts.indexOf( index ) === -1 ){
 					console.warn(context._meta.namespace + ' | \tThe event has some unknown options (' + index + ')', evt, context);
 				} else {
 					length++;
-					if(index === 'action' && !context[evt[index]]) {
+					if( index === 'action' && !context[ evt[ index ]]){
 						valid = false;
 						console.error( context._meta.namespace + ' | \tThe given action ('+evt[index] + ') does not exist in the class' );
 					}
