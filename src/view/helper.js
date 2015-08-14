@@ -59,6 +59,8 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// adds dirtychecking to runloop and inserts first view this.startPath and starts document event listener
 	partialHandling: function( block, context, currentValues, dirties, path ) {
+		// @TODO add uid to currentValues
+		currentValues[ block.id ] = {path, uid: 1 + vood.controllerHelper.id};
 		return vood.controllerHelper.create( path, context ).html;
 	},
 	////-----------------------------------------------------------------------------------------

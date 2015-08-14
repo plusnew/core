@@ -67,7 +67,7 @@ var classContent = {
 	// Works the dirties
 	_handleDirties: function() {
 		// @TODO this._meta.dirty needs grouping for unsift and push
-		var foo = this._compile(this._meta.dirty);
+		this._compile(this._meta.dirty);
 		this._meta.dirty = {};
 	},
 	////-----------------------------------------------------------------------------------------
