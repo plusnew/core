@@ -39,7 +39,7 @@ var classContent = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// Trigger templateHelper
-	_compile: function(dirties){
+	_compile: function( dirties ){
 		return vood.templateHelper.compile(
 			this.controller._meta.path,
 			this.controller._meta.uid,

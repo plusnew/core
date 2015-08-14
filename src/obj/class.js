@@ -172,11 +172,24 @@ var defaults = {
 				throw 'type ' + type + ' is not defined';
 		}
 
-		if( changed && this.view ){
+		if( changed && this.view ){ // @FIXME wont work when we made a set inside the view
 			// Only rerender when its relevant to the template
-			if( keyParts[ 0 ] === this._meta.contentSpace ){
+			var contentSpace = false;
+			var dirtyKey     = null;
+			if(this._meta.contentSpace) {
+				var contentParts  = this._meta.contentSpace.split( '.' );
+				var contentLength = contentParts.length;
+				var prefix        = keyParts.slice(0, contentLength);
+				dirtyKey          = keyParts.slice(contentLength, keyParts.length).join( '.' );
+				if( _.isEqual(prefix, contentParts) ) contentSpace = true;
+			} else {
+				dirtyKey          = keyParts.join( '.' );
+				contentSpace = true;
+			}
+
+			if( contentSpace ){
 				if( vood.viewHelper.dirtyHandling !== false ){
-					this.view._addDirty( keyParts.join( '.'), type, value );
+					this.view._addDirty( dirtyKey, type, value );
 				} else {
 					this.view._render();
 				}
