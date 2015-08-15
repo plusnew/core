@@ -167,7 +167,7 @@ export default Obj({
 			return vood.viewHelper.handleEvent( evt );
 		});
 		$( window ).on( 'hashchange', function() {
-			vood.viewHelper.trigger( 'hashchange', location.hash );
+			trhis.trigger( 'hashchange', location.hash );
 		});
 	},
 	////-----------------------------------------------------------------------------------------
@@ -176,7 +176,7 @@ export default Obj({
 		var uids = this.getUids( $(evt.target));
 		this.triggerExtra( evt );
 		this.updateData( evt );
-		return this.trigger( evt.type, evt, {controllers: uids, pseudo: false} );
+		return this.triggerEvent( evt.type, evt, {controllers: uids, pseudo: false} );
 	},
 	////-----------------------------------------------------------------------------------------
 	// way binding from dom
@@ -200,7 +200,7 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// handles all the events
 	// @TODO move this to the eventhandler
-	trigger: function( type, evt, opt ){
+	triggerEvent: function( type, evt, opt ){
 		if( !evt ) evt = {};
 		if( type.search(':') != -1) throw 'events are not allowed to have a : inside' ;
 		opt = this.prepareEventOpt( opt );

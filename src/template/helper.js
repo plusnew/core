@@ -35,7 +35,7 @@ export default Obj({
 		}
 
 		if(block.type !== 'bindAttr') throw 'Something went wrong here!';
-		for( var orderIndex = 0; i < block.order.length; i++ ){
+		for( var orderIndex = 0; orderIndex < block.order.length; orderIndex++ ){
 			if( block.order[ orderIndex ] == type ){
 				return block.contains[ orderIndex ];
 			}

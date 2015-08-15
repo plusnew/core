@@ -212,14 +212,15 @@ var defaults = {
 		for( var i = start; i < keyParts.length; i++ ){
 			var part = keyParts[ i ];
 
-			// if(keyParts)
-			if( !content[ part ] && i + 1 < keyParts.length){ // @TODO Check for sideeffects -> === undefined was it before
-				if( type == 'arr' ) {
+			if( !content[ part ]) {
+				if( type == 'arr' && i < keyParts.length) {
 					content[ part ] = [];
 				} else {
 					content[ part ] = {};
 				}
-				
+			}
+
+			if( i + 1 < keyParts.length ){ // @TODO Check for sideeffects -> === undefined was it before
 				content = content[ part ];
 				console.info( keyParts.slice( 0, i + 1 ).join( '.' ) + ' did not exist, so I created it for you');
 			} else if( i !== keyParts.length - 1){
