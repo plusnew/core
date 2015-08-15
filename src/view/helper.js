@@ -175,7 +175,27 @@ export default Obj({
 	handleEvent: function( evt ){
 		var uids = this.getUids( $(evt.target));
 		this.triggerExtra( evt );
+		this.updateData( evt );
 		return this.trigger( evt.type, evt, {controllers: uids, pseudo: false} );
+	},
+	////-----------------------------------------------------------------------------------------
+	// way binding from dom
+	updateData: function( evt ) {
+		if( evt.type == 'keyup' || evt.type == 'keydown' ){
+			var identifier = evt.target.getAttribute('tempartstart');
+			if( identifier){
+				var pos = identifier.indexOf( '-' );
+				var uid = identifier.slice( 0, pos );
+				var blockId = identifier.slice( pos + 1, identifier.length );
+				var controllers = vood.search( uid );
+				if( controllers.length === 1 ){
+					var controller = controllers[ 0 ];
+					controller.view._updateCurrent(blockId, 'value', evt.target.value);
+				} else {
+					throw 'Getting the correct controller failed somehow';
+				}
+			}
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles all the events

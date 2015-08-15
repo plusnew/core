@@ -29,6 +29,26 @@ var classContent = {
 
 	},
 	////-----------------------------------------------------------------------------------------
+	// updates the currentValue of the specified attribute/value
+	_updateCurrent: function( blockId, attribute, value) {
+		var attributeBlock = vood.templateHelper.getDependency( this._meta.path, blockId, attribute );
+		var block = this._searchBlock( blockId, attributeBlock.id, value );
+		for( var i = 0; i < attributeBlock.depending.length; i++ ){
+			this.controller.set(attributeBlock.depending[ i ], value);
+		}
+	},
+
+	_searchBlock: function( blockId, attributeId, value ){
+		var parts  = blockId.split( '-' );
+		var blocks = this._meta.currentValues;
+		var block  = null;
+		// @TODO implement it working for loops
+		for( var i = 0; i < parts.length; i++ ){
+			blocks = blocks[ parts[ i ]];
+			blocks[attributeId] = value;
+		}
+	},
+	////-----------------------------------------------------------------------------------------
 	// handles replacement of content and triggers compile function
 	_render: function(){
 		this._compile( this._meta.dirty );
