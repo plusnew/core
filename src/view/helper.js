@@ -183,7 +183,7 @@ export default Obj({
 	updateData: function( evt ) {
 		if( evt.type == 'keyup' || evt.type == 'keydown' ){
 			var identifier = evt.target.getAttribute('tempartstart');
-			if( identifier){
+			if( identifier && evt.keyCode !== 13 ){ // Enter button don't bring changes into the values
 				var pos = identifier.indexOf( '-' );
 				var uid = identifier.slice( 0, pos );
 				var blockId = identifier.slice( pos + 1, identifier.length );
