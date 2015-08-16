@@ -36,8 +36,8 @@ export default Obj({
 	eventMap: {
 		keyup: {
 			keyCode: {
-				13: 'enterkey',
-				27: 'escapekey'
+				13: 'view.enterkey',
+				27: 'view.escapekey'
 			}
 			
 		}

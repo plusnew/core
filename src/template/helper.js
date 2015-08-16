@@ -21,7 +21,6 @@ export default Obj({
 		var block  = null;
 		// @TODO implement it working for loops
 		for( var i = 0; i < parts.length; i++ ){
-			console.log(parts[ i ]);
 			for( var blockIndex = 0; blockIndex < blocks.length; blockIndex++ ){
 				if( blocks[ blockIndex].id ==  parts[ i ]){
 					if( i + 1 < parts.length) {
