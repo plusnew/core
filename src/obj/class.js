@@ -212,10 +212,10 @@ var defaults = {
 		for( var i = start; i < keyParts.length; i++ ){
 			var part = keyParts[ i ];
 
-			if( !content[ part ]) {
+			if( !content[ part ]){
 				if( type == 'arr' && i < keyParts.length) {
 					content[ part ] = [];
-				} else {
+				} else if( type == 'obj'  || i + 1 < keyParts.length){
 					content[ part ] = {};
 				}
 			}
