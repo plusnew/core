@@ -10,7 +10,7 @@ module.exports = function(grunt) {
 				modules: 'amd',
 				moduleIds: true,
 				sourceRoot: 'src',
-				moduleRoot: 'vood'
+				moduleRoot: 'snew'
 			},
 			all: {
 				files: [{
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 		concat: {
 			dist: {
 				src: tmpFileSelector,
-				dest: 'dist/vood.js'
+				dest: 'dist/snew.js'
 			}
 		},
 		clean: {

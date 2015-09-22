@@ -1,8 +1,8 @@
 {
-  "name": "vood",
+  "name": "snew",
   "version": "0.1.0",
-  "description": "VOOD lightweight MVC-Framework with queries",
-  "main": "dist/vood.js",
+  "description": "SNEW lightweight MVC-Framework with queries",
+  "main": "dist/snew.js",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-babel": "^5.0.1",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/plusgut/vood.git"
+    "url": "git+https://github.com/plusgut/snew.git"
   },
   "keywords": [
     "mvc",
@@ -29,7 +29,7 @@
   "author": "Carlo Jeske",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/plusgut/vood/issues"
+    "url": "https://github.com/plusgut/snew/issues"
   },
-  "homepage": "https://github.com/plusgut/vood#readme"
+  "homepage": "https://github.com/plusgut/snew#readme"
 }

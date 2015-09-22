@@ -1,4 +1,4 @@
-import Obj from 'vood/obj/class';
+import Obj from 'snew/obj/class';
 
 export default Obj({
 	////-----------------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ export default Obj({
 				else result = false;
 				break;
 			default:
-				throw "Type " + type + ' is not implemented, please contact https://github.com/plusgut/vood/issues';
+				throw "Type " + type + ' is not implemented, please contact https://github.com/plusgut/snew/issues';
 		}
 		return result;
 	},

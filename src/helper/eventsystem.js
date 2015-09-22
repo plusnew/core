@@ -1,4 +1,4 @@
-import Obj from 'vood/obj/class';
+import Obj from 'snew/obj/class';
 
 export default Obj({
 	////-----------------------------------------------------------------------------------------
@@ -10,8 +10,8 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// Init registers itself to creation of controllers/helpers
 	init: function() {
-		vood.controllerHelper._addRegister('eventsystem', '_addEvents');
-		// vood.helperHelper._register('eventsystem', '_addEvents'); // @TODO
+		snew.controllerHelper._addRegister('eventsystem', '_addEvents');
+		// snew.helperHelper._register('eventsystem', '_addEvents'); // @TODO
 	},
 	////-----------------------------------------------------------------------------------------
 	// Handles the triggering of the events
@@ -22,7 +22,7 @@ export default Obj({
 			for(var namespace in this._list[ type ]){
 				for(var id in this._list[ type ][ namespace ]) {
 					var events   = this._list[ type ][ namespace ][ id ];
-					var instances = vood[namespace + 'Helper'].search(id);
+					var instances = snew[namespace + 'Helper'].search(id);
 					for(var instanceIndex = 0; instanceIndex < instances.length; instanceIndex++ ){
 						var instance = instances[ instanceIndex ];
 						for( var i = 0; i < events.length; i++ ){

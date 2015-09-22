@@ -1,4 +1,4 @@
-import Obj from 'vood/obj/class';
+import Obj from 'snew/obj/class';
 
 export default Obj({
 	////-----------------------------------------------------------------------------------------
@@ -60,8 +60,8 @@ export default Obj({
 	// adds dirtychecking to runloop and inserts first view this.startPath and starts document event listener
 	partialHandling: function( block, context, currentValues, dirties, path ) {
 		// @TODO add uid to currentValues
-		currentValues[ block.id ] = {path, uid: 1 + vood.controllerHelper.id};
-		return vood.controllerHelper.create( path, context ).html;
+		currentValues[ block.id ] = {path, uid: 1 + snew.controllerHelper.id};
+		return snew.controllerHelper.create( path, context ).html;
 	},
 	////-----------------------------------------------------------------------------------------
 	// creates instance of view
@@ -71,12 +71,12 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// inserts first view to this.entrance
 	insertApp: function(){
-		var result = vood.controllerHelper.create( this.startPath, null, {} );
+		var result = snew.controllerHelper.create( this.startPath, null, {} );
 		var dom = $( this.entrance );
 		if( dom.length === 1 ) {
 			$( this.entrance ).replaceWith( result.html );
 		} else {
-			console.error( 'vood.viewHelper.entrance was not represented in dom properly', dom );
+			console.error( 'snew.viewHelper.entrance was not represented in dom properly', dom );
 		}
 	},
 	////-----------------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ export default Obj({
 	getEntity: function( path ){
 		if( !this.list[ path ]){
 			console.log( 'View ' + path + ' does not exist' );
-			vood.View( path, {_meta: {pseudo: true}} );
+			snew.View( path, {_meta: {pseudo: true}} );
 		}
 		return _.cloneDeep( this.list[ path ] );
 	},
@@ -109,17 +109,17 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// checks which views are dirty, to asynchronoesly render them
 	dirtyChecking: function(){
-		if(vood.viewHelper.dirties) {
-			// console.log(vood.viewHelper.dirties.length);
-			for( var i = 0; i < vood.viewHelper.dirties.length; i++ ){
-				var uid = vood.viewHelper.dirties[i];
-				var controllers = vood.controllerHelper.search(uid);
+		if(snew.viewHelper.dirties) {
+			// console.log(snew.viewHelper.dirties.length);
+			for( var i = 0; i < snew.viewHelper.dirties.length; i++ ){
+				var uid = snew.viewHelper.dirties[i];
+				var controllers = snew.controllerHelper.search(uid);
 				for( var controllerIndex = 0; controllerIndex < controllers.length; controllerIndex++ ){
 					var controller = controllers[ controllerIndex ];
 					controller.view._handleDirties();
 				}
 			}
-			vood.viewHelper.dirties = [];
+			snew.viewHelper.dirties = [];
 		}
 	},
 	////-----------------------------------------------------------------------------------------
@@ -164,7 +164,7 @@ export default Obj({
 	// adds all dom events which the framework ist listening for
 	addEvents: function() {
 		$( 'body' ).on( this.eventString, function( evt ) {
-			return vood.viewHelper.handleEvent( evt );
+			return snew.viewHelper.handleEvent( evt );
 		});
 		$( window ).on( 'hashchange', function() {
 			trhis.trigger( 'hashchange', location.hash );
@@ -187,7 +187,7 @@ export default Obj({
 				var pos = identifier.indexOf( '-' );
 				var uid = identifier.slice( 0, pos );
 				var blockId = identifier.slice( pos + 1, identifier.length );
-				var controllers = vood.search( uid );
+				var controllers = snew.search( uid );
 				if( controllers.length === 1 ){
 					var controller = controllers[ 0 ];
 					controller.view._updateCurrent(blockId, 'value', evt.target.value);
@@ -208,7 +208,7 @@ export default Obj({
 		for( var i = 0; i < opt.controllers.length; i++){
 			var uid = opt.controllers[i];
 			for( var spaceIndex = 0; spaceIndex < this.eventSpaces.length; spaceIndex++ ) {
-				var controllers = vood[ this.eventSpaces[ spaceIndex] ].search( uid );
+				var controllers = snew[ this.eventSpaces[ spaceIndex] ].search( uid );
 				for( var controllerIndex = 0; controllerIndex < controllers.length; controllerIndex++ ){
 					var value = null;
 					if(controllers[ controllerIndex ].view) {

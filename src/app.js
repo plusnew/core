@@ -1,6 +1,6 @@
 /*
-                  VOOD
-       very object oriented design
+                  SNEW
+                 's new
                  ,
                ._  \/, ,|_
                -\| \|;|,'_
@@ -24,22 +24,22 @@
             (_(_(_,' '._)_)_)
 */
 
-import Obj from 'vood/obj/class';
-import objHelper from 'vood/obj/helper';
-import Controller from 'vood/controller/class';
-import controllerHelper from 'vood/controller/helper';
-import Helper from 'vood/helper/class';
-import helperHelper from 'vood/helper/helper';
-import eventsystemHelper from 'vood/helper/eventsystem';
-import routerHelper from 'vood/helper/router';
-import utilHelper from 'vood/util/helper';
-import utilRunloop from 'vood/util/runloop';
-import View from 'vood/view/class';
-import viewHelper from 'vood/view/helper';
-import Template from 'vood/template/class';
-import templateHelper from 'vood/template/helper';
+import Obj from 'snew/obj/class';
+import objHelper from 'snew/obj/helper';
+import Controller from 'snew/controller/class';
+import controllerHelper from 'snew/controller/helper';
+import Helper from 'snew/helper/class';
+import helperHelper from 'snew/helper/helper';
+import eventsystemHelper from 'snew/helper/eventsystem';
+import routerHelper from 'snew/helper/router';
+import utilHelper from 'snew/util/helper';
+import utilRunloop from 'snew/util/runloop';
+import View from 'snew/view/class';
+import viewHelper from 'snew/view/helper';
+import Template from 'snew/template/class';
+import templateHelper from 'snew/template/helper';
 
-var vood = Obj({
+var snew = Obj({
 	////-----------------------------------------------------------------------------------------
 	// abstract class of everything
 	Obj: Obj,
@@ -53,8 +53,8 @@ var vood = Obj({
 		if(!window.app) {
 			window.app = {};
 		}
-		console.log( 'Can I haz some voods?' );
-		_.merge( vood, opt );
+		console.log( 'Can I haz some snews?' );
+		_.merge( snew, opt );
 		this.executeInit();
 	},
 	////-----------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ var vood = Obj({
 		// which should be able to listen to helper trigger()
 		for( var setupIndex in setups ){
 			if( setups.hasOwnProperty( setupIndex )){
-				vood[ setups[ setupIndex]].init();
+				snew[ setups[ setupIndex]].init();
 			}
 		}
 
@@ -113,23 +113,23 @@ var vood = Obj({
 	},
 });
 
-vood.objHelper        = objHelper;
-vood.Controller       = Controller;
-vood.controllerHelper = controllerHelper;
-vood.Helper           = Helper;
-vood.helperHelper     = helperHelper;
-// vood.adapterHelper    = adapterHelper;
-vood.eventsystem      = eventsystemHelper;
-vood.routerHelper     = routerHelper;
-vood.utilHelper       = utilHelper;
-vood.utilRunloop      = utilRunloop;
-vood.View             = View;
-vood.viewHelper       = viewHelper;
-vood.Template         = Template;
-vood.templateHelper   = templateHelper;
+snew.objHelper        = objHelper;
+snew.Controller       = Controller;
+snew.controllerHelper = controllerHelper;
+snew.Helper           = Helper;
+snew.helperHelper     = helperHelper;
+// snew.adapterHelper    = adapterHelper;
+snew.eventsystem      = eventsystemHelper;
+snew.routerHelper     = routerHelper;
+snew.utilHelper       = utilHelper;
+snew.utilRunloop      = utilRunloop;
+snew.View             = View;
+snew.viewHelper       = viewHelper;
+snew.Template         = Template;
+snew.templateHelper   = templateHelper;
 
 setTimeout(function() {
-	if(!vood.didInit) console.log('To setup a vood application you should call vood.init({})');
+	if(!snew.didInit) console.log('To setup a snew application you should call snew.init({})');
 }, 10);
 
-export default vood;
+export default snew;

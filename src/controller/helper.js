@@ -1,4 +1,4 @@
-import Obj from 'vood/obj/class';
+import Obj from 'snew/obj/class';
 
 export default Obj({
 	////-----------------------------------------------------------------------------------------
@@ -41,11 +41,11 @@ export default Obj({
 			// @TODO logic is propably wrong
 			_.merge( this.anons[ id ].content, content );
 		}
-		this.anons[ id ].view            = vood.viewHelper.create( path, opt );
+		this.anons[ id ].view            = snew.viewHelper.create( path, opt );
 		this.anons[ id ].view.controller = this.anons[ id ];
 		this._handleRegisters( this.anons[ id ], opt );
-		vood.utilHelper.safeCall( this.anons[ id ], 'construct' );
-		vood.utilHelper.safeCall( this.anons[ id ].view, 'construct' );
+		snew.utilHelper.safeCall( this.anons[ id ], 'construct' );
+		snew.utilHelper.safeCall( this.anons[ id ].view, 'construct' );
 		var html                            = this.anons[ id ].view._compileComplete();
 		return {uid: id, html: html};
 	},
@@ -54,29 +54,29 @@ export default Obj({
 	_callInits: function( force ){
 		var result = [];
 		var found  = false;
-		for( var i = 0; i < vood.controllerHelper.inits.length; i++ ){
-			var id = vood.controllerHelper.inits[ i ];
+		for( var i = 0; i < snew.controllerHelper.inits.length; i++ ){
+			var id = snew.controllerHelper.inits[ i ];
 			found = true;
-			if( vood.controllerHelper.controllerExists( id )) {
-				if( ! vood.controllerHelper.anons[ id ]._loadModel( id )) {
-					vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ], 'init' );
-					vood.utilHelper.safeCall( vood.controllerHelper.anons[ id ].view, 'init' );
+			if( snew.controllerHelper.controllerExists( id )) {
+				if( ! snew.controllerHelper.anons[ id ]._loadModel( id )) {
+					snew.utilHelper.safeCall( snew.controllerHelper.anons[ id ], 'init' );
+					snew.utilHelper.safeCall( snew.controllerHelper.anons[ id ].view, 'init' );
 				} else {
 					// If modelloading is not finished, then we want to keep the id
 					result.push( id );
 				}
 			}
 		}
-		if( found && result.length === 0 && !vood.controllerHelper.systemLoaded){ // Finish should only be called when inits where called, and models are finished
-			vood.controllerHelper.systemLoaded = true;
-			vood.helperHelper.callInits();
+		if( found && result.length === 0 && !snew.controllerHelper.systemLoaded){ // Finish should only be called when inits where called, and models are finished
+			snew.controllerHelper.systemLoaded = true;
+			snew.helperHelper.callInits();
 		}
-		vood.controllerHelper.inits = result;
+		snew.controllerHelper.inits = result;
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if controller exists, when it doesnt, it warns the console
 	controllerExists: function( id ) {
-		if( vood.controllerHelper.anons[ id ] ) {
+		if( snew.controllerHelper.anons[ id ] ) {
 			return true;
 		}
 		console.error( 'Controller does not exist', id );
@@ -86,7 +86,7 @@ export default Obj({
 	getEntity: function( path ){
 		if( !this.list[ path ] ){
 			console.log( 'Controller ' + path + ' did not exist, I created it for you' );
-			vood.Controller( path, {_meta: { pseudo: true , path: path}} );
+			snew.Controller( path, {_meta: { pseudo: true , path: path}} );
 		}
 		return _.cloneDeep( this.list[ path ] );
 	},
@@ -111,7 +111,7 @@ export default Obj({
 					// path can either be the namespace, or the uid
 					if( this.anons[ i ]._meta.path == path || path == '@each' || path == '*' || this.anons[ i ]._meta.uid == path ){
 						if( call ) {
-							var value = vood.utilHelper.safeCall( this.anons[ i ], call, args );
+							var value = snew.utilHelper.safeCall( this.anons[ i ], call, args );
 							result.push( value );
 						} else {
 							result.push( this.anons[ i ] );
@@ -122,7 +122,7 @@ export default Obj({
 			return result;
 		} else {
 			if( call ) {
-				return [ vood.utilHelper.safeCall( this.anons[ id ], call, args ) ];
+				return [ snew.utilHelper.safeCall( this.anons[ id ], call, args ) ];
 			} else {
 				return [ this.anons[ id ]];
 			}
@@ -142,7 +142,7 @@ export default Obj({
 	_handleRegisters: function( instance ){
 		for( var index in this._registers ){
 			var func = this._registers[ index ];
-			vood[ index ][ func ]( instance, 'controller' );
+			snew[ index ][ func ]( instance, 'controller' );
 		}
 	},
 	////-----------------------------------------------------------------------------------------

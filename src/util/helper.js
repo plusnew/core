@@ -44,4 +44,4 @@ var obj = {
 	}
 };
 
-export default window.vood ? vood.Obj( obj ) : obj;
+export default window.snew ? snew.Obj( obj ) : obj;

@@ -1,4 +1,4 @@
-vood
+snew
 ====
 
 lightweight mvc-framework with queries :3
@@ -10,7 +10,7 @@ actually changed, without the need to diff between different states.
 api
 ---
 ```js
-vood.Controller('main/app' {
+snew.Controller('main/app' {
   filter: function(data) {
     this.set('items.@each.show', false);
     // sets all entities inside the array items with matching expression,
@@ -22,7 +22,7 @@ vood.Controller('main/app' {
   }
 });
 
-vood.View('main/app' {
+snew.View('main/app' {
   events: [{
     // Gets checked when dom-event is inside the context of the view
     selector: 'li',
@@ -33,9 +33,9 @@ vood.View('main/app' {
   }]
 });
 
-vood.search('main/app'); // Returns all controllers matching the path
-vood.search(1);          // Returns the controller with the id
-vood.search('@each');    // Returns all controllers
+snew.search('main/app'); // Returns all controllers matching the path
+snew.search(1);          // Returns the controller with the id
+snew.search('@each');    // Returns all controllers
 
 
 ```

@@ -1,4 +1,4 @@
-import Obj from 'vood/obj/class';
+import Obj from 'snew/obj/class';
 
 export default Obj({
 	////-----------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ export default Obj({
 	callInits: function() {
 		var result = [];
 		for( var i in app.helper ) {
-			vood.utilHelper.safeCall( app.helper[ i ], 'init' );
+			snew.utilHelper.safeCall( app.helper[ i ], 'init' );
 		}
 		return result;
 	}

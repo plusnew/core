@@ -30,7 +30,7 @@ var classContent = {
 	////-----------------------------------------------------------------------------------------
 	// triggers the adaper and creates request reference
 	send: function( opt ){
-		var id = vood.helperAdapter.send( opt );
+		var id = snew.helperAdapter.send( opt );
 		// opt is a reference and got a property named requestId from the adapter
 		this._meta.requests[ id ] = opt;
 		return id;
@@ -76,7 +76,7 @@ var classContent = {
 	////-----------------------------------------------------------------------------------------
 	// triggers the adaper and creates request reference
 	subscribe: function( opt ){
-		return vood.utilAdapter.subscribe( opt );
+		return snew.utilAdapter.subscribe( opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles this.model callback
@@ -94,7 +94,7 @@ var classContent = {
 		}
 
 		// @TODO call render method of view, init should only be called after rendering
-		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
+		snew.controllerHelper.callInits(); // Not really needed, but fastens things up
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles this.model errorcallback
@@ -102,7 +102,7 @@ var classContent = {
 		this._meta.modelFinished = true;
 		this.set( 'error', true );
 		this.set( 'message', response.result );
-		vood.controllerHelper.callInits(); // Not really needed, but fastens things up
+		snew.controllerHelper.callInits(); // Not really needed, but fastens things up
 		console.warn( this._meta.path + ' got an error ', response );
 	}
 };
@@ -110,12 +110,12 @@ var classContent = {
 ////-----------------------------------------------------------------------------------------
 // Function for creating classes
 function controller( path, obj ){
-	if( vood.controllerHelper.list[ path ] ){
+	if( snew.controllerHelper.list[ path ] ){
 		console.warn( 'The Controller for ' + path + ' already exists' );
 	} else {
-		vood.controllerHelper.list[ path ] = vood.Obj( 'controller', path, obj );
-		vood.controllerHelper.list[ path ]._meta.path = path;
-		vood.utilHelper.merge( vood.controllerHelper.list[ path ], classContent );
+		snew.controllerHelper.list[ path ] = snew.Obj( 'controller', path, obj );
+		snew.controllerHelper.list[ path ]._meta.path = path;
+		snew.utilHelper.merge( snew.controllerHelper.list[ path ], classContent );
 	}
 }
 

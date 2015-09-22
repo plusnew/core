@@ -1,8 +1,8 @@
-import Obj from 'vood/obj/class';
+import Obj from 'snew/obj/class';
 
 export default Obj({
 	////-----------------------------------------------------------------------------------------
-	// You should overwrite this with the vood.init({helperAdapter: adapterImplementation: {host: 'localhost', port: '8080'}})
+	// You should overwrite this with the snew.init({helperAdapter: adapterImplementation: {host: 'localhost', port: '8080'}})
 	adapterImplementation: {
 		////-----------------------------------------------------------------------------------------
 		// protocol used for the api-call
@@ -41,16 +41,16 @@ export default Obj({
 		// takes the successresponse
 		success: function( response, status, xhr ){
 			var requestId = xhr.requestId;
-			vood.helperAdapter.emit( requestId, { result: response} );
+			snew.helperAdapter.emit( requestId, { result: response} );
 		},
 		////-----------------------------------------------------------------------------------------
 		// takes the errorresponse
 		error: function( xhr, status, response ){
 			var requestId = xhr.requestId;
 			try {
-				vood.helperAdapter.emit( requestId, { error: xhr.status, result: response } );
+				snew.helperAdapter.emit( requestId, { error: xhr.status, result: response } );
 			} catch( err ) {
-				vood.helperAdapter.emit( requestId, { error: '500', result: 'API response was not valid' } );
+				snew.helperAdapter.emit( requestId, { error: '500', result: 'API response was not valid' } );
 			}
 		}
 	},
@@ -92,10 +92,10 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// Collects pending requests and triggers this.sendRequest
 	trigger: function() {
-		for( var id in vood.helperAdapter.requests ){
-			if( vood.helperAdapter.requests[ id ].requestState === vood.helperAdapter.states.pending ) {
-				vood.helperAdapter.requests[ id ].requestState = vood.helperAdapter.states.sended;
-				vood.helperAdapter.adapterImplementation.sendRequest( vood.helperAdapter.requests[ id ] );
+		for( var id in snew.helperAdapter.requests ){
+			if( snew.helperAdapter.requests[ id ].requestState === snew.helperAdapter.states.pending ) {
+				snew.helperAdapter.requests[ id ].requestState = snew.helperAdapter.states.sended;
+				snew.helperAdapter.adapterImplementation.sendRequest( snew.helperAdapter.requests[ id ] );
 			}
 		}
 	},
@@ -104,7 +104,7 @@ export default Obj({
 	emit: function( id, response ){
 		if( this.requests[ id ] ){
 			this.requests[ id ].requestState = this.states.finished;
-			vood.controllerHelper.call( '*', '_checkRequest', [ id, response ] );
+			snew.controllerHelper.call( '*', '_checkRequest', [ id, response ] );
 		} else {
 			throw 'There was no request with id ' + id;
 		}

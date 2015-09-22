@@ -31,7 +31,7 @@ var classContent = {
 	////-----------------------------------------------------------------------------------------
 	// updates the currentValue of the specified attribute/value
 	_updateCurrent: function( blockId, attribute, value) {
-		var attributeBlock = vood.templateHelper.getDependency( this._meta.path, blockId, attribute );
+		var attributeBlock = snew.templateHelper.getDependency( this._meta.path, blockId, attribute );
 		var block = this._searchBlock( blockId, attributeBlock.id, value );
 		for( var i = 0; i < attributeBlock.depending.length; i++ ){
 			this.controller.set(attributeBlock.depending[ i ], value);
@@ -54,13 +54,13 @@ var classContent = {
 		this._compile( this._meta.dirty );
 		this._meta.dirty = {}; // There will everything be in
 
-		vood.utilHelper.safeCall( this.controller, 'notify' );
-		vood.utilHelper.safeCall( this, 'notify' );
+		snew.utilHelper.safeCall( this.controller, 'notify' );
+		snew.utilHelper.safeCall( this, 'notify' );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Trigger templateHelper
 	_compile: function( dirties ){
-		return vood.templateHelper.compile(
+		return snew.templateHelper.compile(
 			this.controller._meta.path,
 			this.controller._meta.uid,
 			this.controller.content,
@@ -73,7 +73,7 @@ var classContent = {
 	// Triggers compilefunction but adds script-tags with uid
 	_compileComplete: function(){
 		var id = this.controller._meta.uid;
-		return vood.viewHelper.scriptStart( id, this._meta.path ) + this._compile('*') + vood.viewHelper.scriptEnd( id );
+		return snew.viewHelper.scriptStart( id, this._meta.path ) + this._compile('*') + snew.viewHelper.scriptEnd( id );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Registers what keys got dirty
@@ -81,7 +81,7 @@ var classContent = {
 		if(!this._meta.dirty[key] || type === 'set') this._meta.dirty[key] = [];
 		// @TODO add handling for pop/shift + push/unshift
 		this._meta.dirty[key].push({type, value});
-		vood.viewHelper.pushOnce('dirties', this.controller._meta.uid);
+		snew.viewHelper.pushOnce('dirties', this.controller._meta.uid);
 	},
 	////-----------------------------------------------------------------------------------------
 	// Works the dirties
@@ -95,8 +95,8 @@ var classContent = {
 	obj: function( path ){
 		var selector = null;
 		var id = this.controller._meta.uid;
-		var startUid = vood.viewHelper.uidDomNode + '[' + vood.viewHelper.uidAttrStart + '=' + id + ']';
-		var endUid   = vood.viewHelper.uidDomNode + '[' + vood.viewHelper.uidAttrEnd + '=' + id +']';
+		var startUid = snew.viewHelper.uidDomNode + '[' + snew.viewHelper.uidAttrStart + '=' + id + ']';
+		var endUid   = snew.viewHelper.uidDomNode + '[' + snew.viewHelper.uidAttrEnd + '=' + id +']';
 		var root = $( startUid ).nextUntil( endUid );
 		if( path !== 'root' ){
 			if( !this[ path ] ){
@@ -114,11 +114,11 @@ var classContent = {
 ////-----------------------------------------------------------------------------------------
 // Function for creating classes
 function view( path, obj ){
-	if( vood.viewHelper.list[ path ] ){
+	if( snew.viewHelper.list[ path ] ){
 		console.warn( 'The View for ' + path + ' already exists' );
 	} else {
-		vood.viewHelper.list[ path ] = vood.Obj( 'view', path, obj );
-		vood.utilHelper.merge( vood.viewHelper.list[ path ], classContent );
+		snew.viewHelper.list[ path ] = snew.Obj( 'view', path, obj );
+		snew.utilHelper.merge( snew.viewHelper.list[ path ], classContent );
 	}
 }
 

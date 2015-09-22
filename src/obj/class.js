@@ -1,4 +1,4 @@
-import util from 'vood/util/helper';
+import util from 'snew/util/helper';
 
 var defaults = {
 	_meta: {
@@ -27,7 +27,7 @@ var defaults = {
 	// adds runloopjobs with including uid of the jobs, for removage if controller gets destroyed
 	addJob: function( opt ){
 		opt.uid = this._meta.uid;
-		vood.utilRunloop._addJob(opt);
+		snew.utilRunloop._addJob(opt);
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for setting content, returns if value has changed and if it gets rendered
@@ -60,7 +60,7 @@ var defaults = {
 	////-----------------------------------------------------------------------------------------
 	// handles all the events
 	trigger: function( type, ...args ){
-		return vood.eventsystem.trigger( type, '*', args );
+		return snew.eventsystem.trigger( type, '*', args );
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for handling data-operations
@@ -75,7 +75,7 @@ var defaults = {
 		var result =  {found: false, result: null};
 		for( var i = 0; i < this.events.length; i++) {
 			var eventDefinition = this.events[ i ];
-			if( vood.viewHelper.checkEventMatch( eventDefinition.type, type, evt )) {
+			if( snew.viewHelper.checkEventMatch( eventDefinition.type, type, evt )) {
 				// If not an pseudo-event selector has to fit
 				var target = null;
 				if( !opt.pseudo) {
@@ -88,7 +88,7 @@ var defaults = {
 						continue;
 					}
 				}
-				var data = vood.viewHelper.getAttributes( target );
+				var data = snew.viewHelper.getAttributes( target );
 				// Sorry for doubled code
 				if( this.controller && _.isFunction( this.controller[ eventDefinition.action ] )) {
 					result.found = true;
@@ -118,7 +118,7 @@ var defaults = {
 	_handleRealData: function( type, key, value, opt, objType ){
 		var keyParts  = key.split( '.' );
 		var partClone = _.clone( keyParts );
-		var result    = vood.objHelper.isQuery( key ) ? [] : undefined;
+		var result    = snew.objHelper.isQuery( key ) ? [] : undefined;
 
 		// @FIXME is the getter-logic from tempart useful? Then no clone and slice is needed
 		for( var i = 0; i < keyParts.length; i++ ){
@@ -126,10 +126,10 @@ var defaults = {
 			var previous = partClone.slice( 0, i );
 			var lastKey  = previous[ previous.length - 1 ];
 
-			if( vood.objHelper.isQuery( part )){
+			if( snew.objHelper.isQuery( part )){
 				var obj      = this._getReference( previous )[ lastKey ];
 				for( var arrIndex in obj ){
-					if( obj.hasOwnProperty( arrIndex) && vood.objHelper.isTrue( obj[ arrIndex ], part, opt.query )){
+					if( obj.hasOwnProperty( arrIndex) && snew.objHelper.isTrue( obj[ arrIndex ], part, opt.query )){
 						partClone[ i ] = arrIndex;
 						result.push( this._handleRealData( type, partClone.join( '.' ), value, opt ));
 					}
@@ -188,7 +188,7 @@ var defaults = {
 			}
 
 			if( contentSpace ){
-				if( vood.viewHelper.dirtyHandling !== false ){
+				if( snew.viewHelper.dirtyHandling !== false ){
 					this.view._addDirty( dirtyKey, type, value );
 				} else {
 					this.view._render();

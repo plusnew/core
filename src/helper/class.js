@@ -5,7 +5,7 @@ function helper( path, obj ){
 	if(app.helper[path]) {
 		console.warn( 'The helper for ' + path + ' already exists' );
 	} else {
-		app.helper[path] = vood.Obj( 'helper', path, obj );
+		app.helper[path] = snew.Obj( 'helper', path, obj );
 	}
 }
 
