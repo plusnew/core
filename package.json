@@ -1,7 +1,7 @@
 {
   "name": "snew",
-  "version": "0.1.0",
-  "description": "SNEW lightweight MVC-Framework with queries",
+  "version": "0.1.1",
+  "description": "Components and Models done right",
   "main": "dist/snew.js",
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -15,7 +15,7 @@
     "tempart": "*"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "grunt default"
   },
   "repository": {
     "type": "git",
