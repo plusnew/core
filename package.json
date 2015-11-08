@@ -16,9 +16,6 @@
   "dependencies": {
     "tempart": "*"
   },
-  "scripts": {
-    "postinstall": "grunt default"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/plusgut/snew.git"
