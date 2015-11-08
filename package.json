@@ -8,7 +8,9 @@
     "grunt-babel": "^5.0.1",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-uglify": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-githooks": "^0.3.1",
     "load-grunt-tasks": "^3.2.0"
   },
   "dependencies": {
@@ -24,9 +26,12 @@
   "keywords": [
     "mvc",
     "events",
-    "binding"
+    "binding",
+    "components"
   ],
-  "author": "Carlo Jeske",
+  "author": {
+    "name": "Carlo Jeske"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/plusgut/snew/issues"

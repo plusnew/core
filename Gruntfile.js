@@ -27,6 +27,12 @@ module.exports = function(grunt) {
 				dest: 'dist/snew.js'
 			}
 		},
+		uglify: {
+			dist: {
+				src: tmpFileSelector,
+				dest: 'dist/snew.js'
+			}
+		},
 		clean: {
 			dist: {
 				src: ['tmp', 'dist']
@@ -41,9 +47,18 @@ module.exports = function(grunt) {
 				],
 				tasks: ['clean', 'babel', 'concat']
 			}
+		},
+		githooks: {
+			all: {
+				'pre-commit': {
+					taskNames: 'min'
+				}
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.registerTask('default', ['clean', 'babel', 'concat']);
+	grunt.registerTask('min', ['clean', 'babel', 'uglify']);
 };
+
