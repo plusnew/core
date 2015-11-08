@@ -58,7 +58,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.registerTask('default', ['clean', 'babel', 'concat']);
+	grunt.registerTask('default', ['githooks', 'clean', 'babel', 'concat']);
 	grunt.registerTask('min', ['clean', 'babel', 'uglify']);
 };
 
