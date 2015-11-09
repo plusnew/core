@@ -32,7 +32,9 @@ export default Obj({
 				}
 			}
 		}
-		setTimeout( this.loop.bind( this ), this.ticks );
+		if( !this.stopped ){
+			setTimeout( this.loop.bind( this ), this.ticks );
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// add a job to the list
@@ -40,5 +42,16 @@ export default Obj({
 	_addJob: function( job ){
 		// @FIXME dont take just the callbacks, but the scope
 		return this.jobs.push( job );
+	},
+	////-----------------------------------------------------------------------------------------
+	// Stops the runloop
+	stop: function() {
+		this.stopped = true;
+	},
+	////-----------------------------------------------------------------------------------------
+	// Starts the loop
+	start: function() {
+		this.stopped = false;
+		this.loop();
 	}
 });

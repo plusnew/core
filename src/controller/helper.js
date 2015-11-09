@@ -134,7 +134,7 @@ export default Obj({
 		if( !this._registers[namespace] ){
 			this._registers[namespace] = func;
 		} else {
-			console.warn( namespace + ' has already an registration')
+			console.warn( namespace + ' has already an registration');
 		}
 	},
 	////-----------------------------------------------------------------------------------------

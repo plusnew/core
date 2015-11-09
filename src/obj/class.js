@@ -31,7 +31,7 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for setting content, returns if value has changed and if it gets rendered
-	setAll: function(value, opt ){
+	setAll: function( value, opt ){
 		var key = this._meta.contentSpace;
 		if( !opt ) opt = {};
 		if( opt.contentSpace !== undefined ) {
@@ -146,13 +146,14 @@ var defaults = {
 	_handleTypes: function( type, keyParts, value, opt ){
 		var changed = opt.forceRender || false;
 		var result = false;
+		var current;
 		switch (type){
 			case 'get':
 				// added cloneDeep to remove reference, when setter is made, we want a rerender not a reference
 				result = _.cloneDeep( this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]] );
 				break;
 			case 'set':
-				var current = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
+				current = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
 				if( current != value ){
 					this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]] = value;
 					result  = true;
@@ -161,7 +162,7 @@ var defaults = {
 				break;
 			case 'push':
 			case 'pushOnce':
-				var current = this._getReference( keyParts, 'arr' )[ keyParts[ keyParts.length - 1 ]];
+				current = this._getReference( keyParts, 'arr' )[ keyParts[ keyParts.length - 1 ]];
 				if( type != 'pushOnce' || current.indexOf( value ) === -1 ){
 					current.push( value );
 					result = true;
