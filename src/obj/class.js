@@ -1,4 +1,4 @@
-import util from 'snew/util/helper';
+import util from 'snew/helper/util';
 
 var defaults = {
 	_meta: {
@@ -27,7 +27,7 @@ var defaults = {
 	// adds runloopjobs with including uid of the jobs, for removage if controller gets destroyed
 	addJob: function( opt ){
 		opt.uid = this._meta.uid;
-		snew.utilRunloop._addJob(opt);
+		snew.runloopHelper._addJob(opt);
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for setting content, returns if value has changed and if it gets rendered
