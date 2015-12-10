@@ -19,7 +19,7 @@ snew.Controller('main/app' {
 
     // you dont have to write it inside keyvalue, you can use the query property,
     // even with an array for an Logic-OR
-    this.set(['items', {propertyName: ['foo', 'bar'']}, 'show'], true));
+    this.set(['items', {propertyName: ['foo', 'bar'']}, 'show'], true);
   }
 });
 
