@@ -1,4 +1,4 @@
-var classContent = {
+const classContent = {
 	_meta: {
 		////-----------------------------------------------------------------------------------------
 		// Flag if an internal registry should be used
@@ -19,38 +19,38 @@ var classContent = {
 	////-----------------------------------------------------------------------------------------
 	// Gets triggered before template gets rendered, this.content can be manipulated without consequences
 	// Be careful when you trigger events, subcontroller/siblings will not be exitent
-	construct: function(){},
+	construct() {},
 	////-----------------------------------------------------------------------------------------
 	// Gets triggered each time after the template got rerendered
-	notify: function() {},
+	notify() {},
 	////-----------------------------------------------------------------------------------------
 	// Function to modify the modelresponse, e.g. merge current 
 	// If you use that, be careful if this.content is an reference, than it would say "nothing changed, no render"
-	preprocess: function( response ) { return response; },
+	preprocess(response) { return response; },
 	////-----------------------------------------------------------------------------------------
 	// triggers the adaper and creates request reference
-	send: function( opt ){
-		var id = snew.helperAdapter.send( opt );
+	send(opt) {
+		let id = snew.helperAdapter.send( opt );
 		// opt is a reference and got a property named requestId from the adapter
 		this._meta.requests[ id ] = opt;
 		return id;
 	},
 	////-----------------------------------------------------------------------------------------
 	// triggers the this._loadModel function to reload content
-	fetch: function() {
+	fetch() {
 		this._meta.modelFinished = false;
-		this._meta.modelLoading  = false;
+		this._meta.modelLoading = false;
 		this._loadModel();
 	},
 	////-----------------------------------------------------------------------------------------
 	// triggers the backend with the value set in this.model, when its not already in the loading process
 	// returns wheather the process is running, or if there is nothing to do
-	_loadModel: function() {
+	_loadModel() {
 		if( this.model && !this._meta.modelFinished ){
 			if(!this._meta.modelLoading) {
 				this._meta.modelLoading = true;
-				var model = this.model;
-				this.send( {model: model, success: '_modelSuccess', error: '_modelError' } );
+				const model = this.model;
+				this.send({model: model, success: '_modelSuccess', error: '_modelError' });
 			}
 			return true;
 		} else {
@@ -59,15 +59,15 @@ var classContent = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if given requestId is associated with this controller instance
-	_checkRequest: function( incomingId, result ) {
-		for( var requestId in this._meta.requests) {
+	_checkRequest(incomingId, result) {
+		for( const requestId in this._meta.requests) {
 			if( requestId == incomingId ) {
-				var request = this._meta.requests[ requestId ];
-				var func = request.success;
+				const request = this._meta.requests[ requestId ];
+				let func = request.success;
 				if(result.error) {
 					func = request.error;
 				}
-				this[ func ]( result );
+				this[ func ](result);
 				delete this._meta.requests[ requestId ];
 			}
 		}
@@ -75,22 +75,24 @@ var classContent = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// triggers the adaper and creates request reference
-	subscribe: function( opt ){
+	subscribe(opt) {
 		return snew.utilAdapter.subscribe( opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles this.model callback
-	_modelSuccess: function( response ){
+	_modelSuccess(response) {
 		this._meta.modelFinished = true;
 		response = this.preprocess( response.result );
 		if( _.isArray( response )){ // this.content should always be an object, thatfor i put arrays into this.content.values
 			this.meta.key = 'values';
-			console.info( this._meta.path + ' had an model which returned an array. Put it instead of content, to content.values' );
+			console.info(
+                `${this._meta.path} had an model which returned an array. Put it instead of content, to content.values`
+            );
 		}
 		if( this.model.key ){ // Model-Value does not have to be on top-layer of this._meta.contentSpace
-			this.set( this.model.key, response, this.model.opt );
+			this.set(this.model.key, response, this.model.opt);
 		} else {
-			this.setAll( response, this.model.opt );
+			this.setAll(response, this.model.opt);
 		}
 
 		// @TODO call render method of view, init should only be called after rendering
@@ -98,24 +100,24 @@ var classContent = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles this.model errorcallback
-	_modelError: function( response ){
+	_modelError(response) {
 		this._meta.modelFinished = true;
-		this.set( 'error', true );
-		this.set( 'message', response.result );
+		this.set('error', true);
+		this.set('message', response.result);
 		snew.controllerHelper.callInits(); // Not really needed, but fastens things up
-		console.warn( this._meta.path + ' got an error ', response );
+		console.warn(`${this._meta.path} got an error `, response);
 	}
 };
 
 ////-----------------------------------------------------------------------------------------
 // Function for creating classes
-function controller( path, obj ){
+function controller(path, obj) {
 	if( snew.controllerHelper.list[ path ] ){
-		console.warn( 'The Controller for ' + path + ' already exists' );
+		console.warn(`The Controller for ${path} already exists`);
 	} else {
 		snew.controllerHelper.list[ path ] = snew.Obj( 'controller', path, obj );
 		snew.controllerHelper.list[ path ]._meta.path = path;
-		snew.utilHelper.merge( snew.controllerHelper.list[ path ], classContent );
+		snew.utilHelper.merge(snew.controllerHelper.list[ path ], classContent);
 	}
 }
 

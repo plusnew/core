@@ -19,38 +19,38 @@ export default Obj({
 		////-----------------------------------------------------------------------------------------
 		// takes this.host and this.port and builds a domain
 		getDomain: function() {
-			var url = this.protocol + '://' + this.host;
+			let url = `${this.protocol}://${this.host}`;
 			if( this.port ){
-				url += ':' + this.port;
+				url += `:${this.port}`;
 			}
 			return url;
 		},
 		////-----------------------------------------------------------------------------------------
 		// builds url
-		buildUrl: function( opt ){
-			return this.getDomain() + this.path + '/' + opt.model.controller + '/' + opt.model.action;
+		buildUrl: function(opt) {
+			return `${this.getDomain()}${this.path}/${opt.model.controller}/${opt.model.action}`;
 		},
 		////-----------------------------------------------------------------------------------------
 		// actually sends the request
-		sendRequest: function( opt ){
-			var data = JSON.stringify(opt.model.payload);
-			var request = $.ajax( this.buildUrl(opt), { success: this.success, error: this.error, data: data, processData: false, contentType: 'application/json', type: 'post' } );
+		sendRequest: function(opt) {
+			const data = JSON.stringify(opt.model.payload);
+			const request = $.ajax( this.buildUrl(opt), { success: this.success, error: this.error, data: data, processData: false, contentType: 'application/json', type: 'post' } );
 			request.requestId = opt.requestId;
 		},
 		////-----------------------------------------------------------------------------------------
 		// takes the successresponse
-		success: function( response, status, xhr ){
-			var requestId = xhr.requestId;
-			snew.helperAdapter.emit( requestId, { result: response} );
+		success: function(response, status, xhr) {
+			const requestId = xhr.requestId;
+			snew.helperAdapter.emit(requestId, { result: response});
 		},
 		////-----------------------------------------------------------------------------------------
 		// takes the errorresponse
-		error: function( xhr, status, response ){
-			var requestId = xhr.requestId;
+		error: function(xhr, status, response) {
+			let requestId = xhr.requestId;
 			try {
-				snew.helperAdapter.emit( requestId, { error: xhr.status, result: response } );
+				snew.helperAdapter.emit(requestId, { error: xhr.status, result: response });
 			} catch( err ) {
-				snew.helperAdapter.emit( requestId, { error: '500', result: 'API response was not valid' } );
+				snew.helperAdapter.emit(requestId, { error: '500', result: 'API response was not valid' });
 			}
 		}
 	},
@@ -70,12 +70,12 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// Checks validity of the adapter itself, does application set an custom adapter? @TODO
 	// sets up runloop job for sending
-	init: function() {
-		this.addJob( {callback: this.trigger} );
+	init() {
+		this.addJob({callback: this.trigger});
 	},
 	////-----------------------------------------------------------------------------------------
 	// Takes new requests
-	send: function( opt ){
+	send(opt) {
 		this.checkValidity(opt);
 		opt.requestState = this.states.pending;
 		opt.requestId = ++this.id;
@@ -84,29 +84,29 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks validity of the request
-	checkValidity: function( opt ){
+	checkValidity(opt) {
 		if( !opt.model || !opt.model.controller || !opt.model.action ){
 			throw 'Your given request is not valid';
 		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// Collects pending requests and triggers this.sendRequest
-	trigger: function() {
-		for( var id in snew.helperAdapter.requests ){
+	trigger() {
+		for( const id in snew.helperAdapter.requests ){
 			if( snew.helperAdapter.requests[ id ].requestState === snew.helperAdapter.states.pending ) {
 				snew.helperAdapter.requests[ id ].requestState = snew.helperAdapter.states.sended;
-				snew.helperAdapter.adapterImplementation.sendRequest( snew.helperAdapter.requests[ id ] );
+				snew.helperAdapter.adapterImplementation.sendRequest(snew.helperAdapter.requests[ id ]);
 			}
 		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// Collects pending requests and triggers this.sendRequest
-	emit: function( id, response ){
+	emit(id, response) {
 		if( this.requests[ id ] ){
 			this.requests[ id ].requestState = this.states.finished;
-			snew.controllerHelper.call( '*', '_checkRequest', [ id, response ] );
+			snew.controllerHelper.call('*', '_checkRequest', [ id, response ]);
 		} else {
-			throw 'There was no request with id ' + id;
+			throw `There was no request with id ${id}`;
 		}
 	}
 });

@@ -1,9 +1,8 @@
-
 ////-----------------------------------------------------------------------------------------
 // Function for creating classes
-function template( path, obj ){
+function template(path, obj) {
 	if( snew.templateHelper.list[ path ] ){
-		console.warn( 'The Template for ' + path + ' already exists' );
+		console.warn(`The Template for ${path} already exists`);
 	} else {
 		snew.templateHelper.list[ path ] = obj;
 	}

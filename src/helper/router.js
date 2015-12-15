@@ -14,16 +14,16 @@ export default Obj({
 	delimiter: '/',
 	////-----------------------------------------------------------------------------------------
 	// This init is called, when the application startup is done
-	init: function() {
+	init() {
 		if( !this.changed ){
-			this.change( location.hash ); // @TODO make this work at server environment
+			this.change(location.hash); // @TODO make this work at server environment
 		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// parses the hash and return the state
-	getState: function() {
-		var newUrl = location.hash.substring( 1,location.hash.length );
-		var parts = newUrl.split( this.delimiter );
+	getState() {
+		const newUrl = location.hash.substring( 1,location.hash.length );
+		const parts = newUrl.split( this.delimiter );
 		while( parts.length > 0 && parts[ parts.length - 1] === '' ){ // Removes trailing slashes
 			parts.pop();
 		}
@@ -32,9 +32,9 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Can be called via this.trigger( 'changeUrl', ['foo', 'bar'])
-	changeUrl: function( parts ) {
-		var newHash = parts.join( this.delimiter );
-		if( location.hash != '#' + newHash ){
+	changeUrl(parts) {
+		const newHash = parts.join( this.delimiter );
+		if( location.hash != `#${newHash}` ){
 			location.hash = newHash;
 			return true;
 		}
@@ -42,32 +42,32 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Tells the browser hash/state
-	writeUrl: function() {
+	writeUrl() {
 		location.hash = this.getUrl();
 	},
 	////-----------------------------------------------------------------------------------------
 	// tells the url of the state
-	getUrl: function( state ) {
+	getUrl(state) {
 		return state.join( this.delimiter );
 	},
 	////-----------------------------------------------------------------------------------------
 	// listens to the hachchange event from the browser
-	change: function( hash ){
-		this.triggerUrl( this.getState() );
+	change(hash) {
+		this.triggerUrl(this.getState());
 	},
 	////-----------------------------------------------------------------------------------------
 	// triggers events and checks if there was an listener for it, if not it triggers a /404
-	triggerUrl: function( state ) {
+	triggerUrl(state) {
 		this.changed = true;
-		var result = null;
-		var url = this.getUrl( state );
+		let result = null;
+		const url = this.getUrl( state );
 		if( url.length ){
-			result = this.trigger( '/' + url );
+			result = this.trigger( `/${url}` );
 		} else {
 			result = this.trigger( '/' );
 		}
 		if(result.length === 0) {
-			this.trigger( '/404' );
+			this.trigger('/404');
 		}
 	}
 });

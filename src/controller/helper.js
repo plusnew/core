@@ -24,46 +24,46 @@ export default Obj({
 	_registers: {},
 	////-----------------------------------------------------------------------------------------
 	// Init adds needed runloop jobs (garbage collection, and async calling of controller-inits)
-	init: function(){
+	init() {
 		if( this.garbageCollection !== false ){
-			this.addJob( {callback: this.garbage} );
+			this.addJob({callback: this.garbage});
 		}
-		this.addJob( {callback: this._callInits} );
+		this.addJob({callback: this._callInits});
 	},
 	////-----------------------------------------------------------------------------------------
 	// Creates the controller-instance of the class, returns the html
-	create: function( path, content, opt ){
-		var id = ++this.id;
-		this.inits.push( id );
-		this.anons[ id ]                 = this.getEntity( path );
-		this.anons[ id ]._meta.uid       = id;
+	create(path, content, opt) {
+		let id = ++this.id;
+		this.inits.push(id);
+		this.anons[ id ] = this.getEntity( path );
+		this.anons[ id ]._meta.uid = id;
 		if( content ){
 			// @TODO logic is propably wrong
-			_.merge( this.anons[ id ].content, content );
+			_.merge(this.anons[ id ].content, content);
 		}
-		this.anons[ id ].view            = snew.viewHelper.create( path, opt );
+		this.anons[ id ].view = snew.viewHelper.create( path, opt );
 		this.anons[ id ].view.controller = this.anons[ id ];
-		this._handleRegisters( this.anons[ id ], opt );
-		snew.utilHelper.safeCall( this.anons[ id ], 'construct' );
-		snew.utilHelper.safeCall( this.anons[ id ].view, 'construct' );
-		var html                            = this.anons[ id ].view._compileComplete();
+		this._handleRegisters(this.anons[ id ], opt);
+		snew.utilHelper.safeCall(this.anons[ id ], 'construct');
+		snew.utilHelper.safeCall(this.anons[ id ].view, 'construct');
+		const html                            = this.anons[ id ].view._compileComplete();
 		return {uid: id, html: html};
 	},
 	////-----------------------------------------------------------------------------------------
 	// Is a runloop jobs, for calling the init of new controllers, needs to be called after instanciating
-	_callInits: function( force ){
-		var result = [];
-		var found  = false;
-		for( var i = 0; i < snew.controllerHelper.inits.length; i++ ){
-			var id = snew.controllerHelper.inits[ i ];
+	_callInits(force) {
+		const result = [];
+		let found  = false;
+		for( let i = 0; i < snew.controllerHelper.inits.length; i++ ){
+			const id = snew.controllerHelper.inits[ i ];
 			found = true;
 			if( snew.controllerHelper.controllerExists( id )) {
 				if( ! snew.controllerHelper.anons[ id ]._loadModel( id )) {
-					snew.utilHelper.safeCall( snew.controllerHelper.anons[ id ], 'init' );
-					snew.utilHelper.safeCall( snew.controllerHelper.anons[ id ].view, 'init' );
+					snew.utilHelper.safeCall(snew.controllerHelper.anons[ id ], 'init');
+					snew.utilHelper.safeCall(snew.controllerHelper.anons[ id ].view, 'init');
 				} else {
 					// If modelloading is not finished, then we want to keep the id
-					result.push( id );
+					result.push(id);
 				}
 			}
 		}
@@ -75,46 +75,46 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if controller exists, when it doesnt, it warns the console
-	controllerExists: function( id ) {
+	controllerExists(id) {
 		if( snew.controllerHelper.anons[ id ] ) {
 			return true;
 		}
-		console.error( 'Controller does not exist', id );
+		console.error('Controller does not exist', id);
 	},
 	////-----------------------------------------------------------------------------------------
 	// Returns the class
-	getEntity: function( path ){
+	getEntity(path) {
 		if( !this.list[ path ] ){
-			console.log( 'Controller ' + path + ' did not exist, I created it for you' );
-			snew.Controller( path, {_meta: { pseudo: true , path: path}} );
+			console.log(`Controller ${path} did not exist, I created it for you`);
+			snew.Controller(path, {_meta: { pseudo: true , path: path}});
 		}
 		return _.cloneDeep( this.list[ path ] );
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
-	search: function( path ) {
+	search(path) {
 		return this._iterate( path );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Calls the matching controllers with the function
-	call: function( path, call, args ) {
+	call(path, call, args) {
 		return this._iterate( path, call, args );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Metafunction for getting and calling controllers, please only use this function with get/call. the api mostlikely changes
-	_iterate: function( path, call, args ){
-		var id = window.parseInt( path, 10 );
+	_iterate(path, call, args) {
+		const id = window.parseInt( path, 10 );
 		if( isNaN( id ) || !this.anons[ id ] ){ // Check is not necessary, could be done with iteration as well, but this is faster at large scale
-			var result = [];
-			for( var i in this.anons ){
+			const result = [];
+			for( const i in this.anons ){
 				if( this.anons.hasOwnProperty( i ) ){
 					// path can either be the namespace, or the uid
 					if( this.anons[ i ]._meta.path == path || path == '@each' || path == '*' || this.anons[ i ]._meta.uid == path ){
 						if( call ) {
-							var value = snew.utilHelper.safeCall( this.anons[ i ], call, args );
-							result.push( value );
+							const value = snew.utilHelper.safeCall( this.anons[ i ], call, args );
+							result.push(value);
 						} else {
-							result.push( this.anons[ i ] );
+							result.push(this.anons[ i ]);
 						}
 					}
 				}
@@ -130,25 +130,25 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// 
-	_addRegister: function( namespace, func ){
+	_addRegister(namespace, func) {
 		if( !this._registers[namespace] ){
 			this._registers[namespace] = func;
 		} else {
-			console.warn( namespace + ' has already an registration');
+			console.warn(`${namespace} has already an registration`);
 		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// triggers the registers
-	_handleRegisters: function( instance ){
-		for( var index in this._registers ){
-			var func = this._registers[ index ];
-			snew[ index ][ func ]( instance, 'controller' );
+	_handleRegisters(instance) {
+		for( const index in this._registers ){
+			const func = this._registers[ index ];
+			snew[ index ][ func ](instance, 'controller');
 		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if the instanciated controllers are represented in the dom
 	// @TODO implementation
-	garbage: function(){
+	garbage() {
 		
 	}
 });

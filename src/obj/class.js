@@ -1,6 +1,6 @@
 import util from 'snew/helper/util';
 
-var defaults = {
+const defaults = {
 	_meta: {
 		////-----------------------------------------------------------------------------------------
 		// Prefix where setter and getter should view
@@ -8,31 +8,31 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// default initfunction
-	init: function(){},
+	init() {},
 	////-----------------------------------------------------------------------------------------
 	// default destroyfunction, gets called before instance gets terminated
 	// @TODO not yet implemented
-	destroy: function(){},
+	destroy() {},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for getting content
-	get: function( key, opt ){
+	get(key, opt) {
 		return this._handleData( 'get', key, null, opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for setting content, returns if value has changed and if it gets rendered
-	set: function( key, value, opt ){
+	set(key, value, opt) {
 		return this._handleData( 'set', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// adds runloopjobs with including uid of the jobs, for removage if controller gets destroyed
-	addJob: function( opt ){
+	addJob(opt) {
 		opt.uid = this._meta.uid;
 		snew.runloopHelper._addJob(opt);
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for setting content, returns if value has changed and if it gets rendered
-	setAll: function( value, opt ){
-		var key = this._meta.contentSpace;
+	setAll(value, opt) {
+		let key = this._meta.contentSpace;
 		if( !opt ) opt = {};
 		if( opt.contentSpace !== undefined ) {
 			key = opt.contentSpace;
@@ -44,42 +44,42 @@ var defaults = {
 
 	////-----------------------------------------------------------------------------------------
 	// metafunction for pushing content, only for arrays
-	push: function( key, value, opt ){
+	push(key, value, opt) {
 		return this._handleData( 'push', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for pushing content, return true when added to array, returns false when it was already added
-	pushOnce: function( key, value, opt ){
+	pushOnce(key, value, opt) {
 		return this._handleData( 'pushOnce', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for pop index of an array/obj
-	pop: function( key, value, opt ){
+	pop(key, value, opt) {
 		return this._handleData( 'pop', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles all the events
-	trigger: function( type, ...args ){
+	trigger(type, ...args) {
 		return snew.eventsystem.trigger( type, '*', args );
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for handling data-operations
-	_handleData: function( type, key, value, opt ){
+	_handleData(type, key, value, opt) {
 		if(!opt) {opt = {};}
 		key = this._generateRealpath( key, opt );
 		return this._handleRealData( type, key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if this view has a fitting event-definition
-	_checkForEvent: function( type, evt, opt ) {
-		var result =  {found: false, result: null};
-		for( var i = 0; i < this.events.length; i++) {
-			var eventDefinition = this.events[ i ];
+	_checkForEvent(type, evt, opt) {
+		let result =  {found: false, result: null};
+		for( let i = 0; i < this.events.length; i++) {
+			const eventDefinition = this.events[ i ];
 			if( snew.viewHelper.checkEventMatch( eventDefinition.type, type, evt )) {
 				// If not an pseudo-event selector has to fit
-				var target = null;
+				let target = null;
 				if( !opt.pseudo) {
-					var parents =  $( evt.target ).parents( eventDefinition.selector );
+					const parents =  $( evt.target ).parents( eventDefinition.selector );
 					if( $( evt.target ).is( eventDefinition.selector )){
 						target = $( evt.target );
 					} else if( parents.length ){
@@ -88,7 +88,7 @@ var defaults = {
 						continue;
 					}
 				}
-				var data = snew.viewHelper.getAttributes( target );
+				const data = snew.viewHelper.getAttributes( target );
 				// Sorry for doubled code
 				if( this.controller && _.isFunction( this.controller[ eventDefinition.action ] )) {
 					result.found = true;
@@ -108,30 +108,32 @@ var defaults = {
 						if(result.result === false) evt.propagation = false;
 					}
 				}
-				if( !result.found ) console.error( 'Found an eventdefinition ' + type + ' but the corresponding action ' + eventDefinition.action + ' was not found' );
+				if( !result.found ) console.error(
+                    `Found an eventdefinition ${type} but the corresponding action ${eventDefinition.action} was not found`
+                );
 			}
 		}
 		return result;
 	},
 	////-----------------------------------------------------------------------------------------
 	// query management of data-handling
-	_handleRealData: function( type, key, value, opt, objType ){
-		var keyParts  = key.split( '.' );
-		var partClone = _.clone( keyParts );
-		var result    = snew.objHelper.isQuery( key ) ? [] : undefined;
+	_handleRealData(type, key, value, opt, objType) {
+		const keyParts  = key.split( '.' );
+		const partClone = _.clone( keyParts );
+		const result    = snew.objHelper.isQuery( key ) ? [] : undefined;
 
 		// @FIXME is the getter-logic from tempart useful? Then no clone and slice is needed
-		for( var i = 0; i < keyParts.length; i++ ){
-			var part = keyParts[ i ];
-			var previous = partClone.slice( 0, i );
-			var lastKey  = previous[ previous.length - 1 ];
+		for( let i = 0; i < keyParts.length; i++ ){
+			const part = keyParts[ i ];
+			const previous = partClone.slice( 0, i );
+			const lastKey  = previous[ previous.length - 1 ];
 
 			if( snew.objHelper.isQuery( part )){
-				var obj      = this._getReference( previous )[ lastKey ];
-				for( var arrIndex in obj ){
+				const obj      = this._getReference( previous )[ lastKey ];
+				for( const arrIndex in obj ){
 					if( obj.hasOwnProperty( arrIndex) && snew.objHelper.isTrue( obj[ arrIndex ], part, opt.query )){
 						partClone[ i ] = arrIndex;
-						result.push( this._handleRealData( type, partClone.join( '.' ), value, opt ));
+						result.push(this._handleRealData( type, partClone.join( '.' ), value, opt ));
 					}
 				}
 				return result;
@@ -143,10 +145,10 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// actual handling of the data (without queries)
-	_handleTypes: function( type, keyParts, value, opt ){
-		var changed = opt.forceRender || false;
-		var result = false;
-		var current;
+	_handleTypes(type, keyParts, value, opt) {
+		let changed = opt.forceRender || false;
+		let result = false;
+		let current;
 		switch (type){
 			case 'get':
 				// added cloneDeep to remove reference, when setter is made, we want a rerender not a reference
@@ -156,7 +158,7 @@ var defaults = {
 				current = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
 				if( current != value ){
 					this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]] = value;
-					result  = true;
+					result = true;
 					changed = true;
 				}
 				break;
@@ -164,33 +166,33 @@ var defaults = {
 			case 'pushOnce':
 				current = this._getReference( keyParts, 'arr' )[ keyParts[ keyParts.length - 1 ]];
 				if( type != 'pushOnce' || current.indexOf( value ) === -1 ){
-					current.push( value );
+					current.push(value);
 					result = true;
 					changed = true;
 				}
 				break;
 			default:
-				throw 'type ' + type + ' is not defined';
+				throw `type ${type} is not defined`;
 		}
 
 		if( changed && this.view ){ // @FIXME wont work when we made a set inside the view
 			// Only rerender when its relevant to the template
-			var contentSpace = false;
-			var dirtyKey     = null;
+			let contentSpace = false;
+			let dirtyKey     = null;
 			if(this._meta.contentSpace) {
-				var contentParts  = this._meta.contentSpace.split( '.' );
-				var contentLength = contentParts.length;
-				var prefix        = keyParts.slice(0, contentLength);
-				dirtyKey          = keyParts.slice(contentLength, keyParts.length).join( '.' );
+				const contentParts  = this._meta.contentSpace.split( '.' );
+				const contentLength = contentParts.length;
+				const prefix        = keyParts.slice(0, contentLength);
+				dirtyKey = keyParts.slice(contentLength, keyParts.length).join( '.' );
 				if( _.isEqual(prefix, contentParts) ) contentSpace = true;
 			} else {
-				dirtyKey          = keyParts.join( '.' );
+				dirtyKey = keyParts.join( '.' );
 				contentSpace = true;
 			}
 
 			if( contentSpace ){
 				if( snew.viewHelper.dirtyHandling !== false ){
-					this.view._addDirty( dirtyKey, type, value );
+					this.view._addDirty(dirtyKey, type, value);
 				} else {
 					this.view._render();
 				}
@@ -200,9 +202,9 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent
-	_getReference: function( keyParts, type ){
-		var content = null;
-		var start   = null; // @FIXME improve this start thingi
+	_getReference(keyParts, type) {
+		let content = null;
+		let start   = null; // @FIXME improve this start thingi
 		if(keyParts.length === 1) {
 			content = this;
 			start = 0;
@@ -210,8 +212,8 @@ var defaults = {
 			content = this[ keyParts[ 0 ]]; // @FIXME when initial value is not defined, nothing works
 			start = 1;
 		}
-		for( var i = start; i < keyParts.length; i++ ){
-			var part = keyParts[ i ];
+		for( let i = start; i < keyParts.length; i++ ){
+			let part = keyParts[ i ];
 
 			if( !content[ part ]){
 				if( type == 'arr' && i < keyParts.length) {
@@ -223,7 +225,9 @@ var defaults = {
 
 			if( i + 1 < keyParts.length ){ // @TODO Check for sideeffects -> === undefined was it before
 				content = content[ part ];
-				console.info( keyParts.slice( 0, i + 1 ).join( '.' ) + ' did not exist, so I created it for you');
+				console.info(
+                    `${keyParts.slice( 0, i + 1 ).join( '.' )} did not exist, so I created it for you`
+                );
 			} else if( i !== keyParts.length - 1){
 				content = content[ part ];
 			}
@@ -240,13 +244,13 @@ var defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// adds (optional) prefix to path
-	_generateRealpath: function( key, opt ){
+	_generateRealpath(key, opt) {
 		if( opt.contentSpace === false || this._meta.contentSpace === false){
 			return key;
 		} else if( opt.contentSpace ){
-			return opt.contentSpace + '.' + key;
+			return `${opt.contentSpace}.${key}`;
 		} else if( this._meta.contentSpace ){
-			return this._meta.contentSpace + '.' + key;
+			return `${this._meta.contentSpace}.${key}`;
 		} else {
 			return key;
 		}
@@ -254,10 +258,10 @@ var defaults = {
 
 };
 
-var meta = function(){
-	var obj = arguments[ arguments.length - 1 ];
-	var properties = _.cloneDeep( defaults );
-	util.merge( obj, properties );
+const meta = function() {
+	const obj = arguments[ arguments.length - 1 ];
+	const properties = _.cloneDeep( defaults );
+	util.merge(obj, properties);
 	if( arguments.length > 1 ){
 		obj._meta.type = arguments[ 0 ];
 	}

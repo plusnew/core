@@ -39,7 +39,7 @@ import viewHelper from 'snew/view/helper';
 import Template from 'snew/template/class';
 import templateHelper from 'snew/template/helper';
 
-var snew = Obj({
+const snew = Obj({
 	////-----------------------------------------------------------------------------------------
 	// abstract class of everything
 	Obj: Obj,
@@ -48,33 +48,33 @@ var snew = Obj({
 	didInit: false,
 	////-----------------------------------------------------------------------------------------
 	// Overwriting of core-modules and calling inits of modules
-	init: function( opt ){
+	init(opt) {
 		this.didInit = true;
 		if(!window.app) {
 			window.app = {};
 		}
-		console.log( 'Can I haz some snews?' );
-		_.merge( snew, opt );
+		console.log('Can I haz some snews?');
+		_.merge(snew, opt);
 		this.executeInit();
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
-	search: function( path ){
+	search(path) {
 		return this.controllerHelper.search( path );
 	},
 	////-----------------------------------------------------------------------------------------
 	// calls inits of the core-modules
-	executeInit: function(){
-		var setups = ['eventsystem', 'viewHelper'];
+	executeInit() {
+		const setups = ['eventsystem', 'viewHelper'];
 		// viewhelper should be initted first - it creates all the controllers and views
 		// which should be able to listen to helper trigger()
-		for( var setupIndex in setups ){
+		for( const setupIndex in setups ){
 			if( setups.hasOwnProperty( setupIndex )){
 				snew[ setups[ setupIndex]].init();
 			}
 		}
 
-		for( var index in this ){
+		for( const index in this ){
 			if( _.isObject( this[ index ] ) && _.isFunction( this[index].init ) && setups.indexOf( index ) === -1 ){
 				this[index].init();
 			}
@@ -82,14 +82,13 @@ var snew = Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// making slashes into camelcase
-	transform: function( name, prefix ){
-		var transform = '',
-			upper     = false;
-		name          = name.replace( prefix, '' );
+	transform(name, prefix) {
+		let transform = '', upper     = false;
+		name = name.replace( prefix, '' );
 
-		for( var index in name ){
+		for( const index in name ){
 			if( name.hasOwnProperty( index )){
-				var character = name[ index ];
+				const character = name[ index ];
 				// i don't want to write slashes to access core components, so its camelcase
 				if( character == '/' ){
 					upper = true;
@@ -128,7 +127,7 @@ snew.viewHelper       = viewHelper;
 snew.Template         = Template;
 snew.templateHelper   = templateHelper;
 
-setTimeout(function() {
+setTimeout(() => {
 	if(!snew.didInit) console.log('To setup a snew application you should call snew.init({})');
 }, 10);
 
