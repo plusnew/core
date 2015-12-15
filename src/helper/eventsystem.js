@@ -69,17 +69,17 @@ export default Obj({
 			if(evt.hasOwnProperty(index)) {
 				if( this._eventParts.indexOf( index ) === -1 ){
 					console.warn(
-                        `${context._meta.namespace} | 	The event has some unknown options (${index})`,
-                        evt,
-                        context
-                    );
+						`${context._meta.namespace} | 	The event has some unknown options (${index})`,
+						evt,
+						context
+					);
 				} else {
 					length++;
 					if( index === 'action' && !context[ evt[ index ]]){
 						valid = false;
 						console.error(
-                            `${context._meta.namespace} | 	The given action (${evt[index]}) does not exist in the class`
-                        );
+							`${context._meta.namespace} | 	The given action (${evt[index]}) does not exist in the class`
+						);
 					}
 				}
 			}

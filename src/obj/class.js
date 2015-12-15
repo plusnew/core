@@ -109,8 +109,8 @@ const defaults = {
 					}
 				}
 				if( !result.found ) console.error(
-                    `Found an eventdefinition ${type} but the corresponding action ${eventDefinition.action} was not found`
-                );
+					`Found an eventdefinition ${type} but the corresponding action ${eventDefinition.action} was not found`
+				);
 			}
 		}
 		return result;
@@ -226,8 +226,8 @@ const defaults = {
 			if( i + 1 < keyParts.length ){ // @TODO Check for sideeffects -> === undefined was it before
 				content = content[ part ];
 				console.info(
-                    `${keyParts.slice( 0, i + 1 ).join( '.' )} did not exist, so I created it for you`
-                );
+					`${keyParts.slice( 0, i + 1 ).join( '.' )} did not exist, so I created it for you`
+				);
 			} else if( i !== keyParts.length - 1){
 				content = content[ part ];
 			}
