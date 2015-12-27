@@ -119,6 +119,7 @@ const defaults = {
 	// query management of data-handling
 	_handleRealData(type, key, value, opt, objType) {
 		const keyParts  = key.split( '.' );
+		// @TODO remove clone, and work with index/offset
 		const partClone = _.clone( keyParts );
 		const result    = snew.objHelper.isQuery( key ) ? [] : undefined;
 
@@ -129,7 +130,7 @@ const defaults = {
 			const lastKey  = previous[ previous.length - 1 ];
 
 			if( snew.objHelper.isQuery( part )){
-				const obj      = this._getReference( previous )[ lastKey ];
+				const obj = this._getReference( previous )[ lastKey ];
 				for( const arrIndex in obj ){
 					if( obj.hasOwnProperty( arrIndex) && snew.objHelper.isTrue( obj[ arrIndex ], part, opt.query )){
 						partClone[ i ] = arrIndex;

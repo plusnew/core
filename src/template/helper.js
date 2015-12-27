@@ -11,7 +11,16 @@ export default Obj({
 	// Layer for comunnicate with tempart
 	compile(path, uid, content, currentValues, dirties, prefix) {
 		if( this.list[ path ] ){
-			return tempartCompiler.compile( this.list[ path ], content, currentValues, dirties, path, prefix );
+			
+
+			return tempartCompiler.compile({
+				blocks: this.list[ path ],
+				content: content,
+				currentValues: currentValues,
+				dirties: dirties,
+				path: path,
+				prefix: prefix
+			});
 		} else {
 			throw `Template ${path} does not exist`;
 		}
