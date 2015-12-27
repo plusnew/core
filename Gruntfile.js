@@ -30,7 +30,7 @@ module.exports = function(grunt) {
 		uglify: {
 			dist: {
 				src: tmpFileSelector,
-				dest: 'dist/snew.js'
+				dest: 'dist/snew.min.js'
 			}
 		},
 		clean: {
