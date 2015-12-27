@@ -120,9 +120,18 @@ export default Obj({
 		return type;
 	},
 	////-----------------------------------------------------------------------------------------
+	// iterates threw all keyparts
+	hasQuery(keyParts) {
+		for(let i = 0; i < keyParts.length; i++) {
+			if(this.isQuery(keyParts[i])) {
+				return true;
+			}
+		}
+	},
+	////-----------------------------------------------------------------------------------------
 	// checks if the string is an query
-	isQuery(key) {
-		if( key.indexOf( '=' ) !== -1 || key.indexOf( '@' ) !== -1 ){
+	isQuery(keyNode) {
+		if( keyNode.indexOf( '=' ) !== -1 || keyNode.indexOf( '@' ) !== -1 ){
 			return true;
 		}
 	},

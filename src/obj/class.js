@@ -117,29 +117,25 @@ const defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// query management of data-handling
-	_handleRealData(type, key, value, opt, objType) {
-		const keyParts  = key.split( '.' );
-		// @TODO remove clone, and work with index/offset
-		const partClone = _.clone( keyParts );
-		const result    = snew.objHelper.isQuery( key ) ? [] : undefined;
+	_handleRealData(type, key, value, opt, objType, offset) {
+		if(!offset) offset = 0;
+		const result    = snew.objHelper.hasQuery( key ) ? [] : undefined;
 
 		// @FIXME is the getter-logic from tempart useful? Then no clone and slice is needed
-		for( let i = 0; i < keyParts.length; i++ ){
-			const part = keyParts[ i ];
-			const previous = partClone.slice( 0, i );
-			const lastKey  = previous[ previous.length - 1 ];
+		for( let i = offset; i < key.length; i++ ){
+			const part = key[ i ];
+			const lastKey  = key[ key.length - 1 ];
 
 			if( snew.objHelper.isQuery( part )){
-				const obj = this._getReference( previous )[ lastKey ];
+				const obj = this._getReference( key )[ lastKey ];
 				for( const arrIndex in obj ){
 					if( obj.hasOwnProperty( arrIndex) && snew.objHelper.isTrue( obj[ arrIndex ], part, opt.query )){
-						partClone[ i ] = arrIndex;
-						result.push(this._handleRealData( type, partClone.join( '.' ), value, opt ));
+						result.push(this._handleRealData( type, key, value, opt ));
 					}
 				}
 				return result;
-			} else if( i + 1 == keyParts.length ){
-				return this._handleTypes( type, keyParts, value, opt );
+			} else if( i + 1 == key.length ){
+				return this._handleTypes( type, key, value, opt );
 			}
 		}
 		return result;
@@ -246,15 +242,15 @@ const defaults = {
 	////-----------------------------------------------------------------------------------------
 	// adds (optional) prefix to path
 	_generateRealpath(key, opt) {
-		if( opt.contentSpace === false || this._meta.contentSpace === false){
-			return key;
-		} else if( opt.contentSpace ){
-			return `${opt.contentSpace}.${key}`;
-		} else if( this._meta.contentSpace ){
-			return `${this._meta.contentSpace}.${key}`;
-		} else {
-			return key;
+		if(typeof key === 'string') {
+			key = key.split('.');
 		}
+		if( opt.contentSpace ){
+			key.unshift(opt.contentSpace);
+		} else if( this._meta.contentSpace ){
+			key.unshift(this._meta.contentSpace);
+		}
+		return key;
 	},
 
 };
