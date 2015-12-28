@@ -175,7 +175,7 @@ export default Obj({
 			});
 		}
 		window.addEventListener('hashchange', () => {
-			trhis.trigger('hashchange', location.hash);
+			this.trigger('hashchange', location.hash);
 		});
 	},
 	////-----------------------------------------------------------------------------------------
