@@ -184,7 +184,6 @@ export default Obj({
 		const uids = this.getUids( evt.target );
 		this.triggerExtra(evt);
 		this.updateData(evt);
-		return this.triggerEvent( evt.type, evt, {controllers: uids, pseudo: false} );
 	},
 	////-----------------------------------------------------------------------------------------
 	// way binding from dom
@@ -206,41 +205,7 @@ export default Obj({
 		}
 	},
 	////-----------------------------------------------------------------------------------------
-	// handles all the events
-	// @TODO move this to the eventhandler
-	triggerEvent(type, evt, opt) {
-		if( !evt ) evt = {};
-		if( type.search(':') != -1) throw 'events are not allowed to have a : inside' ;
-		opt = this.prepareEventOpt( opt );
-		let result = [];
-		for( let i = 0; i < opt.controllers.length; i++){
-			const uid = opt.controllers[i];
-			for( let spaceIndex = 0; spaceIndex < this.eventSpaces.length; spaceIndex++ ) {
-				let controllers = snew[ this.eventSpaces[ spaceIndex] ].search( uid );
-				for( let controllerIndex = 0; controllerIndex < controllers.length; controllerIndex++ ){
-					let value = null;
-					if(controllers[ controllerIndex ].view) {
-						value = controllers[ controllerIndex ].view._checkForEvent( type, evt, opt );
-					} else {
-						value = controllers[ controllerIndex ]._checkForEvent( type, evt, opt );
-					}
-					if( value.found ) result.push(value.result);
-					if( !opt.pseudo && evt.propagation === false ) break;
-				}
-				if( !opt.pseudo && evt.propagation === false ) break;
-			}
-			if( !opt.pseudo && evt.propagation === false ) break;
-		}
-
-		// Warn only when it either was a clickevent, or an pseudoevent
-		if( !result.length && (opt.pseudo || (!opt.pseudo && evt.type == 'click' ))) {
-			console.warn(`There was no eventdefinition found ${type}`);
-		}
-		return result;
-	},
-	////-----------------------------------------------------------------------------------------
 	// triggers eventmaps like keypresses to shortevents like "enterkey" and escapekey
-	// @TODO make this deprecated
 	triggerExtra(evt) {
 		if( this.eventMap[ evt.type ] ){
 			for( const index in this.eventMap[ evt.type ] ) {
@@ -252,42 +217,6 @@ export default Obj({
 					}
 				}
 			}
-		}
-	},
-	////-----------------------------------------------------------------------------------------
-	// Checks variables inside the eventdefition
-	// @TODO make this deprecated, and move it to the view-class
-	checkEventMatch(definition, type, opt) {
-		const reserved = ':';
-		if(definition == type) {
-			return true;
-		} else {
-			let pos  = definition.search(reserved);
-			const diff = 0;
-			const params = {};
-			while( pos != -1 ){
-				const leftoverDefinition = definition.substring( pos + 1, definition.length );
-				const leftover           = type.substring( pos, type.length );
-				let lengthDefinition   = leftoverDefinition.search( /\W/ );
-				let length             = leftover.search( /\W/ );
-				if( lengthDefinition === -1 ) lengthDefinition = leftoverDefinition.length;
-				if( length === -1 ) length = leftover.length;
-				let key                = leftoverDefinition.substring( 0, lengthDefinition);
-				const value              = leftover.substring( 0, length);
-				const reg                = new RegExp(`:${key}`);
-				definition = definition.replace(reg, value);
-				pos = definition.search(reserved);
-				params[ key ] = value;
-				
-			}
-
-			if(definition === type) {
-				for( let i in params ) {
-					opt[ i ] = params[ i ];
-				}
-				return true;
-			}
-			
 		}
 	},
 	////-----------------------------------------------------------------------------------------
@@ -320,13 +249,5 @@ export default Obj({
 			}
 		}
 		return result;
-	},
-	////-----------------------------------------------------------------------------------------
-	// makes some default values for events
-	prepareEventOpt(opt) {
-		if( !opt ) opt = {};
-		if( opt.pseudo !== false ) opt.pseudo = true;
-		if( !opt.controllers ) opt.controllers = [ '*' ];
-		return opt;
 	}
 });

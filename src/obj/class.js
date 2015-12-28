@@ -70,52 +70,6 @@ const defaults = {
 		return this._handleRealData( type, key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
-	// Checks if this view has a fitting event-definition
-	_checkForEvent(type, evt, opt) {
-		let result =  {found: false, result: null};
-		for( let i = 0; i < this.events.length; i++) {
-			const eventDefinition = this.events[ i ];
-			if( snew.viewHelper.checkEventMatch( eventDefinition.type, type, evt )) {
-				// If not an pseudo-event selector has to fit
-				let target = null;
-				if( !opt.pseudo) {
-					const parents =  $( evt.target ).parents( eventDefinition.selector );
-					if( $( evt.target ).is( eventDefinition.selector )){
-						target = $( evt.target );
-					} else if( parents.length ){
-						target = parents;
-					} else {
-						continue;
-					}
-				}
-				const data = snew.viewHelper.getAttributes( target );
-				// Sorry for doubled code
-				if( this.controller && _.isFunction( this.controller[ eventDefinition.action ] )) {
-					result.found = true;
-					if( opt.pseudo ) {
-						result.result = this.controller[ eventDefinition.action ]( evt );
-					} else {
-						result.result = this.controller[ eventDefinition.action ]( data, evt, target );
-						if(result.result === false) evt.propagation = false;
-					}
-				}
-				if( _.isFunction( this[ eventDefinition.action ] )) {
-					result.found = true;
-					if( opt.pseudo ) {
-						result.result = this[ eventDefinition.action ]( evt );
-					} else {
-						result.result = this[ eventDefinition.action ]( data, evt, target );
-						if(result.result === false) evt.propagation = false;
-					}
-				}
-				if( !result.found ) console.error(
-					`Found an eventdefinition ${type} but the corresponding action ${eventDefinition.action} was not found`
-				);
-			}
-		}
-		return result;
-	},
-	////-----------------------------------------------------------------------------------------
 	// query management of data-handling
 	_handleRealData(type, key, value, opt, objType, offset) {
 		if(!offset) offset = 0;
