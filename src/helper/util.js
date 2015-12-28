@@ -12,11 +12,35 @@ const obj = {
 				if( obj.hasOwnProperty( index )){
 					if( !target[ index ] ){
 						target[ index ] = obj[ index ];
-					} else if( _.isObject( target[ index ] ) && _.isObject( obj[ index ] ) && !_.isFunction( target[ index ] ) && !_.isFunction( obj[ index] )){
+					} else if( typeof target[ index ] === 'object' && typeof obj[ index ] === 'object' && !this.isFunction( target[ index ]) && !this.isFunction( obj[ index] )){
 						this.merge(target[ index ], obj[ index ]);
 					}
 				}
 			}
+	},
+	////-----------------------------------------------------------------------------------------
+	// Most efficient way of checking for a function
+	isFunction(obj) {
+		return !!(obj && obj.constructor && obj.call && obj.apply);
+	},
+	////-----------------------------------------------------------------------------------------
+	// checks if two values are the same
+	isEqual(a, b) {
+		// @FIXME thats not a good way
+		return JSON.stringify(a) === JSON.stringify(b) 
+	},
+	////-----------------------------------------------------------------------------------------
+	// Merges an object inside an other, without overwriting
+	clone(source) {
+		if( !( source instanceof Object) || this.isFunction( source )) { // Only objects are references
+			return source;
+		}
+		var target = new source.constructor(); // @FIXME doesnt work for Date yet
+		// Clone each property.
+		for( let index in source) { // @FIXME I believe this breaks in ie8 for arrays
+			target[ index ] = this.clone( source[ index ]);
+		}
+		return target;
 	},
 	////-----------------------------------------------------------------------------------------
 	// inserts text inside a string at position

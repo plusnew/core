@@ -39,7 +39,7 @@ export default Obj({
 		this.anons[ id ]._meta.uid = id;
 		if( content ){
 			// @TODO logic is propably wrong
-			_.merge(this.anons[ id ].content, content);
+			snew.utilHelper.merge(this.anons[ id ].content, content);
 		}
 		this.anons[ id ].view = snew.viewHelper.create( path, opt );
 		this.anons[ id ].view.controller = this.anons[ id ];
@@ -88,7 +88,7 @@ export default Obj({
 			console.log(`Controller ${path} did not exist, I created it for you`);
 			snew.Controller(path, {_meta: { pseudo: true , path: path}});
 		}
-		return _.cloneDeep( this.list[ path ] );
+		return snew.utilHelper.clone( this.list[ path ] );
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers

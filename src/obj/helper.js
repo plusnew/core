@@ -139,7 +139,7 @@ export default Obj({
 	// checks if all necessary values are correct
 	variableValidation(key, variables) {
 		if( !variables || variables[ key ] === undefined ) throw `${key} was not set in opt: {query: {}}`;
-		if( !_.isArray( variables[ key ])) throw `${key} query has to be an array`;
+		if( this.utilHelper.isArray( variables[ key ]) instanceof Array) throw `${key} query has to be an array`;
 	},
 	////-----------------------------------------------------------------------------------------
 	// checks if the key is a sub, needed for registry removal if parent gets set

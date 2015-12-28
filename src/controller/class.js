@@ -83,7 +83,7 @@ const classContent = {
 	_modelSuccess(response) {
 		this._meta.modelFinished = true;
 		response = this.preprocess( response.result );
-		if( _.isArray( response )){ // this.content should always be an object, thatfor i put arrays into this.content.values
+		if( response instanceof Array){ // this.content should always be an object, thatfor i put arrays into this.content.values
 			this.meta.key = 'values';
 			console.info(
 				`${this._meta.path} had an model which returned an array. Put it instead of content, to content.values`

@@ -86,7 +86,7 @@ export default Obj({
 			console.log(`View ${path} does not exist`);
 			snew.View(path, {_meta: {pseudo: true}});
 		}
-		return _.cloneDeep( this.list[ path ] );
+		return snew.utilHelper.clone( this.list[ path ] );
 	},
 	////-----------------------------------------------------------------------------------------
 	// start uid
@@ -213,7 +213,7 @@ export default Obj({
 				if( eventValue ) {
 					const mapValue = this.eventMap[ evt.type ][ index ][ eventValue ];
 					if( mapValue ){
-						this.trigger(mapValue, _.clone( evt ));
+						this.trigger(mapValue, evt); // @TODO does this evt needs a clone?
 					}
 				}
 			}

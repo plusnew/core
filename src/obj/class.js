@@ -134,7 +134,7 @@ const defaults = {
 				const contentLength = contentParts.length;
 				const prefix        = keyParts.slice(0, contentLength);
 				dirtyKey = keyParts.slice(contentLength, keyParts.length).join( '.' );
-				if( _.isEqual(prefix, contentParts) ) contentSpace = true;
+				if( snew.utilHelper.isEqual(prefix, contentParts) ) contentSpace = true;
 			} else {
 				dirtyKey = keyParts.join( '.' );
 				contentSpace = true;
@@ -210,7 +210,7 @@ const defaults = {
 
 const meta = function() {
 	const obj = arguments[ arguments.length - 1 ];
-	const properties = _.cloneDeep( defaults );
+	const properties = util.clone( defaults );
 	util.merge(obj, properties);
 	if( arguments.length > 1 ){
 		obj._meta.type = arguments[ 0 ];

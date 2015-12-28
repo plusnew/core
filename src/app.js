@@ -54,7 +54,7 @@ const snew = Obj({
 			window.app = {};
 		}
 		console.log('Can I haz some snews?');
-		_.merge(snew, opt);
+		this.utilHelper.merge(snew, opt);
 		this.executeInit();
 	},
 	////-----------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ const snew = Obj({
 		}
 
 		for( const index in this ){
-			if( _.isObject( this[ index ] ) && _.isFunction( this[index].init ) && setups.indexOf( index ) === -1 ){
+			if( typeof this[ index ] === 'object' && typeof this[index].init === 'function' && setups.indexOf( index ) === -1 ){
 				this[index].init();
 			}
 		}
