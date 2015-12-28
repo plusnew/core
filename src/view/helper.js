@@ -30,11 +30,11 @@ export default Obj({
 	eventSpaces: [ 'controllerHelper', 'helperHelper' ],
 	////-----------------------------------------------------------------------------------------
 	// JQuery events which the framework is listening for
-	eventListeners: ['keyup'],
+	eventListeners: ['keydown', 'keypress', 'keyup'],
 	////-----------------------------------------------------------------------------------------
 	// maps e.g. keypresses to trigger shortevents for enter and escape-keys
 	eventMap: {
-		keyup: {
+		keypdown: {
 			keyCode: {
 				13: 'view.enterkey',
 				27: 'view.escapekey'
@@ -188,7 +188,7 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// way binding from dom
 	updateData(evt) {
-		if( evt.type == 'keyup' || evt.type == 'keydown' ){
+		if( evt.type == 'keypress' || evt.type == 'keyup' ){
 			const identifier = evt.target.getAttribute('tempartstart');
 			if( identifier && evt.keyCode !== 13 ){ // Enter button don't bring changes into the values
 				const pos = identifier.indexOf( '-' );
@@ -197,7 +197,11 @@ export default Obj({
 				const controllers = snew.search( uid );
 				if( controllers.length === 1 ){
 					const controller = controllers[ 0 ];
-					controller.view._updateCurrent(blockId, 'value', evt.target.value);
+					var value = evt.target.value
+					if(evt.type == 'keypress') {
+						value += String.fromCharCode(evt.keyCode);
+					}
+					controller.view._updateCurrent(blockId, 'value', value);
 				} else {
 					throw 'Getting the correct controller failed somehow';
 				}
