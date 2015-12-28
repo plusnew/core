@@ -110,7 +110,7 @@ export default Obj({
 	// checks which views are dirty, to asynchronoesly render them
 	dirtyChecking() {
 		if(snew.viewHelper.dirties) {
-			// console.log(snew.viewHelper.dirties.length);
+			
 			for( let i = 0; i < snew.viewHelper.dirties.length; i++ ){
 				const uid = snew.viewHelper.dirties[i];
 				const controllers = snew.controllerHelper.search(uid);

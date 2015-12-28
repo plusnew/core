@@ -14,11 +14,11 @@ export default Obj({
 			let found = false;
 			if(controller[ action ]) {
 				found = true;
-				controller[ action ].call( action, parameter );
+				controller[ action ].apply( controller, parameter );
 			}
 			if( controller.view[ action ] ) {
 				found = true;
-				controller.view[action].call( action, parameter );
+				controller.view[action].apply( controller.view, parameter );
 			}
 			if(!found) {
 				throw 'Could not matching event(' + action + ') to controller(' + controller._meta.path +')';

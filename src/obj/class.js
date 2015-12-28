@@ -148,8 +148,7 @@ const defaults = {
 		let current;
 		switch (type){
 			case 'get':
-				// added cloneDeep to remove reference, when setter is made, we want a rerender not a reference
-				result = _.cloneDeep( this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]] );
+				result = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
 				break;
 			case 'set':
 				current = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
@@ -200,6 +199,7 @@ const defaults = {
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent
 	_getReference(keyParts, type) {
+		var foo = Math.random();
 		let content = null;
 		let start   = null; // @FIXME improve this start thingi
 		if(keyParts.length === 1) {
@@ -212,21 +212,18 @@ const defaults = {
 		for( let i = start; i < keyParts.length; i++ ){
 			let part = keyParts[ i ];
 
-			if( !content[ part ]){
+			if( !content[ part ] ){
 				if( type == 'arr' && i < keyParts.length) {
 					content[ part ] = [];
+					console.info(
+						`${keyParts.slice( 0, i + 1 ).join( '.' )} did not exist, so I created it for you`
+					);
 				} else if( type == 'obj'  || i + 1 < keyParts.length){
 					content[ part ] = {};
+					console.info(
+						`${keyParts.slice( 0, i + 1 ).join( '.' )} did not exist, so I created it for you`
+					);
 				}
-			}
-
-			if( i + 1 < keyParts.length ){ // @TODO Check for sideeffects -> === undefined was it before
-				content = content[ part ];
-				console.info(
-					`${keyParts.slice( 0, i + 1 ).join( '.' )} did not exist, so I created it for you`
-				);
-			} else if( i !== keyParts.length - 1){
-				content = content[ part ];
 			}
 
 			if( i == keyParts.length - 1){
@@ -235,6 +232,8 @@ const defaults = {
 				} else {
 					return content; // sadly i cant return the property-value itself, reference would get lost
 				}
+			} else {
+				content = content[ part ];
 			}
 		}
 		throw 'Something went totally wrong at getting the references';
