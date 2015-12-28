@@ -5,7 +5,25 @@ export default Obj({
 	// Existing templates collection
 	list: {},
 	init() {
-		tempartCompiler.trigger = snew.trigger.bind(this);
+		tempartCompiler.trigger = this.triggerEvent.bind(this);
+	},
+	triggerEvent: function(componentId, action, parameter) {
+		const controllers = snew.search(componentId);
+		for( let i = 0; i < controllers.length; i++) {
+			let controller = controllers[ i ];
+			let found = false;
+			if(controller[ action ]) {
+				found = true;
+				controller[ action ].call( action, parameter );
+			}
+			if( controller.view[ action ] ) {
+				found = true;
+				controller.view[action].call( action, parameter );
+			}
+			if(!found) {
+				throw 'Could not matching event(' + action + ') to controller(' + controller._meta.path +')';
+			}
+		}
 	},
 	//// ------------------------------------------------------------
 	// Layer for comunnicate with tempart
