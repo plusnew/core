@@ -12,7 +12,7 @@ export default Obj({
 	startPath: 'main/app',
 	////-----------------------------------------------------------------------------------------
 	// domnode-attribute for start uid node
-	uidDomNode: 'script',
+	uidDomNode: 'SCRIPT',
 	////-----------------------------------------------------------------------------------------
 	// domnode-attribute for start uid node
 	uidAttrStart: 'data-begin',
@@ -30,7 +30,7 @@ export default Obj({
 	eventSpaces: [ 'controllerHelper', 'helperHelper' ],
 	////-----------------------------------------------------------------------------------------
 	// JQuery events which the framework is listening for
-	eventString: 'click submit change mouseover mouseout mousemove mouseup mousedown keyup keydown drag dragstart dragover mousewheel',
+	eventListeners: ['keyup'],
 	////-----------------------------------------------------------------------------------------
 	// maps e.g. keypresses to trigger shortevents for enter and escape-keys
 	eventMap: {
@@ -71,10 +71,10 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// inserts first view to this.entrance
 	insertApp() {
-		const result = snew.controllerHelper.create( this.startPath, null, {} );
-		const dom = $( this.entrance );
-		if( dom.length === 1 ) {
-			$( this.entrance ).replaceWith(result.html);
+		const dom = document.querySelector( this.entrance );
+		if( dom ) {
+			const result = snew.controllerHelper.create( this.startPath, null, {} );
+			dom.outerHTML = result.html;
 		} else {
 			console.error('snew.viewHelper.entrance was not represented in dom properly', dom);
 		}
@@ -127,53 +127,59 @@ export default Obj({
 	getUids(obj) {
 		const result    = [];
 		const excludes  = [];
-		while( obj.length > 0 ){
-			// Needed handling with prev() instead of siblings(), to keep the order of the uids
-			let prevObj = obj.prev();
-			while( prevObj.length > 0 ){
-				const endUid = this.isUidEndObj( prevObj );
-				const uid = this.isUidObj( prevObj );
+		do {
+			const endUid = this.isUidEndObj( obj );
+			const uid = this.isUidObj( obj );
 
-				if( endUid ){
-					excludes.push(endUid); // Needed to handle siblings, which do not surround the target
-				} else if( uid && excludes.indexOf( uid ) === -1 ){
-					result.push(uid);
-				}
-				prevObj = prevObj.prev();
+			if( endUid ){
+				excludes.push(endUid); // Needed to handle siblings, which do not surround the target
+			} else if( uid && excludes.indexOf( uid ) === -1 ){
+				result.push(uid);
 			}
-			obj = obj.parent();
-		}
+			if(obj.previousSibling) {
+				obj = obj.previousSibling;
+			} else {
+				obj = obj.parentNode;
+			}
+		} while(obj)
 
 		return result;
 	},
 	////-----------------------------------------------------------------------------------------
 	// checks if dom-node is an uid-obj
 	isUidObj(obj) {
-		if( obj.is( `${this.uidDomNode}[${this.uidAttrStart}]` )) {
-			return obj.attr( this.uidAttrStart );
-		}
+		return this._getAttributeValue(obj, this.uidDomNode, this.uidAttrStart);
 	},
 	////-----------------------------------------------------------------------------------------
 	// checks if dom-node is an uid-end-obj
 	isUidEndObj(obj) {
-		if( obj.is( `${this.uidDomNode}[${this.uidAttrEnd}]` )) {
-			return obj.attr( this.uidAttrEnd );
+		return this._getAttributeValue(obj, this.uidDomNode, this.uidAttrEnd);
+	},
+	_getAttributeValue(obj, nodeName, attributeName) {
+		if(obj.nodeName === nodeName) { // @FIXME
+			for( let i = 0; i < obj.attributes.length; i++ ) {
+				if( obj.attributes[ i ].nodeName === attributeName ){
+					return obj.attributes[ i ].nodeValue;
+				}
+			}
 		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// adds all dom events which the framework ist listening for
 	addEvents() {
-		$( 'body' ).on(this.eventString, evt => {
-			return snew.viewHelper.handleEvent( evt );
-		});
-		$( window ).on('hashchange', () => {
+		for(let i = 0; i < this.eventListeners.length; i++) {
+			document.body.addEventListener(this.eventListeners[ i ], evt => {
+				return snew.viewHelper.handleEvent( evt );
+			});
+		}
+		window.addEventListener('hashchange', () => {
 			trhis.trigger('hashchange', location.hash);
 		});
 	},
 	////-----------------------------------------------------------------------------------------
 	// wrapper for triggering events, selects corresponding parent-controllers
 	handleEvent(evt) {
-		const uids = this.getUids( $(evt.target));
+		const uids = this.getUids( evt.target );
 		this.triggerExtra(evt);
 		this.updateData(evt);
 		return this.triggerEvent( evt.type, evt, {controllers: uids, pseudo: false} );
@@ -288,7 +294,7 @@ export default Obj({
 		if(!result) result = {};
 
 		if(target) {
-			const attributes = target[0].attributes;
+			const attributes = target.attributes;
 
 			if(result.id === undefined && target.attr('id') && attributes['data-id'] === undefined) {
 				result.id = target.attr('id');
@@ -307,9 +313,8 @@ export default Obj({
 					}
 				}
 			}
-			const parent = target.parent();
-			if(parent.length > 0) {
-				result = this.getAttributes(parent, result);
+			if(target.parentNode) {
+				result = this.getAttributes(target.parentNode, result);
 			}
 		}
 		return result;

@@ -88,25 +88,6 @@ const classContent = {
 		// @TODO this._meta.dirty needs grouping for unsift and push
 		this._compile(this._meta.dirty);
 		this._meta.dirty = {};
-	},
-	////-----------------------------------------------------------------------------------------
-	// returns jquery object depending selector
-	obj(path) {
-		let selector = null;
-		const id = this.controller._meta.uid;
-		const startUid = `${snew.viewHelper.uidDomNode}[${snew.viewHelper.uidAttrStart}=${id}]`;
-		const endUid   = `${snew.viewHelper.uidDomNode}[${snew.viewHelper.uidAttrEnd}=${id}]`;
-		const root = $( startUid ).nextUntil( endUid );
-		if( path !== 'root' ){
-			if( !this[ path ] ){
-				throw 'Couldnt get you the obj because of missing definition';
-			}
-			selector = this[ path ];
-			return $.merge( root.filter( selector ), root.children( selector )); // we want the top and the children
-		} else {
-			return root;
-		}
-		
 	}
 };
 
