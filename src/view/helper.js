@@ -155,6 +155,8 @@ export default Obj({
 	isUidEndObj(obj) {
 		return this._getAttributeValue(obj, this.uidDomNode, this.uidAttrEnd);
 	},
+	////-----------------------------------------------------------------------------------------
+	// expects node type and an attribute key, returns this when exists
 	_getAttributeValue(obj, nodeName, attributeName) {
 		if(obj.nodeName === nodeName) { // @FIXME
 			for( let i = 0; i < obj.attributes.length; i++ ) {
