@@ -34,7 +34,7 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// maps e.g. keypresses to trigger shortevents for enter and escape-keys
 	eventMap: {
-		keypdown: {
+		keydown: {
 			keyCode: {
 				13: 'view.enterkey',
 				27: 'view.escapekey'
