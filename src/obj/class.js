@@ -130,18 +130,18 @@ const defaults = {
 			let contentSpace = false;
 			let dirtyKey     = null;
 			if(this._meta.contentSpace) {
-				const contentParts  = this._meta.contentSpace.split( '.' );
-				const contentLength = contentParts.length;
+				const contentLength = this._meta.contentSpace.length;
 				const prefix        = keyParts.slice(0, contentLength);
-				dirtyKey = keyParts.slice(contentLength, keyParts.length).join( '.' );
-				if( snew.utilHelper.isEqual(prefix, contentParts) ) contentSpace = true;
+				dirtyKey = keyParts.slice(contentLength, keyParts.length);
+				if( snew.utilHelper.isEqual(prefix, this._meta.contentSpace) ) contentSpace = true;
 			} else {
-				dirtyKey = keyParts.join( '.' );
+				dirtyKey = keyParts;
 				contentSpace = true;
 			}
 
 			if( contentSpace ){
 				if( snew.viewHelper.dirtyHandling !== false ){
+					if(dirtyKey[0]==='controller') debugger;
 					this.view._addDirty(dirtyKey, type, value);
 				} else {
 					this.view._render();
@@ -197,10 +197,12 @@ const defaults = {
 		if(typeof key === 'string') {
 			key = key.split('.');
 		}
-		if( opt.contentSpace ){
-			key.unshift(opt.contentSpace);
-		} else if( this._meta.contentSpace ){
-			key.unshift(this._meta.contentSpace);
+		var prefix = opt.contentSpace ? prefix = this._meta.contentSpace : prefix = this._meta.contentSpace;
+		if(prefix){
+			key = snew.utilHelper.clone(key); // @FIXME clone is a quickfix, but should not be used
+			for(var i = prefix.length; i > 0; i--) {
+				key.unshift(prefix[i - 1]);
+			}
 		}
 		return key;
 	},

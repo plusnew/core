@@ -5,7 +5,7 @@ const classContent = {
 		registry: true,
 		////-----------------------------------------------------------------------------------------
 		// Prefix where setter and getter should view
-		contentSpace: 'content',
+		contentSpace: ['content'],
 		////-----------------------------------------------------------------------------------------
 		// Just some debugging info
 		type: 'controller',

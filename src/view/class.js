@@ -5,7 +5,7 @@ const classContent = {
 		type: 'view',
 		////-----------------------------------------------------------------------------------------
 		// Prefix where setter and getter should view
-		contentSpace: 'controller.content',
+		contentSpace: ['controller', 'content'],
 		////-----------------------------------------------------------------------------------------
 		// current values for checking context
 		currentValues: {},
@@ -90,15 +90,41 @@ const classContent = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// batches dirties to this form
-	// @TODO
 	// dirties: [
-	// 	{op: 'insert',          to: 0, key: ['todos'], values: []},
-	// 	{op: 'update',          to: 1, key: ['todos'], value:  []}
-	// 	{op: 'move',   from: 4, to: 3, key: ['todos']},
-	// 	{op: 'remove', from: 4,        key: ['todos']}
+	// 	{type: 'create',          to: 0, key: ['todos'], values: []},
+	// 	{type: 'update',                 key: ['todos', 1], value: {}}
+	// 	{type: 'move',   from: 4, to: 3, key: ['todos']},
+	// 	{type: 'delete', from: 4,        key: ['todos']}
 	// ]
 	_batchDirties(dirties) {
-		return dirties
+		var result = [];
+		for( let i = 0; i < dirties.length; i++ ){
+			const dirty = dirties[ i ];
+			if(dirty.type == 'set') {
+				result.push({type: 'update', key: dirty.key, value: dirty.value});
+			} else if(dirty.type === 'push') {
+				// The minus one is needed because the push already happened in the data (but not in the dom)
+				this._addBatchedInsert(dirty, result, this.get(dirty.key).length - 1, dirty.value);
+			} else if(dirty.type === 'shift') {
+				this._addBatchedInsert(dirty, result, 0, dirty.value);
+			} else {
+				throw 'Unknown dataoperation, could not compile template'
+			}
+		}
+		return result;
+	},
+	_addBatchedInsert(dirty, batch, position, value) {
+		let found = false;
+		for(let i = 0; i < batch.length; i++) {
+			if(batch[i].key === dirty.key && batch.position === position) {
+				batch[i].values.unshift(value);
+				found = true;
+			}
+		}
+		if(!found) {
+			batch.push({type: 'create', key: dirty.key, values: [dirty.value], to: position});
+		}
+
 	}
 };
 
