@@ -197,7 +197,7 @@ export default Obj({
 				const controllers = snew.search( uid );
 				if( controllers.length === 1 ){
 					const controller = controllers[ 0 ];
-					var value = evt.target.value
+					let value = evt.target.value
 					if(evt.type == 'keypress') {
 						value += String.fromCharCode(evt.keyCode);
 					}

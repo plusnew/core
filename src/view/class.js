@@ -11,7 +11,7 @@ const classContent = {
 		currentValues: {},
 		////-----------------------------------------------------------------------------------------
 		// Keeps in mind what keys did get dirty, to only change that
-		dirty: {}
+		dirty: []
 	},
 	////-----------------------------------------------------------------------------------------
 	// array of eventdefinitions
@@ -51,7 +51,7 @@ const classContent = {
 	// handles replacement of content and triggers compile function
 	_render() {
 		this._compile(this._meta.dirty);
-		this._meta.dirty = {}; // There will everything be in
+		this._meta.dirty = []; // We dont want to rererender, because the state is clean
 
 		snew.utilHelper.safeCall(this.controller, 'notify');
 		snew.utilHelper.safeCall(this, 'notify');
@@ -77,17 +77,28 @@ const classContent = {
 	////-----------------------------------------------------------------------------------------
 	// Registers what keys got dirty
 	_addDirty(key, type, value) {
-		if(!this._meta.dirty[key] || type === 'set') this._meta.dirty[key] = [];
-		// @TODO add handling for pop/shift + push/unshift
-		this._meta.dirty[key].push({type, value});
+		// @TODO add handling for type === set, it has to overwrite all previous shift/push/set/remove and its children
+		this._meta.dirty.push({type, value, key});
 		snew.viewHelper.pushOnce('dirties', this.controller._meta.uid);
 	},
 	////-----------------------------------------------------------------------------------------
 	// Works the dirties
 	_handleDirties() {
-		// @TODO this._meta.dirty needs grouping for unsift and push
-		this._compile(this._meta.dirty);
-		this._meta.dirty = {};
+		// @TODO this._meta.dirty needs batching
+		this._compile(this._batchDirties(this._meta.dirty));
+		this._meta.dirty = [];
+	},
+	////-----------------------------------------------------------------------------------------
+	// batches dirties to this form
+	// @TODO
+	// dirties: [
+	// 	{op: 'insert',          to: 0, key: ['todos'], values: []},
+	// 	{op: 'update',          to: 1, key: ['todos'], value:  []}
+	// 	{op: 'move',   from: 4, to: 3, key: ['todos']},
+	// 	{op: 'remove', from: 4,        key: ['todos']}
+	// ]
+	_batchDirties(dirties) {
+		return dirties
 	}
 };
 

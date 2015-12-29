@@ -153,7 +153,6 @@ const defaults = {
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent
 	_getReference(keyParts, type) {
-		var foo = Math.random();
 		let content = null;
 		let start   = null; // @FIXME improve this start thingi
 		if(keyParts.length === 1) {

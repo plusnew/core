@@ -35,7 +35,7 @@ const obj = {
 		if( !( source instanceof Object) || this.isFunction( source )) { // Only objects are references
 			return source;
 		}
-		var target = new source.constructor(); // @FIXME doesnt work for Date yet
+		let target = new source.constructor(); // @FIXME doesnt work for Date yet
 		// Clone each property.
 		for( let index in source) { // @FIXME I believe this breaks in ie8 for arrays
 			target[ index ] = this.clone( source[ index ]);
