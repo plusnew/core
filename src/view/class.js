@@ -91,10 +91,10 @@ const classContent = {
 	////-----------------------------------------------------------------------------------------
 	// batches dirties to this form
 	// dirties: [
-	// 	{type: 'create',          to: 0, key: ['todos'], values: []},
-	// 	{type: 'update',                 key: ['todos', 1], value: {}}
-	// 	{type: 'move',   from: 4, to: 3, key: ['todos']},
-	// 	{type: 'delete', from: 4,        key: ['todos']}
+	//	{type: 'create', to: 0, values: [], key: ['todos']},
+	//	{type: 'update',        value:  {}, key: ['todos', 1, 'foobar']}
+	//	{type: 'move',   to: 3,             key: ['todos', 4]},
+	//	{type: 'delete',                    key: ['todos', 4]}
 	// ]
 	_batchDirties(dirties) {
 		var result = [];
