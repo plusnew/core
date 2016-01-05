@@ -30,22 +30,8 @@ const classContent = {
 	////-----------------------------------------------------------------------------------------
 	// updates the currentValue of the specified attribute/value
 	_updateCurrent(blockId, attribute, value) {
-		const attributeBlock = snew.templateHelper.getDependency( this._meta.path, blockId, attribute );
-		const block = this._searchBlock( blockId, attributeBlock.id, value );
-		for( let i = 0; i < attributeBlock.depending.length; i++ ){
-			this.controller.set(attributeBlock.depending[ i ], value);
-		}
-	},
-
-	_searchBlock(blockId, attributeId, value) {
-		const parts  = blockId.split( '-' );
-		let blocks = this._meta.currentValues;
-		const block  = null;
-		// @TODO implement it working for loops
-		for( let i = 0; i < parts.length; i++ ){
-			blocks = blocks[ parts[ i ]];
-			blocks[attributeId] = value;
-		}
+		var key = snew.templateHelper.syncModel( this._meta.path, blockId, attribute, value, this._meta.currentValues );
+		this.controller.set(key, value);
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles replacement of content and triggers compile function

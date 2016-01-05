@@ -42,31 +42,60 @@ export default Obj({
 		}
 	},
 	//// ------------------------------------------------------------
-	// Layer for comunnicate with tempart
-	getDependency(path, blockId, type) {
+	// Layer for comunnicate with tempart, to sync values
+	syncModel(path, blockId, type, value, currentValues) {
 		let blocks = this.list[ path ];
 		const parts  = blockId.split( '-' );
-		let block  = null;
-		// @TODO implement it working for loops
+		let blocksList = [];
 		for( let i = 0; i < parts.length; i++ ){
 			for( let blockIndex = 0; blockIndex < blocks.length; blockIndex++ ){
-				if( blocks[ blockIndex].id ==  parts[ i ]){
+				const block      = blocks[ blockIndex ];
+				const blockParts = parts[ i ].split( ':' );
+				const blockId    = blockParts[ 0 ];
+
+				if( block.id == blockId ){
+					var currentValue  = null
+					if( blockParts[ 1 ] ) {
+						currentValue = currentValues[ blockId ];
+					}
+					blocksList.push({block: block, local: blockParts[ 1 ], id: blockParts[ 0 ], currentValues: currentValue}); // @TODO add currentValues
 					if( i + 1 < parts.length) {
-						blocks = blocks[ parts[ i ]].contains;
+						blocks = block[ currentValues[ block.id ].type ];
 					} else {
-						block = blocks[ blockIndex ];
+						if(block.type !== 'dom') throw 'Something went wrong here!';
+						// @TODO add updating of currentValues in block.dom
+						for( let orderIndex = 0; orderIndex < block.order.length; orderIndex++ ){
+							if( block.order[ orderIndex ] == type ){
+								return this.generateRealKey(block.contains[orderIndex].depending[0], blocksList);
+							}
+						}
+					}
+					if( blockParts[ 1 ] ){
+						currentValues = currentValues[ blockId ].values[ blockParts[ 1 ]];
 					}
 					break;
 				}
 			}
 		}
+		console.error(' Couldnt update your value, seems like no one cares');
+	},
+	//// ------------------------------------------------------------
+	// In template can happen renamings, eg in loops this has to be reversed
+	generateRealKey(source, blocks) {
+		var key = source.split('.');
+		for(var i = 0; i < blocks.length; i++) {
+			if(blocks[ i ].local) {
+				var blockEntity = blocks[ i ];
+				var pos = blockEntity.currentValues.order.indexOf(blocks[i].local);
 
-		if(block.type !== 'dom') throw 'Something went wrong here!';
-		for( let orderIndex = 0; orderIndex < block.order.length; orderIndex++ ){
-			if( block.order[ orderIndex ] == type ){
-				return block.contains[ orderIndex ];
+				if( pos === -1 ) throw 'Generating arrayposition of hash did not work'
+				if( blockEntity.block.depending[ blockEntity.block.depending.length - 1 ] === key[ 0 ] ){
+					key.shift();
+					key.unshift(pos);
+					key.unshift(blockEntity.block.depending[ 0 ]);
+				}
 			}
 		}
-		console.error(' Couldnt update your value, seems like no one cares');
+		return key;
 	}
 });
