@@ -1,11 +1,13 @@
 snew
 ====
 
-lightweight mvc-framework with queries :3
+lightweight mvc-framework with local data quering
 unlike other frameworks we don't render the whole template each time
 data changed in your component. The Templating engine
 [tempart](https://github.com/plusgut/tempart) notifies the view what
 actually changed, without the need to diff between different states.
+
+Note: don't use this framework yet, its in alpha state. Currently it's not robust, it has no XSS prevention and a lack of documentation.
 
 api
 ---
