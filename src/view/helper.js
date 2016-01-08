@@ -141,7 +141,7 @@ export default Obj({
 			} else {
 				obj = obj.parentNode;
 			}
-		} while(obj)
+		} while(obj);
 
 		return result;
 	},
@@ -198,7 +198,7 @@ export default Obj({
 					const controllers = snew.search( uid );
 					if( controllers.length === 1 ){
 						const controller = controllers[ 0 ];
-						let value = evt.target.value
+						let value = evt.target.value;
 						controller.view._updateCurrent(blockId, 'value', value);
 					} else {
 						throw 'Getting the correct controller failed somehow';

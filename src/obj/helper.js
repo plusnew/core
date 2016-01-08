@@ -131,7 +131,7 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// checks if the string is an query
 	isQuery(keyNode) {
-		if( typeof keyNode === 'Object' ){
+		if( typeof keyNode === 'object' ){
 			return true;
 		}
 	},

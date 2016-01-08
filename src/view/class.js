@@ -94,7 +94,7 @@ const classContent = {
 			} else if(dirty.type === 'shift') {
 				this._addBatchedInsert(dirty, result, 0, dirty.value);
 			} else {
-				throw 'Unknown dataoperation, could not compile template'
+				throw 'Unknown dataoperation, could not compile template';
 			}
 		}
 		return result;

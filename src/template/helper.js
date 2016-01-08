@@ -44,7 +44,7 @@ export default Obj({
 	//// ------------------------------------------------------------
 	// Layer for comunnicate with tempart, to sync values
 	syncModel(path, blockId, type, value, currentValues) {
-		if(!this.list[path]) throw 'No such template found'
+		if(!this.list[path]) throw 'No such template found';
 		return tempartCompiler.syncModel(this.list[path], blockId, type, value, currentValues);
 	}
 });

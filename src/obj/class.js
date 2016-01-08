@@ -141,7 +141,6 @@ const defaults = {
 
 			if( contentSpace ){
 				if( snew.viewHelper.dirtyHandling !== false ){
-					if(dirtyKey[0]==='controller') debugger;
 					this.view._addDirty(dirtyKey, type, value);
 				} else {
 					this.view._render();

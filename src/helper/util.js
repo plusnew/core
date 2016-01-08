@@ -27,7 +27,7 @@ const obj = {
 	// checks if two values are the same
 	isEqual(a, b) {
 		// @FIXME thats not a good way
-		return JSON.stringify(a) === JSON.stringify(b) 
+		return JSON.stringify(a) === JSON.stringify(b);
 	},
 	////-----------------------------------------------------------------------------------------
 	// Merges an object inside an other, without overwriting
