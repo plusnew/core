@@ -1,6 +1,6 @@
 {
   "name": "snew",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Components and Models done right",
   "main": "dist/snew.min.js",
   "devDependencies": {
