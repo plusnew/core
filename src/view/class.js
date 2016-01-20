@@ -93,6 +93,8 @@ const classContent = {
 				this._addBatchedInsert(dirty, result, this.get(dirty.key).length - 1, dirty.value);
 			} else if(dirty.type === 'shift') {
 				this._addBatchedInsert(dirty, result, 0, dirty.value);
+			} else if(dirty.type === 'remove') {
+				
 			} else {
 				throw 'Unknown dataoperation, could not compile template';
 			}
