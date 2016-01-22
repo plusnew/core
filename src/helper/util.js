@@ -33,9 +33,9 @@ const obj = {
 	// Adds an value to a specific position inside an array and returns that
 	arrayInsertAt(arr, obj, pos) {
 		// @TODO check if there is a better way, without instanciating new arrays
-		var result = arr.slice(0, pos - 1);
+		var result = arr.slice(0, pos);
 		result.push(obj);
-		return result.concat(arr.slice(pos - 1, arr.length));
+		return result.concat(arr.slice(pos, arr.length));
 	},
 	////-----------------------------------------------------------------------------------------
 	// Merges an object inside an other, without overwriting
