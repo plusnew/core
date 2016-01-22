@@ -43,11 +43,6 @@ const obj = {
 		return target;
 	},
 	////-----------------------------------------------------------------------------------------
-	// inserts text inside a string at position
-	insertAt(src, position, str) {
-		return src.substr( 0, position ) + str + src.substr( position );
-	},
-	////-----------------------------------------------------------------------------------------
 	// Triggers e.g. init-functions, without breaking stuff. on debug mode it throws the errors
 	safeCall(scope, func, args) {
 		if(!args) args = [];
@@ -61,11 +56,6 @@ const obj = {
 			}
 		}
 	},
-	////-----------------------------------------------------------------------------------------
-	// If you don't like slashes inside the namespace/module pattern, you can make your transition here
-	transformNamespace(name) {
-		return name;
-	}
 };
 
 export default window.snew ? snew.Obj( obj ) : obj;
