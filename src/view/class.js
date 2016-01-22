@@ -104,7 +104,7 @@ const classContent = {
 	_addBatchedInsert(dirty, batch, position, value) {
 		let found = false;
 		for(let i = 0; i < batch.length; i++) {
-			if(batch[i].key === dirty.key && batch.position === position) {
+			if(snew.utilHelper.isEqual(batch[i].key, dirty.key) && (batch[i].to >= position && position <= batch[i].to + batch[i].values.length)) { 
 				batch[i].values.unshift(value);
 				found = true;
 			}
