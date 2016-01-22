@@ -90,6 +90,7 @@ const classContent = {
 				result.push({type: 'update', key: dirty.key, value: dirty.value});
 			} else if(dirty.type === 'push') {
 				// The minus one is needed because the push already happened in the data (but not in the dom)
+				// @FIXME? length is not always correct, it can have mutliple already added data-values
 				this._addBatchedInsert(dirty, result, this.get(dirty.key).length - 1, dirty.value);
 			} else if(dirty.type === 'shift') {
 				this._addBatchedInsert(dirty, result, 0, dirty.value);
