@@ -104,8 +104,8 @@ const classContent = {
 	_addBatchedInsert(dirty, batch, position, value) {
 		let found = false;
 		for(let i = 0; i < batch.length; i++) {
-			if(snew.utilHelper.isEqual(batch[i].key, dirty.key) && (batch[i].to >= position && position <= batch[i].to + batch[i].values.length)) { 
-				batch[i].values.unshift(value);
+			if(snew.utilHelper.isEqual(batch[i].key, dirty.key) && (batch[i].to >= position && position <= batch[i].to + batch[i].values.length)) {
+				batch[i].values = snew.utilHelper.arrayInsertAt(batch[i].values, value, position);
 				found = true;
 			}
 		}
