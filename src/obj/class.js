@@ -54,8 +54,18 @@ const defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for pop index of an array/obj
-	pop(key, value, opt) {
-		return this._handleData( 'pop', key, value, opt );
+	pop(key, opt) {
+		return this._handleData( 'pop', key, null, opt );
+	},
+	////-----------------------------------------------------------------------------------------
+	// metafunction for shift index of an array/obj
+	shift(key, opt) {
+		return this._handleData( 'shift', key, null, opt );
+	},
+	////-----------------------------------------------------------------------------------------
+	// metafunction for removing index of an array/obj
+	remove(key, opt) {
+		return this._handleData( 'remove', key, null, opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles all the events
@@ -97,29 +107,41 @@ const defaults = {
 	////-----------------------------------------------------------------------------------------
 	// actual handling of the data (without queries)
 	_handleTypes(type, keyParts, value, opt) {
-		let changed = opt.forceRender || false;
-		let result = false;
+		const lastKey = keyParts[ keyParts.length - 1 ];
+		let changed   = opt.forceRender || false;
+		let result    = false;
 		let current;
 		switch (type){
 			case 'get':
-				result = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
+				result = this._getReference( keyParts )[ lastKey];
 				break;
 			case 'set':
-				current = this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]];
+				current = this._getReference( keyParts )[ lastKey];
 				if( current != value ){
-					this._getReference( keyParts )[ keyParts[ keyParts.length - 1 ]] = value;
+					this._getReference( keyParts )[ lastKey] = value;
 					result = true;
 					changed = true;
 				}
 				break;
 			case 'push':
 			case 'pushOnce':
-				current = this._getReference( keyParts, 'arr' )[ keyParts[ keyParts.length - 1 ]];
+				current = this._getReference( keyParts, 'arr' )[ lastKey];
 				if( type != 'pushOnce' || current.indexOf( value ) === -1 ){
 					current.push(value);
 					result = true;
 					changed = true;
+					if(type === 'pushOnce') type = 'push'; // Rewrite to avoid confusion add addDirty
 				}
+				break;
+			case 'remove':
+				current = this._getReference( keyParts, 'arr' );
+				if(current instanceof Array) {
+					current.splice( lastKey, 1 );
+				} else {
+					throw 'Removing does only work for arrays currently';
+				}
+				result = true;
+				changed = true;
 				break;
 			default:
 				throw `type ${type} is not defined`;

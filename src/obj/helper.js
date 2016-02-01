@@ -94,7 +94,6 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// returns an object of query elements {key: key: type: '==', value: value}
 	getLogicParts(query) {
-		const delimiter = null;
 		for( let i = 0; i < this.types.length; i++ ){
 			const type = this.types[ i ];
 			if( query.indexOf( type ) != -1 ){

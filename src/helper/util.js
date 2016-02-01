@@ -30,6 +30,14 @@ const obj = {
 		return JSON.stringify(a) === JSON.stringify(b);
 	},
 	////-----------------------------------------------------------------------------------------
+	// Adds an value to a specific position inside an array and returns that
+	arrayInsertAt(arr, obj, pos) {
+		// @TODO check if there is a better way, without instanciating new arrays
+		var result = arr.slice(0, pos - 1);
+		result.push(obj);
+		return result.concat(arr.slice(pos - 1, arr.length));
+	},
+	////-----------------------------------------------------------------------------------------
 	// Merges an object inside an other, without overwriting
 	clone(source) {
 		if( !( source instanceof Object) || this.isFunction( source )) { // Only objects are references
@@ -41,11 +49,6 @@ const obj = {
 			target[ index ] = this.clone( source[ index ]);
 		}
 		return target;
-	},
-	////-----------------------------------------------------------------------------------------
-	// inserts text inside a string at position
-	insertAt(src, position, str) {
-		return src.substr( 0, position ) + str + src.substr( position );
 	},
 	////-----------------------------------------------------------------------------------------
 	// Triggers e.g. init-functions, without breaking stuff. on debug mode it throws the errors
@@ -61,11 +64,6 @@ const obj = {
 			}
 		}
 	},
-	////-----------------------------------------------------------------------------------------
-	// If you don't like slashes inside the namespace/module pattern, you can make your transition here
-	transformNamespace(name) {
-		return name;
-	}
 };
 
 export default window.snew ? snew.Obj( obj ) : obj;

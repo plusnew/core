@@ -90,9 +90,12 @@ const classContent = {
 				result.push({type: 'update', key: dirty.key, value: dirty.value});
 			} else if(dirty.type === 'push') {
 				// The minus one is needed because the push already happened in the data (but not in the dom)
+				// @FIXME? length is not always correct, it can have mutliple already added data-values
 				this._addBatchedInsert(dirty, result, this.get(dirty.key).length - 1, dirty.value);
 			} else if(dirty.type === 'shift') {
 				this._addBatchedInsert(dirty, result, 0, dirty.value);
+			} else if(dirty.type === 'remove') {
+				
 			} else {
 				throw 'Unknown dataoperation, could not compile template';
 			}
@@ -102,8 +105,8 @@ const classContent = {
 	_addBatchedInsert(dirty, batch, position, value) {
 		let found = false;
 		for(let i = 0; i < batch.length; i++) {
-			if(batch[i].key === dirty.key && batch.position === position) {
-				batch[i].values.unshift(value);
+			if(snew.utilHelper.isEqual(batch[i].key, dirty.key) && (batch[i].to >= position && position <= batch[i].to + batch[i].values.length)) {
+				batch[i].values = snew.utilHelper.arrayInsertAt(batch[i].values, value, position);
 				found = true;
 			}
 		}
