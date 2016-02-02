@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			dist: {
-				src: tmpFileSelector,
+				src: 'dist/snew.js',
 				dest: 'dist/snew.min.js'
 			}
 		},
@@ -87,6 +87,6 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.registerTask('default', ['githooks', 'clean', 'touch', 'babel', 'concat', 'amdclean']);
-	grunt.registerTask('min', ['clean', 'babel', 'uglify']);
+	grunt.registerTask('min', ['clean', 'default', 'uglify']);
 };
 
