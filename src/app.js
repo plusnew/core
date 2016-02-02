@@ -131,4 +131,5 @@ setTimeout(() => {
 	if(!snew.didInit) console.log('To setup a snew application you should call snew.init({})');
 }, 10);
 
+window.snew = snew;
 export default snew;
