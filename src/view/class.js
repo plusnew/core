@@ -31,7 +31,9 @@ const classContent = {
 	// updates the currentValue of the specified attribute/value
 	_updateCurrent(blockId, attribute, value) {
 		var key = snew.templateHelper.syncModel( this._meta.path, blockId, attribute, value, this._meta.currentValues );
-		this.controller.set(key, value);
+		if(key) { // Not always is something to do
+			this.controller.set(key, value);
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// handles replacement of content and triggers compile function
