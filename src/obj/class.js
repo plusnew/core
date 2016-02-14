@@ -21,6 +21,9 @@ const defaults = {
 	////-----------------------------------------------------------------------------------------
 	// metafunction for setting content, returns if value has changed and if it gets rendered
 	set(key, value, opt) {
+		if(arguments.length < 2) {
+			throw 'The given arguments are not enough';
+		}
 		return this._handleData( 'set', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
@@ -45,11 +48,17 @@ const defaults = {
 	////-----------------------------------------------------------------------------------------
 	// metafunction for pushing content, only for arrays
 	push(key, value, opt) {
+		if(arguments.length < 2) {
+			throw 'The given arguments are not enough';
+		}
 		return this._handleData( 'push', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
 	// metafunction for pushing content, return true when added to array, returns false when it was already added
 	pushOnce(key, value, opt) {
+		if(arguments.length < 2) {
+			throw 'The given arguments are not enough';
+		}
 		return this._handleData( 'pushOnce', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
@@ -89,7 +98,6 @@ const defaults = {
 		for( let i = offset; i < key.length; i++ ){
 			const part = key[ i ];
 			const lastKey  = key[ key.length - 1 ];
-
 			if( snew.objHelper.isQuery( part )){
 				const obj = this._getReference( key )[ lastKey ];
 				for( const arrIndex in obj ){
@@ -113,21 +121,21 @@ const defaults = {
 		let current;
 		switch (type){
 			case 'get':
-				result = this._getReference( keyParts )[ lastKey];
+				result = this._getReference( keyParts )[ lastKey ];
 				break;
 			case 'set':
-				current = this._getReference( keyParts )[ lastKey];
+				current = this._getReference( keyParts )[ lastKey ];
 				if( current != value ){
-					this._getReference( keyParts )[ lastKey] = value;
+					this._getReference( keyParts )[ lastKey ] = value;
 					result = true;
 					changed = true;
 				}
 				break;
 			case 'push':
 			case 'pushOnce':
-				current = this._getReference( keyParts, 'arr' )[ lastKey];
+				current = this._getReference( keyParts, 'arr' )[ lastKey ];
 				if( type != 'pushOnce' || current.indexOf( value ) === -1 ){
-					current.push(value);
+					current.push( value );
 					result = true;
 					changed = true;
 					if(type === 'pushOnce') type = 'push'; // Rewrite to avoid confusion add addDirty
