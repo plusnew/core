@@ -118,6 +118,7 @@ const defaults = {
 		const lastKey = keyParts[ keyParts.length - 1 ];
 		let changed   = opt.forceRender || false;
 		let result    = false;
+		var opt       = {};
 		let current;
 		switch (type){
 			case 'get':
@@ -133,7 +134,7 @@ const defaults = {
 				break;
 			case 'push':
 			case 'pushOnce':
-				current = this._getReference( keyParts, 'arr' )[ lastKey ];
+				current = this._getReference( keyParts, 'arr', opt )[ lastKey ];
 				if( type != 'pushOnce' || current.indexOf( value ) === -1 ){
 					current.push( value );
 					result = true;
@@ -142,7 +143,7 @@ const defaults = {
 				}
 				break;
 			case 'remove':
-				current = this._getReference( keyParts, 'arr' );
+				current = this._getReference( keyParts, 'arr', opt );
 				if(current instanceof Array) {
 					current.splice( lastKey, 1 );
 				} else {
@@ -171,7 +172,8 @@ const defaults = {
 
 			if( contentSpace ){
 				if( snew.viewHelper.dirtyHandling !== false ){
-					this.view._addDirty(dirtyKey, type, value);
+					// when a property above is created, this will be transmitted to the templating engine
+					this.view._addDirty(opt.createdParent || dirtyKey, opt.createdParent ? 'set' : type, value);
 				} else {
 					this.view._render();
 				}
@@ -181,7 +183,7 @@ const defaults = {
 	},
 	////-----------------------------------------------------------------------------------------
 	// handling of dotnotation, returns the last but one. creates objects if not existent
-	_getReference(keyParts, type) {
+	_getReference(keyParts, type, opt) {
 		let content = null;
 		let start   = null; // @FIXME improve this start thingi
 		if(keyParts.length === 1) {
@@ -196,12 +198,18 @@ const defaults = {
 
 			if( !content[ part ] ){
 				if( type == 'arr' && i < keyParts.length) {
+					if(opt && !opt.createdParent) {
+						opt.createdParent = keyParts.slice( 0, i + 1 );
+					}
 					content[ part ] = [];
 					console.info(
 						`${keyParts.slice( 0, i + 1 ).join( '.' )} did not exist, so I created it for you`
 					);
 				} else if( type == 'obj'  || i + 1 < keyParts.length){
 					content[ part ] = {};
+					if(opt && !opt.createdParent) {
+						opt.createdParent = keyParts.slice( 0, i + 1 );
+					}
 					console.info(
 						`${keyParts.slice( 0, i + 1 ).join( '.' )} did not exist, so I created it for you`
 					);
