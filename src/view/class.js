@@ -66,13 +66,12 @@ const classContent = {
 	// Registers what keys got dirty
 	_addDirty(key, type, value) {
 		// @TODO add handling for type === set, it has to overwrite all previous shift/push/set/remove and its children
-		this._meta.dirty.push({type, value, key});
+		this._meta.dirty.push({type, value, key}); // @FIXME Propably should not use value, its not always a reference, instead only the key should be used
 		snew.viewHelper.pushOnce('dirties', this.controller._meta.uid);
 	},
 	////-----------------------------------------------------------------------------------------
 	// Works the dirties
 	_handleDirties() {
-		// @TODO this._meta.dirty needs batching
 		this._compile(this._batchDirties(this._meta.dirty));
 		this._meta.dirty = [];
 	},
@@ -91,8 +90,7 @@ const classContent = {
 			if(dirty.type == 'set') {
 				this._compress(dirty, result, false, dirty.value);
 			} else if(dirty.type === 'push') {
-				// The minus one is needed because the push already happened in the data (but not in the dom)
-				// @FIXME? length is not always correct, it can have mutliple already added data-values
+				// @FIXME The minus one is needed because the push already happened in the data (but not in the dom)
 				this._compress(dirty, result, this.get(dirty.key).length - 1, dirty.value);
 			} else if(dirty.type === 'shift') {
 				this._compress(dirty, result, 0, dirty.value);
@@ -104,11 +102,14 @@ const classContent = {
 		}
 		return result;
 	},
+	////-----------------------------------------------------------------------------------------
+	// Checks if all dirty operations are needed and batches them if possible
 	_compress(dirty, batch, position, value) {
 		const dirtyType = snew.viewHelper.getCompressType(dirty.type);
 		let preventCreation = false;
 		for(let i = 0; i < batch.length; i++) {
 			let same = true;
+			// Checks if the keys are the same (or if they are the children)
 			for(let batchKeyIndex = 0; batchKeyIndex < batch[i].key.length; batchKeyIndex++) {
 				if(batch[i].key[batchKeyIndex] !== dirty.key[i]) {
 					same = false;
@@ -119,6 +120,7 @@ const classContent = {
 			if(same) {
 				if(dirtyType === 'create') {
 					if(batch[i].length !== dirty.key.length) {
+						// When its a child, it should not be updated, because its already referenced by the parent
 						preventCreation = true;
 					} else if(batch[i].to >= position && position <= batch[i].to + batch[i].values.length) {
 						batch[i].values = snew.utilHelper.arrayInsertAt(batch[i].values, value, position);
