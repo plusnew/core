@@ -109,17 +109,13 @@ const classContent = {
 		let preventCreation = false;
 		for(let i = 0; i < batch.length; i++) {
 			var same = true;
-			console.log('----------');
 			for(var batchKeyIndex = 0; batchKeyIndex < batch[i].key.length; batchKeyIndex++) {
-				console.log(batch[i].key[batchKeyIndex]);
 				if(batch[i].key[batchKeyIndex] !== dirty.key[i]) {
-					console.log('UNSAME!');
 					same = false;
 					break;
 				}
 			}
 
-		if(window.foo) debugger;
 			if(same) {
 				if(dirtyType === 'create') {
 					if(batch[i].length !== dirty.key.length) {
