@@ -89,13 +89,13 @@ const classContent = {
 		for( let i = 0; i < dirties.length; i++ ){
 			const dirty = dirties[ i ];
 			if(dirty.type == 'set') {
-				result.push({type: 'update', key: dirty.key, value: dirty.value});
+				this._compress(dirty, result, this.get(dirty.key).length - 1, dirty.value);
 			} else if(dirty.type === 'push') {
 				// The minus one is needed because the push already happened in the data (but not in the dom)
 				// @FIXME? length is not always correct, it can have mutliple already added data-values
-				this._addBatchedInsert(dirty, result, this.get(dirty.key).length - 1, dirty.value);
+				this._compress(dirty, result, this.get(dirty.key).length - 1, dirty.value);
 			} else if(dirty.type === 'shift') {
-				this._addBatchedInsert(dirty, result, 0, dirty.value);
+				this._compress(dirty, result, 0, dirty.value);
 			} else if(dirty.type === 'remove') {
 				
 			} else {
@@ -104,16 +104,39 @@ const classContent = {
 		}
 		return result;
 	},
-	_addBatchedInsert(dirty, batch, position, value) {
-		let found = false;
+	_compress(dirty, batch, position, value) {
+		const dirtyType = snew.viewHelper.getCompressType(dirty.type);
+		let preventCreation = false;
 		for(let i = 0; i < batch.length; i++) {
-			if(snew.utilHelper.isEqual(batch[i].key, dirty.key) && (batch[i].to >= position && position <= batch[i].to + batch[i].values.length)) {
-				batch[i].values = snew.utilHelper.arrayInsertAt(batch[i].values, value, position);
-				found = true;
+			var same = true;
+			console.log('----------');
+			for(var batchKeyIndex = 0; batchKeyIndex < batch[i].key.length; batchKeyIndex++) {
+				console.log(batch[i].key[batchKeyIndex]);
+				if(batch[i].key[batchKeyIndex] !== dirty.key[i]) {
+					console.log('UNSAME!');
+					same = false;
+					break;
+				}
+			}
+
+		if(window.foo) debugger;
+			if(same) {
+				if(dirtyType === 'create') {
+					if(batch[i].length !== dirty.key.length) {
+						preventCreation = true;
+					} else if(batch[i].to >= position && position <= batch[i].to + batch[i].values.length) {
+						batch[i].values = snew.utilHelper.arrayInsertAt(batch[i].values, value, position);
+						preventCreation = true;
+					}
+				} else if (dirtyType === 'set'){
+					// preventCreation = true; // @TODO not tested
+				} else {
+					throw 'Unknown dirtyType ' + dirtyType;
+				}
 			}
 		}
-		if(!found) {
-			batch.push({type: 'create', key: dirty.key, values: [dirty.value], to: position});
+		if(!preventCreation) {
+			batch.push({type: dirtyType, key: dirty.key, values: [dirty.value], to: position});
 		}
 
 	}

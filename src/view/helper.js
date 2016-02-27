@@ -89,6 +89,14 @@ export default Obj({
 		return snew.utilHelper.clone( this.list[ path ] );
 	},
 	////-----------------------------------------------------------------------------------------
+	// Is needed for batches of dirties, shift and push are only shorts for creates
+	getCompressType(type) {
+		if(type === 'shift' || type === 'push') {
+			type = 'create';
+		}
+		return type;
+	},
+	////-----------------------------------------------------------------------------------------
 	// start uid
 	// @TODO move this to the templating engine
 	scriptStart(id, path) {
