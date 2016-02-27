@@ -30,7 +30,7 @@ const classContent = {
 	////-----------------------------------------------------------------------------------------
 	// updates the currentValue of the specified attribute/value
 	_updateCurrent(blockId, attribute, value) {
-		var key = snew.templateHelper.syncModel( this._meta.path, blockId, attribute, value, this._meta.currentValues );
+		const key = snew.templateHelper.syncModel( this._meta.path, blockId, attribute, value, this._meta.currentValues );
 		if(key) { // Not always is something to do
 			this.controller.set(key, value);
 		}
@@ -85,7 +85,7 @@ const classContent = {
 	//	{type: 'delete',                    key: ['todos', 4]}
 	// ]
 	_batchDirties(dirties) {
-		var result = [];
+		let result = []; // Gets filled by compress, not the most beautiful way..
 		for( let i = 0; i < dirties.length; i++ ){
 			const dirty = dirties[ i ];
 			if(dirty.type == 'set') {
@@ -108,8 +108,8 @@ const classContent = {
 		const dirtyType = snew.viewHelper.getCompressType(dirty.type);
 		let preventCreation = false;
 		for(let i = 0; i < batch.length; i++) {
-			var same = true;
-			for(var batchKeyIndex = 0; batchKeyIndex < batch[i].key.length; batchKeyIndex++) {
+			let same = true;
+			for(let batchKeyIndex = 0; batchKeyIndex < batch[i].key.length; batchKeyIndex++) {
 				if(batch[i].key[batchKeyIndex] !== dirty.key[i]) {
 					same = false;
 					break;
