@@ -160,8 +160,8 @@ const defaults = {
 			// Only rerender when its relevant to the template
 			let contentSpace = false;
 			let dirtyKey     = null;
+			const contentLength = this._meta.contentSpace.length;
 			if(this._meta.contentSpace) {
-				const contentLength = this._meta.contentSpace.length;
 				const prefix        = keyParts.slice(0, contentLength);
 				dirtyKey = keyParts.slice(contentLength, keyParts.length);
 				if( snew.utilHelper.isEqual(prefix, this._meta.contentSpace) ) contentSpace = true;
@@ -173,7 +173,7 @@ const defaults = {
 			if( contentSpace ){
 				if( snew.viewHelper.dirtyHandling !== false ){
 					// when a property above is created, this will be transmitted to the templating engine
-					this.view._addDirty(opt.createdParent || dirtyKey, opt.createdParent ? 'set' : type, value);
+					this.view._addDirty(opt.createdParent ? opt.createdParent.slice(contentLength, opt.createdParent.length) : dirtyKey, opt.createdParent ? 'set' : type, value);
 				} else {
 					this.view._render();
 				}
