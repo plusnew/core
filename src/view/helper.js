@@ -206,8 +206,7 @@ export default Obj({
 					const controllers = snew.search( uid );
 					if( controllers.length === 1 ){
 						const controller = controllers[ 0 ];
-						let value = evt.target.value;
-						controller.view._updateCurrent(blockId, 'value', value);
+						controller.view._updateCurrent(blockId, 'value', evt.target.value);
 					} else {
 						throw 'Getting the correct controller failed somehow';
 					}
@@ -248,7 +247,7 @@ export default Obj({
 				if (attributes.hasOwnProperty(index)) {
 					const name  = attributes[index].name, value = attributes[index].value;
 					if(name && name.search('data-') === 0) {
-						let key = name.replace(/data-/, '');
+						const key = name.replace(/data-/, '');
 						if(result[key] === undefined && excludes.indexOf(key) == -1) { // SHould only overwrite when not set
 							result[key] = value || null;
 						}

@@ -79,37 +79,7 @@ const snew = Obj({
 				this[index].init();
 			}
 		}
-	},
-	////-----------------------------------------------------------------------------------------
-	// making slashes into camelcase
-	transform(name, prefix) {
-		let transform = '', upper     = false;
-		name = name.replace( prefix, '' );
-
-		for( const index in name ){
-			if( name.hasOwnProperty( index )){
-				const character = name[ index ];
-				// i don't want to write slashes to access core components, so its camelcase
-				if( character == '/' ){
-					upper = true;
-				}
-				else if( upper ){
-					// When the rest ends with class, then just make it uppercase and stop the rest of transformation
-					if( name.substr( index, name.length - 1 ) == 'class' ){
-						transform = transform.capitalize();
-						break;
-					}
-					transform += character.toUpperCase();
-					upper = false;
-				}
-				else {
-					transform += character;
-				}
-			}
-		}
-
-		return transform;
-	},
+	}
 });
 
 snew.objHelper        = objHelper;

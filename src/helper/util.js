@@ -1,9 +1,3 @@
-////-----------------------------------------------------------------------------------------
-// Uppercases the first letter of an string
-String.prototype.capitalize = function() {
-	return this[ 0 ].toUpperCase() + this.slice( 1, this.length );
-};
-
 const obj = {
 	////-----------------------------------------------------------------------------------------
 	// Merges an object inside an other, without overwriting
