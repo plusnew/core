@@ -30,6 +30,7 @@ export default Obj({
 				}
 			}
 		}
+		snew.viewHelper.dirtyChecking(); // data should be synced asap to dom
 		if( !this.stopped ){
 			setTimeout(this.loop.bind( this ), this.ticks);
 		}

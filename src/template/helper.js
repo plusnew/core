@@ -24,6 +24,8 @@ export default Obj({
 				throw 'Could not matching event(' + action + ') to controller(' + controller._meta.path +')';
 			}
 		}
+		// when on a click something gets destroyed, before a second click dom should be synced
+		snew.viewHelper.dirtyChecking(); 
 	},
 	//// ------------------------------------------------------------
 	// Layer for comunnicate with tempart
