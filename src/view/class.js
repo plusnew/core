@@ -89,7 +89,7 @@ const classContent = {
 		for( let i = 0; i < dirties.length; i++ ){
 			const dirty = dirties[ i ];
 			if(dirty.type == 'set') {
-				this._compress(dirty, result, this.get(dirty.key).length - 1, dirty.value);
+				this._compress(dirty, result, false, dirty.value);
 			} else if(dirty.type === 'push') {
 				// The minus one is needed because the push already happened in the data (but not in the dom)
 				// @FIXME? length is not always correct, it can have mutliple already added data-values
