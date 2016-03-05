@@ -27,6 +27,14 @@ const defaults = {
 		return this._handleData( 'set', key, value, opt );
 	},
 	////-----------------------------------------------------------------------------------------
+	// metafunction for setting content to null
+	unset(key, opt) {
+		if(arguments.length < 1) {
+			throw 'The given arguments are not enough';
+		}
+		return this._handleData( 'set', key, null, opt );
+	},
+	////-----------------------------------------------------------------------------------------
 	// adds runloopjobs with including uid of the jobs, for removage if controller gets destroyed
 	addJob(opt) {
 		opt.uid = this._meta.uid;
