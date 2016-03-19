@@ -95,7 +95,7 @@ const classContent = {
 			} else if(dirty.type === 'shift') {
 				this._compress(dirty, result, 0, dirty.value);
 			} else if(dirty.type === 'remove') {
-				
+				this._compress(dirty, result, false, dirty.value);
 			} else {
 				throw 'Unknown dataoperation, could not compile template';
 			}
