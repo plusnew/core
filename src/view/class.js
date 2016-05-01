@@ -53,7 +53,8 @@ const classContent = {
 			this.controller.content,
 			this._meta.currentValues,
 			dirties,
-			this.controller._meta.uid
+			this.controller._meta.uid,
+			this.controller
 		);
 	},
 	////-----------------------------------------------------------------------------------------

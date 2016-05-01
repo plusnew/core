@@ -29,9 +29,10 @@ export default Obj({
 	},
 	//// ------------------------------------------------------------
 	// Layer for comunnicate with tempart
-	compile(path, uid, content, currentValues, dirties, prefix) {
+	compile(path, uid, content, currentValues, dirties, prefix, controller) {
 		if( this.list[ path ] ){
 			return tempartCompiler.compile({
+				controller: controller,
 				blocks: this.list[ path ],
 				content: content,
 				currentValues: currentValues,
