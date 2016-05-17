@@ -1,5 +1,4 @@
 #snew [![Build Status](https://travis-ci.org/plusgut/snew.svg?branch=master)](https://travis-ci.org/plusgut/snew)
-====
 
 lightweight mvc-framework with local data quering
 unlike other frameworks we don't render the whole template each time
