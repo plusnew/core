@@ -25,6 +25,9 @@
   "dependencies": {
     "tempart": "*"
   },
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/plusgut/snew.git"
