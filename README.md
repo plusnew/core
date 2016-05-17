@@ -1,4 +1,4 @@
-snew
+#snew [![Build Status](https://travis-ci.org/plusgut/snew.svg?branch=master)](https://travis-ci.org/plusgut/snew)
 ====
 
 lightweight mvc-framework with local data quering
