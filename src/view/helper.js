@@ -76,7 +76,7 @@ export default Obj({
 			const result = snew.controllerHelper.create( this.startPath, null, {} );
 			dom.outerHTML = result.html;
 		} else {
-			throw 'snew.viewHelper.entrance was not represented in dom properly', dom;
+			throw 'snew.viewHelper.entrance was not represented in dom properly ' + dom;
 		}
 	},
 	////-----------------------------------------------------------------------------------------

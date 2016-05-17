@@ -49,13 +49,13 @@ const snew = Obj({
 	////-----------------------------------------------------------------------------------------
 	// Overwriting of core-modules and calling inits of modules
 	init(opt) {
-		this.didInit = true;
 		if(!window.app) {
 			window.app = {};
 		}
 		console.log('Can I haz some snews?');
 		this.utilHelper.merge(snew, opt);
 		this.executeInit();
+		this.didInit = true;
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns instances of fitting controllers
