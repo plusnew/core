@@ -1,6 +1,6 @@
 {
   "name": "snew",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Components and Models done right",
   "main": "dist/snew.min.js",
   "devDependencies": {
@@ -39,9 +39,6 @@
     "binding",
     "components"
   ],
-  "scripts": {
-    "test": "node_modules/karma/bin/karma start karma.conf.js"
-  },
   "author": {
     "name": "Carlo Jeske"
   },
