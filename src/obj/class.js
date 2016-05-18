@@ -126,7 +126,7 @@ const defaults = {
 		const lastKey = keyParts[ keyParts.length - 1 ];
 		let changed   = opt.forceRender || false;
 		let result    = false;
-		var opt       = {};
+		//var opt       = {}; // @FIXME i dont want to write in the original object
 		let current;
 		switch (type){
 			case 'get':

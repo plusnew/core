@@ -11,6 +11,7 @@ before_install:
   - "npm config set spin false"
   - "npm --version"
   - npm install grunt-cli -g
+  - npm install jshint -g
   - "phantomjs --version"
   - "rm -f /tmp/*.dmp"
 
