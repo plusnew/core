@@ -105,12 +105,16 @@ const defaults = {
 		// @FIXME is the getter-logic from tempart useful? Then no clone and slice is needed
 		for( let i = offset; i < key.length; i++ ){
 			const part = key[ i ];
-			const lastKey  = key[ key.length - 1 ];
 			if( snew.objHelper.isQuery( part )){
-				const obj = this._getReference( key )[ lastKey ];
+				var queryKey = key.slice(0, i);
+				const lastKey  = key[i  - 1];
+				const obj = this._getReference( queryKey )[ lastKey ];
 				for( const arrIndex in obj ){
-					if( obj.hasOwnProperty( arrIndex) && snew.objHelper.isTrue( obj[ arrIndex ], part, opt.query )){
-						result.push(this._handleRealData( type, key, value, opt ));
+					if( obj.hasOwnProperty( arrIndex) && snew.objHelper.isTrue( obj[ arrIndex ], part, opt )){
+						var clonedKey = util.clone(key);
+						clonedKey[i] = arrIndex;
+						// debugger;
+						result.push(this._handleRealData( type, clonedKey, value, opt ));
 					}
 				}
 				return result;

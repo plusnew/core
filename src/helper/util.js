@@ -18,6 +18,16 @@ const obj = {
 		return !!(obj && obj.constructor && obj.call && obj.apply);
 	},
 	////-----------------------------------------------------------------------------------------
+	// Most efficient way of checking for a function
+	isObject(obj) {
+		return ((typeof obj === "object" ) && ( obj !== null));
+	},
+	////-----------------------------------------------------------------------------------------
+	// Most efficient way of checking for a function
+	isArray(obj) {
+		return Array.isArray(obj);
+	},
+	////-----------------------------------------------------------------------------------------
 	// checks if two values are the same
 	isEqual(a, b) {
 		// @FIXME thats not a good way
