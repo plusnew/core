@@ -3,14 +3,14 @@ const obj = {
 	// Merges an object inside an other, without overwriting
 	merge(target, obj) {
 		for( let index in obj ){
-				if( obj.hasOwnProperty( index )){
-					if( !target[ index ] ){
-						target[ index ] = obj[ index ];
-					} else if( typeof target[ index ] === 'object' && typeof obj[ index ] === 'object' && !this.isFunction( target[ index ]) && !this.isFunction( obj[ index] )){
-						this.merge(target[ index ], obj[ index ]);
-					}
+			if( obj.hasOwnProperty( index )){
+				if( !target[ index ] ){
+					target[ index ] = obj[ index ];
+				} else if( typeof target[ index ] === 'object' && typeof obj[ index ] === 'object' && !this.isFunction( target[ index ]) && !this.isFunction( obj[ index] )){
+					this.merge(target[ index ], obj[ index ]);
 				}
 			}
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// Most efficient way of checking for a function
