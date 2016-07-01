@@ -1,32 +1,35 @@
 import Obj from 'snew/obj/class';
+import util from 'snew/helper/util';
 
 export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// First matching type is taken, when nothing fits, first operator will be used
-	logicOperators: [{
-		delimiter: '&&',
-		defaultValue: true
-	}, {
-		delimiter: '||',
-		defaultValue: false
-	}, {
-		delimiter: '@each',
-		defaultValue: true,
-		skip: true
-	}],
+	logicOperators: {
+		and: {
+			delimiter: '&&',
+			defaultValue: true
+		},
+		or: {
+			delimiter: '||',
+			defaultValue: false
+		},
+		wildcard: {
+			delimiter: '@each',
+			defaultValue: true,
+			skip: true
+		}
+	},
 	////-----------------------------------------------------------------------------------------
 	// First matching type is taken, so >= has to be in this array, before >
 	types: ['==', '!=', '>=', '<=', '>', '<'],
 	////-----------------------------------------------------------------------------------------
 	// checks if object fits the query
-	isTrue(obj, query, variables) {
+	isTrue(obj, query, opt) {
 		const type = this.getType(query);
 		let result = type.defaultValue;
 		if(type.skip) return result;
-		const parts = query.split(type.delimiter);
-		for( let partIndex = 0; partIndex < parts.length; partIndex++ ){
-			const queryParts = this.getLogicParts(parts[ partIndex ]);
-			if( this.objCheck( obj, queryParts, variables ) != type.defaultValue ){
+		for(var queryIndex in query) {
+			if( query.hasOwnProperty(queryIndex) && this.objCheck( obj[queryIndex], query[queryIndex], '==' ) != type.defaultValue ){
 				result = !result;
 				break;
 			}
@@ -34,28 +37,10 @@ export default Obj({
 		return result;
 	},
 	////-----------------------------------------------------------------------------------------
-	// Returns variables which are in the query {variableName}
-	getVariableName(key) {
-		if( key[ 0 ] == '{' && key[ key.length - 1 ] == '}'){
-			return key.slice( 1, key.length - 1 );
-		}
-	},
-	////-----------------------------------------------------------------------------------------
 	// Checks if querypart fits to corresponding object, when variables are used it checks them as an array
-	objCheck(obj, query, variables) {
-		let result = null;
-		const variableName = this.getVariableName( query.value );
-		let values = [query.value];
-		if( variableName ){
-			this.variableValidation(variableName, variables);
-			values = variables[ variableName ];
-		}
-		for( let i = 0; i < values.length; i++ ){
-			const value = values[ i ];
-			result = this.valueCompare( obj[ query.key ], value, query.type );
-			if( result ) break;
-		}
-		return result;
+	objCheck(source, target, operator) {
+		//@TODO Currently not useful - will check multiple values in the future - only simple queries will work
+		return this.valueCompare(source, target, operator);
 	},
 	////-----------------------------------------------------------------------------------------
 	// compares two values depending on the logicoperator-type
@@ -93,6 +78,7 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// returns an object of query elements {key: key: type: '==', value: value}
+	// @deprecated
 	getLogicParts(query) {
 		for( let i = 0; i < this.types.length; i++ ){
 			const type = this.types[ i ];
@@ -106,17 +92,15 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// decides wheather to use && or || and returns the defaultvalues of it
+	// @deprecated
 	getType(query) {
-		let type = null;
-		for( let i = this.logicOperators.length; i > 0; i-- ){
-			const logicOperator = this.logicOperators[ i - 1 ];
-			// Checks if delimter occours, or if its the last checkable object (for setting default)
-			if( query.indexOf( logicOperator.delimiter ) != -1 || (i === 1 && !type )){
-				if(type) throw "You can not use multiple types";
-				type = logicOperator;
-			}
+		if(util.isObject(query)) {
+			return this.logicOperators.and;
+		} else if(util.isArray(query)) {
+			return this.logicOperators.and;
 		}
-		return type;
+
+		throw "Unknown type, unsure how you got here..";
 	},
 	////-----------------------------------------------------------------------------------------
 	// iterates threw all keyparts
@@ -133,12 +117,6 @@ export default Obj({
 		if( typeof keyNode === 'object' ){
 			return true;
 		}
-	},
-	////-----------------------------------------------------------------------------------------
-	// checks if all necessary values are correct
-	variableValidation(key, variables) {
-		if( !variables || variables[ key ] === undefined ) throw `${key} was not set in opt: {query: {}}`;
-		if( this.utilHelper.isArray( variables[ key ]) instanceof Array) throw `${key} query has to be an array`;
 	},
 	////-----------------------------------------------------------------------------------------
 	// checks if the key is a sub, needed for registry removal if parent gets set

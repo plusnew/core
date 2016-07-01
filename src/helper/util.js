@@ -3,19 +3,29 @@ const obj = {
 	// Merges an object inside an other, without overwriting
 	merge(target, obj) {
 		for( let index in obj ){
-				if( obj.hasOwnProperty( index )){
-					if( !target[ index ] ){
-						target[ index ] = obj[ index ];
-					} else if( typeof target[ index ] === 'object' && typeof obj[ index ] === 'object' && !this.isFunction( target[ index ]) && !this.isFunction( obj[ index] )){
-						this.merge(target[ index ], obj[ index ]);
-					}
+			if( obj.hasOwnProperty( index )){
+				if( !target[ index ] ){
+					target[ index ] = obj[ index ];
+				} else if( typeof target[ index ] === 'object' && typeof obj[ index ] === 'object' && !this.isFunction( target[ index ]) && !this.isFunction( obj[ index] )){
+					this.merge(target[ index ], obj[ index ]);
 				}
 			}
+		}
 	},
 	////-----------------------------------------------------------------------------------------
 	// Most efficient way of checking for a function
 	isFunction(obj) {
 		return !!(obj && obj.constructor && obj.call && obj.apply);
+	},
+	////-----------------------------------------------------------------------------------------
+	// Most efficient way of checking for a function
+	isObject(obj) {
+		return ((typeof obj === "object" ) && ( obj !== null));
+	},
+	////-----------------------------------------------------------------------------------------
+	// Most efficient way of checking for a function
+	isArray(obj) {
+		return Array.isArray(obj);
 	},
 	////-----------------------------------------------------------------------------------------
 	// checks if two values are the same

@@ -24,6 +24,9 @@ snew.Controller('main/app' {
   }
 });
 
+```
+
+```js
 snew.View('main/app' {
   events: [{
     // Gets checked when dom-event is inside the context of the view
@@ -35,9 +38,17 @@ snew.View('main/app' {
   }]
 });
 
+```
+
+```js
 snew.search('main/app'); // Returns all controllers matching the path
 snew.search(1);          // Returns the controller with the id
-snew.search('@each');    // Returns all controllers
+```
 
+```js
+this.remove(['todos', {completed: true}]); // Simple
 
+// @TODO: get an api for AND / OR - the following is inconsistent
+this.remove(['todos', {key: ['oneValue', 'anotherValue'], anotherKey: ['oneValue', 'anotherValue']}]); // AND
+this.remove(['todos', [{key: ['oneValue', 'anotherValue']}, {anotherKey: ['oneValue', 'anotherValue']}]]); // OR
 ```
