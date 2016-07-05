@@ -30,11 +30,11 @@ export default Obj({
 	eventSpaces: [ 'controllerHelper', 'helperHelper' ],
 	////-----------------------------------------------------------------------------------------
 	// JQuery events which the framework is listening for
-	eventListeners: ['keydown'],
+	eventListeners: ['input', 'change'], // Input works ie >= 9
 	////-----------------------------------------------------------------------------------------
 	// maps e.g. keypresses to trigger shortevents for enter and escape-keys
 	eventMap: {
-		keydown: {
+		keypress: {
 			keyCode: {
 				13: 'view.enterkey',
 				27: 'view.escapekey'
@@ -196,22 +196,20 @@ export default Obj({
 	////-----------------------------------------------------------------------------------------
 	// way binding from dom
 	updateData(evt) {
-		if( evt.type == 'keydown'){ // Keydown is fired before the input has its value => using setTimeout (because its more responsive then keypress/keyup)
-			setTimeout(function() {
-				const identifier = evt.target.getAttribute('tempartstart');
-				if( identifier && evt.keyCode !== 13 ){ // Enter button don't bring changes into the values
-					const pos = identifier.indexOf( '-' );
-					const uid = identifier.slice( 0, pos );
-					const blockId = identifier.slice( pos + 1, identifier.length );
-					const controllers = snew.search( uid );
-					if( controllers.length === 1 ){
-						const controller = controllers[ 0 ];
-						controller.view._updateCurrent(blockId, 'value', evt.target.value);
-					} else {
-						throw 'Getting the correct controller failed somehow';
-					}
+		if( evt.type == 'input'){
+			const identifier = evt.target.getAttribute('tempartstart');
+			if( identifier && evt.keyCode !== 13 ){ // Enter button don't bring changes into the values
+				const pos = identifier.indexOf( '-' );
+				const uid = identifier.slice( 0, pos );
+				const blockId = identifier.slice( pos + 1, identifier.length );
+				const controllers = snew.search( uid );
+				if( controllers.length === 1 ){
+					const controller = controllers[ 0 ];
+					controller.view._updateCurrent(blockId, 'value', evt.target.value);
+				} else {
+					throw 'Getting the correct controller failed somehow';
 				}
-			}, 0);
+			}
 		}
 	},
 	////-----------------------------------------------------------------------------------------
