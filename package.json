@@ -9,7 +9,7 @@
     "grunt-amdclean": "^0.1.2",
     "grunt-babel": "^6.0.0",
     "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-concat": "git@github.com:plusgut/grunt-amdclean.git",
+    "grunt-contrib-concat": "https://github.com/plusgut/grunt-amdclean.git",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-githooks": "^0.6.0",
