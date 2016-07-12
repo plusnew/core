@@ -44,10 +44,10 @@ export default Obj({
 	},
 	////-----------------------------------------------------------------------------------------
 	// Checks if instance has an events array
-	_addEvents(instance, type) {
+	_addEvents(instance, identifier, type) {
 		if( instance.events ){
 			for( let i = 0; i < instance.events.length; i++ ){
-				this.addEvent(instance.events[i], instance._meta.uid, type);
+				this.addEvent(instance.events[i], identifier, type);
 			}
 		}
 	},

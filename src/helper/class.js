@@ -7,6 +7,7 @@ function helper(path, obj) {
 	} else {
 		app.helper[path] = snew.Obj( 'helper', path, obj );
 	}
+	snew.eventsystem._addEvents(app.helper[path], path, 'helper');
 }
 
 export default helper;
