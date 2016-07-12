@@ -18,3 +18,10 @@ before_install:
 install:
   - "npm install"
   - "grunt default"
+  
+notifications:
+  email:
+    recipients:
+      - travis@snew.io
+    on_success: change
+    on_failure: always
