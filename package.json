@@ -6,10 +6,10 @@
   "devDependencies": {
     "babel-preset-es2015": "^6.9.0",
     "grunt": "^1.0.1",
-    "grunt-amdclean": "^0.1.2",
+    "grunt-amdclean": "https://github.com/plusgut/grunt-amdclean.git",
     "grunt-babel": "^6.0.0",
     "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-concat": "https://github.com/plusgut/grunt-amdclean.git",
+    "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-githooks": "^0.6.0",
