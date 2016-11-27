@@ -30,7 +30,7 @@
     "tempart": "*"
   },
   "scripts": {
-    "test": "jshint --show-non-errors src && ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run"
+    "test": "jshint --show-non-errors src && jscs src && ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run"
   },
   "repository": {
     "type": "git",
