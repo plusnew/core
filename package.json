@@ -1,7 +1,7 @@
 {
   "name": "snew",
-  "version": "0.2.8",
-  "description": "Components and Models done right",
+  "version": "0.3.0",
+  "description": "Components and Errorhandling done right",
   "main": "dist/snew.min.js",
   "devDependencies": {
     "babel-cli": "^6.10.1",

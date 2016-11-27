@@ -18,7 +18,7 @@ before_install:
 install:
   - "npm install"
   - "grunt default"
-  
+
 notifications:
   email:
     recipients:

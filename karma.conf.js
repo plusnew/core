@@ -1,3 +1,4 @@
+/* globals module */
 // Karma configuration
 // Generated on Fri May 13 2016 20:43:12 GMT+0200 (CEST)
 
@@ -73,5 +74,5 @@ module.exports = function(config) {
       type : 'html',
       dir : 'tmp/coverage/'
     }
-  })
-}
+  });
+};
