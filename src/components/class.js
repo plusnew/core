@@ -1,5 +1,3 @@
-/* global console */
-
 export default class {
   get(key) {
     console.log('getter of content');
