@@ -2,20 +2,8 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	var srcFileSelector = [
-		'helper/util.js',
-		'obj/class.js',
-		'obj/helper.js',
-		'controller/class.js',
-		'controller/helper.js',
-		'helper/class.js',
-		'helper/helper.js',
-		'helper/eventsystem.js',
-		'helper/router.js',
-		'helper/runloop.js',
-		'view/class.js',
-		'view/helper.js',
-		'template/class.js',
-		'template/helper.js',
+		'components/class.js',
+		'components/handler.js',
 		'app.js',
 	];
 
@@ -27,7 +15,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		babel: {
 			options: {
-				"presets": ["es2015"],
+				presets: ["es2015"],
 				plugins: ["transform-es2015-modules-amd"],
 				moduleIds: true,
 				sourceRoot: 'src',
