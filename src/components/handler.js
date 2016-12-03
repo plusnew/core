@@ -7,9 +7,9 @@ export default class {
   }
 
   create(path, props = {}) {
-    return this._incrementUid()
-               ._createInstance(path)
-               ._createComponent(path, props);
+    const uid = this._incrementUid()._getCurrentUid();
+    return this._createInstance(uid, path)
+               ._createComponent(uid, props);
   }
 
   _ensureUid() {
@@ -24,7 +24,7 @@ export default class {
     return this;
   }
 
-  _getUid() {
+  _getCurrentUid() {
     return this._uid;
   }
 
@@ -34,13 +34,13 @@ export default class {
     return this;
   }
 
-  _createInstance(path) {
+  _createInstance(uid, path) {
     const instance = new Class();
-    instance._setUid(this._getUid())
+    instance._setUid(uid)
             ._setPath(path)
             ._setComponentsHandler(this);
 
-    return this._setInstance(instance._getUid(), instance);
+    return this._setInstance(uid, instance);
   }
 
   _setInstance(uid, instance) {
@@ -53,10 +53,10 @@ export default class {
     return this._instances[uid];
   }
 
-  _createComponent(path, props) {
-    const instance = this._getInstance(this._getUid());
+  _createComponent(uid, props) {
+    const instance = this._getInstance(uid);
     instance._setComponent(
-      new this._getComponentClass(path)(instance, props)
+      new this._getComponentClass(instance._getPath())(instance, props)
     );
 
     return instance;
