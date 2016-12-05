@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 	var srcFileSelector = [
 		'components/class.js',
 		'components/handler.js',
-		'app.js',
+		'snew.js',
 	];
 
 	var tmpFileSelector = [];

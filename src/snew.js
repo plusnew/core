@@ -1,12 +1,12 @@
 import ComponentsHandler from 'snew/components/handler';
 
-function AppClass() {
+function Snew(config) {
   this._ensureComponentHandlers()
       ._createComponentHandler()
       ._createComponent(config.path);
 }
 
-AppClass.prototype = {
+Snew.prototype = {
   _ensureComponentHandlers() {
     this._componentHandlers = [];
 
@@ -42,4 +42,4 @@ AppClass.prototype = {
   },
 };
 
-export default AppClass
+export default Snew;

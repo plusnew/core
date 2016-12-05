@@ -1,6 +1,6 @@
-function ComponentClass() {}
+function Component() {}
 
-ComponentClass.prototype = {
+Component.prototype = {
   get(key) {
     console.log('getter of content');
   },
@@ -88,4 +88,4 @@ ComponentClass.prototype = {
   },
 };
 
-export default ComponentClass
+export default Component;

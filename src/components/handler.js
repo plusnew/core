@@ -1,11 +1,11 @@
-import Class from 'class';
+import Component from './class';
 
-function HandlerClass() {
+function ComponentHandler() {
   this._ensureInstances()
       ._ensureUid();
 }
 
-HandlerClass.prototype = {
+ComponentHandler.prototype = {
   create(path, props = {}) {
     const uid = this._incrementUid()._getCurrentUid();
     return this._createInstance(uid, path)
@@ -35,7 +35,7 @@ HandlerClass.prototype = {
   },
 
   _createInstance(uid, path) {
-    const instance = new Class();
+    const instance = new Component();
     instance._setUid(uid)
             ._setPath(path)
             ._setComponentsHandler(this);
@@ -63,4 +63,4 @@ HandlerClass.prototype = {
   },
 };
 
-export default HandlerClass
+export default ComponentHandler;
