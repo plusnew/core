@@ -37,14 +37,20 @@ Component.prototype = {
 
   pop(key) {
     console.log('popper of content');
+
+    return this;
   },
 
   shift(key) {
     console.log('shifter of content');
+
+    return this;
   },
 
   remove(key) {
     console.log('remover of content');
+
+    return this;
   },
 
   _setUid(uid) {

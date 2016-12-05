@@ -1,11 +1,11 @@
 import Component from './class';
 
-function ComponentHandler() {
+function ComponentsHandler() {
   this._ensureInstances()
       ._ensureUid();
 }
 
-ComponentHandler.prototype = {
+ComponentsHandler.prototype = {
   create(path, props = {}) {
     const uid = this._incrementUid()._getCurrentUid();
     return this._createInstance(uid, path)
@@ -63,4 +63,4 @@ ComponentHandler.prototype = {
   },
 };
 
-export default ComponentHandler;
+export default ComponentsHandler;
