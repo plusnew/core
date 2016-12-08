@@ -72,7 +72,10 @@ module.exports = function(config) {
 
     coverageReporter: {
       type : 'html',
-      dir : 'tmp/coverage/'
+      dir : 'tmp/coverage/',
+      instrumenterOptions: {
+        istanbul: { noCompact: true }
+      }
     }
   });
 };

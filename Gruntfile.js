@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 	var srcFileSelector = [
 		'components/class.js',
 		'components/handler.js',
-		'snew.js',
+		'core/class.js'
 	];
 
 	var tmpFileSelector = [];
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		babel: {
 			options: {
-				presets: ["es2015"],
+				presets: ["babel-preset-es2015"],
 				plugins: ["transform-es2015-modules-amd"],
 				moduleIds: true,
 				sourceRoot: 'src',
@@ -65,6 +65,20 @@ module.exports = function(grunt) {
 				dest: 'dist/snew.js',
 			}
 		},
+		'string-replace': {
+			dist: {
+				files: [{
+					src: 'dist/snew.js',
+					dest: 'dist/snew.js'
+				}],
+				options: {
+					replacements: [{
+						pattern: '}());',
+						replacement: grunt.file.read('src/snew.js') + '}());'
+					}]
+				}
+			}
+		},
 		githooks: {
 			all: {
 				'pre-commit': {
@@ -75,7 +89,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.registerTask('default', ['githooks', 'touch', 'babel', 'concat', 'amdclean']);
+	grunt.registerTask('default', ['githooks', 'touch', 'babel', 'concat', 'amdclean', 'string-replace']);
 	grunt.registerTask('min', ['clean', 'default', 'uglify']);
 };
 
