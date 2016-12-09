@@ -8,6 +8,8 @@ function Snew() {
 Snew.prototype = {
   init(config) {
     this._createComponent(config.path);
+
+    return this;
   },
 
   _ensureComponentHandlers() {
