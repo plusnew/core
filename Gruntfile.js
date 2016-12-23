@@ -1,12 +1,15 @@
+// jshint varstmt: false
 // jscs:disable requireTrailingComma
 
 module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   var srcFileSelector = [
+    'helpers/util.js',
     'components/class.js',
     'components/handler.js',
     'helpers/runloop.js',
+    'core/config.js',
     'core/class.js',
   ];
 

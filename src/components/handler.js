@@ -1,7 +1,9 @@
+import util from '../helpers/util';
 import Component from './class';
 
-function ComponentsHandler() {
-  this._ensureInstances()
+function ComponentsHandler(config) {
+  this._setConfig(config)
+      ._ensureInstances()
       ._ensureUid();
 }
 
@@ -10,6 +12,16 @@ ComponentsHandler.prototype = {
     const uid = this._incrementUid()._getCurrentUid();
     return this._createInstance(uid, path)
                ._createComponent(uid, props);
+  },
+
+  _setConfig(config) {
+    this._config = config;
+
+    return this;
+  },
+
+  _getConfig() {
+    return this._config;
   },
 
   _ensureUid() {
@@ -55,11 +67,21 @@ ComponentsHandler.prototype = {
 
   _createComponent(uid, props) {
     const instance = this._getInstance(uid);
-    instance._setComponent(
-      new this._getComponentClass(instance._getPath())(instance, props)
-    );
+    const Component = this._getComponentClass(instance._getPath());
+    instance._setComponent(new Component(instance, props));
 
     return instance;
+  },
+
+  _getComponentClass(path) {
+    const components = this._getConfig().get('components');
+    if (components[path] === undefined) {
+      throw new Error('The component ' + path + ' is not known to snew');
+    } else if (util.isFunction(components[path]) === false) {
+      throw new Error('The component ' + path + ' is not a Class/Function');
+    }
+
+    return components[path];
   },
 };
 
