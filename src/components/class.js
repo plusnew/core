@@ -2,27 +2,27 @@ function Component() {}
 
 Component.prototype = {
   get(key) {
-    console.log('getter of content');
+    console.log('getter of content', key);
   },
 
   set(key, content) {
-    console.log('setter of content');
+    console.log('setter of content', key, content);
 
     return this;
   },
 
   exists(key) {
-    console.log('exists');
+    console.log('exists', key);
   },
 
   unset(key) {
-    console.log('unsetter of content');
+    console.log('unsetter of content', key);
 
     return this;
   },
 
   push(key, content) {
-    console.log('pusher of content');
+    console.log('pusher of content', key, content);
 
     return this;
   },
@@ -36,19 +36,19 @@ Component.prototype = {
   },
 
   pop(key) {
-    console.log('popper of content');
+    console.log('popper of content', key);
 
     return this;
   },
 
   shift(key) {
-    console.log('shifter of content');
+    console.log('shifter of content', key);
 
     return this;
   },
 
   remove(key) {
-    console.log('remover of content');
+    console.log('remover of content', key);
 
     return this;
   },

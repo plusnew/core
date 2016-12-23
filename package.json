@@ -51,8 +51,15 @@
     "url": "https://github.com/plusgut/snew/issues"
   },
   "jshintConfig": {
+    "node": true,
     "esversion": 6,
-    "loopfunc": true
+    "loopfunc": true,
+    "unused": true,
+    "undef": true,
+    "curly": true,
+    "eqeqeq": true,
+    "forin": true,
+    "varstmt": true
   },
   "homepage": "https://snew.io"
 }
