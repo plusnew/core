@@ -12,14 +12,12 @@ module.exports = function (grunt) {
 
   var tmpFileSelector = [];
   for (var i = 0; i < srcFileSelector.length; i++) {
-    tmpFileSelector.push('tmp/' + srcFileSelector[i]);
+    tmpFileSelector.push('tmp/babel/' + srcFileSelector[i]);
   }
 
   grunt.initConfig({
     babel: {
       options: {
-        presets: ['babel-preset-es2015'],
-        plugins: ['transform-es2015-modules-amd'],
         moduleIds: true,
         sourceRoot: 'src',
         moduleRoot: 'snew',
@@ -29,14 +27,14 @@ module.exports = function (grunt) {
           expand: true,
           cwd: 'src',
           src: srcFileSelector,
-          dest: 'tmp',
+          dest: 'tmp/babel',
         }],
       },
     },
     concat: {
       dist: {
         src: tmpFileSelector,
-        dest: 'dist/snew.js',
+        dest: 'tmp/concat/snew.js',
       },
     },
     uglify: {
@@ -54,24 +52,32 @@ module.exports = function (grunt) {
       src: ['dist/snew.min.js']
     },
     watch: {
-      scripts: {
+      src: {
         files: [
           'src/*',
-          'src/*/*',
+          'src/**/*',
         ],
-        tasks: ['default'],
+        tasks: ['babel', 'build'],
+      },
+      babel: {
+        files: [
+          'tmp/babel/*.js',
+          'tmp/babel/**/*.js',
+          'src/snew.js',
+        ],
+        tasks: ['build'],
       },
     },
     amdclean: {
       dist: {
-        src: 'dist/snew.js',
-        dest: 'dist/snew.js',
+        src: 'tmp/concat/snew.js',
+        dest: 'tmp/concat/snew.js',
       },
     },
     'string-replace': {
       dist: {
         files: [{
-          src: 'dist/snew.js',
+          src: 'tmp/concat/snew.js',
           dest: 'dist/snew.js',
         }],
         options: {
@@ -100,13 +106,12 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.registerTask('build', ['concat', 'amdclean', 'string-replace']);
   grunt.registerTask('default', [
     'githooks',
     'touch',
     'babel',
-    'concat',
-    'amdclean',
-    'string-replace'
+    'build',
   ]);
   grunt.registerTask('min', ['clean', 'default', 'uglify']);
 };
