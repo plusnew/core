@@ -46,7 +46,7 @@ Runloop.prototype = {
 
   _executeJobs() {
     for (var i = 0; i < this._jobs.length; i++) {
-      this._jobs[i].callback(this._jobs[i], this.tick);
+      this._jobs[i].callback(this._jobs[i], this._tick);
     }
 
     return this;

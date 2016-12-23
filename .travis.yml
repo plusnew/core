@@ -20,6 +20,9 @@ install:
   - "npm install"
   - "grunt default"
 
+after_success:
+  - "grunt coveralls"
+
 notifications:
   email:
     recipients:
