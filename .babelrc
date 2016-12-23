@@ -6,5 +6,10 @@
     "moduleRoot": "snew",
     "ignore": [
         "src/snew.js"
-    ]
+    ],
+    "env": {
+        "test": {
+            "plugins": ["istanbul"]
+        }
+    }
 }

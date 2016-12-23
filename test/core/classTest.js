@@ -7,8 +7,8 @@
 var config = {
   path: 'main/app',
   components: {
-    'main/app': function () {
-      console.log('I am a class');
+    'main/app': function (snew) {
+      this.s = snew;
     }
   }
 };

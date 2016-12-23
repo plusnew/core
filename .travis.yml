@@ -18,6 +18,7 @@ before_install:
 
 install:
   - "npm install"
+  - "export BABEL_ENV=test"
   - "grunt default"
 
 after_success:
