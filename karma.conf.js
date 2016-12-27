@@ -16,7 +16,7 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       'dist/snew.js',
-      'node_modules/tempart/dist/tempart.js',
+      'node_modules/tempart/dist/tempart.min.js',
       'test/**/*Test.js',
     ],
 
