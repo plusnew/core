@@ -20,9 +20,9 @@ Config.prototype = {
   get(key) {
     if (this._config === undefined) {
       throw new Error('Config is not set yet');
-    } else if (this._config[key] !== undefined){
+    } else if (this._config[key] !== undefined) {
       return this._config[key];
-    } else if (this._defaultConfig[key] !== undefined){
+    } else if (this._defaultConfig[key] !== undefined) {
       return this._defaultConfig[key];
     } else {
       throw 'No configuration found for ' + key;

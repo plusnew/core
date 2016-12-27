@@ -101,12 +101,6 @@ Component.prototype = {
   _getComponentsHandler() {
     return this._componentsHandler;
   },
-
-  _ensureTemplate() {
-
-
-    return this;
-  },
 };
 
 export default Component;
