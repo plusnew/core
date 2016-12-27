@@ -6,6 +6,7 @@ module.exports = function (grunt) {
 
   var srcFileSelector = [
     'helpers/util.js',
+    'view/class.js',
     'components/class.js',
     'components/handler.js',
     'helpers/runloop.js',

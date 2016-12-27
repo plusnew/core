@@ -66,11 +66,20 @@ Component.prototype = {
   _setPath(path) {
     this._path = path;
 
-    return this;
+    return this._setTemplate();
   },
 
   _getPath() {
     return this._path;
+  },
+
+  _setTemplate() {
+    const templates = this._getComponentsHandler()._getConfig().get('templates');
+    if (templates[this._getPath()]) {
+      this._template = new templates[this._getPath()](this._getUid() + '-');
+    }
+
+    return this;
   },
 
   _setComponent(component) {
@@ -91,6 +100,12 @@ Component.prototype = {
 
   _getComponentsHandler() {
     return this._componentsHandler;
+  },
+
+  _ensureTemplate() {
+
+
+    return this;
   },
 };
 

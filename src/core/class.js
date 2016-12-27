@@ -3,16 +3,16 @@ import Config from './config';
 
 function Snew() {
   this._ensureConfig()
-      ._ensureComponentHandlers()
-      ._createComponentHandler();
+      ._ensureComponentHandlers();
 }
 
 Snew.prototype = {
   init(config) {
-    this._setConfig(config)
-        ._createComponent(config.path);
+    this._setConfig(config);
+    const componentHandler = this._createComponentHandler();
+    this._createComponent(config.path, componentHandler);
 
-    return this;
+    return componentHandler;
   },
 
   _ensureConfig() {
@@ -46,23 +46,18 @@ Snew.prototype = {
   },
 
   _createComponentHandler() {
-    this._componentHandlers.push(new ComponentsHandler(this._getConfig()));
+    const componentHandler = new ComponentsHandler(this._getConfig());
+    this._componentHandlers.push(componentHandler);
 
-    return this;
+    return componentHandler;
   },
 
-  _getComponentHandlerLength() {
-    return this._getComponentHandlers().length;
-  },
-
-  _getComponentHandlerLast() {
-    return this._getComponentHandler(this._getComponentHandlerLength() - 1);
-  },
-
-  _createComponent(path) {
-    this._getComponentHandlerLast().create(path);
-
-    return this;
+  _createComponent(path, componentHandler) {
+    const component = componentHandler.create(path);
+    componentHandler.generateHtml(component)
+                    .callInits();
+    componentHandler.getView().append(this._getConfig(), componentHandler.getHtml());
+    return componentHandler;
   },
 };
 

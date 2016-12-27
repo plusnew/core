@@ -1,6 +1,12 @@
 function Config() {}
 
 Config.prototype = {
+  /**
+   * do not modify this object at runtime, it would be shared for all configuration instances
+   */
+  _defaultConfig: {
+    useBrowser: true,
+  },
   set(config) {
     if (this._config === undefined) {
       this._config = config;
@@ -14,8 +20,12 @@ Config.prototype = {
   get(key) {
     if (this._config === undefined) {
       throw new Error('Config is not set yet');
-    } else {
+    } else if (this._config[key] !== undefined){
       return this._config[key];
+    } else if (this._defaultConfig[key] !== undefined){
+      return this._defaultConfig[key];
+    } else {
+      throw 'No configuration found for ' + key;
     }
   },
 

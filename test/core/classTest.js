@@ -1,4 +1,4 @@
-/* global describe, it, expect, snew */
+/* global describe, it, expect, snew, tempart */
 
 // jshint varstmt: false
 // jscs:disable requireTrailingComma
@@ -10,6 +10,9 @@ var config = {
     'main/app': function (snew) {
       this.s = snew;
     }
+  },
+  templates: {
+    'main/app': tempart.factory('main/app', tempart.parser('I\'m an template>')),
   }
 };
 
