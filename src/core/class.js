@@ -37,14 +37,6 @@ Snew.prototype = {
     return this;
   },
 
-  _getComponentHandlers() {
-    return this._componentHandlers;
-  },
-
-  _getComponentHandler(index) {
-    return this._componentHandlers[index];
-  },
-
   _createComponentHandler() {
     const componentHandler = new ComponentsHandler(this._getConfig());
     this._componentHandlers.push(componentHandler);
@@ -56,7 +48,7 @@ Snew.prototype = {
     const component = componentHandler.create(path);
     componentHandler.generateHtml(component)
                     .callInits();
-    componentHandler.getView().append(this._getConfig(), componentHandler.getHtml());
+    componentHandler.getView().append(componentHandler.getHtml());
     return componentHandler;
   },
 };

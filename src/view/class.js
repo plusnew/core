@@ -6,7 +6,7 @@ View.prototype = {
   append(html) {
     if (this._config.get('useBrowser') && this._appended !== true) {
       this._appended = true;
-      console.log('not yet imlemented', html);
+      this._config.get('entry').innerHTML = html;
     }
 
     return this;

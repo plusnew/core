@@ -5,6 +5,7 @@
 // jscs:disable maximumLineLength
 
 var config = {
+  useBrowser: false,
   path: 'main/app',
   components: {
     'main/app': function (snew) {
