@@ -1,25 +1,31 @@
-/* global describe, it, expect, snew, tempart */
+/* global document, describe, beforeEach, afterEach, it, expect, snew, tempart */
 
 // jshint varstmt: false
 // jscs:disable requireTrailingComma
 // jscs:disable maximumLineLength
 
-var config = {
-  useBrowser: false,
-  path: 'main/app',
-  components: {
-    'main/app': function (snew) {
-      this.s = snew;
-    }
-  },
-  templates: {
-    'main/app': tempart.factory('main/app', tempart.parser('I\'m an template>')),
-  }
-};
+
 
 describe('Core functionality', function () {
+  var config;
+  beforeEach(function () {
+    config = {
+      useBrowser: false,
+      path: 'main/app',
+      components: {
+        'main/app': function (snew) {
+          this.s = snew;
+        }
+      },
+      templates: {
+        'main/app': tempart.factory('main/app', tempart.parser('I\'m an template>')),
+      }
+    };
+  });
+
   it('test startup', function () {
-    snew.init(config);
+    var componentContainer = snew.init(config);
+    console.log(componentContainer.getHtml());
     expect(true).toEqual(true);
   });
 });

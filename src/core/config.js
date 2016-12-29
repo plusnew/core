@@ -1,4 +1,6 @@
-function Config() {}
+function Config(config) {
+  this._set(config);
+}
 
 Config.prototype = {
   /**
@@ -7,7 +9,7 @@ Config.prototype = {
   _defaultConfig: {
     useBrowser: true,
   },
-  set(config) {
+  _set(config) {
     if (this._config === undefined) {
       this._config = config;
     } else {

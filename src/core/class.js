@@ -2,33 +2,15 @@ import ComponentsHandler from '../components/handler';
 import Config from './config';
 
 function Snew() {
-  this._ensureConfig()
-      ._ensureComponentHandlers();
+  this._ensureComponentHandlers();
 }
 
 Snew.prototype = {
   init(config) {
-    this._setConfig(config);
-    const componentHandler = this._createComponentHandler();
+    const componentHandler = this._createComponentHandler(config);
     this._createComponent(config.path, componentHandler);
 
     return componentHandler;
-  },
-
-  _ensureConfig() {
-    this._config = new Config();
-
-    return this;
-  },
-
-  _setConfig(config) {
-    this._config.set(config);
-
-    return this;
-  },
-
-  _getConfig() {
-    return this._config;
   },
 
   _ensureComponentHandlers() {
@@ -37,8 +19,8 @@ Snew.prototype = {
     return this;
   },
 
-  _createComponentHandler() {
-    const componentHandler = new ComponentsHandler(this._getConfig());
+  _createComponentHandler(config) {
+    const componentHandler = new ComponentsHandler(new Config(config));
     this._componentHandlers.push(componentHandler);
 
     return componentHandler;
