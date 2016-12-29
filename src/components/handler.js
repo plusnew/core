@@ -18,7 +18,7 @@ ComponentsHandler.prototype = {
                ._createComponent(uid, props);
   },
 
-  setId(id) {
+  _setId(id) {
     this._id = id;
 
     return this;
