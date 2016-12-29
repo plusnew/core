@@ -2,8 +2,9 @@ import util from '../helpers/util';
 import Component from './class';
 import View from '../view/class';
 
-function ComponentsHandler(config) {
-  this._setConfig(config)
+function ComponentsHandler(id, config) {
+  this._setId(id)
+      ._setConfig(config)
       ._ensureView()
       ._ensureInstances()
       ._ensureInits()
@@ -15,6 +16,12 @@ ComponentsHandler.prototype = {
     const uid = this._incrementUid()._getCurrentUid();
     return this._createInstance(uid, path)
                ._createComponent(uid, props);
+  },
+
+  setId(id) {
+    this._id = id;
+
+    return this;
   },
 
   _setConfig(config) {
@@ -99,18 +106,33 @@ ComponentsHandler.prototype = {
     return this;
   },
 
+  addRoot(component) {
+    this.generateHtml(component);
+
+    // @TODO probably should add recursion protection
+    while (this.callInits()) {
+      this.generateHtml(component);
+    }
+
+    this.getView().append(this.getHtml());
+
+    return this;
+  },
+
   callInits() {
+    let initsCalled = false;
     for (let i = 0; i < this._inits.length; i++) {
       const uid = this._inits.pop();
       if (this._instances[uid]) {
         const component = this._instances[uid]._getComponent();
         if (util.isFunction(component.init)) {
           component.init();
+          initsCalled = true;
         }
       }
     }
 
-    return this;
+    return initsCalled;
   },
 
   generateHtml(component) {

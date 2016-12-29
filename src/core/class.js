@@ -20,7 +20,8 @@ Snew.prototype = {
   },
 
   _createComponentHandler(config) {
-    const componentHandler = new ComponentsHandler(new Config(config));
+    const index = this._componentHandlers.length - 1;
+    const componentHandler = new ComponentsHandler(index, new Config(config));
     this._componentHandlers.push(componentHandler);
 
     return componentHandler;
@@ -28,11 +29,9 @@ Snew.prototype = {
 
   _createComponent(path, componentHandler) {
     const component = componentHandler.create(path);
-    componentHandler.generateHtml(component)
-                    .callInits().generateHtml(component);
-    componentHandler.getView().append(componentHandler.getHtml());
+    componentHandler.addRoot(component);
     return componentHandler;
-  },
+  }
 };
 
 export default Snew;
