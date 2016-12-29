@@ -31,7 +31,7 @@ Snew.prototype = {
     const component = componentHandler.create(path);
     componentHandler.addRoot(component);
     return componentHandler;
-  }
+  },
 };
 
 export default Snew;
