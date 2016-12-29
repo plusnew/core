@@ -29,7 +29,7 @@ Snew.prototype = {
   _createComponent(path, componentHandler) {
     const component = componentHandler.create(path);
     componentHandler.generateHtml(component)
-                    .callInits();
+                    .callInits().generateHtml(component);
     componentHandler.getView().append(componentHandler.getHtml());
     return componentHandler;
   },

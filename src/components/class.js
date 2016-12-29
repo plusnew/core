@@ -1,12 +1,16 @@
+import util from '../helpers/util';
+
 function Component() {}
 
 Component.prototype = {
-  get(key) {
-    console.log('getter of content', key);
+  get(keyParts) {
+    const reference = util.getReference(this._getComponent().content, keyParts);
+    return reference[keyParts[keyParts.length - 1]];
   },
 
-  set(key, content) {
-    console.log('setter of content', key, content);
+  set(keyParts, content) {
+    const reference = util.getReference(this._getComponent().content, keyParts);
+    reference[keyParts[keyParts.length - 1]] = content;
 
     return this;
   },
