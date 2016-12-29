@@ -12,8 +12,8 @@ View.prototype = {
     return this;
   },
 
-  render(component) {
-    return component._template.clean(component._content).html;
+  render(instance) {
+    return instance._template.clean(instance._getComponent().content).html;
   },
 };
 
