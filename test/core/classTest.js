@@ -8,23 +8,18 @@ function generateTemplate(templateString) {
   return tempart.factory('main/app', tempart.parser(templateString));
 }
 
-function Component(snew) {
-  this.s = snew;
-
-  this.content = {
-    foo: 'bar'
-  };
-}
-
-Component.prototype = {
-  init: function () {
-    this.s.set(['foo'], 'bar');
-  },
-};
-
 describe('Core functionality', function () {
   var config;
+  var Component;
   beforeEach(function () {
+    Component = function (snew) {
+      this.s = snew;
+
+      this.content = {
+        foo: 'foo'
+      };
+    };
+
     config = {
       useBrowser: false,
       path: 'main/app',
@@ -42,8 +37,20 @@ describe('Core functionality', function () {
     expect(componentContainer.getHtml()).toEqual('<span data-snew-id="1-1">I\'m an template</span>');
   });
 
-  it('text startup', function () {
+  it('variable output', function () {
     config.templates['main/app'] = generateTemplate('<span>Hello {{foo}}</span>');
+    var componentContainer = snew.init(config);
+    expect(componentContainer.getHtml()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">foo</span></span>');
+  });
+
+  it('variable output with init', function () {
+    config.templates['main/app'] = generateTemplate('<span>Hello {{foo}}</span>');
+    Component.prototype = {
+      init: function () {
+        this.s.set(['foo'], 'bar');
+      },
+    };
+
     var componentContainer = snew.init(config);
     expect(componentContainer.getHtml()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">bar</span></span>');
   });
