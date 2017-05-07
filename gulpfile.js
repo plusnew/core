@@ -1,0 +1,35 @@
+const gulp       = require('gulp');
+const browserify = require('browserify');
+const watchify   = require('watchify');
+const source     = require('vinyl-source-stream');
+const tsify      = require('tsify');
+const gutil      = require('gulp-util');
+
+function getBrowserifyConfig() {
+  return browserify({
+    basedir: '.',
+    debug: true,
+    entries: ['src/main.ts'],
+    cache: {},
+    packageCache: {},
+  });
+}
+
+function bundle(config) {
+  return config.plugin(tsify)
+               .bundle()
+               .pipe(source('snew.js'))
+               .pipe(gulp.dest('dist'));
+}
+
+gulp.task('default', function () {
+  return bundle(getBrowserifyConfig());
+});
+
+gulp.task('watch', function () {
+  const watchedBrowserify = watchify(getBrowserifyConfig());
+  watchedBrowserify.on('update', bundle.bind(null, watchedBrowserify));
+  watchedBrowserify.on('log', gutil.log);
+
+  return bundle(watchedBrowserify);
+});
