@@ -1,7 +1,8 @@
 interface Config {
-  mainPath: string
-  mainArgs: object
+  rootPath: string
+  rootArgs: object
   components: object
+  templates: object
 }
 
 export default Config;

@@ -8,14 +8,23 @@ class Main {
   _config: Config
 
   constructor(config: ConfigInterface) {
+    this._setupConfig(config)
+        ._createRootComponent();
+  }
+
+  _setupConfig(config: ConfigInterface): Main {
     this._config = new Config(config);
+    return this;
+  }
+
+  _createRootComponent(): Main {
     this._componentHandler = new ComponentHandler(this._config);
-    
+    return this;
   }
 
   getHtml(): string {
-    let mainComponent = this._componentHandler.create(this._config.getMainPath(), this._config.getMainArgs());
-    return "foo";
+    let mainComponent = this._componentHandler.create(this._config.getRootPath(), this._config.getRootArgs());
+    return mainComponent._getHtml();
   }
 }
 

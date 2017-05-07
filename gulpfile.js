@@ -4,6 +4,7 @@ const watchify   = require('watchify');
 const source     = require('vinyl-source-stream');
 const tsify      = require('tsify');
 const gutil      = require('gulp-util');
+const coveralls  = require('gulp-coveralls');
 
 function getBrowserifyConfig() {
   return browserify({
@@ -32,4 +33,9 @@ gulp.task('watch', function () {
   watchedBrowserify.on('log', gutil.log);
 
   return bundle(watchedBrowserify);
+});
+
+gulp.task('coveralls', function () {
+  return gulp.src('test/coverage/**/lcov.info')
+    .pipe(coveralls());
 });

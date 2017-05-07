@@ -1,5 +1,4 @@
-snew [![Build Status](https://travis-ci.org/plusgut/snew.svg?branch=v0.4)](https://travis-ci.org/plusgut/snew) [![Coverage Status](https://coveralls.io/repos/github/plusgut/snew/badge.svg?branch=v0.4)](https://coveralls.io/github/plusgut/snew?branch=v0.4)
----
+# snew [![Build Status](https://travis-ci.org/plusgut/snew.svg?branch=v0.4)](https://travis-ci.org/plusgut/snew) [![Coverage Status](https://coveralls.io/repos/github/plusgut/snew/badge.svg?branch=v0.4)](https://coveralls.io/github/plusgut/snew?branch=v0.4)
 
 lightweight mvc-framework with local data quering
 unlike other frameworks we don't render the whole template each time
@@ -13,8 +12,8 @@ As a framework we don't want to force you what technology you use in your applic
 
 Note: don't use this framework yet, its in alpha state. Currently it's not robust, it has no XSS prevention and a lack of documentation.
 
-api
----
+## api
+
 ```js
 app.components['main/app'] = function (snew, props) {
   this.s = snew;
