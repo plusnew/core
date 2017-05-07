@@ -4,11 +4,11 @@ import TemplateInterface from '../Interface/Template';
 class Class {
   _handler: Handler
   _template: TemplateInterface
-  _state: object
+  _state: any
   _uid: number
 
   constructor(uid: number, path: string, handler: Handler) {
-    this._state = {};
+    this._state = null;
     this._uid = uid;
     this._handler = handler;
     let TemplateClass = handler._getTemplate(path);
