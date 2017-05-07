@@ -1,4 +1,5 @@
-#snew [![Build Status](https://travis-ci.org/plusgut/snew.svg?branch=v0.3)](https://travis-ci.org/plusgut/snew) [![Coverage Status](https://coveralls.io/repos/github/plusgut/snew/badge.svg?branch=v0.3)](https://coveralls.io/github/plusgut/snew?branch=v0.3)
+snew [![Build Status](https://travis-ci.org/plusgut/snew.svg?branch=v0.4)](https://travis-ci.org/plusgut/snew) [![Coverage Status](https://coveralls.io/repos/github/plusgut/snew/badge.svg?branch=v0.4)](https://coveralls.io/github/plusgut/snew?branch=v0.4)
+---
 
 lightweight mvc-framework with local data quering
 unlike other frameworks we don't render the whole template each time

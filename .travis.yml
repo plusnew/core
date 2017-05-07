@@ -15,10 +15,10 @@ before_install:
 install:
   - "npm install"
   - "export BABEL_ENV=test"
-  - "grunt default"
+  - "gulp default"
 
 after_success:
-  - "grunt coveralls"
+  - "gulp coveralls"
 
 notifications:
   email:

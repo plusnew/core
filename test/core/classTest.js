@@ -1,4 +1,4 @@
-/* global document, describe, beforeEach, afterEach, it, expect, snew, tempart */
+/* global document, describe, beforeEach, afterEach, it, expect, Snew, tempart */
 
 // jshint varstmt: false
 // jscs:disable requireTrailingComma
@@ -22,7 +22,7 @@ describe('Core functionality', function () {
 
     config = {
       useBrowser: false,
-      path: 'main/app',
+      mainPath: 'main/app',
       components: {
         'main/app': Component
       },
@@ -33,13 +33,13 @@ describe('Core functionality', function () {
   });
 
   it('text startup', function () {
-    var componentContainer = snew.init(config);
+    var componentContainer = new Snew(config);
     expect(componentContainer.getHtml()).toEqual('<span data-snew-id="1-1">I\'m an template</span>');
   });
 
   it('variable output', function () {
     config.templates['main/app'] = generateTemplate('<span>Hello {{foo}}</span>');
-    var componentContainer = snew.init(config);
+    var componentContainer = new Snew(config);
     expect(componentContainer.getHtml()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">foo</span></span>');
   });
 
@@ -51,7 +51,7 @@ describe('Core functionality', function () {
       },
     };
 
-    var componentContainer = snew.init(config);
+    var componentContainer = new Snew(config);
     expect(componentContainer.getHtml()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">bar</span></span>');
   });
 });
