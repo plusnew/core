@@ -64,7 +64,7 @@ module.exports = function (config) {
       reports: {
         lcovonly: {
           directory: 'test/coverage/',
-          filename: 'info.lcov',
+          filename: 'lcov.info',
         },
       },
     },
