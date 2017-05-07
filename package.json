@@ -15,6 +15,7 @@
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
+    "karma-typescript": "^3.0.1",
     "phantomjs-prebuilt": "^2.1.7",
     "tsify": "^3.0.1",
     "typescript": "^2.3.2",

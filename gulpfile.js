@@ -37,5 +37,5 @@ gulp.task('watch', function () {
 
 gulp.task('coveralls', function () {
   return gulp.src('test/coverage/**/lcov.info')
-    .pipe(coveralls());
+             .pipe(coveralls());
 });
