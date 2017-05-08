@@ -16,7 +16,10 @@ describe('Core functionality', function () {
       this.s = snew;
 
       this.s.setState({
-        foo: 'foo'
+        foo: 'foo',
+        bar: {
+          baz: 'barbar'
+        }
       });
     };
 
@@ -53,5 +56,17 @@ describe('Core functionality', function () {
 
     var componentContainer = new Snew(config);
     expect(componentContainer.compileTemplate()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">bar</span></span>');
+  });
+
+  it('variable output with nested set', function () {
+    config.templates['main/app'] = generateTemplate('<span>Hello {{bar.baz}}</span>');
+    Component.prototype = {
+      init: function () {
+        this.s.set(['bar', 'baz'], 'barbarbar');
+      },
+    };
+
+    var componentContainer = new Snew(config);
+    expect(componentContainer.compileTemplate()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">barbarbar</span></span>');
   });
 });
