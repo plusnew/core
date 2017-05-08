@@ -22,6 +22,7 @@ module.exports = function (config) {
 
     // list of files to exclude
     exclude: [
+      'src/Interface/*.ts',
     ],
 
     // preprocess matching files before serving them to the browser
@@ -68,7 +69,6 @@ module.exports = function (config) {
         },
       },
     },
-
     coverageReporter: {
       dir: 'test/coverage/',
       instrumenterOptions: {
