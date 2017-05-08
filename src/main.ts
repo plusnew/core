@@ -22,9 +22,13 @@ class Main {
     return this;
   }
 
-  getHtml(): string {
+  compileTemplate(): string {
     let mainComponent = this._componentHandler.create(this._config.getRootPath(), this._config.getRootArgs());
-    return mainComponent._getHtml();
+    var html = "";
+    do{
+      html = mainComponent._compileTemplate();
+    } while(this._componentHandler._executeContainerInits())
+    return html;
   }
 }
 

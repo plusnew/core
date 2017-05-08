@@ -2,6 +2,12 @@ import ConfigInterface from '../Interface/Config';
 import ComponentInterface from '../Interface/Component';
 import TemplateInterface from '../Interface/Template';
 
+const DEFAULTS = {
+  rootPath: 'main/app',
+  rootArgs: {},
+  insertInDom: true,
+}
+
 class Config{
   _config: ConfigInterface
 
@@ -9,16 +15,20 @@ class Config{
     this._config = config;
   }
 
+  _hasKey(key: string): boolean {
+    return key in this._config;
+  }
+
   getRootPath(): string {
-    return this._config.rootPath;
+    return this._hasKey('rootPath') ? this._config.rootPath : DEFAULTS.rootPath;
+  }
+
+  getRootElement(): HTMLElement {
+    return this._config.rootElement;
   }
 
   getRootArgs(): object {
-    if('rootArgs' in this._config) {
-      return this._config.rootArgs;
-    } else {
-     return {}; 
-    }
+    return this._hasKey('rootArgs') ? this._config.rootArgs : DEFAULTS.rootArgs;
   }
 
   getComponentClass(path: string): typeof ComponentInterface {
@@ -35,6 +45,10 @@ class Config{
     } else {
       throw new Error('No such template ' +path);
     }
+  }
+
+  insertInDom(): boolean {
+    return this._hasKey('insertInDom') ? this._config.insertInDom : DEFAULTS.insertInDom;
   }
 }
 

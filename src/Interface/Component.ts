@@ -4,6 +4,10 @@ class Component {
   constructor(containerClass: ContainerClass) {
 
   }
+
+  init() {
+    
+  }
 }
 
 export default Component;

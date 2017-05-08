@@ -15,13 +15,13 @@ describe('Core functionality', function () {
     Component = function (snew) {
       this.s = snew;
 
-      this.content = {
+      this.s.setState({
         foo: 'foo'
-      };
+      });
     };
 
     config = {
-      useBrowser: false,
+      insertInDom: false,
       rootPath: 'main/app',
       components: {
         'main/app': Component
@@ -34,24 +34,24 @@ describe('Core functionality', function () {
 
   it('text startup', function () {
     var componentContainer = new Snew(config);
-    expect(componentContainer.getHtml()).toEqual('<span data-snew-id="1-1">I\'m an template</span>');
+    expect(componentContainer.compileTemplate()).toEqual('<span data-snew-id="1-1">I\'m an template</span>');
   });
 
-  // it('variable output', function () {
-  //   config.templates['main/app'] = generateTemplate('<span>Hello {{foo}}</span>');
-  //   var componentContainer = new Snew(config);
-  //   expect(componentContainer.getHtml()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">foo</span></span>');
-  // });
+  it('variable output', function () {
+    config.templates['main/app'] = generateTemplate('<span>Hello {{foo}}</span>');
+    var componentContainer = new Snew(config);
+    expect(componentContainer.compileTemplate()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">foo</span></span>');
+  });
 
-  // it('variable output with init', function () {
-  //   config.templates['main/app'] = generateTemplate('<span>Hello {{foo}}</span>');
-  //   Component.prototype = {
-  //     init: function () {
-  //       this.s.set(['foo'], 'bar');
-  //     },
-  //   };
+  it('variable output with init', function () {
+    config.templates['main/app'] = generateTemplate('<span>Hello {{foo}}</span>');
+    Component.prototype = {
+      init: function () {
+        this.s.set(['foo'], 'bar');
+      },
+    };
 
-  //   var componentContainer = new Snew(config);
-  //   expect(componentContainer.getHtml()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">bar</span></span>');
-  // });
+    var componentContainer = new Snew(config);
+    expect(componentContainer.compileTemplate()).toEqual('<span data-snew-id="1-1">Hello <span data-snew-id="1-3">bar</span></span>');
+  });
 });
