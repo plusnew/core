@@ -18,11 +18,13 @@
     "karma-typescript": "^3.0.1",
     "phantomjs-prebuilt": "^2.1.7",
     "tsify": "^3.0.1",
+    "tslint-config-airbnb": "^5.0.1",
     "typescript": "^2.3.2",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"
   },
   "dependencies": {
+    "statelog": "^0.1.0",
     "tempart": "https://github.com/plusgut/tempart.git#v0.3"
   },
   "scripts": {

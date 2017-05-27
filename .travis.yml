@@ -1,16 +1,29 @@
 language: node_js
 
+dist: trusty
+
 node_js:
-  - "5"
+  - "6"
+
+cache:
+  directories:
+    - node_modules
+
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-beta
 
 before_install:
+  - "export CHROME_BIN=google-chrome-beta"
   - "npm config set spin false"
   - "npm --version"
-  - "npm install grunt-cli -g"
-  - "npm install jscs -g"
-  - "npm install jshint -g"
-  - "phantomjs --version"
+  - "npm install gulp -g"
+  - "npm install tslint -g"
   - "rm -f /tmp/*.dmp"
+  - "google-chrome --version"
 
 install:
   - "npm install"

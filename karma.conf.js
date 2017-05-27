@@ -4,7 +4,7 @@
 // Generated on Fri May 13 2016 20:43:12 GMT+0200 (CEST)
 
 module.exports = function (config) {
-  config.set({
+  var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -16,7 +16,8 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       { pattern: 'src/**/*.ts' },
-      'node_modules/tempart/dist/tempart.min.js',
+      'node_modules/statelog/dist/statelog.js',
+      'node_modules/tempart/dist/tempart.js',
       'test/**/*Test.js',
     ],
 
@@ -51,8 +52,14 @@ module.exports = function (config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome_Headless'],
 
+    customLaunchers: {
+      Chrome_Headless: {
+        base: 'Chrome',
+        flags: ['--disable-gpu','--headless ', '--remote-debugging-port=9222']
+      }
+    },
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
@@ -75,5 +82,11 @@ module.exports = function (config) {
         istanbul: { noCompact: true },
       },
     },
-  });
+  };
+
+  if (process.env.TRAVIS) {
+    configuration.customLaunchers.Chrome_Headless.flags.push('--no-sandbox');
+  }
+
+  config.set(configuration);
 };
