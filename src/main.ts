@@ -25,6 +25,6 @@ class Main {
   }
 }
 
-(<any>window).Snew = Main;
-
 export default Main;
+
+(<any>window).Snew = Main;

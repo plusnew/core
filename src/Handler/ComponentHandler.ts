@@ -16,7 +16,6 @@ class ComponentHandler {
     this.props = props;
     this.component = new Component(this.state, this.props, this);
     this.template = new Template(this.id, this.state, this.props);
-    console.log(this.template);
   }
 }
 

@@ -34,7 +34,6 @@ describe('Core functionality', function () {
   it('text startup', function () {
     var snewInstance = new Snew(config);
     var componentHandler = snewInstance.init('main/app', {});
-    console.log(componentHandler.template);
     expect(componentHandler.template.getHtml()).toEqual('<span>I\'m an template</span>');
   });
 

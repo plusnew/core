@@ -27,7 +27,7 @@ before_install:
 
 install:
   - "npm install"
-  - "gulp default"
+    #  - "gulp default"
 
 after_success:
   - "gulp coveralls"
