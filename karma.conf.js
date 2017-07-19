@@ -91,11 +91,14 @@ module.exports = function (config) {
         },
       },
       coverageOptions: {
-        exclude: /node_modules/
+        exclude: [
+          /node_modules/,
+          /src\/Interface/,
+        ]
       }
     },
     coverageReporter: {
-      dir: 'test/coverage/',
+      dir: ['test/coverage/'],
       instrumenterOptions: {
         istanbul: { noCompact: true },
       },
