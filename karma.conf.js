@@ -25,12 +25,10 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       ...files,
-      // 'node_modules/tempart/index.js',
-      // 'node_modules/tempart/src/**/*.ts',
       'test/**/*Test.js',
     ],
 
-    include: ["**/*.ts"],
+    include: files,
 
     // list of files to exclude
     exclude: [],
@@ -84,6 +82,7 @@ module.exports = function (config) {
 
     karmaTypescriptConfig: {
       include: files,
+      exclude: [],
       tsconfig: "./tsconfig.json",
       reports: {
         lcovonly: {
@@ -91,6 +90,9 @@ module.exports = function (config) {
           filename: 'lcov.info',
         },
       },
+      coverageOptions: {
+        exclude: /node_modules/
+      }
     },
     coverageReporter: {
       dir: 'test/coverage/',
