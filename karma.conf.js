@@ -4,6 +4,15 @@
 // Generated on Fri May 13 2016 20:43:12 GMT+0200 (CEST)
 
 module.exports = function (config) {
+  var files = [
+    'index.ts',
+    'src/**/*.ts',
+    'node_modules/statelog/index.ts',
+    'node_modules/statelog/src/**/*.ts',
+    'node_modules/tempart/index.ts',
+    'node_modules/tempart/src/**/*.ts',
+  ]
+
   var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -15,21 +24,26 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      { pattern: 'src/**/*.ts' },
-      'node_modules/statelog/dist/statelog.js',
-      'node_modules/tempart/dist/tempart.js',
+      ...files,
+      // 'node_modules/tempart/index.js',
+      // 'node_modules/tempart/src/**/*.ts',
       'test/**/*Test.js',
     ],
 
+    include: ["**/*.ts"],
+
     // list of files to exclude
-    exclude: [
-      'src/Interface/*.ts',
-    ],
+    exclude: [],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      '**/*.ts': ['karma-typescript'],
+      'node_modules/statelog/index.ts': ['karma-typescript'],
+      'node_modules/statelog/src/**/*.ts': ['karma-typescript'],
+      'node_modules/tempart/index.ts': ['karma-typescript'],
+      'node_modules/tempart/src/**/*.ts': ['karma-typescript'],
+      'src/index.ts': ['karma-typescript'],
+      'src/**/*.ts': ['karma-typescript'],
     },
 
     // test results reporter to use
@@ -56,8 +70,8 @@ module.exports = function (config) {
 
     customLaunchers: {
       Chrome_Headless: {
-        base: 'Chrome',
-        flags: ['--disable-gpu','--headless ', '--remote-debugging-port=9222']
+        base: 'Chromium',
+        flags: ['--disable-gpu', '--headless ', '--remote-debugging-port=9222']
       }
     },
     // Continuous Integration mode
@@ -69,6 +83,8 @@ module.exports = function (config) {
     concurrency: Infinity,
 
     karmaTypescriptConfig: {
+      include: files,
+      tsconfig: "./tsconfig.json",
       reports: {
         lcovonly: {
           directory: 'test/coverage/',

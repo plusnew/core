@@ -1,35 +1,30 @@
-/*global tempart_parser_parser, tempart_compiler_compiler, tempart_version, module, window */
-import ConfigInterface from './Interface/Config';
-import ComponentHandler from './Component/Handler';
-import Config from './Core/Config';
+import ConfigInterface from './Interface/ConfigInterface';
+import ComponentHandler from './Handler/ComponentHandler';
 
 class Main {
-  _componentHandler: ComponentHandler
-  _config: Config
+  config: ConfigInterface;
 
   constructor(config: ConfigInterface) {
-    this._setupConfig(config)
-        ._createRootComponent();
+    this.config = config;
   }
 
-  _setupConfig(config: ConfigInterface): Main {
-    this._config = new Config(config);
-    return this;
+  public init(componentName: string, props?: any) {
+    return new ComponentHandler(
+      this.getComponent(componentName),
+      this.getTemplate(componentName),
+      props,
+    );
   }
 
-  _createRootComponent(): Main {
-    this._componentHandler = new ComponentHandler(this._config);
-    return this;
+  public getComponent(componentName: string) {
+    return this.config.components[componentName];
   }
 
-  compileTemplate(): string {
-    let mainComponent = this._componentHandler.create(this._config.getRootPath(), this._config.getRootArgs());
-    var html = "";
-    do{
-      html = mainComponent._compileTemplate();
-    } while(this._componentHandler._executeContainerInits())
-    return html;
+  public getTemplate(componentName: string) {
+    return this.config.templates[componentName];
   }
 }
 
 (<any>window).Snew = Main;
+
+export default Main;

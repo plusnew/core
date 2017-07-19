@@ -11,24 +11,23 @@
     "gulp-util": "^3.0.8",
     "jasmine-core": "^2.4.1",
     "karma": "^1.7.0",
-    "karma-chrome-launcher": "^1.0.1",
-    "karma-coverage": "^1.1.1",
+    "karma-chrome-launcher": "^2.1.1",
+    "karma-coverage": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
-    "karma-typescript": "^3.0.1",
-    "phantomjs-prebuilt": "^2.1.7",
+    "karma-typescript": "^3.0.4",
     "tsify": "^3.0.1",
     "tslint-config-airbnb": "^5.0.1",
-    "typescript": "^2.3.2",
+    "typescript": "^2.4.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"
   },
   "dependencies": {
-    "statelog": "^0.1.0",
-    "tempart": "https://github.com/plusgut/tempart.git#v0.3"
+    "statelog": "*",
+    "tempart": "*"
   },
   "scripts": {
-    "test": "jshint --show-non-errors src && jscs src && ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run"
+    "test": "tslint src/**/*.ts && ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run"
   },
   "repository": {
     "type": "git",
