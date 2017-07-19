@@ -23,8 +23,8 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
-    "statelog": "*",
-    "tempart": "*"
+    "statelog": "git+https://github.com/plusgut/statelog.git",
+    "tempart": "git+https://github.com/plusgut/tempart.git#v0.4"
   },
   "scripts": {
     "test": "tslint src/**/*.ts && ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run"
