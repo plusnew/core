@@ -15,15 +15,19 @@ Note: don't use this framework yet, its in alpha state. Currently it's not robus
 ## api
 
 ```js
-app.components['main/app'] = function (snew, props) {
-  this.s = snew;
+
+// Classes are of course possible as well, snew doesn't restrict you in any way
+app.components['main/app'] = function (state props) {
+  this.state = state;
   this.props = props;
+  
+  this.state.todos = [{label: 'foo'}]
 };
 
 app.components['main/app'].prototype = {
-  filter: function(data) {
-    // remove all entities with the property completed === true
-    this.s.remove(['todos', {completed: true}]); // Simple
+  addTodo: function(label) {
+    // The template is subscribed to changes in the array, and gets the event that there is a new entity and updates the dom
+    this.state.todos.push({label}); 
   }
 });
 
