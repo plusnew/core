@@ -51,15 +51,12 @@ describe('Core functionality', function () {
     expect(componentHandler.template.getHtml()).toEqual('<span>Hello <span>bar</span></span>');
   });
 
-  // it('variable output with nested set', function () {
-  //   config.templates['main/app'] = generateTemplate('<span>Hello {{bar.baz}}</span>');
-  //   Component.prototype = {
-  //     init: function () {
-  //       this.state.bar.baz = 'barbarbar';
-  //     },
-  //   };
-
-  //   var componentContainer = new Snew(config);
-  //   expect(componentContainer.compileTemplate()).toEqual('<span>Hello <span>barbarbar</span></span>');
-  // });
+  it('variable output with nested set', function () {
+    config.templates['main/app'] = generateTemplate('<span>Hello {{$bar.baz}}</span>');
+    var componentHandler = this.snewInstance.init('main/app', {});
+    window.foo = true;
+    componentHandler.component.state.bar.baz = 'barbarbar';
+    window.foo = false;
+    expect(componentHandler.template.getHtml()).toEqual('<span>Hello <span>barbarbar</span></span>');
+  });
 });
