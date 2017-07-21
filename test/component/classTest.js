@@ -42,21 +42,23 @@ describe('Core functionality', function () {
   });
 
   it('text startup', function () {
-    var componentHandler = this.snewInstance.init('main/app', {});
+    var componentHandler = this.snewInstance.create('main/app', {});
     componentHandler.appendToDom(this.container);
     this.checkHtml(componentHandler, '<span>I\'m an template</span>');
   });
 
   it('variable output', function () {
     config.templates['main/app'] = generateTemplate('<span>Hello {{$foo}}</span>');
-    var componentHandler = this.snewInstance.init('main/app', {});
+    var componentHandler = this.snewInstance.create('main/app', {});
     componentHandler.appendToDom(this.container);
     this.checkHtml(componentHandler, '<span>Hello <span>foo</span></span>');
   });
 
   it('variable output with change afterwards', function () {
     config.templates['main/app'] = generateTemplate('<span>Hello {{$foo}}</span>');
-    var componentHandler = this.snewInstance.init('main/app', {});
+    var componentHandler = this.snewInstance.create('main/app', {});
+    window.componentHandler = componentHandler;
+    window.component = componentHandler.component;
     componentHandler.appendToDom(this.container);
     componentHandler.component.state.foo = 'bar';
     this.checkHtml(componentHandler, '<span>Hello <span>bar</span></span>');
@@ -64,7 +66,7 @@ describe('Core functionality', function () {
 
   it('variable output with nested set', function () {
     config.templates['main/app'] = generateTemplate('<span>Hello {{$bar.baz}}</span>');
-    var componentHandler = this.snewInstance.init('main/app', {});
+    var componentHandler = this.snewInstance.create('main/app', {});
     componentHandler.appendToDom(this.container);
     componentHandler.component.state.bar.baz = 'barbarbar';
     this.checkHtml(componentHandler, '<span>Hello <span>barbarbar</span></span>');

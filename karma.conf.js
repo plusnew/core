@@ -84,6 +84,9 @@ module.exports = function (config) {
       include: files,
       exclude: [],
       tsconfig: "./tsconfig.json",
+      compilerOptions: {
+        sourceMap: true
+      },
       reports: {
         lcovonly: {
           directory: 'test/coverage/',

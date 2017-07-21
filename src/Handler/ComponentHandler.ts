@@ -9,6 +9,7 @@ class ComponentHandler {
   state: any;
   props: any;
   id: number;
+
   constructor(Component: typeof ComponentInterface,
               Template: typeof TemplateInterface,
               props: any) {

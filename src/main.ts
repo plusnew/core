@@ -8,7 +8,7 @@ class Main {
     this.config = config;
   }
 
-  public init(componentName: string, props?: any) {
+  public create(componentName: string, props?: any) {
     return new ComponentHandler(
       this.getComponent(componentName),
       this.getTemplate(componentName),
