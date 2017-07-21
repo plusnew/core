@@ -3,7 +3,9 @@ class TemplateInterface {
     
   }
 
-  getHtml(): string {
+  public roots: {element: HTMLElement}[];
+
+  public getHtml(): string {
     return '';
   }
 }

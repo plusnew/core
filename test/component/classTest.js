@@ -1,4 +1,4 @@
-/* global describe, beforeEach, it, expect, Snew, tempart */
+/* global document, describe, beforeEach, it, expect, Snew, tempart */
 
 // jshint varstmt: false
 // jscs:disable requireTrailingComma
@@ -12,6 +12,14 @@ describe('Core functionality', function () {
   var config;
   var Component;
   beforeEach(function () {
+    this.checkHtml = (componentHandler, expected) => {
+      expect(componentHandler.template.getHtml()).toEqual(expected);
+      expect(this.container.innerHTML).toEqual(expected);
+    };
+
+    this.container = document.createElement('div');
+    document.body.appendChild(this.container);
+
     Component = function (state) {
       this.state = state;
 
@@ -35,28 +43,30 @@ describe('Core functionality', function () {
 
   it('text startup', function () {
     var componentHandler = this.snewInstance.init('main/app', {});
-    expect(componentHandler.template.getHtml()).toEqual('<span>I\'m an template</span>');
+    componentHandler.appendToDom(this.container);
+    this.checkHtml(componentHandler, '<span>I\'m an template</span>');
   });
 
   it('variable output', function () {
     config.templates['main/app'] = generateTemplate('<span>Hello {{$foo}}</span>');
     var componentHandler = this.snewInstance.init('main/app', {});
-    expect(componentHandler.template.getHtml()).toEqual('<span>Hello <span>foo</span></span>');
+    componentHandler.appendToDom(this.container);
+    this.checkHtml(componentHandler, '<span>Hello <span>foo</span></span>');
   });
 
   it('variable output with change afterwards', function () {
     config.templates['main/app'] = generateTemplate('<span>Hello {{$foo}}</span>');
     var componentHandler = this.snewInstance.init('main/app', {});
+    componentHandler.appendToDom(this.container);
     componentHandler.component.state.foo = 'bar';
-    expect(componentHandler.template.getHtml()).toEqual('<span>Hello <span>bar</span></span>');
+    this.checkHtml(componentHandler, '<span>Hello <span>bar</span></span>');
   });
 
   it('variable output with nested set', function () {
     config.templates['main/app'] = generateTemplate('<span>Hello {{$bar.baz}}</span>');
     var componentHandler = this.snewInstance.init('main/app', {});
-    window.foo = true;
+    componentHandler.appendToDom(this.container);
     componentHandler.component.state.bar.baz = 'barbarbar';
-    window.foo = false;
-    expect(componentHandler.template.getHtml()).toEqual('<span>Hello <span>barbarbar</span></span>');
+    this.checkHtml(componentHandler, '<span>Hello <span>barbarbar</span></span>');
   });
 });
