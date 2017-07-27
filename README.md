@@ -1,9 +1,9 @@
-# snew [![Build Status](https://travis-ci.org/plusgut/snew.svg?branch=v0.4)](https://travis-ci.org/plusgut/snew) [![Coverage Status](https://coveralls.io/repos/github/plusgut/snew/badge.svg?branch=v0.4)](https://coveralls.io/github/plusgut/snew?branch=v0.4)
+# plusnew [![Build Status](https://travis-ci.org/pluplusnew/plusnew.svg)](https://travis-ci.org/pluplusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/pluplusnew/plusnew/badge.svg)](https://coveralls.io/github/pluplusnew/plusnew)
 
 lightweight mvc-framework with local data quering
 unlike other frameworks we don't render the whole template each time
 data changed in your component. The Templating engine
-[tempart](https://github.com/plusgut/tempart) gets notified from the view what
+[tempart](https://github.com/pluplusnew/tempart) gets notified from the view what
 actually changed, without the need to diff between states.
 
 Our focus is to be just a small layer and don't take debuggability away. When an error happens, your exceptions will get triggered as expected and no weird voodoo is happening.
@@ -16,7 +16,7 @@ Note: don't use this framework yet, its in alpha state. Currently it's not robus
 
 ```js
 
-// Classes are of course possible as well, snew doesn't restrict you in any way
+// Classes are of course possible as well, plusnew doesn't restrict you in any way
 app.components['main/app'] = function (state props) {
   this.state = state;
   this.props = props;

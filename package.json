@@ -1,5 +1,5 @@
 {
-  "name": "snew",
+  "name": "plusnew",
   "version": "0.4.0",
   "description": "Components and Errorhandling done right",
   "main": "dist/snew.min.js",
@@ -23,15 +23,15 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
-    "statelog": "git+https://github.com/plusgut/statelog.git",
-    "tempart": "git+https://github.com/plusgut/tempart.git#v0.4"
+    "statelog": "git+https://github.com/plusnew/statelog.git",
+    "tempart": "git+https://github.com/plusnew/tempart.git"
   },
   "scripts": {
     "test": "tslint src/**/*.ts && ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/plusgut/snew.git"
+    "url": "git+https://github.com/plusnew/plusnew.git"
   },
   "keywords": [
     "mvc",
@@ -44,7 +44,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/plusgut/snew/issues"
+    "url": "https://github.com/plusnew/plusnew/issues"
   },
   "jshintConfig": {
     "node": true,
