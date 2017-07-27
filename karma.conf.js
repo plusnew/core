@@ -4,35 +4,50 @@
 // Generated on Fri May 13 2016 20:43:12 GMT+0200 (CEST)
 
 module.exports = function (config) {
-  config.set({
+  var files = [
+    'index.ts',
+    'src/**/*.ts',
+    'node_modules/statelog/index.ts',
+    'node_modules/statelog/src/**/*.ts',
+    'node_modules/tempart/index.ts',
+    'node_modules/tempart/src/**/*.ts',
+  ]
+
+  var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'karma-typescript'],
 
     // list of files / patterns to load in the browser
     files: [
-      'dist/snew.js',
-      'node_modules/tempart/dist/tempart.min.js',
+      ...files,
       'test/**/*Test.js',
     ],
 
+    include: files,
+
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      'node_modules/statelog/index.ts': ['karma-typescript'],
+      'node_modules/statelog/src/**/*.ts': ['karma-typescript'],
+      'node_modules/tempart/index.ts': ['karma-typescript'],
+      'node_modules/tempart/src/**/*.ts': ['karma-typescript'],
+      'src/index.ts': ['karma-typescript'],
+      'src/**/*.ts': ['karma-typescript'],
     },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'karma-typescript'],
 
     // web server port
     port: 9876,
@@ -49,8 +64,14 @@ module.exports = function (config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome_Headless'],
 
+    customLaunchers: {
+      Chrome_Headless: {
+        base: 'Chromium',
+        flags: ['--disable-gpu', '--headless ', '--remote-debugging-port=9222']
+      }
+    },
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
@@ -59,12 +80,37 @@ module.exports = function (config) {
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
+    karmaTypescriptConfig: {
+      include: files,
+      exclude: [],
+      tsconfig: "./tsconfig.json",
+      compilerOptions: {
+        sourceMap: true
+      },
+      reports: {
+        lcovonly: {
+          directory: 'test/coverage/',
+          filename: 'lcov.info',
+        },
+      },
+      coverageOptions: {
+        exclude: [
+          /node_modules/,
+          /src\/Interface/,
+        ]
+      }
+    },
     coverageReporter: {
-      type: 'lcov',
-      dir: 'test/coverage/',
+      dir: ['test/coverage/'],
       instrumenterOptions: {
         istanbul: { noCompact: true },
       },
     },
-  });
+  };
+
+  if (process.env.TRAVIS) {
+    configuration.customLaunchers.Chrome_Headless.flags.push('--no-sandbox');
+  }
+
+  config.set(configuration);
 };

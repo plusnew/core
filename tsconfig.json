@@ -1,0 +1,10 @@
+{
+    "files": [
+        "index.ts"
+    ],
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "target": "es5",
+        "module": "commonjs"
+    }
+}
