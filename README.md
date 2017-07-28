@@ -1,4 +1,4 @@
-# plusnew [![Build Status](https://travis-ci.org/pluplusnew/plusnew.svg)](https://travis-ci.org/pluplusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/pluplusnew/plusnew/badge.svg)](https://coveralls.io/github/pluplusnew/plusnew)
+# plusnew [![Build Status](https://travis-ci.org/plusnew/plusnew.svg)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/plusnew/plusnew/badge.svg)](https://coveralls.io/github/plusnew/plusnew)
 
 lightweight mvc-framework with local data quering
 unlike other frameworks we don't render the whole template each time
