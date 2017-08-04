@@ -4,7 +4,8 @@ lightweight mvc-framework with local data quering
 unlike other frameworks we don't render the whole template each time
 data changed in your component. The Templating engine
 [tempart](https://github.com/plusnew/tempart) gets notified from the view what
-actually changed, without the need to diff between states.
+actually changed, without the need to diff between states. For tracking state-changes the lib
+[statelog](https://github.com/plusnew/statelog) got implemented.
 
 Our focus is to be just a small layer and don't take debuggability away. When an error happens, your exceptions will get triggered as expected and no weird voodoo is happening.
 
