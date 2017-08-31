@@ -2,7 +2,7 @@ tmp
 npm-debug.log
 node_modules
 bower_components
-dist/snew.js
+dist/
 /core
 .vscode
 test/coverage
