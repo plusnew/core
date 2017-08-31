@@ -1,5 +1,5 @@
 import ComponentInterface from './ComponentInterface';
-import TemplateInterface from './TemplateInterface';
+import { Template } from 'tempart';
 
 interface Config {
   components: {
@@ -7,7 +7,7 @@ interface Config {
   };
 
   templates: {
-    [key: string]: typeof TemplateInterface;
+    [key: string]: typeof Template;
   };
 }
 

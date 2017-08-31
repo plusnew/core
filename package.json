@@ -18,7 +18,7 @@
     "karma-typescript": "^3.0.4",
     "tsify": "^3.0.1",
     "tslint-config-airbnb": "^5.0.1",
-    "typescript": "^2.4.1",
+    "typescript": "^2.5.2",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"
   },

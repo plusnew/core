@@ -1,3 +1,2 @@
-import snew from './src/main';
-
-export default snew;
+import index from './src/index';
+export default index;
