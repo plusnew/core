@@ -1,61 +1,26 @@
 {
   "name": "plusnew",
-  "version": "0.4.0",
-  "description": "Components and Errorhandling done right",
-  "main": "dist/snew.min.js",
-  "devDependencies": {
-    "browserify": "^14.3.0",
-    "gulp": "^3.9.1",
-    "gulp-coveralls": "^0.1.4",
-    "gulp-typescript": "^3.1.6",
-    "gulp-util": "^3.0.8",
-    "jasmine-core": "^2.4.1",
-    "karma": "^1.7.0",
-    "karma-chrome-launcher": "^2.1.1",
-    "karma-coverage": "^1.0.0",
-    "karma-jasmine": "^1.0.2",
-    "karma-phantomjs-launcher": "^1.0.0",
-    "karma-typescript": "^3.0.4",
-    "tsify": "^3.0.1",
-    "tslint-config-airbnb": "^5.0.1",
-    "typescript": "^2.5.2",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.9.0"
-  },
-  "dependencies": {
-    "statelog": "git+https://github.com/plusnew/statelog.git",
-    "tempart": "git+https://github.com/plusnew/tempart.git"
-  },
+  "version": "0.5.0",
+  "description": "ts framework with an functional approach",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "tslint src/**/*.ts && ./node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/plusnew/plusnew.git"
   },
-  "keywords": [
-    "mvc",
-    "events",
-    "binding",
-    "components"
-  ],
-  "author": {
-    "name": "Carlo Jeske"
-  },
+  "author": "Carlo Jeske",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/plusnew/plusnew/issues"
   },
-  "jshintConfig": {
-    "node": true,
-    "esversion": 6,
-    "loopfunc": true,
-    "unused": true,
-    "undef": true,
-    "curly": true,
-    "eqeqeq": true,
-    "forin": true,
-    "varstmt": true
+  "homepage": "https://github.com/plusnew/plusnew#readme",
+  "devDependencies": {
+    "tslint-config-airbnb": "^5.3.0",
+    "typescript": "^2.5.2"
   },
-  "homepage": "https://snew.io"
+  "dependencies": {
+    "redchain": "^0.5.0"
+  }
 }
