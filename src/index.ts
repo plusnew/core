@@ -5,10 +5,11 @@ class Plusnew {
     
   }
 
-  mount(component: component<{}, any, any>, element: HTMLElement) {
+  mount(component: component<{}>, element: HTMLElement) {
     const result = component({});
     // const jsx = result.render();
     // element.appendChild()
+    return result;
   }
 }
 
