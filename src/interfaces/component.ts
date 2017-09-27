@@ -1,8 +1,12 @@
-export default interface component<props, localStateType, localActionType> {
+import redchain from 'redchain';
+
+export default interface component<props> {
   (props?: props): {
-    local?: (localState: localStateType | null, localAction?: localActionType) => localStateType;
+    stores?: {
+      [store: string]: redchain<any, any>;
+    }
     actions?: {
-      [actionName: string]: (event: Event) => localActionType;
+      [actionName: string]: (event: Event) => void;
     };
     render: (props: props) => JSX.Element;
   };
