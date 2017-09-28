@@ -1,7 +1,7 @@
 import Plusnew from './src';
 import component from './src/interfaces/component';
-import observer from './src/interfaces/observer';
+import componentHandler from './src/interfaces/componentHandler';
 import './src/interfaces/jsx';
 
-export { component, observer };
+export { component, componentHandler };
 export default new Plusnew();

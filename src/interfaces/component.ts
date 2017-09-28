@@ -1,5 +1,5 @@
-import observer from './observer';
+import componentHandler from './componentHandler';
 
 export default interface component<props> {
-  (props?: props, observer?: observer): (props?: props) => JSX.Element;
+  (props?: props, componentHandler?: componentHandler): (props?: props) => JSX.Element;
 }
