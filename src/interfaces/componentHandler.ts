@@ -9,7 +9,6 @@ export default interface componentHandler {
   componentWillReceiveProps: () => componentHandler;
   shouldComponentUpdate:     () => componentHandler;
   componentWillUpdate:       () => componentHandler;
-  render:                    () => componentHandler;
   componentDidUpdate:        () => componentHandler;
 
   componentWillUnmount:      () => componentHandler;
