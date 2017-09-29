@@ -1,9 +1,9 @@
 import component from 'interfaces/component';
 
-export default class Element {
+export default class PlusnewElement {
   public type: string | component<any>;
   public props: any;
-  constructor(type: string | component<any>, props: {} | null, children: Element[]) {
+  constructor(type: string | component<any>, props: {} | null, children: PlusnewElement[]) {
     this.setType(type)
         .setProps(props)
         .setChildren(children);
@@ -25,7 +25,7 @@ export default class Element {
     return this;
   }
 
-  private setChildren(children: Element[]) {
+  private setChildren(children: PlusnewElement[]) {
     if (children.length !== 0) {
       if (children.length === 1) {
         this.props = {
