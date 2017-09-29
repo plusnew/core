@@ -6,7 +6,7 @@ class Plusnew {
     return new PlusnewElement(type, props, children);
   }
 
-  mount(component: component<{}>, element: HTMLElement) {
+  render(component: component<{}>, element: HTMLElement) {
     const result = component({});
     // const jsx = result.render();
     // element.appendChild()
