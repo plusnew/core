@@ -1,13 +1,15 @@
+import component from 'interfaces/component';
+
 export default class Element {
-  public type: string;
+  public type: string | component<any>;
   public props: any;
-  constructor(type: string, props: {} | null, children: Element[]) {
+  constructor(type: string | component<any>, props: {} | null, children: Element[]) {
     this.setType(type)
         .setProps(props)
         .setChildren(children);
   }
 
-  private setType(type: string) {
+  private setType(type: string | component<any>) {
     this.type = type;
 
     return this;
@@ -15,7 +17,7 @@ export default class Element {
 
   private setProps(props: any) {
     if (props) {
-      this.props = props;
+      this.props = { ...props };
     } else {
       this.props = {};
     }

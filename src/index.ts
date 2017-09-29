@@ -2,7 +2,7 @@ import component from './interfaces/component';
 import Element from './Element';
 
 class Plusnew {
-  createElement(type: string, props: any, ...children: Element[]) {
+  createElement(type: string | component<any>, props: any, ...children: Element[]) {
     return new Element(type, props, children);
   }
 
