@@ -87,6 +87,7 @@ module.exports = function (config) {
         exclude: [
           /node_modules/,
           /src\/Interface/,
+          /test/,
         ]
       }
     },
