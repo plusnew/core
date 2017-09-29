@@ -1,9 +1,10 @@
 export default class Element {
   public type: string;
   public props: any;
-  constructor(type: string, props: any, children: Element[]) {
+  constructor(type: string, props: {} | null, children: Element[]) {
     this.setType(type)
-        .setProps(props);
+        .setProps(props)
+        .setChildren(children);
   }
 
   private setType(type: string) {
@@ -20,5 +21,21 @@ export default class Element {
     }
 
     return this;
+  }
+
+  private setChildren(children: Element[]) {
+    if (children.length !== 0) {
+      if (children.length === 1) {
+        this.props = {
+          ...this.props,
+          children: children[0],
+        };
+      } else {
+        this.props = {
+          ...this.props,
+          children,
+        };
+      }
+    }
   }
 }
