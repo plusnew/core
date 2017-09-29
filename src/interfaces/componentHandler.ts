@@ -1,7 +1,5 @@
-import observer from './observer';
-
 export default interface componentHandler {
-  componentChecksUpdate: observer;
+  componentCheckUpdate:      () => componentHandler;
 
   componentWillMount:        () => componentHandler;
   componentDidMount:         () => componentHandler;

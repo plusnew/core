@@ -7,11 +7,8 @@ module.exports = function (config) {
   var files = [
     'index.ts',
     'src/**/*.ts',
-    'node_modules/statelog/index.ts',
-    'node_modules/statelog/src/**/*.ts',
-    'node_modules/tempart/index.ts',
-    'node_modules/tempart/src/**/*.ts',
-  ]
+    'test/**/*.spec.ts',
+  ];
 
   var configuration = {
 
@@ -23,10 +20,7 @@ module.exports = function (config) {
     frameworks: ['jasmine', 'karma-typescript'],
 
     // list of files / patterns to load in the browser
-    files: [
-      ...files,
-      'test/**/*Test.js',
-    ],
+    files: files,
 
     include: files,
 
@@ -36,12 +30,8 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'node_modules/statelog/index.ts': ['karma-typescript'],
-      'node_modules/statelog/src/**/*.ts': ['karma-typescript'],
-      'node_modules/tempart/index.ts': ['karma-typescript'],
-      'node_modules/tempart/src/**/*.ts': ['karma-typescript'],
-      'src/index.ts': ['karma-typescript'],
       'src/**/*.ts': ['karma-typescript'],
+      'test/**/*.spec.ts': ['karma-typescript'],
     },
 
     // test results reporter to use

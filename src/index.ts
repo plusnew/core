@@ -1,8 +1,9 @@
 import component from './interfaces/component';
+import Element from './Element';
 
 class Plusnew {
-  createElement(type: string, props: any) {
-    
+  createElement(type: string, props: any, ...children: Element[]) {
+    return new Element(type, props, children);
   }
 
   mount(component: component<{}>, element: HTMLElement) {
