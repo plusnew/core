@@ -1,39 +1,62 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import ComponentHandler from 'ComponentHandler';
 
+type ApplicationElement = PlusnewAbstractElement | (PlusnewAbstractElement | string)[] | string;
+
+/**
+ * The different types of Instances: document.createElement, new ComponentHandler(), document.createTextNode
+ */
+enum InstanceTypes {
+  Dom,
+  Text,
+  Component,
+}
 /**
  * ref for the actual DOMElements
  */
 interface DomInstance {
-  type: 'dom';
+  type: InstanceTypes.Dom;
   ref: Element;
-  children?: (DomInstance|ComponentInstance)[];
+  children: Instance[];
+}
+
+/**
+ * ref for a component, is needed for containering
+ */
+interface TextInstance {
+  type: InstanceTypes.Text;
+  ref: Text;
 }
 
 /**
  * ref for a component, is needed for containering
  */
 interface ComponentInstance {
-  type: 'component';
+  type: InstanceTypes.Component;
   ref: ComponentHandler;
-  children?: (DomInstance|ComponentInstance)[];
+  children: Instance[];
 }
+
+/**
+ * The createElement can be called with a domnode, a component, or a text
+ */
+type Instance = ComponentInstance | DomInstance | TextInstance;
 
 export default class DomHandler {
   /**
    * the actual dom nodes are preserved here
    */
-  public refs: (DomInstance|ComponentInstance)[];
+  public refs: Instance[];
 
   /**
    * cheap immutable element representation is saved here, for checking what should be updated
    */
-  private currentAbstractElements: PlusnewAbstractElement | PlusnewAbstractElement[];
+  private currentAbstractElements: ApplicationElement;
 
   /**
    * the DomHandler is the HTML-Abstraction handler for manipulation
    */
-  constructor(elements: PlusnewAbstractElement | PlusnewAbstractElement[]) {
+  constructor(elements: ApplicationElement) {
     this.initialiseRefs()
         .setCurrentAbstractElements(elements);
   }
@@ -49,7 +72,7 @@ export default class DomHandler {
   /**
    * saves the current version of the dom elements
    */
-  private setCurrentAbstractElements(elements: PlusnewAbstractElement | PlusnewAbstractElement[]) {
+  private setCurrentAbstractElements(elements: ApplicationElement) {
     this.currentAbstractElements = elements;
 
     return this;
@@ -60,40 +83,66 @@ export default class DomHandler {
    */
   public renderInitialDom() {
     if (Array.isArray(this.currentAbstractElements)) {
-      this.createElements(this.currentAbstractElements, this.refs);
+      this.refs = this.createElements(this.currentAbstractElements);
     } else {
-      this.createElement(this.currentAbstractElements, this.refs);
+      this.refs = [this.createElement(this.currentAbstractElements)];
     }
   }
 
   /**
    * goes through all abstractElements and creates new ones
    */
-  private createElements(abstractElements: PlusnewAbstractElement[], refs: (DomInstance|ComponentInstance)[]) {
+  private createElements(abstractElements: (PlusnewAbstractElement|string)[]): Instance[] {
     return abstractElements.map((abstractElement) => {
-      return this.createElement(abstractElement, refs);
+      return this.createElement(abstractElement);
     });
   }
 
   /**
    * creates the actual domnodes and its childnodes
    */
-  private createElement(abstractElement: PlusnewAbstractElement, refs: (DomInstance|ComponentInstance)[]) {
-    if (typeof(abstractElement.type) === 'string') {
-      const element = document.createElement(abstractElement.type);
+  private createElement(abstractElement: PlusnewAbstractElement | string): Instance {
+    if (typeof(abstractElement) === 'string') {
+      return {
+        type: InstanceTypes.Text,
+        ref: document.createTextNode(abstractElement),
+      };
+    } else if (typeof(abstractElement.type) === 'string') {
+      return this.createDomElement(abstractElement);
+    } else {
+      return {
+        type: InstanceTypes.Component,
+        children: [],
+        ref: new ComponentHandler(abstractElement.type, abstractElement.props),
+      };
+    }
+  }
 
+  private createDomElement(abstractElement: PlusnewAbstractElement) {
+    const result: DomInstance = {
+      type: InstanceTypes.Dom,
+      children: [],
+      ref: document.createElement(abstractElement.type as 'string'),
+    };
+    
+    for (const propsIndex in abstractElement.props) {
+      if (abstractElement.props.hasOwnProperty(propsIndex)) {
+        if (propsIndex === 'children') {
+          result.children = this.createElements(abstractElement.props.children);
+          result.children.forEach((child) => {
+            if (child.type === InstanceTypes.Component) {
 
-      for (const propsIndex in abstractElement.props) {
-        if (abstractElement.props.hasOwnProperty(propsIndex)) {
-          (<any>element)[propsIndex] = abstractElement.props[propsIndex];
+            } else {
+              result.ref.appendChild(child.ref);
+            }
+          });
+        } else {
+          (<any>result.ref)[propsIndex] = abstractElement.props[propsIndex];
         }
       }
-      
-      refs.push({
-        type: 'dom',
-        ref: element,
-      });
     }
+
+    return result;
   }
 
   /**
@@ -132,8 +181,8 @@ export default class DomHandler {
    * when dom element then append it directly
    * when its another component, tell the domhandler of this component to mount itself
    */
-  private appendToRoot(ref: DomInstance | ComponentInstance, element: HTMLElement) {
-    if (ref.type === 'dom') {
+  private appendToRoot(ref: Instance, element: HTMLElement) {
+    if (ref.type === InstanceTypes.Dom) {
       element.appendChild(ref.ref as Element);
     } else {
       const component = ref.ref as ComponentHandler;

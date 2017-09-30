@@ -8,6 +8,7 @@ module.exports = function (config) {
     'index.ts',
     'src/**/*.ts',
     'test/**/*.spec.ts',
+    'test/**/*.spec.tsx',
   ];
 
   var configuration = {
@@ -32,6 +33,7 @@ module.exports = function (config) {
     preprocessors: {
       'src/**/*.ts': ['karma-typescript'],
       'test/**/*.spec.ts': ['karma-typescript'],
+      'test/**/*.spec.tsx': ['karma-typescript'],
     },
 
     // test results reporter to use

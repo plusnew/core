@@ -11,7 +11,7 @@ describe('rendering the elements', () => {
   });
 
   it('check if element is inserted', () => {
-    const component = () => () => plusnew.createElement('div', { className: 'foo' });
+    const component = () => () => <div className="foo" />;
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -19,10 +19,10 @@ describe('rendering the elements', () => {
     expect(target.className).toBe('foo');
   });
 
-  it('check if elements is inserted', () => {
+  it('check if elements are inserted', () => {
     const component = () => () => [
-      plusnew.createElement('div', { className: 'foo' }),
-      plusnew.createElement('span', { className: 'bar' }),
+      <div className="foo" />,
+      <span className="bar" />,
     ];
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(2);
@@ -34,5 +34,25 @@ describe('rendering the elements', () => {
     const secondTarget = container.childNodes[1] as HTMLElement;
     expect(secondTarget.nodeName).toBe('SPAN');
     expect(secondTarget.className).toBe('bar');
+  });
+
+  it('check if nesting works', () => {
+    const component = () => () => <div className="foo"><span className="bar" /></div>;
+    plusnew.render(component, container);
+    expect(container.childNodes.length).toBe(1);
+    const target = container.childNodes[0] as HTMLElement;
+    expect(target.nodeName).toBe('DIV');
+    expect(target.className).toBe('foo');
+    expect(target.innerHTML).toBe('<span class="bar"></span>');
+  });
+
+  it('check if textnode is created', () => {
+    const component = () => () => <div className="foo">bar</div>;
+    plusnew.render(component, container);
+    expect(container.childNodes.length).toBe(1);
+    const target = container.childNodes[0] as HTMLElement;
+    expect(target.nodeName).toBe('DIV');
+    expect(target.className).toBe('foo');
+    expect(target.innerHTML).toBe('bar');
   });
 });
