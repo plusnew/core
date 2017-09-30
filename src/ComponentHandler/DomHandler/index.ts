@@ -1,12 +1,18 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import ComponentHandler from 'ComponentHandler';
 
+/**
+ * ref for the actual DOMElements
+ */
 interface DomInstance {
   type: 'dom';
   ref: Element;
   children?: (DomInstance|ComponentInstance)[];
 }
 
+/**
+ * ref for a component, is needed for containering
+ */
 interface ComponentInstance {
   type: 'component';
   ref: ComponentHandler;
