@@ -27,17 +27,10 @@ export default class PlusnewElement {
 
   private setChildren(children: PlusnewElement[]) {
     if (children.length !== 0) {
-      if (children.length === 1) {
-        this.props = {
-          ...this.props,
-          children: children[0],
-        };
-      } else {
-        this.props = {
-          ...this.props,
-          children,
-        };
-      }
+      this.props = {
+        ...this.props,
+        children,
+      };
     }
   }
 }

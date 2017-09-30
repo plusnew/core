@@ -30,7 +30,8 @@ describe('checking if createElement works as expected', () => {
   it('Is div props correct created when adding children', () => {
     const child = plusnew.createElement('span', null);
     const instance = plusnew.createElement('div', null, child);
-    expect(instance.props.children).toBe(child);
+    expect(instance.props.children.length).toBe(1);
+    expect(instance.props.children[0]).toBe(child);
   });
 
   it('Is div props correct created when adding children without reference', () => {
@@ -40,7 +41,8 @@ describe('checking if createElement works as expected', () => {
     };
 
     const instance = plusnew.createElement('div', props, child);
-    expect(instance.props.children).toBe(child);
+    expect(instance.props.children.length).toBe(1);
+    expect(instance.props.children[0]).toBe(child);
     expect(props).not.toContain('children');
   });
 
