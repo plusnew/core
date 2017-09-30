@@ -1,16 +1,24 @@
 import component from './interfaces/component';
-import PlusnewElement from './PlusnewElement';
+import PlusnewAbstractElement from './PlusnewAbstractElement';
+import ComponentHandler from './ComponentHandler';
 
 class Plusnew {
-  createElement(type: string | component<any>, props: any, ...children: PlusnewElement[]) {
-    return new PlusnewElement(type, props, children);
+  /**
+   * creates lightweight representation of DOM or ComponentNodes
+   */
+  createElement(type: string | component<any>, props: any, ...children: PlusnewAbstractElement[]) {
+    return new PlusnewAbstractElement(type, props, children);
   }
 
+  /**
+   * mounts the root component
+   */
   render(component: component<{}>, element: HTMLElement) {
-    const result = component({});
-    // const jsx = result.render();
-    // element.appendChild()
-    return result;
+    const componentHandler = new ComponentHandler(component, {});
+    componentHandler.domHandler.removeChildren(element);
+    componentHandler.domHandler.mount(element);
+
+    return componentHandler;
   }
 }
 
