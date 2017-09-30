@@ -135,6 +135,9 @@ export default class DomHandler {
     }
   }
 
+  /**
+   * removes all childNodes
+   */
   public removeChildren(parentElement: HTMLElement) {
     for (let index = parentElement.childNodes.length; index > 0; index -= 1) {
       parentElement.removeChild(parentElement.childNodes[index - 1]);
