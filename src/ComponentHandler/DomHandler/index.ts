@@ -99,7 +99,7 @@ export default class DomHandler {
   }
 
   /**
-   * creates the actual domnodes and its childnodes
+   * creates the actual domnodes and its children
    */
   private createElement(abstractElement: PlusnewAbstractElement | string): Instance {
     if (typeof(abstractElement) === 'string') {
@@ -118,6 +118,9 @@ export default class DomHandler {
     }
   }
 
+  /**
+   * is responsible for creating the dom element, it's attributes and triggers children
+   */
   private createDomElement(abstractElement: PlusnewAbstractElement) {
     const result: DomInstance = {
       type: InstanceTypes.Dom,
