@@ -1,7 +1,6 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import ComponentHandler from 'ComponentHandler';
-
-type ApplicationElement = PlusnewAbstractElement | (PlusnewAbstractElement | string)[] | string;
+import { ApplicationElement } from 'interfaces/component';
 
 /**
  * The different types of Instances: document.createElement, new ComponentHandler(), document.createTextNode
@@ -184,12 +183,14 @@ export default class DomHandler {
    * when dom element then append it directly
    * when its another component, tell the domhandler of this component to mount itself
    */
-  private appendToRoot(ref: Instance, element: HTMLElement) {
-    if (ref.type === InstanceTypes.Dom) {
-      element.appendChild(ref.ref as Element);
-    } else {
-      const component = ref.ref as ComponentHandler;
+  private appendToRoot(instance: Instance, element: HTMLElement) {
+    if (instance.type === InstanceTypes.Dom || instance.type === InstanceTypes.Text) {
+      element.appendChild(instance.ref);
+    } else if (instance.type === InstanceTypes.Component) {
+      const component = instance.ref;
       component.domHandler.mount(element);
+    } else {
+      throw new Error('The given Instancetype is no existent');
     }
   }
 

@@ -55,4 +55,11 @@ describe('rendering the elements', () => {
     expect(target.className).toBe('foo');
     expect(target.innerHTML).toBe('bar');
   });
+
+  it('check if textnode is created on root', () => {
+    const component = () => () => 'foo';
+    plusnew.render(component, container);
+    expect(container.childNodes.length).toBe(1);
+    expect(container.innerHTML).toBe('foo');
+  });
 });

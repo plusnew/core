@@ -1,7 +1,6 @@
-import component from 'interfaces/component';
+import component, { ApplicationElement } from 'interfaces/component';
 import LifeCycleHandler from './LifeCycleHandler';
 import DomHandler from './DomHandler';
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
 
 export default class ComponentHandler {
   /**
@@ -27,7 +26,7 @@ export default class ComponentHandler {
   /**
    * the renderFunction of the component, returns abstract representation of the new domnodes
    */
-  private renderFunction: (props?: any) => PlusnewAbstractElement | PlusnewAbstractElement[];
+  private renderFunction: (props?: any) => ApplicationElement;
 
   /**
    * the componenthandler is the handler in between the application code and the dom manipulations 
