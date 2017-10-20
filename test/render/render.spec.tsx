@@ -10,6 +10,10 @@ describe('rendering the elements', () => {
     document.body.appendChild(container);
   });
 
+  afterEach(() => {
+    document.body.removeChild(container);
+  });
+
   it('check if element is inserted', () => {
     const component = () => () => <div className="foo" />;
     plusnew.render(component, container);
@@ -24,6 +28,7 @@ describe('rendering the elements', () => {
       <div className="foo" />,
       <span className="bar" />,
     ];
+
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(2);
 
@@ -39,6 +44,7 @@ describe('rendering the elements', () => {
   it('check if nesting works', () => {
     const component = () => () => <div className="foo"><span className="bar" /></div>;
     plusnew.render(component, container);
+    debugger;
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');

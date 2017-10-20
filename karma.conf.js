@@ -9,6 +9,7 @@ module.exports = function (config) {
     'src/**/*.ts',
     'test/**/*.spec.ts',
     'test/**/*.spec.tsx',
+    'node_modules/redchain/index.ts',
   ];
 
   var configuration = {
@@ -34,6 +35,7 @@ module.exports = function (config) {
       'src/**/*.ts': ['karma-typescript'],
       'test/**/*.spec.ts': ['karma-typescript'],
       'test/**/*.spec.tsx': ['karma-typescript'],
+      'node_modules/redchain/index.ts': ['karma-typescript'],
     },
 
     // test results reporter to use

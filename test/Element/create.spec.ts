@@ -17,14 +17,14 @@ describe('checking if createElement works as expected', () => {
     };
 
     const instance = plusnew.createElement('div', props);
-    expect(instance.props).toEqual(props);
+    expect(instance.props).toEqual({ ...props, children: [] });
     // The props should be equal, but not be the same - reference breaking
-    expect(instance.props).not.toBe(props);
+    expect(instance.props).not.toBe(props as any);
   });
 
   it('Is div props correct created when null', () => {
     const instance = plusnew.createElement('div', null);
-    expect(instance.props).toEqual({});
+    expect(instance.props).toEqual({ children: [] });
   });
 
   it('Is div props correct created when adding children', () => {
@@ -60,7 +60,7 @@ describe('checking if createElement works as expected', () => {
     const props = { foo: 'bar' };
     const instance = plusnew.createElement(component, props);
     expect(instance.type).toBe(component);
-    expect(instance.props).toEqual(props);
+    expect(instance.props).toEqual({ ...props, children: [] });
     expect(instance.props).not.toBe(props);
   });
 });

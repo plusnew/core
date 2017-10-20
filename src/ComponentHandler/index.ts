@@ -1,6 +1,8 @@
 import component, { ApplicationElement } from 'interfaces/component';
 import LifeCycleHandler from './LifeCycleHandler';
 import DomHandler from './DomHandler';
+import Instance from './DomHandler/Instance/Instance';
+import scheduler from 'scheduler';
 
 export default class ComponentHandler {
   /**
@@ -31,11 +33,11 @@ export default class ComponentHandler {
   /**
    * the componenthandler is the handler in between the application code and the dom manipulations 
    */
-  constructor(type: component<any>, props: any) {
+  constructor(type: component<any>, props: any, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
     this.setType(type)
         .setProps(props)
         .initialiseComponent()
-        .initialiseDomHandler()
+        .initialiseDomHandler(parentInstance, previousAbstractSiblingCount)
         .renderInitialDom();
   }
 
@@ -71,8 +73,8 @@ export default class ComponentHandler {
   /**
    * the layer for the dommanipulations
    */
-  private initialiseDomHandler() {
-    this.domHandler = new DomHandler(this.renderFunction(this.props));
+  private initialiseDomHandler(parentInstance: Instance, previousAbstractSiblingCount: () => number) {
+    this.domHandler = new DomHandler(parentInstance, previousAbstractSiblingCount);
 
     return this;
   }
@@ -82,14 +84,33 @@ export default class ComponentHandler {
    */
   private renderInitialDom() {
     this.dirty = false;
-    this.domHandler.renderInitialDom();
+    this.domHandler.create(this.renderFunction(this.props));
+
+    return this;
   }
 
   /**
    * sets the component to a state where it needs a rerender
    */
   public setDirty() {
-    // @TODO add yourself to scheduler
-    this.dirty = true;
+    if (this.dirty === false) {
+      this.dirty = true;
+      scheduler.add(this.update.bind(this));
+    }
+
+    return this;
+  }
+
+  /**
+   * when the dirtyflag is set, unsets the dirtyflag and rerenders and informs the domhandler
+   */
+  private update() {
+    // The dirtyflag is needed, if the setDirty and the scheduler are called multiple times
+    if (this.dirty === true) {
+      this.dirty = false;
+      this.domHandler.update(this.renderFunction(this.props));
+    }
+
+    return this;
   }
 }

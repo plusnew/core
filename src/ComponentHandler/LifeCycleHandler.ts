@@ -6,19 +6,14 @@ export default class LifeCycleHandler {
    */
   private componentHandler: ComponentHandler;
 
+  public componentCheckUpdate: () => LifeCycleHandler;
+
   /**
    * this layer is the public api to the applicationcode
    */
   constructor(componentHandler: ComponentHandler) {
     this.componentHandler = componentHandler;
-  }
-
-  /**
-   * when this function is called, some values of the component did change
-   */
-  public componentCheckUpdate() {
-    this.componentHandler.setDirty();
-    return this;
+    this.componentCheckUpdate = this.componentHandler.setDirty.bind(this.componentHandler);
   }
 
   // public componentWillMount() {

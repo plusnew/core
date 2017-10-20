@@ -1,7 +1,9 @@
-import Plusnew from './src';
-import component from './src/interfaces/component';
-import LifeCycleHandler from './src/ComponentHandler/LifeCycleHandler';
 import './src/interfaces/jsx';
 
-export { component, LifeCycleHandler, Plusnew };
+import Plusnew from './src';
+import LifeCycleHandler from './src/ComponentHandler/LifeCycleHandler';
+import scheduler from './src/scheduler';
+import component from './src/interfaces/component';
+
+export { Plusnew, LifeCycleHandler, scheduler, component };
 export default new Plusnew();

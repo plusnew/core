@@ -1,6 +1,7 @@
 import component from './interfaces/component';
 import PlusnewAbstractElement from './PlusnewAbstractElement';
 import ComponentHandler from './ComponentHandler';
+import RootInstance from './ComponentHandler/DomHandler/Instance/RootInstance';
 
 class Plusnew {
   /**
@@ -13,12 +14,16 @@ class Plusnew {
   /**
    * mounts the root component
    */
-  render(component: component<{}>, element: HTMLElement) {
-    const componentHandler = new ComponentHandler(component, {});
-    componentHandler.domHandler.removeChildren(element);
-    componentHandler.domHandler.mount(element);
+  render(component: component<{}>, containerElement: HTMLElement) {
+    // Fake RootInstance
+    const wrapper = new RootInstance(new PlusnewAbstractElement(component, {}, []), undefined, () => 0);
+    wrapper.ref = containerElement;
 
-    return componentHandler;
+    while (containerElement.childNodes.length) {
+      containerElement.removeChild(containerElement.childNodes[0]);
+    }
+
+    return new ComponentHandler(component, {}, wrapper, () => 0);
   }
 }
 

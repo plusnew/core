@@ -1,4 +1,4 @@
-import component from 'interfaces/component';
+import component, { ApplicationElement } from 'interfaces/component';
 
 export default class PlusnewAbstractElement {
   /**
@@ -8,14 +8,16 @@ export default class PlusnewAbstractElement {
   /**
    * what properties should your parent give you
    */
-  public props: any;
+  public props: {
+    [key: string]: any;
+    children: ApplicationElement[]
+  };
   /**
    * Lightweight representation of a DOM or Component Node, this component is immutable and is used for comparison
    */
   constructor(type: string | component<any>, props: {} | null, children: PlusnewAbstractElement[]) {
     this.setType(type)
-        .setProps(props)
-        .setChildren(children);
+        .setProps(props, children);
   }
 
   /**
@@ -30,25 +32,20 @@ export default class PlusnewAbstractElement {
   /**
    * sets the props given from the parent
    */
-  private setProps(props: any) {
+  private setProps(props: any, children: PlusnewAbstractElement[]) {
     if (props) {
-      this.props = { ...props };
+      this.props = { ...props, children }; // Spread is used to remove reference
     } else {
-      this.props = {};
+      this.props = { children };
     }
 
     return this;
   }
 
   /**
-   * sets the children which can be used for the nesting
+   * Checks if the key is a custom element and checks for vulnerable values
    */
-  private setChildren(children: PlusnewAbstractElement[]) {
-    if (children.length !== 0) {
-      this.props = {
-        ...this.props,
-        children,
-      };
-    }
+  public shouldAddPropToElement(key: string) {
+    return key !== 'children'; // @TODO add ref/key
   }
 }
