@@ -2,7 +2,7 @@ import types from './types';
 import Instance from './Instance';
 
 export default class ComponentInstance extends Instance {
-  public type: types.Text;
+  public type = types.Text;
   public abstractElement: string;  
   public ref: Text;
 

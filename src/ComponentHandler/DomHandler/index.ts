@@ -3,6 +3,7 @@
 import { ApplicationElement } from 'interfaces/component';
 import Instance from './Instance/Instance';
 import factory from './Instance/factory';
+import reconciler from './reconciler';
 
 /**
  * The createElement can be called with a domnode, a component, or a text
@@ -30,7 +31,7 @@ export default class DomHandler {
    * updates the dom and does the reconciliation
    */
   public update(newAbstractElements: ApplicationElement) {
-    this.root.update(newAbstractElements);
+    reconciler.update(newAbstractElements, this.root);
 
     return this;
   }

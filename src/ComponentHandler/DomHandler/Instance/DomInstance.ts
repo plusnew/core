@@ -8,7 +8,7 @@ const REMAPS: { [key: string]: string } = {
 };
 
 export default class ComponentInstance extends ChildrenInstance {
-  public type: types.Dom;
+  public type = types.Dom;
   public abstractElement: PlusnewAbstractElement;
   public ref: HTMLElement;
 
@@ -32,12 +32,20 @@ export default class ComponentInstance extends ChildrenInstance {
    */
   private setProps() {
     for (const index in this.abstractElement.props) {
-      const remappedIndex = this.remapProps(index);
-      if (this.abstractElement.shouldAddPropToElement(remappedIndex) === true) {
-        this.ref.setAttribute(remappedIndex, this.abstractElement.props[index]);
-      }
+      this.setProp(index, this.abstractElement.props[index]);
     }
 
+    return this;
+  }
+
+  /**
+   * sets a property
+   */
+  public setProp(key: string, value: string) {
+    const remappedKey = this.remapProps(key);
+    if (this.abstractElement.shouldAddPropToElement(remappedKey) === true) {
+      this.ref.setAttribute(remappedKey, value);
+    }
     return this;
   }
 

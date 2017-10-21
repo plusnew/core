@@ -14,7 +14,7 @@ export default function (abstractElement: ApplicationElement, parentInstance: In
     debugger;
     return new TextInstance(abstractElement, parentInstance, previousAbstractSiblingCount);
   } else if (Array.isArray(abstractElement) === true) {
-    return new ArrayInstance(abstractElement, parentInstance, previousAbstractSiblingCount);
+    return new ArrayInstance(abstractElement as (PlusnewAbstractElement | string)[], parentInstance, previousAbstractSiblingCount);
   } else {
     if (typeof((abstractElement as PlusnewAbstractElement).type) === 'string') {
       return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
