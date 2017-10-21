@@ -21,8 +21,8 @@ export default class DomHandler {
    * is responsible for creating the dom elements for the container
    */
   public create(newAbstractElements: ApplicationElement) {
-    // @TODO add actual siblingcount, not a zero
     this.root = factory(newAbstractElements, this.parentInstance, this.previousAbstractSiblingCount);
+
     return this;
   }
 
@@ -30,7 +30,8 @@ export default class DomHandler {
    * updates the dom and does the reconciliation
    */
   public update(newAbstractElements: ApplicationElement) {
-    newAbstractElements; // @TODO 
+    this.root.update(newAbstractElements);
+
     return this;
   }
 }

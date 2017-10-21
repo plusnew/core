@@ -1,17 +1,16 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import types from './types';
 import Instance from './Instance';
-import factory from './factory';
+import ChildrenInstance from './ChildrenInstance';
 
 const REMAPS: { [key: string]: string } = {
   className: 'class',
 };
 
-export default class ComponentInstance extends Instance {
+export default class ComponentInstance extends ChildrenInstance {
   public type: types.Dom;
   public abstractElement: PlusnewAbstractElement;
   public ref: HTMLElement;
-  public children: Instance[];
 
   constructor(abstractElement: PlusnewAbstractElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
@@ -22,13 +21,8 @@ export default class ComponentInstance extends Instance {
       throw new Error('Could not createdom element with type not being a string');
     }
 
-    this.setProps();
-
-    this.children = [];
-
-    for (let i = 0; i < this.abstractElement.props.children.length; i += 1) {
-      this.children.push(factory(this.abstractElement.props.children[i], this, this.getPreviousLength.bind(this, this.children, i)));
-    }
+    this.setProps()
+        .addChildren(abstractElement.props.children);
 
     this.appendToParent(this.ref, previousAbstractSiblingCount());
   }
@@ -43,6 +37,8 @@ export default class ComponentInstance extends Instance {
         this.ref.setAttribute(remappedIndex, this.abstractElement.props[index]);
       }
     }
+
+    return this;
   }
 
   /**
@@ -62,6 +58,9 @@ export default class ComponentInstance extends Instance {
     return 1;
   }
 
+  /**
+   * by the children should add themselfs to our element
+   */
   public appendChild(element: Node) {
     if (this.parentInstance === undefined) {
       throw new Error('Couldn\'t add child to parent');

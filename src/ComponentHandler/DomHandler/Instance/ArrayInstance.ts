@@ -1,28 +1,22 @@
-import { ApplicationElement } from 'interfaces/component';
 import types from './types';
 import Instance from './Instance';
+import ChildrenInstance from './ChildrenInstance';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import factory from './factory';
 
-export default class ComponentInstance extends Instance {
+export default class ComponentInstance extends ChildrenInstance {
   public type: types.Array;
   public abstractElement: (PlusnewAbstractElement | string)[];
-  private refs: Instance[];
 
-  constructor(abstractElement: ApplicationElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
-    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+  constructor(abstractElements: (PlusnewAbstractElement | string)[], parentInstance: Instance, previousAbstractSiblingCount: () => number) {
+    super(abstractElements, parentInstance, previousAbstractSiblingCount);
 
-    this.refs = [];
-
-    for (let i = 0; i < this.abstractElement.length; i += 1) {
-      this.refs.push(factory(this.abstractElement[i], this, this.getPreviousLength.bind(this, this.refs, i)));
-    }
+    this.addChildren(abstractElements);
   }
 
   /**
    * the length is dependent on the amount of array entities
    */
   public getLength() {
-    return this.refs.length;
+    return this.children.length;
   }
 }

@@ -20,4 +20,8 @@ export default class RootInstance extends Instance {
   public getLength() {
     return 1;
   }
+
+  public update(): RootInstance {
+    throw new Error('RootInstance can\'t be updated');
+  }
 }

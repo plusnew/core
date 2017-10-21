@@ -18,4 +18,9 @@ export default class ComponentInstance extends Instance {
   public getLength() {
     return 1;
   }
+
+  public update(abstractElement: string) {
+    this.ref.textContent = abstractElement;
+    return this;
+  }
 }

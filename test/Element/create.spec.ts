@@ -61,6 +61,6 @@ describe('checking if createElement works as expected', () => {
     const instance = plusnew.createElement(component, props);
     expect(instance.type).toBe(component);
     expect(instance.props).toEqual({ ...props, children: [] });
-    expect(instance.props).not.toBe(props);
+    expect(instance.props).not.toBe(props as any);
   });
 });

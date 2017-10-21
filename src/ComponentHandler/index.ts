@@ -65,7 +65,7 @@ export default class ComponentHandler {
    * calls the renderfunction with the properties and gives lifecyclehooks to the applicationcode
    */
   private initialiseComponent() {
-    this.renderFunction = this.type(this.props, new LifeCycleHandler(this));
+    this.renderFunction = this.type(new LifeCycleHandler(this), this.props);
 
     return this;
   }

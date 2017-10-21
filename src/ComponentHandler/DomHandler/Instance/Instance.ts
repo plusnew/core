@@ -26,19 +26,7 @@ export default abstract class Instance {
   }
 
   /**
-   * calculates the previous siblinglength
-   */
-  public getPreviousLength(elements: Instance[], instanceIndex: number) {
-    let previousCount = this.previousAbstractSiblingCount();
-
-    for (let i = 0; i < instanceIndex; i += 1) {
-      previousCount += elements[i].getLength();
-    }
-    return previousCount;
-  }
-
-  /**
-   * makes a insertBefore
+   * makes a insertBefore to the parent
    */
   public appendChild(element: Node, index: number) {
     if (this.parentInstance === undefined) {
@@ -53,4 +41,6 @@ export default abstract class Instance {
    * how many dom elements does this instance have
    */
   public abstract getLength(): number;
+
+  // public abstract update(abstractElement: ApplicationElement): Instance;
 }

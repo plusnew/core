@@ -7,5 +7,5 @@ export type ApplicationElement = PlusnewAbstractElement | (PlusnewAbstractElemen
  * thats how a application component should look like
  */
 export default interface component<props> {
-  (props?: props, lifeCycleHandler?: LifeCycleHandler): (props?: props) => ApplicationElement;
+  (lifeCycleHandler?: LifeCycleHandler, props?: props): (props?: props) => ApplicationElement;
 }
