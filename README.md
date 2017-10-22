@@ -2,7 +2,9 @@
 
 A typesecure framework for managing your components.
 The Framework has a immutable statehandling approach, which allows easy timetraveling.
+
 A Component can get data by it's props, and by unlimited internal and external stores.
+This avoids nesting the component in containers for i18n and others.
 
 ```ts
 import plusnew, { component, store, LifeCycleHandler } from 'plusnew';
@@ -41,8 +43,8 @@ const component: component<props> = function (lifeCycleHandler: LifeCycleHandler
         local.dispatch({ type: 'add', payload: evt.target.value });
       }} />
       <ul>
-        {local.state.list.map(item =>
-          <Todo value={item} />,
+        {local.state.list.map((item, index) =>
+          <Todo key={index} value={item} />,
         )}
       </ul>
     </div>;
