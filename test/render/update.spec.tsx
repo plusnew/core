@@ -38,7 +38,7 @@ describe('rendering the elements', () => {
     scheduler.clean();
 
     expect(target.className).toBe('bar');
-    // expect(target.innerHTML).toBe('bar');
+    expect(target.innerHTML).toBe('bar');
   });
 
   // it('does a value change with redchain with JSX.Element to string', () => {
