@@ -1,8 +1,10 @@
+type task = () => void;
+
 class Scheduler {
   /**
    * contains the executable queue
    */
-  private schedule: (() => void)[];
+  private schedule: task[];
 
   /**
    * the scheduler executes its queue
@@ -16,10 +18,7 @@ class Scheduler {
    */
   public clean() {
     while (this.schedule.length !== 0) {
-      const work = this.schedule.shift();
-      if (work !== undefined) {
-        work();
-      }
+      (this.schedule.shift() as task)();
     }
 
     return this;
@@ -28,7 +27,7 @@ class Scheduler {
   /**
    * adds the task to the queue
    */
-  public add(work: () => void) {
+  public add(work: task) {
     this.schedule.push(work);
 
     return this;
