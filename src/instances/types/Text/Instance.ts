@@ -23,4 +23,13 @@ export default class ComponentInstance extends Instance {
     this.ref.textContent = abstractElement;
     return this;
   }
+
+  /**
+   * removes this textnode from the dom
+   */
+  public remove() {
+    this.ref.remove();
+
+    return this;
+  }
 }

@@ -15,9 +15,16 @@ export default class RootInstance extends Instance {
   }
 
   /**
-   * textnode is always a length of one
+   * Root is no child of nobody, because of that nobody should care how long it is
    */
   public getLength(): number {
     throw new Error('getLength of RootElement is irrelevant');
+  }
+
+  /**
+   * Nobody is above the root, and because of that nobody is able to remove the root
+   */
+  public remove(): Instance {
+    throw new Error('The root element can\'t remove itself');
   }
 }

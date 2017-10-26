@@ -41,4 +41,9 @@ export default abstract class Instance {
    * how many dom elements does this instance have
    */
   public abstract getLength(): number;
+
+  /**
+   * orders to remove itself from the dom
+   */
+  public abstract remove(): Instance;
 }

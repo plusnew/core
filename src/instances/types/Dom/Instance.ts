@@ -62,7 +62,7 @@ export default class ComponentInstance extends ChildrenInstance {
   /**
    * domnode is always a length of one
    */
-  getLength() {
+  public getLength() {
     return 1;
   }
 
@@ -71,6 +71,15 @@ export default class ComponentInstance extends ChildrenInstance {
    */
   public appendChild(element: Node) {
     this.ref.appendChild(element);
+
+    return this;
+  }
+
+  /**
+   * removes the domnode from the parent
+   */
+  public remove() {
+    (this.ref.parentNode as Node).removeChild(this.ref);
 
     return this;
   }

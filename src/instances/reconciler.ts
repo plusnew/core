@@ -1,8 +1,10 @@
+import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import { ApplicationElement } from 'interfaces/component';
+
+import factory from './factory';
 import Instance from './types/Instance';
 import types from './types/types';
 import elementTypeChecker from 'util/elementTypeChecker';
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
 
 import DomInstance from './types/Dom/Instance';
 import domReconcile from './types/Dom/reconcile';
@@ -28,7 +30,7 @@ class Reconciler {
       }
       return instance;
     } else {
-      throw new Error('Replacing is not yet implemented');
+      return factory(newAbstractElement, instance.parentInstance as Instance, instance.previousAbstractSiblingCount);
     }
   }
 

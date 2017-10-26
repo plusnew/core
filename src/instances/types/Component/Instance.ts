@@ -1,7 +1,7 @@
 import types from '../types';
 import Instance from '../Instance';
 import factory from '../../factory';
-import reconciler from '../../reconciler';
+import componentReconcile from './reconcile';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import LifeCycleHandler from './LifeCycleHandler';
 import component, { ApplicationElement, props } from 'interfaces/component';
@@ -10,10 +10,10 @@ import scheduler from 'scheduler';
 export default class ComponentInstance extends Instance {
   public type = types.Component;
   public abstractElement: PlusnewAbstractElement;
+  public children: Instance;
   private renderFunction: (props: props) => ApplicationElement;
   private lifeCycleHandler: LifeCycleHandler;
   private abstractChildren: ApplicationElement;
-  private children: Instance;
   private dirty: boolean;
 
   constructor(abstractElement: PlusnewAbstractElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {    
@@ -59,7 +59,7 @@ export default class ComponentInstance extends Instance {
     // The dirtyflag is needed, if the setDirty and the scheduler are called multiple times
     if (this.dirty === true) {
       this.dirty = false;
-      reconciler.update(this.renderFunction(this.abstractElement.props), this.children);
+      componentReconcile(this.renderFunction(this.abstractElement.props), this);
     }
 
     return this;
@@ -67,5 +67,14 @@ export default class ComponentInstance extends Instance {
 
   public getLength() {
     return this.children.getLength();
+  }
+
+  /**
+   * removes the children from the dom
+   */
+  public remove() {
+    this.children.remove();
+
+    return this;
   }
 }
