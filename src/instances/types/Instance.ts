@@ -41,6 +41,4 @@ export default abstract class Instance {
    * how many dom elements does this instance have
    */
   public abstract getLength(): number;
-
-  // public abstract update(abstractElement: ApplicationElement): Instance;
 }

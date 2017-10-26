@@ -28,7 +28,6 @@ class Reconciler {
       }
       return instance;
     } else {
-      console.log('unequal');
       throw new Error('Replacing is not yet implemented');
     }
   }

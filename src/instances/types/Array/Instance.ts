@@ -12,11 +12,4 @@ export default class ComponentInstance extends ChildrenInstance {
 
     this.addChildren(abstractElements);
   }
-
-  /**
-   * the length is dependent on the amount of array entities
-   */
-  public getLength() {
-    return this.children.length;
-  }
 }

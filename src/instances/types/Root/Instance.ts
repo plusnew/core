@@ -17,11 +17,7 @@ export default class RootInstance extends Instance {
   /**
    * textnode is always a length of one
    */
-  public getLength() {
-    return 1;
-  }
-
-  public update(): RootInstance {
-    throw new Error('RootInstance can\'t be updated');
+  public getLength(): number {
+    throw new Error('getLength of RootElement is irrelevant');
   }
 }

@@ -40,14 +40,6 @@ export default class ComponentInstance extends Instance {
   }
 
   /**
-   * the length is dependent on the length of the amount of root-elements and the length from them
-   */
-  public getLength() {
-    return 0;
-  }
-
-
-  /**
    * sets the component to a state where it needs a rerender
    */
   public setDirty() {

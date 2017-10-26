@@ -28,4 +28,15 @@ export default abstract class ChildrenInstance extends Instance {
       this.children.push(factory(children[i], this, this.getPreviousLength.bind(this, i)));
     }
   }
+
+  /**
+   * the length is dependent on the amount of array entities
+   */
+  public getLength() {
+    let length = 0;
+    for (let i = 0; i < this.children.length; i += 1) {
+      length += this.children[i].getLength();
+    }
+    return length;
+  }
 }
