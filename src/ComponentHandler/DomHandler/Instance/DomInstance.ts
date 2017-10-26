@@ -70,11 +70,8 @@ export default class ComponentInstance extends ChildrenInstance {
    * by the children should add themselfs to our element
    */
   public appendChild(element: Node) {
-    if (this.parentInstance === undefined) {
-      throw new Error('Couldn\'t add child to parent');
-    } else {
-      this.ref.appendChild(element);
-    }
+    this.ref.appendChild(element);
+
     return this;
   }
 }
