@@ -30,15 +30,43 @@ describe('rendering the elements', () => {
     expect(container.childNodes.length).toBe(1);
 
     const target = container.childNodes[0] as HTMLElement;
+    const textElement = target.childNodes[0] as Text;
+    
     expect(target.nodeName).toBe('DIV');
     expect(target.className).toBe('foo');
     expect(target.innerHTML).toBe('foo');
+    expect(textElement.textContent).toBe('foo');
 
     local.dispatch('bar');
     scheduler.clean();
 
     expect(target.className).toBe('bar');
     expect(target.innerHTML).toBe('bar');
+    expect(textElement).toBe(textElement);
+  });
+
+
+  it('with the same values, all objects should be the same', () => {
+    const component = (lifeCycleHandler: LifeCycleHandler) => {
+      local.addOnChange(lifeCycleHandler.componentCheckUpdate);
+      return () => <div className={local.state}>{local.state}</div>;
+    };
+    plusnew.render(component, container);
+
+    expect(container.childNodes.length).toBe(1);
+
+    const target = container.childNodes[0] as HTMLElement;
+    const textElement = target.childNodes[0] as Text;
+    expect(target.nodeName).toBe('DIV');
+    expect(target.className).toBe('foo');
+    expect(textElement.textContent).toBe('foo');
+
+    local.dispatch('foo');
+    scheduler.clean();
+
+    expect(target.className).toBe('foo');
+    expect(target.innerHTML).toBe('foo');
+    expect(textElement).toBe(textElement);
   });
 
   it('does a value change with redchain with JSX.Element to string', () => {

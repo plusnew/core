@@ -34,9 +34,11 @@ export default class ComponentInstance extends Instance {
     return this;
   }
 
+    /**
+     * asks the component what should be changed and puts it to the factory
+     */
   private handleChildren() {
     this.abstractChildren = this.renderFunction(this.abstractElement.props);
-    // children might should be an array and not an arrayinstance, but I'm not sure yet
     this.children = factory(this.abstractChildren, this, () => this.previousAbstractSiblingCount());
   }
 
