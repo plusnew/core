@@ -36,6 +36,7 @@ export default class ComponentInstance extends Instance {
 
   private handleChildren() {
     this.abstractChildren = this.renderFunction(this.abstractElement.props);
+    // children might should be an array and not an arrayinstance, but I'm not sure yet
     this.children = factory(this.abstractChildren, this, () => this.previousAbstractSiblingCount());
   }
 
@@ -62,5 +63,9 @@ export default class ComponentInstance extends Instance {
     }
 
     return this;
+  }
+
+  public getLength() {
+    return this.children.getLength();
   }
 }
