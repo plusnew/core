@@ -38,7 +38,6 @@ describe('rendering the elements', () => {
     expect(textElement.textContent).toBe('foo');
 
     local.dispatch('bar');
-    scheduler.clean();
 
     expect(target.className).toBe('bar');
     expect(target.innerHTML).toBe('bar');
@@ -62,7 +61,6 @@ describe('rendering the elements', () => {
     expect(textElement.textContent).toBe('foo');
 
     local.dispatch('foo');
-    scheduler.clean();
 
     expect(target.className).toBe('foo');
     expect(target.innerHTML).toBe('foo');
@@ -83,7 +81,6 @@ describe('rendering the elements', () => {
     expect(target.innerHTML).toBe('foo');
 
     local.dispatch('bar');
-    scheduler.clean();
 
     expect(container.innerHTML).toBe('bar');
   });
@@ -99,7 +96,6 @@ describe('rendering the elements', () => {
     expect(container.innerHTML).toBe('foo');
 
     local.dispatch('bar');
-    scheduler.clean();
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -117,7 +113,6 @@ describe('rendering the elements', () => {
     expect(container.innerHTML).toBe('foo');
 
     local.dispatch('bar');
-    scheduler.clean();
 
     expect(container.childNodes.length).toBe(2);
     const target = container.childNodes[0] as HTMLElement;
@@ -146,7 +141,6 @@ describe('rendering the elements', () => {
     expect(targetSecond.innerHTML).toBe('foo');
 
     local.dispatch('bar');
-    scheduler.clean();
 
     expect(container.innerHTML).toBe('bar');
   });

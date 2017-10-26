@@ -49,6 +49,7 @@ export default class ComponentInstance extends Instance {
     if (this.dirty === false) {
       this.dirty = true;
       scheduler.add(this.update.bind(this));
+      scheduler.cleanWhenNotProcessing();
     }
 
     return this;

@@ -1,6 +1,7 @@
 type task = () => void;
 
 class Scheduler {
+  private processing: boolean;
   /**
    * contains the executable queue
    */
@@ -11,17 +12,32 @@ class Scheduler {
    */
   constructor() {
     this.schedule = [];
+    this.processing = false;
   }
 
   /**
    * execute the current queue
    */
   public clean() {
+    this.processing = true;
     while (this.schedule.length !== 0) {
       (this.schedule.shift() as task)();
     }
+    this.processing = false;
 
     return this;
+  }
+
+  /**
+   * this function is for recursion breaking
+   * when at a clean() a new component is created and it calls cleanWhenNotProcessing()
+   * it will not again trigger clean()
+   * but the loop at clean will get to the task later
+   */
+  public cleanWhenNotProcessing() {
+    if (this.processing === false) {
+      this.clean();
+    }
   }
 
   /**
