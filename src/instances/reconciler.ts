@@ -1,10 +1,15 @@
 import { ApplicationElement } from 'interfaces/component';
 import Instance from './types/Instance';
-import DomInstance from './types/Dom/Instance';
 import types from './types/types';
 import elementTypeChecker from 'util/elementTypeChecker';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
+
+import DomInstance from './types/Dom/Instance';
 import domReconcile from './types/Dom/reconcile';
+
+import TextInstance from './types/Text/Instance';
+import textReconcile from './types/Text/reconcile';
+
 
 class Reconciler {
   /**
@@ -12,13 +17,19 @@ class Reconciler {
    * evaluates if its the same instance, and if it needs an update
    * or if it should be removed and replaced
    */
-  public update(newAbstractElement: ApplicationElement, instance: Instance) {
+  public update(newAbstractElement: ApplicationElement, instance: Instance): Instance {
     if (this.isSameAbstractElement(newAbstractElement, instance.abstractElement)) {
       if (instance.type === types.Dom) {
         domReconcile(newAbstractElement as PlusnewAbstractElement, instance as DomInstance);
+      } else if (instance.type === types.Text) {
+        textReconcile(newAbstractElement as 'string', instance as TextInstance);
+      } else {
+        throw new Error('Updating this element is not yet implemented');
       }
+      return instance;
     } else {
       console.log('unequal');
+      throw new Error('Replacing is not yet implemented');
     }
   }
 

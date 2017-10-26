@@ -19,7 +19,7 @@ export default class ComponentInstance extends Instance {
     return 1;
   }
 
-  public update(abstractElement: string) {
+  public setText(abstractElement: string) {
     this.ref.textContent = abstractElement;
     return this;
   }

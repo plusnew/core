@@ -1,11 +1,17 @@
 import DomInstance from './Instance';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import reconciler from '../../reconciler';
 
 export default function (newAbstractElement: PlusnewAbstractElement, instance: DomInstance) {
-  const domInstance = instance as DomInstance;
-  for (const prop in newAbstractElement.props) {
-    if (prop !== 'children') { // @TODO add special-values to a specific place
-      domInstance.setProp(prop, newAbstractElement.props[prop]);
+  for (const propIndex in newAbstractElement.props) {
+    if (propIndex === 'children') {
+      for (let i = 0; i < newAbstractElement.props.children.length; i += 1) {
+        instance.children[i] = reconciler.update(newAbstractElement.props.children[i], instance.children[i]);
+      }
+    } else if (propIndex !== 'children') { // @TODO add special-values to a specific place
+      if (instance.abstractElement.props[propIndex] !== newAbstractElement.props[propIndex]) {
+        instance.setProp(propIndex, newAbstractElement.props[propIndex]);
+      }
     }
   }
 
