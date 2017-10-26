@@ -1,7 +1,7 @@
 import redchain from 'redchain';
 import Plusnew from 'index';
 import scheduler from 'scheduler';
-import LifeCycleHandler from 'ComponentHandler/LifeCycleHandler';
+import LifeCycleHandler from 'instances/types/Component/LifeCycleHandler';
 
 describe('rendering the elements', () => {
   let plusnew: Plusnew;

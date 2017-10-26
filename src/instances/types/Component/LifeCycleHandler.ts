@@ -1,4 +1,4 @@
-import ComponentHandler from './index';
+import ComponentHandler from './Instance';
 
 export default class LifeCycleHandler {
   /**

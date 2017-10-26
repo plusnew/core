@@ -1,7 +1,7 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import types from './types';
-import Instance from './Instance';
-import ChildrenInstance from './ChildrenInstance';
+import types from '../types';
+import Instance from '../Instance';
+import ChildrenInstance from '../ChildrenInstance';
 
 const REMAPS: { [key: string]: string } = {
   className: 'class',

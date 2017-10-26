@@ -1,9 +1,9 @@
 import { ApplicationElement } from 'interfaces/component';
-import Instance from './Instance';
-import ArrayInstance from './ArrayInstance';
-import DomInstance from './DomInstance';
-import ComponentInstance from './ComponentInstance';
-import TextInstance from './TextInstance';
+import Instance from './types/Instance';
+import ArrayInstance from './types/Array/Instance';
+import DomInstance from './types/Dom/Instance';
+import ComponentInstance from './types/Component/Instance';
+import TextInstance from './types/Text/Instance';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import elementTypeChecker from 'util/elementTypeChecker';
 
@@ -18,7 +18,7 @@ export default function (abstractElement: ApplicationElement, parentInstance: In
   } else if (elementTypeChecker.isDomElement(abstractElement) === true) {
     return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
   } else if (elementTypeChecker.isComponentElement(abstractElement)) {
-    return new ComponentInstance(abstractElement, parentInstance, previousAbstractSiblingCount);
+    return new ComponentInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
   } else {
     throw new Error('Factory couldn\'t create unknown element type');
   }

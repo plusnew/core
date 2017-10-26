@@ -1,5 +1,5 @@
-import types from './types';
-import Instance from './Instance';
+import types from '../types';
+import Instance from '../Instance';
 
 export default class RootInstance extends Instance {
   public type = types.Root;

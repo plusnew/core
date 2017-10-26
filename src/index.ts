@@ -1,7 +1,7 @@
 import component from 'interfaces/component';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import ComponentHandler from 'ComponentHandler';
-import RootInstance from 'ComponentHandler/DomHandler/Instance/RootInstance';
+import factory from 'instances/factory';
+import RootInstance from 'instances/types/Root/Instance';
 
 class Plusnew {
   /**
@@ -22,8 +22,7 @@ class Plusnew {
     while (containerElement.childNodes.length) {
       containerElement.removeChild(containerElement.childNodes[0]);
     }
-
-    return new ComponentHandler(component, {}, wrapper, () => 0);
+    return factory(new PlusnewAbstractElement(component, {}, []), wrapper, () => 0);
   }
 }
 

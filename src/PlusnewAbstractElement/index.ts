@@ -1,4 +1,4 @@
-import component, { ApplicationElement } from 'interfaces/component';
+import component, { props } from 'interfaces/component';
 
 export default class PlusnewAbstractElement {
   /**
@@ -8,10 +8,7 @@ export default class PlusnewAbstractElement {
   /**
    * what properties should your parent give you
    */
-  public props: {
-    [key: string]: any;
-    children: ApplicationElement[]
-  };
+  public props: props;
   /**
    * Lightweight representation of a DOM or Component Node, this component is immutable and is used for comparison
    */

@@ -1,7 +1,7 @@
 import { ApplicationElement } from 'interfaces/component';
-import Instance from '../Instance/Instance';
-import DomInstance from '../Instance/DomInstance';
-import types from '../Instance/types';
+import Instance from './types/Instance';
+import DomInstance from './types/Dom/Instance';
+import types from './types/types';
 import elementTypeChecker from 'util/elementTypeChecker';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 

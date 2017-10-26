@@ -1,6 +1,6 @@
-import types from './types';
-import Instance from './Instance';
-import ChildrenInstance from './ChildrenInstance';
+import types from '../types';
+import Instance from '../Instance';
+import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 
 export default class ComponentInstance extends ChildrenInstance {
