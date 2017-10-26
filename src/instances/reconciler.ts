@@ -4,6 +4,7 @@ import DomInstance from './types/Dom/Instance';
 import types from './types/types';
 import elementTypeChecker from 'util/elementTypeChecker';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import domReconcile from './types/Dom/reconcile';
 
 class Reconciler {
   /**
@@ -14,15 +15,7 @@ class Reconciler {
   public update(newAbstractElement: ApplicationElement, instance: Instance) {
     if (this.isSameAbstractElement(newAbstractElement, instance.abstractElement)) {
       if (instance.type === types.Dom) {
-        const domInstance = instance as DomInstance;
-        const domElement = newAbstractElement as PlusnewAbstractElement;
-        for (const prop in domElement.props) {
-          if (prop !== 'children') { // @TODO add special-values to a specific place
-            domInstance.setProp(prop, domElement.props[prop]);
-          }
-        }
-
-        instance.abstractElement = newAbstractElement; // updating the shadowdom
+        domReconcile(newAbstractElement as PlusnewAbstractElement, instance as DomInstance);
       }
     } else {
       console.log('unequal');

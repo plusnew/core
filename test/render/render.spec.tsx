@@ -44,7 +44,6 @@ describe('rendering the elements', () => {
   it('check if nesting works', () => {
     const component = () => () => <div className="foo"><span className="bar" /></div>;
     plusnew.render(component, container);
-    debugger;
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
