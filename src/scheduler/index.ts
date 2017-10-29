@@ -2,10 +2,6 @@ type task = () => void;
 
 class Scheduler {
   /**
-   * mode between stack-reconciler and fiber-reconciler
-   */
-  private recursion = true;
-  /**
    * information if the scheduler is active right now, is needed for recursion breaking
    */
   private processing: boolean;
@@ -42,7 +38,7 @@ class Scheduler {
    * but the loop at clean will get to the task later
    */
   public cleanWhenNotProcessing() {
-    if (this.processing === false || this.recursion === true) {
+    if (this.processing === false) {
       this.clean();
     }
   }

@@ -11,7 +11,6 @@ class ElementTypeChecker {
   }
 
   public isDomElement(abstractElement: ApplicationElement) {
-    if(abstractElement===undefined) debugger;
     if (this.isArrayElement(abstractElement) === false && this.isTextElement(abstractElement) === false) {
       return typeof((abstractElement as PlusnewAbstractElement).type) === 'string';
     } else {
