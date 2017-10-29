@@ -1,11 +1,12 @@
-import { ApplicationElement } from 'interfaces/component';
+import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import reconciler from '../../reconciler';
 import ComponentInstance from './Instance';
 
-export default function (newAbstractElement: ApplicationElement, instance: ComponentInstance) {  
-  const newInstance = reconciler.update(newAbstractElement, instance.children);
-  if (newInstance !== instance.children) {
+export default function (newAbstractElement: PlusnewAbstractElement, instance: ComponentInstance) {  
+  const newAbstractChildren = instance.renderFunction(newAbstractElement.props);
+  const newChildrenInstance = reconciler.update(newAbstractChildren, instance.children);
+  if (newChildrenInstance !== instance.children) {
     instance.children.remove();
-    instance.children = newInstance;
+    instance.children = newChildrenInstance;
   }
 }

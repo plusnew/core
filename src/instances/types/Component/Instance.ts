@@ -11,9 +11,9 @@ export default class ComponentInstance extends Instance {
   public type = types.Component;
   public abstractElement: PlusnewAbstractElement;
   public children: Instance;
-  private renderFunction: (props: props) => ApplicationElement;
+  public renderFunction: (props: props) => ApplicationElement;
   private lifeCycleHandler: LifeCycleHandler;
-  private abstractChildren: ApplicationElement;
+  
   private dirty: boolean;
 
   constructor(abstractElement: PlusnewAbstractElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {    
@@ -38,8 +38,8 @@ export default class ComponentInstance extends Instance {
      * asks the component what should be changed and puts it to the factory
      */
   private handleChildren() {
-    this.abstractChildren = this.renderFunction(this.abstractElement.props);
-    this.children = factory(this.abstractChildren, this, () => this.previousAbstractSiblingCount());
+    const abstractChildren = this.renderFunction(this.abstractElement.props);
+    this.children = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
   }
 
   /**
@@ -62,7 +62,7 @@ export default class ComponentInstance extends Instance {
     // The dirtyflag is needed, if the setDirty and the scheduler are called multiple times
     if (this.dirty === true) {
       this.dirty = false;
-      componentReconcile(this.renderFunction(this.abstractElement.props), this);
+      componentReconcile(this.abstractElement, this);
     }
 
     return this;

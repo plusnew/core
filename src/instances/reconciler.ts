@@ -12,6 +12,9 @@ import domReconcile from './types/Dom/reconcile';
 import TextInstance from './types/Text/Instance';
 import textReconcile from './types/Text/reconcile';
 
+import ComponentInstance from './types/Component/Instance';
+import componentReconcile from './types/Component/reconcile';
+
 
 class Reconciler {
   /**
@@ -25,6 +28,8 @@ class Reconciler {
         domReconcile(newAbstractElement as PlusnewAbstractElement, instance as DomInstance);
       } else if (instance.type === types.Text) {
         textReconcile(newAbstractElement as 'string', instance as TextInstance);
+      } else if (instance.type === types.Component) {
+        componentReconcile(newAbstractElement as PlusnewAbstractElement, instance as ComponentInstance);
       } else {
         throw new Error('Updating this element is not yet implemented');
       }

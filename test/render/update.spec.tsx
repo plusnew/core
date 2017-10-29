@@ -1,6 +1,5 @@
 import redchain from 'redchain';
 import Plusnew from 'index';
-import scheduler from 'scheduler';
 import LifeCycleHandler from 'instances/types/Component/LifeCycleHandler';
 
 describe('rendering the elements', () => {
@@ -31,7 +30,7 @@ describe('rendering the elements', () => {
 
     const target = container.childNodes[0] as HTMLElement;
     const textElement = target.childNodes[0] as Text;
-    
+
     expect(target.nodeName).toBe('DIV');
     expect(target.className).toBe('foo');
     expect(target.innerHTML).toBe('foo');
@@ -44,7 +43,6 @@ describe('rendering the elements', () => {
     expect(textElement).toBe(textElement);
   });
 
-
   it('with the same values, all objects should be the same', () => {
     const component = (lifeCycleHandler: LifeCycleHandler) => {
       local.addOnChange(lifeCycleHandler.componentCheckUpdate);
@@ -56,6 +54,7 @@ describe('rendering the elements', () => {
 
     const target = container.childNodes[0] as HTMLElement;
     const textElement = target.childNodes[0] as Text;
+
     expect(target.nodeName).toBe('DIV');
     expect(target.className).toBe('foo');
     expect(textElement.textContent).toBe('foo');

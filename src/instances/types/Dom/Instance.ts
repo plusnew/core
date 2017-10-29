@@ -7,7 +7,7 @@ const REMAPS: { [key: string]: string } = {
   className: 'class',
 };
 
-export default class ComponentInstance extends ChildrenInstance {
+export default class DomInstance extends ChildrenInstance {
   public type = types.Dom;
   public abstractElement: PlusnewAbstractElement;
   public ref: HTMLElement;

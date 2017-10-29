@@ -3,7 +3,7 @@ import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 
-export default class ComponentInstance extends ChildrenInstance {
+export default class ArrayInstance extends ChildrenInstance {
   public type = types.Array;
   public abstractElement: (PlusnewAbstractElement | string)[];
 
