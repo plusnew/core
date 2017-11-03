@@ -1,30 +1,29 @@
-import ConfigInterface from './Interface/ConfigInterface';
-import ComponentHandler from './Handler/ComponentHandler';
+import component from 'interfaces/component';
+import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import factory from 'instances/factory';
+import RootInstance from 'instances/types/Root/Instance';
 
-class Main {
-  config: ConfigInterface;
-
-  constructor(config: ConfigInterface) {
-    this.config = config;
+class Plusnew {
+  /**
+   * creates lightweight representation of DOM or ComponentNodes
+   */
+  createElement(type: string | component<any>, props: any, ...children: PlusnewAbstractElement[]) {
+    return new PlusnewAbstractElement(type, props, children);
   }
 
-  public create(componentName: string, props?: any) {
-    return new ComponentHandler(
-      this.getComponent(componentName),
-      this.getTemplate(componentName),
-      props,
-    );
-  }
+  /**
+   * mounts the root component
+   */
+  render(component: component<{}>, containerElement: HTMLElement) {
+    // Fake RootInstance
+    const wrapper = new RootInstance(new PlusnewAbstractElement(component, {}, []), undefined, () => 0);
+    wrapper.ref = containerElement;
 
-  public getComponent(componentName: string) {
-    return this.config.components[componentName];
-  }
-
-  public getTemplate(componentName: string) {
-    return this.config.templates[componentName];
+    while (containerElement.childNodes.length) {
+      containerElement.removeChild(containerElement.childNodes[0]);
+    }
+    return factory(new PlusnewAbstractElement(component, {}, []), wrapper, () => 0);
   }
 }
 
-export default Main;
-
-(<any>window).Snew = Main;
+export default Plusnew;

@@ -1,35 +1,54 @@
-# plusnew [![Build Status](https://travis-ci.org/plusnew/plusnew.svg)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/plusnew/plusnew/badge.svg)](https://coveralls.io/github/plusnew/plusnew)
+# plusnew [![Build Status](https://travis-ci.org/plusnew/plusnew.svg?branch=v0.5)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/plusnew/plusnew/badge.svg?branch=v0.5)](https://coveralls.io/github/plusnew/plusnew?branch=v0.5)
 
-lightweight mvc-framework with local data quering
-unlike other frameworks we don't render the whole template each time
-data changed in your component. The Templating engine
-[tempart](https://github.com/plusnew/tempart) gets notified from the view what
-actually changed, without the need to diff between states. For tracking state-changes the lib
-[statelog](https://github.com/plusnew/statelog) got implemented.
+A typesecure framework for managing your components.
+The Framework has a immutable statehandling approach, which allows easy timetraveling.
 
-Our focus is to be just a small layer and don't take debuggability away. When an error happens, your exceptions will get triggered as expected and no weird voodoo is happening.
+A Component can get data by it's props, and by unlimited internal and external stores.
+This avoids nesting the component in containers for i18n and others.
 
-As a framework we don't want to force you what technology you use in your application. We handle plain old javascript.
+```ts
+import plusnew, { component, store, LifeCycleHandler } from 'plusnew';
+import Todo from './Todo';
 
-Note: don't use this framework yet, its in alpha state. Currently it's not robust, it has no XSS prevention and a lack of documentation.
+interface props {}
 
-## api
+interface actionInit {
+  type: 'init';
+}
 
-```js
+interface actionAdd {
+  type: 'add';
+  payload: string;
+}
 
-// Classes are of course possible as well, plusnew doesn't restrict you in any way
-app.components['main/app'] = function (state props) {
-  this.state = state;
-  this.props = props;
-  
-  this.state.todos = [{label: 'foo'}]
+const component: component<props> = function (lifeCycleHandler: LifeCycleHandler) {
+
+  const local = new store((localState: { list: string[] }, action: actionInit | actionAdd) => {
+    if (action.type === 'init') {
+      return {
+        list: ['foo', 'bar', 'baz'],
+      };
+    } else if (action.type === 'add') {
+      return {
+        list: [...localState.list, action.payload],
+      };
+    }
+    return localState;
+
+  }).addOnChange(lifeCycleHandler.componentCheckUpdate).dispatch({ type: 'init' });
+
+  return (props: props) =>
+    <div>
+      <input type="text" onChange={(evt: KeyboardEvent) => {
+        local.dispatch({ type: 'add', payload: evt.target.value });
+      }} />
+      <ul>
+        {local.state.list.map((item, index) =>
+          <Todo key={index} value={item} />,
+        )}
+      </ul>
+    </div>;
 };
 
-app.components['main/app'].prototype = {
-  addTodo: function(label) {
-    // The template is subscribed to changes in the array, and gets the event that there is a new entity and updates the dom
-    this.state.todos.push({label}); 
-  }
-});
-
+export default component;
 ```

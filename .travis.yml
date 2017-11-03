@@ -16,17 +16,15 @@ before_install:
   - "export CHROME_BIN=google-chrome-beta"
   - "npm config set spin false"
   - "npm --version"
-  - "npm install gulp -g"
-  - "npm install tslint -g"
+  - "npm install coveralls"
   - "rm -f /tmp/*.dmp"
   - "google-chrome --version"
 
 install:
   - "npm install"
-    #  - "gulp default"
 
 after_success:
-  - "gulp coveralls"
+  - "cat test/coverage/*/lcov.info | node_modules/coveralls/bin/coveralls.js"
 
 notifications:
   email:
