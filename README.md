@@ -1,4 +1,4 @@
-# plusnew [![Build Status](https://travis-ci.org/plusnew/plusnew.svg?branch=v0.5)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/plusnew/plusnew/badge.svg?branch=v0.5)](https://coveralls.io/github/plusnew/plusnew?branch=v0.5)
+# plusnew [![Build Status](https://travis-ci.org/plusnew/plusnew.svg)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/plusnew/plusnew/badge.svg)](https://coveralls.io/github/plusnew/plusnew)
 
 A typesecure framework for managing your components.
 The Framework has a immutable statehandling approach, which allows easy timetraveling.
