@@ -8,45 +8,25 @@ This avoids nesting the component in containers for i18n and others.
 
 ```ts
 import plusnew, { component, store, LifeCycleHandler } from 'plusnew';
-import Todo from './Todo';
+import Counter from './Counter';
 
-interface props {}
+const component: component<{}> = function (lifeCycleHandler: LifeCycleHandler) {
 
-interface actionInit {
-  type: 'init';
-}
-
-interface actionAdd {
-  type: 'add';
-  payload: string;
-}
-
-const component: component<props> = function (lifeCycleHandler: LifeCycleHandler) {
-
-  const local = new store((localState: { list: string[] }, action: actionInit | actionAdd) => {
+  const local = new store((state: number, action: {type: 'init' | 'increment'}) => {
     if (action.type === 'init') {
-      return {
-        list: ['foo', 'bar', 'baz'],
-      };
-    } else if (action.type === 'add') {
-      return {
-        list: [...localState.list, action.payload],
-      };
+      return 0;
+    } else if (action.type === 'increment') {
+      return ++state;
     }
-    return localState;
-
+    return state;
   }).addOnChange(lifeCycleHandler.componentCheckUpdate).dispatch({ type: 'init' });
 
   return (props: props) =>
     <div>
-      <input type="text" onChange={(evt: KeyboardEvent) => {
-        local.dispatch({ type: 'add', payload: evt.target.value });
+      <button onClick={(evt: KeyboardEvent) => {
+        local.dispatch({ type: 'increment' });
       }} />
-      <ul>
-        {local.state.list.map((item, index) =>
-          <Todo key={index} value={item} />,
-        )}
-      </ul>
+      <Counter value={local.state} />
     </div>;
 };
 
