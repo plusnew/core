@@ -1,6 +1,6 @@
 {
   "name": "plusnew",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "ts framework with an functional approach",
   "main": "src/index.ts",
   "scripts": {
@@ -28,6 +28,6 @@
     "typescript": "^2.5.2"
   },
   "dependencies": {
-    "redchain": "^0.5.1"
+    "redchain": "^0.5.2"
   }
 }
