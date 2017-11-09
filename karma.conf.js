@@ -97,9 +97,5 @@ module.exports = function (config) {
     },
   };
 
-  if (process.env.TRAVIS) {
-    configuration.customLaunchers.Chrome_Headless.flags.push('--no-sandbox');
-  }
-
   config.set(configuration);
 };
