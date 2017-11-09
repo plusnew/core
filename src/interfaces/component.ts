@@ -12,5 +12,5 @@ export interface props {
  * thats how a application component should look like
  */
 export default interface component<props> {
-  (lifeCycleHandler?: LifeCycleHandler, props?: props): (props?: props) => ApplicationElement;
+  (lifeCycleHandler: LifeCycleHandler, props: props): (props?: props) => ApplicationElement;
 }

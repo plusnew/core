@@ -1,7 +1,7 @@
 import redchain from 'redchain';
 import Plusnew from 'index';
-// import scheduler from 'scheduler';
-import LifeCycleHandler from 'instances/types/Component/LifeCycleHandler';
+import component from 'interfaces/component';
+// import LifeCycleHandler from 'instances/types/Component/LifeCycleHandler';
 
 describe('rendering nested components', () => {
   let plusnew: Plusnew;
@@ -22,8 +22,8 @@ describe('rendering nested components', () => {
       return list;
     }).dispatch('init');
 
-    const MainComponent = (lifeCycleHandler: LifeCycleHandler) => {
-      return (props: {value: string}) => <ul>{local.state.map((value, index) => <li key={index}>{value}</li>)}</ul>;
+    const MainComponent: component<{}> = () => {
+      return () => <ul>{local.state.map((value, index) => <li key={index}>{value}</li>)}</ul>;
     };
 
     plusnew.render(MainComponent, container);
@@ -32,9 +32,9 @@ describe('rendering nested components', () => {
     expect(container.childNodes.length).toBe(1);
     expect(ul.tagName).toBe('UL');
     expect(ul.childNodes.length).toBe(3);
-    ul.childNodes.forEach((li: HTMLElement, index) => {
-      expect(li.tagName).toBe('LI');
-      expect(li.innerHTML).toBe(list[index]);
+    ul.childNodes.forEach((li: Node, index) => {
+      expect((li as HTMLElement).tagName).toBe('LI');
+      expect((li as HTMLElement).innerHTML).toBe(list[index]);
     });
   });
 });
