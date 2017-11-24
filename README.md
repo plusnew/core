@@ -10,24 +10,28 @@ This avoids nesting the component in containers for i18n and others.
 import plusnew, { component, store, LifeCycleHandler } from 'plusnew';
 import Counter from './Counter';
 
-const component: component<{}> = function (lifeCycleHandler: LifeCycleHandler) {
+type actions = { action: 'store::init' | 'increment' };
 
-  const local = new store((state: number, action: {type: 'init' | 'increment'}) => {
-    if (action.type === 'init') {
-      return 0;
-    } else if (action.type === 'increment') {
-      return ++state;
+const component: component<{}, {local: store<number, actions>}> = function () {
+  return (props: props) => {
+    render: () => 
+      <div>
+        <button onClick={(evt: KeyboardEvent) => {
+          local.dispatch({ type: 'increment' });
+        }} />
+        <Counter value={local.state} />
+      </div>,
+    dependencies: {
+      local: new store((state: number, action: actions) => {
+        if (action.type === 'init') {
+          return 0;
+        } else if (action.type === 'increment') {
+          return ++state;
+        }
+        return state;
+      })
     }
-    return state;
-  }).addOnChange(lifeCycleHandler.componentCheckUpdate).dispatch({ type: 'init' });
-
-  return (props: props) =>
-    <div>
-      <button onClick={(evt: KeyboardEvent) => {
-        local.dispatch({ type: 'increment' });
-      }} />
-      <Counter value={local.state} />
-    </div>;
+  }
 };
 
 export default component;

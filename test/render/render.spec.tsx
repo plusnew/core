@@ -1,4 +1,5 @@
 import Plusnew from 'index';
+import component from 'interfaces/component';
 
 describe('rendering the elements', () => {
   let plusnew: Plusnew;
@@ -15,7 +16,12 @@ describe('rendering the elements', () => {
   });
 
   it('check if element is inserted', () => {
-    const component = () => () => <div className="foo" />;
+    const component: component<{}> = () => {
+      return {
+        render: () => <div className="foo" />,
+        dependencies: {},
+      };
+    };
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -24,10 +30,15 @@ describe('rendering the elements', () => {
   });
 
   it('check if elements are inserted', () => {
-    const component = () => () => [
-      <div className="foo" />,
-      <span className="bar" />,
-    ];
+    const component: component<{}> = () => {
+      return {
+        render: () => [
+          <div className="foo" />,
+          <span className="bar" />,
+        ],
+        dependencies: {},
+      };
+    };
 
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(2);
@@ -42,7 +53,13 @@ describe('rendering the elements', () => {
   });
 
   it('check if nesting works', () => {
-    const component = () => () => <div className="foo"><span className="bar" /></div>;
+    const component: component<{}> = () => {
+      return {
+        render: () => <div className="foo"><span className="bar" /></div>,
+        dependencies: {},
+      };
+    };
+
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -52,7 +69,13 @@ describe('rendering the elements', () => {
   });
 
   it('check if textnode is created', () => {
-    const component = () => () => <div className="foo">bar</div>;
+    const component: component<{}> = () => {
+      return {
+        render: () => <div className="foo">bar</div>,
+        dependencies: {},
+      };
+    };
+
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -62,7 +85,13 @@ describe('rendering the elements', () => {
   });
 
   it('check if textnode is created on root', () => {
-    const component = () => () => 'foo';
+    const component = () => {
+      return {
+        render: () => 'foo',
+        dependencies: {},
+      };
+    };
+
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('foo');

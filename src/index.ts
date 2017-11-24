@@ -14,7 +14,7 @@ class Plusnew {
   /**
    * mounts the root component
    */
-  render(component: component<{}>, containerElement: HTMLElement) {
+  render(component: component<{}, any>, containerElement: HTMLElement) {
     // Fake RootInstance
     const wrapper = new RootInstance(new PlusnewAbstractElement(component, {}, []), undefined, () => 0);
     wrapper.ref = containerElement;

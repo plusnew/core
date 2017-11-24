@@ -1,7 +1,6 @@
-import redchain from 'redchain';
+import store from 'store';
 import Plusnew from 'index';
 import component from 'interfaces/component';
-// import LifeCycleHandler from 'instances/types/Component/LifeCycleHandler';
 
 describe('rendering nested components', () => {
   let plusnew: Plusnew;
@@ -18,12 +17,15 @@ describe('rendering nested components', () => {
 
   it('does a initial list work?', () => {
     const list = ['first', 'second', 'third'];
-    const local = new redchain(() => {
+    const local = new store(() => {
       return list;
     }).dispatch('init');
 
     const MainComponent: component<{}> = () => {
-      return () => <ul>{local.state.map((value, index) => <li key={index}>{value}</li>)}</ul>;
+      return {
+        render: () => <ul>{local.state.map((value, index) => <li key={index}>{value}</li>)}</ul>,
+        dependencies: {},
+      };
     };
 
     plusnew.render(MainComponent, container);

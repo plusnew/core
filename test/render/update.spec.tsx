@@ -1,13 +1,14 @@
-import redchain from 'redchain';
+import store from 'store';
 import Plusnew from 'index';
-import LifeCycleHandler from 'instances/types/Component/LifeCycleHandler';
+import component from 'interfaces/component';
+
 
 describe('rendering the elements', () => {
   let plusnew: Plusnew;
   let container: HTMLElement;
-  let local: redchain<string, string>;
+  let local: store<string, string>;
   beforeEach(() => {
-    local = new redchain((value: string, newValue: string) => newValue).dispatch('foo');
+    local = new store((value: string, newValue: string) => newValue).dispatch('foo');
     
     plusnew = new Plusnew();
     container = document.createElement('div');
@@ -19,10 +20,12 @@ describe('rendering the elements', () => {
     document.body.removeChild(container);
   });
 
-  it('does a value change with redchain', () => {
-    const component = (lifeCycleHandler: LifeCycleHandler) => {
-      local.addOnChange(lifeCycleHandler.componentCheckUpdate);
-      return () => <div className={local.state}>{local.state}</div>;
+  it('does a value change with store', () => {
+    const component: component<{}, {local: typeof local }> = () => {
+      return {
+        render: () => <div className={local.state}>{local.state}</div>,
+        dependencies: { local },
+      };
     };
     plusnew.render(component, container);
 
@@ -44,10 +47,13 @@ describe('rendering the elements', () => {
   });
 
   it('with the same values, all objects should be the same', () => {
-    const component = (lifeCycleHandler: LifeCycleHandler) => {
-      local.addOnChange(lifeCycleHandler.componentCheckUpdate);
-      return () => <div className={local.state}>{local.state}</div>;
+    const component: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => <div className={local.state}>{local.state}</div>,
+        dependencies: { local },
+      };
     };
+  
     plusnew.render(component, container);
 
     expect(container.childNodes.length).toBe(1);
@@ -66,10 +72,12 @@ describe('rendering the elements', () => {
     expect(textElement).toBe(textElement);
   });
 
-  it('does a value change with redchain with JSX.Element to string', () => {
-    const component = (lifeCycleHandler: LifeCycleHandler) => {
-      local.addOnChange(lifeCycleHandler.componentCheckUpdate);
-      return () => local.state === 'foo' ? <div>{local.state}</div> : local.state;
+  it('does a value change with store with JSX.Element to string', () => {
+    const component: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => local.state === 'foo' ? <div>{local.state}</div> : local.state,
+        dependencies: { local },
+      };
     };
     plusnew.render(component, container);
 
@@ -85,10 +93,12 @@ describe('rendering the elements', () => {
   });
 
 
-  it('does a value change with redchain with string to JSX.Element', () => {
-    const component = (lifeCycleHandler: LifeCycleHandler) => {
-      local.addOnChange(lifeCycleHandler.componentCheckUpdate);
-      return () => local.state === 'foo' ? local.state : <div>{local.state}</div>;
+  it('does a value change with store with string to JSX.Element', () => {
+    const component: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => local.state === 'foo' ? local.state : <div>{local.state}</div>,
+        dependencies: { local },
+      };
     };
     plusnew.render(component, container);
 
@@ -102,10 +112,12 @@ describe('rendering the elements', () => {
     expect(target.innerHTML).toBe('bar');
   });
 
-  it('does a value change with redchain with string to JSX.Element[]', () => {
-    const component = (lifeCycleHandler: LifeCycleHandler) => {
-      local.addOnChange(lifeCycleHandler.componentCheckUpdate);
-      return () => local.state === 'foo' ? local.state : [<div>{local.state}</div>, <span>{local.state}</span>];
+  it('does a value change with store with string to JSX.Element[]', () => {
+    const component: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => local.state === 'foo' ? local.state : [<div>{local.state}</div>, <span>{local.state}</span>],
+        dependencies: { local },
+      };
     };
     plusnew.render(component, container);
 
@@ -123,10 +135,12 @@ describe('rendering the elements', () => {
     expect(targetSecond.innerHTML).toBe('bar');
   });
 
-  it('does a value change with redchain with JSX.Element[] to string', () => {
-    const component = (lifeCycleHandler: LifeCycleHandler) => {
-      local.addOnChange(lifeCycleHandler.componentCheckUpdate);
-      return () => local.state === 'foo' ? [<div>{local.state}</div>, <span>{local.state}</span>] : local.state;
+  it('does a value change with store with JSX.Element[] to string', () => {
+    const component: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => local.state === 'foo' ? [<div>{local.state}</div>, <span>{local.state}</span>] : local.state,
+        dependencies: { local },
+      };
     };
     plusnew.render(component, container);
 

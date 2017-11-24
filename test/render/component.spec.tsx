@@ -1,7 +1,6 @@
-import redchain from 'redchain';
+import store from 'store';
 import Plusnew from 'index';
 import component from 'interfaces/component';
-import LifeCycleHandler from 'instances/types/Component/LifeCycleHandler';
 
 describe('rendering nested components', () => {
   let plusnew: Plusnew;
@@ -17,17 +16,23 @@ describe('rendering nested components', () => {
   });
 
   it('checks if nesting the components works', () => {
-    const NestedComponent = () => {
-      return (props: {value: string}) => <div className={props.value}>{props.value}</div>;
+    type props = {value: string};
+    const NestedComponent: component<props> = () => {
+      return {
+        render: (props: props) => <div className={props.value}>{props.value}</div>,
+        dependencies: {},
+      };
     };
 
-    const local = new redchain((previousState: string, newState: string) => {
+    const local = new store((previousState: string, newState: string) => {
       return newState;
     }).dispatch('foo');
 
-    const MainComponent: component<{}> = (lifeCycleHandler: LifeCycleHandler) => {
-      local.addOnChange(lifeCycleHandler.componentCheckUpdate);
-      return () => <NestedComponent value={local.state} />;
+    const MainComponent: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => <NestedComponent value={local.state} />,
+        dependencies: { local },
+      };
     };
 
     plusnew.render(MainComponent, container);

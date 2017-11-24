@@ -3,16 +3,17 @@ import Instance from '../Instance';
 import factory from '../../factory';
 import componentReconcile from './reconcile';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import LifeCycleHandler from './LifeCycleHandler';
-import component, { ApplicationElement, props } from 'interfaces/component';
+import component, { ApplicationElement, props, deps } from 'interfaces/component';
 import scheduler from 'scheduler';
 
 export default class ComponentInstance extends Instance {
   public type = types.Component;
   public abstractElement: PlusnewAbstractElement;
   public children: Instance;
-  public renderFunction: (props: props) => ApplicationElement;
-  private lifeCycleHandler: LifeCycleHandler;
+  public componentResult: {
+    render: (props: props, deps: deps) => ApplicationElement;
+    dependencies: deps
+  };
   
   private dirty: boolean;
 
@@ -27,8 +28,11 @@ export default class ComponentInstance extends Instance {
    */
   private initialiseComponent() {
     const props = this.abstractElement.props;
-    this.lifeCycleHandler = new LifeCycleHandler(this);
-    this.renderFunction = (this.abstractElement.type as component<any>)(this.lifeCycleHandler, props);
+    this.componentResult = (this.abstractElement.type as component<any, any>)(props);
+    for (const dependencyIndex in this.componentResult.dependencies) {
+      const dependency = this.componentResult.dependencies[dependencyIndex];
+      dependency.addOnChange(this.setDirty.bind(this));
+    }
     this.dirty = false;
 
     return this;
@@ -38,7 +42,7 @@ export default class ComponentInstance extends Instance {
      * asks the component what should be changed and puts it to the factory
      */
   private handleChildren() {
-    const abstractChildren = this.renderFunction(this.abstractElement.props);
+    const abstractChildren = this.componentResult.render(this.abstractElement.props, this.componentResult.dependencies);
     this.children = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
   }
 
