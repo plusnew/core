@@ -56,7 +56,13 @@ describe('checking if createElement works as expected', () => {
   });
 
   it('check if component gets safed', () => {
-    const component = () => () => plusnew.createElement('div', null);
+    const component = () => {
+      return {
+        render: () => plusnew.createElement('div', null),
+        dependencies: {},
+      };
+    };
+
     const props = { foo: 'bar' };
     const instance = plusnew.createElement(component, props);
     expect(instance.type).toBe(component);

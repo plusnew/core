@@ -6,10 +6,13 @@ import component from 'interfaces/component';
 describe('rendering the elements', () => {
   let plusnew: Plusnew;
   let container: HTMLElement;
-  let local: store<string, string>;
+  let local: store<string, { type: string }>;
   beforeEach(() => {
-    local = new store((value: string, newValue: string) => newValue).dispatch('foo');
-    
+
+    local = new store((previousState: string | null, action: {type: string}) => {
+      return action.type;
+    }).dispatch({ type: 'foo' });
+
     plusnew = new Plusnew();
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
@@ -39,7 +42,7 @@ describe('rendering the elements', () => {
     expect(target.innerHTML).toBe('foo');
     expect(textElement.textContent).toBe('foo');
 
-    local.dispatch('bar');
+    local.dispatch({ type: 'bar' });
 
     expect(target.className).toBe('bar');
     expect(target.innerHTML).toBe('bar');
@@ -65,7 +68,7 @@ describe('rendering the elements', () => {
     expect(target.className).toBe('foo');
     expect(textElement.textContent).toBe('foo');
 
-    local.dispatch('foo');
+    local.dispatch({ type: 'foo' });
 
     expect(target.className).toBe('foo');
     expect(target.innerHTML).toBe('foo');
@@ -87,7 +90,7 @@ describe('rendering the elements', () => {
     expect(target.nodeName).toBe('DIV');
     expect(target.innerHTML).toBe('foo');
 
-    local.dispatch('bar');
+    local.dispatch({ type: 'bar' });
 
     expect(container.innerHTML).toBe('bar');
   });
@@ -104,7 +107,7 @@ describe('rendering the elements', () => {
 
     expect(container.innerHTML).toBe('foo');
 
-    local.dispatch('bar');
+    local.dispatch({ type: 'bar' });
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -123,7 +126,7 @@ describe('rendering the elements', () => {
 
     expect(container.innerHTML).toBe('foo');
 
-    local.dispatch('bar');
+    local.dispatch({ type: 'bar' });
 
     expect(container.childNodes.length).toBe(2);
     const target = container.childNodes[0] as HTMLElement;
@@ -153,7 +156,7 @@ describe('rendering the elements', () => {
     expect(targetSecond.nodeName).toBe('SPAN');
     expect(targetSecond.innerHTML).toBe('foo');
 
-    local.dispatch('bar');
+    local.dispatch({ type: 'bar' });
 
     expect(container.innerHTML).toBe('bar');
   });

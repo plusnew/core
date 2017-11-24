@@ -24,9 +24,9 @@ describe('rendering nested components', () => {
       };
     };
 
-    const local = new store((previousState: string, newState: string) => {
-      return newState;
-    }).dispatch('foo');
+    const local = new store((previousState: string | null, action: {type: string}) => {
+      return action.type;
+    }).dispatch({ type: 'foo' });
 
     const MainComponent: component<{}, { local: typeof local }> = () => {
       return {
@@ -47,7 +47,7 @@ describe('rendering nested components', () => {
     expect(target.innerHTML).toBe('foo');
     expect(textElement.textContent).toBe('foo');
 
-    local.dispatch('bar');
+    local.dispatch({ type: 'bar' });
 
     expect(target.className).toBe('bar');
     expect(target.innerHTML).toBe('bar');
