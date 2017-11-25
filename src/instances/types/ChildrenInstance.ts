@@ -40,7 +40,7 @@ export default abstract class ChildrenInstance extends Instance {
     return length;
   }
 
-/**
+  /**
    * removes the children from the dom
    */
   public remove() {

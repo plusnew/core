@@ -3,17 +3,14 @@ import Instance from '../Instance';
 import factory from '../../factory';
 import componentReconcile from './reconcile';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import component, { ApplicationElement, props, deps } from 'interfaces/component';
+import component, { props, deps, componentResult } from 'interfaces/component';
 import scheduler from 'scheduler';
 
 export default class ComponentInstance extends Instance {
   public type = types.Component;
   public abstractElement: PlusnewAbstractElement;
   public children: Instance;
-  public componentResult: {
-    render: (props: props, deps: deps) => ApplicationElement;
-    dependencies: deps
-  };
+  public componentResult: componentResult<props, deps>;
   
   private dirty: boolean;
 
