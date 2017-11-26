@@ -29,6 +29,6 @@ after_success:
 notifications:
   email:
     recipients:
-      - travis@snew.io
+      - travis@plusnew.io
     on_success: change
     on_failure: always
