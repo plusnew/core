@@ -5,7 +5,6 @@ import component from 'interfaces/component';
 describe('rendering nested components', () => {
   let plusnew: Plusnew;
   let container: HTMLElement;
- 
 
   beforeEach(() => {
     plusnew = new Plusnew();
@@ -15,16 +14,23 @@ describe('rendering nested components', () => {
     document.body.appendChild(container);
   });
 
-  it('does a initial list work?', () => {
+  it('does a initial list work, with pushing values', () => {
     const list = ['first', 'second', 'third'];
-    const local = new store(() => {
-      return list;
-    }).dispatch('init');
+    const dependencies = {
+      local: new store((state: string[] | null, action: {type: string, payload?: string}) => {
+        if (state === null) {
+          return list;
+        } else if (action.payload) {
+          return [...list, action.payload];
+        }
+        return list;
+      }),
+    };
 
-    const MainComponent: component<{}> = () => {
+    const MainComponent: component<{}, typeof dependencies> = () => {
       return {
-        render: () => <ul>{local.state.map((value, index) => <li key={index}>{value}</li>)}</ul>,
-        dependencies: {},
+        dependencies,
+        render: (props, { local }: typeof dependencies) => <ul>{local.state.map((value, index) => <li key={index}>{value}</li>)}</ul>,
       };
     };
 

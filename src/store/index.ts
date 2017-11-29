@@ -1,14 +1,16 @@
-const initialAction = { type: 'store::init' };
+type initialAction = {
+  type: 'store::init';
+};
 
-export default class RedChain<stateType, actionType>{
+export default class Store<stateType, actionType>{
   public state: stateType;
-  private initialAction = initialAction;
-  private reducer: ((state: stateType | null, action: actionType | typeof initialAction) => stateType);
+  private initialAction: initialAction = { type: 'store::init' };
+  private reducer: ((state: stateType | null, action: actionType | initialAction) => stateType);
   private onChanges: ((lastAction: actionType) => void)[];
-  constructor(reducer: ((state: stateType | null, action: actionType | typeof initialAction) => stateType)) {
+  constructor(reducer: ((state: stateType | null, action: actionType | initialAction) => stateType)) {
     this.reducer = reducer;
     this.onChanges = [];
-    this.state = reducer(null, this.initialAction);
+    this.state = this.reducer(null, this.initialAction);
   }
 
   public dispatch(action: actionType) {
