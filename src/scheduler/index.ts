@@ -19,7 +19,7 @@ class Scheduler {
   }
 
   /**
-   * execute the current queue
+   * execute the current queue, mostly to trigger rerenders
    */
   public clean() {
     this.processing = true;

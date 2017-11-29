@@ -13,12 +13,20 @@ export default class Store<stateType, actionType>{
     this.state = this.reducer(null, this.initialAction);
   }
 
+  /**
+   * this function triggers the reducer
+   * when the returnvalue is unequal to the previous state it will trigger the listeners from addOnChange
+   */
   public dispatch(action: actionType) {
     const currentState = this.reducer(this.state, action);
 
     if (this.state !== currentState) {
       this.state = currentState;
       this.onChanges.forEach((onChange) => {
+        // currently no other listeners will get notified, when the following line will fuck up
+        // try-catch should be avoided, to improve debuggability
+        // setTimeout would break the call-stack
+        // If you have an opinion on this matter, please make a github issue and tell me
         onChange(action);
       });
     }
@@ -26,6 +34,9 @@ export default class Store<stateType, actionType>{
     return this;
   }
 
+  /**
+   * takes listeners, when the reducer returnvalue is triggered they
+   */
   public addOnChange(onChange: (lastAction: actionType) => void) {
     this.onChanges.push(onChange);
 
