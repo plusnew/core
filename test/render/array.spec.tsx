@@ -21,9 +21,9 @@ describe('rendering nested components', () => {
         if (state === null) {
           return list;
         } else if (action.payload) {
-          return [...list, action.payload];
+          return [...state, action.payload];
         }
-        return list;
+        return state;
       }),
     };
 

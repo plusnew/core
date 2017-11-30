@@ -2,12 +2,16 @@ type initialAction = {
   type: 'store::init';
 };
 
+interface reducer<stateType, actionType> {
+  (state: stateType | null, action: actionType | initialAction): stateType;
+}
+
 export default class Store<stateType, actionType>{
   public state: stateType;
   private initialAction: initialAction = { type: 'store::init' };
-  private reducer: ((state: stateType | null, action: actionType | initialAction) => stateType);
+  private reducer: reducer<stateType, actionType>;
   private onChanges: ((lastAction: actionType) => void)[];
-  constructor(reducer: ((state: stateType | null, action: actionType | initialAction) => stateType)) {
+  constructor(reducer: reducer<stateType, actionType>) {
     this.reducer = reducer;
     this.onChanges = [];
     this.state = this.reducer(null, this.initialAction);
