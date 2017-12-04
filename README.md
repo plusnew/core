@@ -11,10 +11,20 @@ import plusnew, { component, store, LifeCycleHandler } from 'plusnew';
 import Counter from './Counter';
 
 type actions = { action: 'store::init' | 'increment' };
+type props = {};
 
-const component: component<{}, {local: store<number, actions>}> = function () {
+const component: component<props> = function () {
   return (props: props) => {
-    render: () => 
+    const local = new store((state: number, action: actions) => {
+      if (action.type === 'init') {
+        return 0;
+      } else if (action.type === 'increment') {
+        return ++state;
+      }
+      return state;
+    });
+
+    render: (props: props, { local: typeof local }) => 
       <div>
         <button onClick={(evt: KeyboardEvent) => {
           local.dispatch({ type: 'increment' });
@@ -22,16 +32,9 @@ const component: component<{}, {local: store<number, actions>}> = function () {
         <Counter value={local.state} />
       </div>,
     dependencies: {
-      local: new store((state: number, action: actions) => {
-        if (action.type === 'init') {
-          return 0;
-        } else if (action.type === 'increment') {
-          return ++state;
-        }
-        return state;
-      })
-    }
-  }
+      local,
+    },
+  };
 };
 
 export default component;
