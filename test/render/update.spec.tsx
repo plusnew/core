@@ -1,4 +1,4 @@
-import store from 'store';
+import store from 'redchain';
 import Plusnew from 'index';
 import component from 'interfaces/component';
 
