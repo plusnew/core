@@ -9,7 +9,7 @@ describe('rendering the elements', () => {
   let local: store<string, { type: string }>;
   beforeEach(() => {
 
-    local = new store((previousState: string | null, action: {type: string}) => {
+    local = new store((previousState: string | null, action: { type: string }) => {
       return action.type;
     }).dispatch({ type: 'foo' });
 
@@ -24,7 +24,7 @@ describe('rendering the elements', () => {
   });
 
   it('does a value change with store', () => {
-    const component: component<{}, {local: typeof local }> = () => {
+    const component: component<{}, { local: typeof local }> = () => {
       return {
         render: () => <div className={local.state}>{local.state}</div>,
         dependencies: { local },
@@ -56,7 +56,7 @@ describe('rendering the elements', () => {
         dependencies: { local },
       };
     };
-  
+
     plusnew.render(component, container);
 
     expect(container.childNodes.length).toBe(1);

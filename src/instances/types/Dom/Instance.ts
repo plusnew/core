@@ -15,14 +15,14 @@ export default class DomInstance extends ChildrenInstance {
   constructor(abstractElement: PlusnewAbstractElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
-    if (typeof(abstractElement.type) === 'string') {
+    if (typeof (abstractElement.type) === 'string') {
       this.ref = document.createElement(abstractElement.type);
     } else {
       throw new Error('Could not createdom element with type not being a string');
     }
 
     this.setProps()
-        .addChildren(abstractElement.props.children);
+      .addChildren(abstractElement.props.children);
 
     this.appendToParent(this.ref, previousAbstractSiblingCount());
   }

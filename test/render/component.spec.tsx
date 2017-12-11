@@ -5,7 +5,7 @@ import component from 'interfaces/component';
 describe('rendering nested components', () => {
   let plusnew: Plusnew;
   let container: HTMLElement;
- 
+
 
   beforeEach(() => {
     plusnew = new Plusnew();
@@ -16,7 +16,7 @@ describe('rendering nested components', () => {
   });
 
   it('checks if nesting the components works', () => {
-    type props = {value: string};
+    type props = { value: string };
     const NestedComponent: component<props> = () => {
       return {
         render: (props: props) => <div className={props.value}>{props.value}</div>,
@@ -24,7 +24,7 @@ describe('rendering nested components', () => {
       };
     };
 
-    const local = new store((previousState: string | null, action: {type: string}) => {
+    const local = new store((previousState: string | null, action: { type: string }) => {
       return action.type;
     }).dispatch({ type: 'foo' });
 
@@ -38,7 +38,7 @@ describe('rendering nested components', () => {
     plusnew.render(MainComponent, container);
 
     expect(container.childNodes.length).toBe(1);
-    
+
     const target = container.childNodes[0] as HTMLElement;
     const textElement = target.childNodes[0] as Text;
 

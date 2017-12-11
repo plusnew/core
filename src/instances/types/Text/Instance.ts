@@ -3,7 +3,7 @@ import Instance from '../Instance';
 
 export default class TextInstance extends Instance {
   public type = types.Text;
-  public abstractElement: string;  
+  public abstractElement: string;
   public ref: Text;
 
   constructor(abstractElement: string, parentInstance: Instance, previousAbstractSiblingCount: () => number) {

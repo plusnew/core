@@ -96,7 +96,7 @@ class Reconciler {
         // newAbstractElement is a component, but oldAbtractElement isn't
         return false;
       }
-    } 
+    }
     throw new Error('Unknown abstractElement detected');
   }
 }

@@ -14,7 +14,7 @@ export default class PlusnewAbstractElement {
    */
   constructor(type: string | component<any>, props: {} | null, children: PlusnewAbstractElement[]) {
     this.setType(type)
-        .setProps(props, children);
+      .setProps(props, children);
   }
 
   /**

@@ -17,7 +17,7 @@ describe('rendering nested components', () => {
   it('does a initial list work, with pushing values', () => {
     const list = ['first', 'second', 'third'];
     const dependencies = {
-      local: new store((state: string[] | null, action: {type: string, payload?: string}) => {
+      local: new store((state: string[] | null, action: { type: string, payload?: string }) => {
         if (state === null) {
           return list;
         } else if (action.payload) {

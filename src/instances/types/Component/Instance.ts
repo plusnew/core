@@ -11,13 +11,13 @@ export default class ComponentInstance extends Instance {
   public abstractElement: PlusnewAbstractElement;
   public children: Instance;
   public componentResult: componentResult<props, deps>;
-  
+
   private dirty: boolean;
 
-  constructor(abstractElement: PlusnewAbstractElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {    
+  constructor(abstractElement: PlusnewAbstractElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
     this.initialiseComponent()
-        .handleChildren();
+      .handleChildren();
   }
 
   /**
@@ -35,9 +35,9 @@ export default class ComponentInstance extends Instance {
     return this;
   }
 
-    /**
-     * asks the component what should be changed and puts it to the factory
-     */
+  /**
+   * asks the component what should be changed and puts it to the factory
+   */
   private handleChildren() {
     const abstractChildren = this.componentResult.render(this.abstractElement.props, this.componentResult.dependencies);
     this.children = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
