@@ -80,6 +80,7 @@ module.exports = function (config) {
           directory: 'test/coverage/',
           filename: 'lcov.info',
         },
+        text: ""
       },
       coverageOptions: {
         exclude: [
