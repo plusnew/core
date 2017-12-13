@@ -17,17 +17,17 @@
     "url": "https://github.com/plusnew/plusnew/issues"
   },
   "homepage": "https://github.com/plusnew/plusnew#readme",
+  "dependencies": {
+    "redchain": "^0.5.4"
+  },
   "devDependencies": {
-    "@types/jasmine": "^2.6.0",
+    "@types/jasmine": "^2.8.2",
     "jasmine-core": "^2.8.0",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^1.1.0",
-    "karma-typescript": "^3.0.7",
-    "tslint-config-airbnb": "^5.3.0",
-    "typescript": "^2.5.2"
-  },
-  "dependencies": {
-    "redchain": "^0.5.4"
+    "karma-jasmine": "^1.1.1",
+    "karma-typescript": "^3.0.8",
+    "tslint-config-airbnb": "^5.4.2",
+    "typescript": "^2.6.2"
   }
 }
