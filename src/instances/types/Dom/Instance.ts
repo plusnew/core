@@ -3,10 +3,6 @@ import types from '../types';
 import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 
-const REMAPS: { [key: string]: string } = {
-  className: 'class',
-};
-
 export default class DomInstance extends ChildrenInstance {
   public type = types.Dom;
   public abstractElement: PlusnewAbstractElement;
@@ -42,23 +38,13 @@ export default class DomInstance extends ChildrenInstance {
    * sets a property
    */
   public setProp(key: string, value: string) {
-    const remappedKey = this.remapProps(key);
-    if (this.abstractElement.shouldAddPropToElement(remappedKey) === true) {
-      this.ref.setAttribute(remappedKey, value);
+    if (this.abstractElement.shouldAddPropToElement(key) === true) {
+      (this.ref as any)[key] = value; // @TODO should probably be improved
     }
+
     return this;
   }
 
-  /**
-   * remaps the props, like class and className
-   */
-  private remapProps(propName: string) {
-    if (propName in REMAPS) {
-      return REMAPS[propName] as string;
-    } else {
-      return propName;
-    }
-  }
   /**
    * domnode is always a length of one
    */
