@@ -13,15 +13,17 @@ import Counter from './Counter';
 type actions = { type: 'store::init' | 'increment' };
 type props = {};
 
-const component: component<props> = function () {
-  const local = new store((state: number, action: actions) => {
-    if (action.type === 'store::init') {
-      return 0;
-    } else if (action.type === 'increment') {
-      return ++state;
-    }
-    return state;
-  });
+const reducer = (state: number, action: actions) => {
+  if (action.type === 'store::init') {
+    return 0;
+  } else if (action.type === 'increment') {
+    return ++state;
+  }
+  return state;
+};
+
+const component: component<props> = () => {
+  const local = store(reducer);
 
   return {
     dependencies: { local },
@@ -34,4 +36,5 @@ const component: component<props> = function () {
       </div>,
   };
 };
+
 ```

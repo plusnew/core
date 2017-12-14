@@ -24,7 +24,7 @@ describe('rendering nested components', () => {
       };
     };
 
-    const local = new store((previousState: string | null, action: { type: string }) => {
+    const local = store((previousState: string | null, action: { type: string }) => {
       return action.type;
     }).dispatch({ type: 'foo' });
 

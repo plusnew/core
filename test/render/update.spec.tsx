@@ -1,4 +1,4 @@
-import store from 'redchain';
+import store, { storeResult } from 'redchain';
 import Plusnew from 'index';
 import component from 'interfaces/component';
 
@@ -6,10 +6,10 @@ import component from 'interfaces/component';
 describe('rendering the elements', () => {
   let plusnew: Plusnew;
   let container: HTMLElement;
-  let local: store<string, { type: string }>;
+  let local: storeResult<string, { type: string }>;
   beforeEach(() => {
 
-    local = new store((previousState: string | null, action: { type: string }) => {
+    local = store((previousState: string | null, action: { type: string }) => {
       return action.type;
     }).dispatch({ type: 'foo' });
 

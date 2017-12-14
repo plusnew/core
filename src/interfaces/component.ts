@@ -1,4 +1,4 @@
-import store from 'redchain';
+import { storeResult } from 'redchain';
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 
 export type ApplicationElement = PlusnewAbstractElement | (PlusnewAbstractElement | string)[] | string;
@@ -9,7 +9,7 @@ export interface props {
 }
 
 export interface deps {
-  [key: string]: store<any, any>;
+  [key: string]: storeResult<any, any>;
 }
 
 export interface componentResult<props, deps> {
