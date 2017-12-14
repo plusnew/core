@@ -7,35 +7,31 @@ A Component can get data by it's props, and by unlimited internal and external s
 This avoids nesting the component in containers for i18n and others.
 
 ```ts
-import plusnew, { component, store, LifeCycleHandler } from 'plusnew';
+import plusnew, { component, store } from 'plusnew';
 import Counter from './Counter';
 
-type actions = { action: 'store::init' | 'increment' };
+type actions = { type: 'store::init' | 'increment' };
 type props = {};
 
 const component: component<props> = function () {
-  return (props: props) => {
-    const local = new store((state: number, action: actions) => {
-      if (action.type === 'init') {
-        return 0;
-      } else if (action.type === 'increment') {
-        return ++state;
-      }
-      return state;
-    });
+  const local = new store((state: number, action: actions) => {
+    if (action.type === 'store::init') {
+      return 0;
+    } else if (action.type === 'increment') {
+      return ++state;
+    }
+    return state;
+  });
 
-    render: (props: props, { local: typeof local }) => 
+  return {
+    dependencies: { local },
+    render: (props: props) => 
       <div>
         <button onClick={(evt: KeyboardEvent) => {
           local.dispatch({ type: 'increment' });
         }} />
         <Counter value={local.state} />
       </div>,
-    dependencies: {
-      local,
-    },
   };
 };
-
-export default component;
 ```
