@@ -20,7 +20,8 @@ describe('rendering nested components', () => {
       local: store((state: string[] | null, action: { type: string, payload?: string }) => {
         if (state === null) {
           return list;
-        } else if (action.payload) {
+        }
+        if (action.payload) {
           return [...state, action.payload];
         }
         return state;
@@ -53,7 +54,8 @@ describe('rendering nested components', () => {
       local: store((state: string[] | null, action: { type: string, payload?: string }) => {
         if (state === null) {
           return list;
-        } else if (action.payload) {
+        }
+        if (action.payload) {
           return [...state, action.payload];
         }
         return state;
