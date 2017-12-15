@@ -1,4 +1,4 @@
-# plusnew [![Build Status](https://travis-ci.org/plusnew/plusnew.svg)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/plusnew/plusnew/badge.svg)](https://coveralls.io/github/plusnew/plusnew)
+# plusnew [![Build Status](	https://img.shields.io/travis/plusnew/plusnew.svg?maxAge=0)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://img.shields.io/coveralls/github/plusnew/plusnew.svg?maxAge=0)](https://coveralls.io/github/plusnew/plusnew)
 
 A typesecure framework for managing your components.
 The Framework has a immutable statehandling approach, which allows easy timetraveling.
@@ -13,11 +13,12 @@ import Counter from './Counter';
 type actions = { type: 'store::init' | 'increment' };
 type props = {};
 
-const reducer = (state: number, action: actions) => {
-  if (action.type === 'store::init') {
+const reducer = (state: number | null, action: actions) => {
+  if (state === null) {
     return 0;
-  } else if (action.type === 'increment') {
-    return ++state;
+  }
+  if (action.type === 'increment') {
+    return state + 1;
   }
   return state;
 };
@@ -27,14 +28,17 @@ const component: component<props> = () => {
 
   return {
     dependencies: { local },
-    render: (props: props) => 
+    render: (props: props) =>
       <div>
-        <button onClick={(evt: KeyboardEvent) => {
-          local.dispatch({ type: 'increment' });
-        }} />
+        <button
+          onClick={(evt: KeyboardEvent) => local.dispatch({ type: 'increment' })}
+        />
         <Counter value={local.state} />
       </div>,
   };
 };
+
+export default component;
+
 
 ```
