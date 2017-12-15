@@ -27,7 +27,7 @@ const component: component<props> = () => {
 
   return {
     dependencies: { local },
-    render: (props: props) => (
+    render: (props: props) =>
       <div>
         <button
           onClick={(evt: KeyboardEvent) => {
@@ -35,11 +35,11 @@ const component: component<props> = () => {
           }}
         />
         <Counter value={local.state} />
-      </div>
-    ),
+      </div>,
   };
 };
 
 export default component;
+
 
 ```
