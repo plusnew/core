@@ -16,7 +16,8 @@ type props = {};
 const reducer = (state: number | null, action: actions) => {
   if (state === null) {
     return 0;
-  } else if (action.type === 'increment') {
+  }
+  if (action.type === 'increment') {
     return state + 1;
   }
   return state;
