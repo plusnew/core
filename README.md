@@ -31,9 +31,7 @@ const component: component<props> = () => {
     render: (props: props) =>
       <div>
         <button
-          onClick={(evt: KeyboardEvent) => {
-            local.dispatch({ type: 'increment' });
-          }}
+          onClick={(evt: KeyboardEvent) => local.dispatch({ type: 'increment' })}
         />
         <Counter value={local.state} />
       </div>,
