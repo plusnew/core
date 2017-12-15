@@ -22,6 +22,7 @@ class Plusnew {
     while (containerElement.childNodes.length) {
       containerElement.removeChild(containerElement.childNodes[0]);
     }
+
     return factory(new PlusnewAbstractElement(component, {}, []), wrapper, () => 0);
   }
 }

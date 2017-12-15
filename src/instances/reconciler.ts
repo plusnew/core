@@ -34,9 +34,9 @@ class Reconciler {
         throw new Error('Updating this element is not yet implemented');
       }
       return instance;
-    } else {
-      return factory(newAbstractElement, instance.parentInstance as Instance, instance.previousAbstractSiblingCount);
     }
+
+    return factory(newAbstractElement, instance.parentInstance as Instance, instance.previousAbstractSiblingCount);
   }
 
   /**
@@ -78,25 +78,31 @@ class Reconciler {
   private isSameAbstractElementType(newAbstractElement: ApplicationElement, oldAbtractElement: ApplicationElement) {
     if (elementTypeChecker.isTextElement(newAbstractElement)) {
       return elementTypeChecker.isTextElement(oldAbtractElement);
-    } else if (elementTypeChecker.isArrayElement(newAbstractElement)) {
+    }
+
+    if (elementTypeChecker.isArrayElement(newAbstractElement)) {
       return elementTypeChecker.isArrayElement(oldAbtractElement);
-    } else if (elementTypeChecker.isDomElement(newAbstractElement)) {
+    }
+
+    if (elementTypeChecker.isDomElement(newAbstractElement)) {
       if (elementTypeChecker.isDomElement(oldAbtractElement)) {
         // newAbstractElement and oldAbtractElement are dom elements, but is elementNode the same
         return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
-      } else {
-        // newAbstractElement is a domElement, but oldAbtractElement isn't
-        return false;
       }
-    } else if (elementTypeChecker.isComponentElement(newAbstractElement)) {
+
+      // newAbstractElement is a domElement, but oldAbtractElement isn't
+      return false;
+    }
+    if (elementTypeChecker.isComponentElement(newAbstractElement)) {
       if (elementTypeChecker.isComponentElement(oldAbtractElement)) {
         // newAbstractElement and oldAbtractElement are components, but are they the same function
         return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
-      } else {
-        // newAbstractElement is a component, but oldAbtractElement isn't
-        return false;
       }
+
+      // newAbstractElement is a component, but oldAbtractElement isn't
+      return false;
     }
+
     throw new Error('Unknown abstractElement detected');
   }
 }

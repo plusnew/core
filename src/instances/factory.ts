@@ -13,13 +13,16 @@ import elementTypeChecker from 'util/elementTypeChecker';
 export default function (abstractElement: ApplicationElement, parentInstance: Instance, previousAbstractSiblingCount: () => number): Instance {
   if (elementTypeChecker.isTextElement(abstractElement) === true) {
     return new TextInstance(abstractElement as string, parentInstance, previousAbstractSiblingCount);
-  } else if (elementTypeChecker.isArrayElement(abstractElement) === true) {
-    return new ArrayInstance(abstractElement as (PlusnewAbstractElement | string)[], parentInstance, previousAbstractSiblingCount);
-  } else if (elementTypeChecker.isDomElement(abstractElement) === true) {
-    return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
-  } else if (elementTypeChecker.isComponentElement(abstractElement)) {
-    return new ComponentInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
-  } else {
-    throw new Error('Factory couldn\'t create unknown element type');
   }
+  if (elementTypeChecker.isArrayElement(abstractElement) === true) {
+    return new ArrayInstance(abstractElement as (PlusnewAbstractElement | string)[], parentInstance, previousAbstractSiblingCount);
+  }
+  if (elementTypeChecker.isDomElement(abstractElement) === true) {
+    return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
+  }
+  if (elementTypeChecker.isComponentElement(abstractElement)) {
+    return new ComponentInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
+  }
+
+  throw new Error('Factory couldn\'t create unknown element type');
 }

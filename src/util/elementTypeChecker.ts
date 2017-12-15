@@ -13,17 +13,17 @@ class ElementTypeChecker {
   public isDomElement(abstractElement: ApplicationElement) {
     if (this.isArrayElement(abstractElement) === false && this.isTextElement(abstractElement) === false) {
       return typeof ((abstractElement as PlusnewAbstractElement).type) === 'string';
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   public isComponentElement(abstractElement: ApplicationElement) {
     if (this.isArrayElement(abstractElement) === false && this.isTextElement(abstractElement) === false) {
       return typeof ((abstractElement as PlusnewAbstractElement).type) !== 'string';
-    } else {
-      return false;
     }
+
+    return false;
   }
 }
 
