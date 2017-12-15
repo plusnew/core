@@ -10,14 +10,14 @@ This avoids nesting the component in containers for i18n and others.
 import plusnew, { component, store } from 'plusnew';
 import Counter from './Counter';
 
-type actions = { type: "store::init" | "increment" };
+type actions = { type: 'store::init' | 'increment' };
 type props = {};
 
 const reducer = (state: number | null, action: actions) => {
   if (state === null) {
     return 0;
-  } else if (action.type === "increment") {
-    return ++state;
+  } else if (action.type === 'increment') {
+    return state + 1;
   }
   return state;
 };
@@ -31,12 +31,12 @@ const component: component<props> = () => {
       <div>
         <button
           onClick={(evt: KeyboardEvent) => {
-            local.dispatch({ type: "increment" });
+            local.dispatch({ type: 'increment' });
           }}
         />
         <Counter value={local.state} />
       </div>
-    )
+    ),
   };
 };
 
