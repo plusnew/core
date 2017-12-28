@@ -1,5 +1,5 @@
-import { ApplicationElement } from 'interfaces/component';
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import { ApplicationElement } from '../interfaces/component';
+import PlusnewAbstractElement from '../PlusnewAbstractElement';
 
 class ElementTypeChecker {
   public isTextElement(abstractElement: ApplicationElement) {

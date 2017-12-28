@@ -1,4 +1,4 @@
-import component, { props } from 'interfaces/component';
+import component, { props } from '../interfaces/component';
 
 export default class PlusnewAbstractElement {
   /**

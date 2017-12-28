@@ -2,9 +2,9 @@ import types from '../types';
 import Instance from '../Instance';
 import factory from '../../factory';
 import componentReconcile from './reconcile';
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import component, { props, deps, componentResult } from 'interfaces/component';
-import scheduler from 'scheduler';
+import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import component, { props, deps, componentResult } from '../../../interfaces/component';
+import scheduler from '../../../scheduler';
 
 export default class ComponentInstance extends Instance {
   public type = types.Component;

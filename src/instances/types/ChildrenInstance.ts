@@ -1,4 +1,4 @@
-import { ApplicationElement } from 'interfaces/component';
+import { ApplicationElement } from '../../interfaces/component';
 import Instance from './Instance';
 import factory from '../factory';
 

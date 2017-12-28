@@ -1,4 +1,4 @@
-import { ApplicationElement } from 'interfaces/component';
+import { ApplicationElement } from '../../interfaces/component';
 import types from './types';
 
 export default abstract class Instance {

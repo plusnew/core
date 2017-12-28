@@ -1,4 +1,4 @@
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import reconciler from '../../reconciler';
 import ComponentInstance from './Instance';
 

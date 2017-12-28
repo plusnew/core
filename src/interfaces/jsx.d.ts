@@ -1,4 +1,4 @@
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import PlusnewAbstractElement from '../PlusnewAbstractElement';
 
 declare global {
   namespace JSX {

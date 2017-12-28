@@ -1,5 +1,5 @@
 import { storeResult } from 'redchain';
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import PlusnewAbstractElement from '../PlusnewAbstractElement';
 
 export type ApplicationElement = PlusnewAbstractElement | (PlusnewAbstractElement | string)[] | string;
 

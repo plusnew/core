@@ -1,5 +1,5 @@
 import DomInstance from './Instance';
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import reconciler from '../../reconciler';
 
 export default function (newAbstractElement: PlusnewAbstractElement, instance: DomInstance) {

@@ -1,5 +1,5 @@
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import { ApplicationElement } from 'interfaces/component';
+import PlusnewAbstractElement from '../PlusnewAbstractElement';
+import { ApplicationElement } from '../interfaces/component';
 
 import factory from './factory';
 import Instance from './types/Instance';

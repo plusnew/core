@@ -1,7 +1,7 @@
 import types from '../types';
 import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 
 export default class ArrayInstance extends ChildrenInstance {
   public type = types.Array;

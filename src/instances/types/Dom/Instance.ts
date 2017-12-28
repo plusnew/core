@@ -1,4 +1,4 @@
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import types from '../types';
 import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';

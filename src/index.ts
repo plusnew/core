@@ -1,7 +1,7 @@
-import component from 'interfaces/component';
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import factory from 'instances/factory';
-import RootInstance from 'instances/types/Root/Instance';
+import component from './interfaces/component';
+import PlusnewAbstractElement from './PlusnewAbstractElement';
+import factory from './instances/factory';
+import RootInstance from './instances/types/Root/Instance';
 
 class Plusnew {
   /**

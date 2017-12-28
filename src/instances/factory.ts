@@ -1,11 +1,11 @@
-import { ApplicationElement } from 'interfaces/component';
+import { ApplicationElement } from '../interfaces/component';
 import Instance from './types/Instance';
 import ArrayInstance from './types/Array/Instance';
 import DomInstance from './types/Dom/Instance';
 import ComponentInstance from './types/Component/Instance';
 import TextInstance from './types/Text/Instance';
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import elementTypeChecker from 'util/elementTypeChecker';
+import PlusnewAbstractElement from '../PlusnewAbstractElement';
+import elementTypeChecker from '../util/elementTypeChecker';
 
 /**
  * because data from jsx can be anything, this factory is needed to decide what type of instance should be created
