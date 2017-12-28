@@ -52,16 +52,16 @@ export default class DomInstance extends ChildrenInstance {
   private setOnChangeEvent(callback: (evt: Event) => void) {
     // @TODO remove old eventlisteners
     this.ref.addEventListener('input', (evt: Event) => {
+      // let preventDefault = true;
       this.setNormalProp = (key: string, value: any) => {
-        if (key === 'value') {
-          if (value === (evt.target as HTMLInputElement).value) {
+        // if (key === 'value') {
+        //   if (value === (evt.target as HTMLInputElement).value) {
 
-          } else {
-
-          }
-        } else {
-          DomInstance.prototype.setNormalProp.call(this, key, value);
-        }
+        //   } else {
+        //   }
+        // } else {
+        DomInstance.prototype.setNormalProp.call(this, key, value);
+        // }
       };
       this.abstractElement.props.onchange(evt);
       delete this.setNormalProp;
