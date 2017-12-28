@@ -2,7 +2,7 @@
   "name": "plusnew",
   "version": "0.5.14",
   "description": "ts framework with an functional approach",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "test": "node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run",
     "test:watch": "node_modules/karma/bin/karma start karma.conf.js"
