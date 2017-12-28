@@ -1,9 +1,10 @@
 {
   "name": "plusnew",
-  "version": "0.5.15",
+  "version": "0.5.16",
   "description": "ts framework with an functional approach",
   "main": "dist/index.js",
   "scripts": {
+    "prepublish": "npm run build",
     "build": "tsc --pretty",
     "test": "node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run",
     "test:watch": "node_modules/karma/bin/karma start karma.conf.js"
