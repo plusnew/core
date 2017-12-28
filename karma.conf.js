@@ -73,7 +73,8 @@ module.exports = function (config) {
       exclude: [],
       tsconfig: "./tsconfig.json",
       compilerOptions: {
-        sourceMap: true
+        sourceMap: true,
+        module: 'commonjs',
       },
       reports: {
         lcovonly: {
