@@ -1,7 +1,7 @@
 import { ApplicationElement } from '../interfaces/component';
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
 
-class ElementTypeChecker {
+export class ElementTypeChecker {
   public isTextElement(abstractElement: ApplicationElement) {
     return typeof (abstractElement) === 'string';
   }

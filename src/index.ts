@@ -2,19 +2,20 @@ import component from './interfaces/component';
 import PlusnewAbstractElement from './PlusnewAbstractElement';
 import factory from './instances/factory';
 import RootInstance from './instances/types/Root/Instance';
+import Instance from './instances/types/Instance';
 
 class Plusnew {
   /**
    * creates lightweight representation of DOM or ComponentNodes
    */
-  createElement(type: string | component<any>, props: any, ...children: PlusnewAbstractElement[]) {
+  public createElement(type: string | component<any>, props: any, ...children: PlusnewAbstractElement[]) {
     return new PlusnewAbstractElement(type, props, children);
   }
 
   /**
    * mounts the root component
    */
-  render(component: component<{}, any>, containerElement: HTMLElement) {
+  public render(component: component<{}, any>, containerElement: HTMLElement) {
     // Fake RootInstance
     const wrapper = new RootInstance(new PlusnewAbstractElement(component, {}, []), undefined, () => 0);
     wrapper.ref = containerElement;
@@ -28,3 +29,4 @@ class Plusnew {
 }
 
 export default Plusnew;
+export { Instance };

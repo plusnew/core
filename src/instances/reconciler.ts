@@ -16,7 +16,7 @@ import ComponentInstance from './types/Component/Instance';
 import componentReconcile from './types/Component/reconcile';
 
 
-class Reconciler {
+export class Reconciler {
   /**
    * Checks if something changed
    * evaluates if its the same instance, and if it needs an update

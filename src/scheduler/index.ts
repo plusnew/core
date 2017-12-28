@@ -1,6 +1,6 @@
-type task = () => void;
+export type task = () => void;
 
-class Scheduler {
+export class Scheduler {
   /**
    * information if the scheduler is active right now, is needed for recursion breaking
    */

@@ -1,8 +1,9 @@
 {
   "name": "plusnew",
-  "version": "0.5.18",
+  "version": "0.5.19",
   "description": "ts framework with an functional approach",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc --pretty",
@@ -20,7 +21,7 @@
   },
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {
-    "redchain": "^0.5.18"
+    "redchain": "^0.5.19"
   },
   "devDependencies": {
     "@types/jasmine": "^2.8.2",
