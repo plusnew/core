@@ -1,6 +1,6 @@
 {
   "name": "plusnew",
-  "version": "0.5.16",
+  "version": "0.5.17",
   "description": "ts framework with an functional approach",
   "main": "dist/index.js",
   "scripts": {

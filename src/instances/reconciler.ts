@@ -4,7 +4,7 @@ import { ApplicationElement } from '../interfaces/component';
 import factory from './factory';
 import Instance from './types/Instance';
 import types from './types/types';
-import elementTypeChecker from 'util/elementTypeChecker';
+import elementTypeChecker from '../util/elementTypeChecker';
 
 import DomInstance from './types/Dom/Instance';
 import domReconcile from './types/Dom/reconcile';
