@@ -17,15 +17,7 @@ describe('rendering nested components', () => {
   it('does a initial list work, with pushing values', () => {
     const list = ['first', 'second', 'third'];
     const dependencies = {
-      local: store((state: string[] | null, action: { type: string, payload?: string }) => {
-        if (state === null) {
-          return list;
-        }
-        if (action.payload) {
-          return [...state, action.payload];
-        }
-        return state;
-      }),
+      local: store(() => list, (state: string[], newValue: string) => [...state, newValue]),
     };
 
     const MainComponent: component<{}, typeof dependencies> = () => {
@@ -51,15 +43,7 @@ describe('rendering nested components', () => {
   it('does a initial list work, with pushing values', () => {
     const list = ['first', 'second', 'third'];
     const dependencies = {
-      local: store((state: string[] | null, action: { type: string, payload?: string }) => {
-        if (state === null) {
-          return list;
-        }
-        if (action.payload) {
-          return [...state, action.payload];
-        }
-        return state;
-      }),
+      local: store(() => list, (state: string[], newValue: string) => [...state, newValue]),
     };
 
     const MainComponent: component<{}, typeof dependencies> = () => {

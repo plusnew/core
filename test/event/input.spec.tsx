@@ -1,5 +1,6 @@
 import Plusnew from 'index';
 import component from 'interfaces/component';
+import store from 'redchain';
 
 describe('rendering nested components', () => {
   let plusnew: Plusnew;
@@ -14,18 +15,23 @@ describe('rendering nested components', () => {
   });
 
   it('does a initial list work, with pushing values', () => {
-    const change = jasmine.createSpy('change');
+    const local = store(() => 'foo', (state: string, newValue: string) => newValue);
+
+    const change = jasmine.createSpy('change', () => {
+      local.dispatch('bar');
+    });
+
     const component: component<{}, {}> = () => {
       return {
-        render: () => <input onchange={change} value="bar"/>,
-        dependencies: {},
+        render: () => <input onchange={change} value={local.state}/>,
+        dependencies: { local },
       };
     };
 
     plusnew.render(component, container);
 
     const input = document.getElementsByTagName('input')[0];
-    input.value = 'foo';
+    input.value = 'bar';
     const event = new CustomEvent('input', { detail: { target: input } });
     input.dispatchEvent(event);
 
