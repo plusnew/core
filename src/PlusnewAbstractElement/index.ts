@@ -4,7 +4,7 @@ export default class PlusnewAbstractElement {
   /**
    * The information if what domnode it is, or if it is a component
    */
-  public type: string | component<any>;
+  public type: string | number | component<any>;
   /**
    * what properties should your parent give you
    */
@@ -12,7 +12,7 @@ export default class PlusnewAbstractElement {
   /**
    * Lightweight representation of a DOM or Component Node, this component is immutable and is used for comparison
    */
-  constructor(type: string | component<any>, props: {} | null, children: PlusnewAbstractElement[]) {
+  constructor(type: string | number | component<any>, props: {} | null, children: PlusnewAbstractElement[]) {
     this.setType(type)
       .setProps(props, children);
   }
@@ -20,7 +20,7 @@ export default class PlusnewAbstractElement {
   /**
    * sets the information what domnode or component this is
    */
-  private setType(type: string | component<any>) {
+  private setType(type: string | number | component<any>) {
     this.type = type;
 
     return this;

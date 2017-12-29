@@ -3,7 +3,7 @@ import PlusnewAbstractElement from '../PlusnewAbstractElement';
 
 export class ElementTypeChecker {
   public isTextElement(abstractElement: ApplicationElement) {
-    return typeof (abstractElement) === 'string';
+    return typeof (abstractElement) === 'string' || typeof (abstractElement) === 'number';
   }
 
   public isArrayElement(abstractElement: ApplicationElement) {

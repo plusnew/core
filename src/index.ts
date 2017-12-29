@@ -8,7 +8,7 @@ class Plusnew {
   /**
    * creates lightweight representation of DOM or ComponentNodes
    */
-  public createElement(type: string | component<any>, props: any, ...children: PlusnewAbstractElement[]) {
+  public createElement(type: string | number | component<any>, props: any, ...children: PlusnewAbstractElement[]) {
     return new PlusnewAbstractElement(type, props, children);
   }
 

@@ -96,4 +96,17 @@ describe('rendering the elements', () => {
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('foo');
   });
+
+  it('check if textnode is created on root, even with number', () => {
+    const component = () => {
+      return {
+        render: () => 1,
+        dependencies: {},
+      };
+    };
+
+    plusnew.render(component, container);
+    expect(container.childNodes.length).toBe(1);
+    expect(container.innerHTML).toBe('1');
+  });
 });

@@ -6,9 +6,15 @@ describe('checking if createElement works as expected', () => {
     plusnew = new Plusnew();
   });
 
+
   it('Is div element created', () => {
     const instance = plusnew.createElement('div', null);
     expect(instance.type).toBe('div');
+  });
+
+  it('Is text element created', () => {
+    const instance = plusnew.createElement(0, null);
+    expect(instance.type).toBe(0);
   });
 
   it('Is div props correct created', () => {
