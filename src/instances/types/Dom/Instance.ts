@@ -50,9 +50,7 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   private setOnChangeEvent(callback: (evt: Event) => void) {
-    // @TODO remove old eventlisteners
-    this.ref.addEventListener('input', (evt: Event) => {
-      // let preventDefault = true;
+    this.ref.oninput = (evt: Event) => {
       this.setNormalProp = (key: string, value: any) => {
         // if (key === 'value') {
         //   if (value === (evt.target as HTMLInputElement).value) {
@@ -65,7 +63,7 @@ export default class DomInstance extends ChildrenInstance {
       };
       this.abstractElement.props.onchange(evt);
       delete this.setNormalProp;
-    });
+    };
 
     return this;
   }
