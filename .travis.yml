@@ -5,15 +5,7 @@ dist: trusty
 node_js:
   - "6"
 
-addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-beta
-
 before_install:
-  - "export CHROME_BIN=google-chrome-beta"
   - "npm config set spin false"
   - "npm --version"
   - "npm install coveralls"
