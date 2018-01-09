@@ -2,6 +2,9 @@ import store from 'redchain';
 import Plusnew from 'index';
 import component from 'interfaces/component';
 
+const list = ['first', 'second', 'third'];
+const local =  store(list, (state: string[], newValue: string) => [...state, newValue]);
+
 describe('rendering nested components', () => {
   let plusnew: Plusnew;
   let container: HTMLElement;
@@ -15,9 +18,8 @@ describe('rendering nested components', () => {
   });
 
   it('does a initial list work, with pushing values', () => {
-    const list = ['first', 'second', 'third'];
     const dependencies = {
-      local: store(() => list, (state: string[], newValue: string) => [...state, newValue]),
+      local: local(),
     };
 
     const MainComponent: component<{}, typeof dependencies> = () => {
@@ -43,7 +45,7 @@ describe('rendering nested components', () => {
   it('does a initial list work, with pushing values', () => {
     const list = ['first', 'second', 'third'];
     const dependencies = {
-      local: store(() => list, (state: string[], newValue: string) => [...state, newValue]),
+      local: local(),
     };
 
     const MainComponent: component<{}, typeof dependencies> = () => {

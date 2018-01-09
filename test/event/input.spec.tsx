@@ -15,7 +15,7 @@ describe('rendering nested components', () => {
   });
 
   it('does a initial list work, with pushing values', () => {
-    const local = store(() => 'foo', (state: string, newValue: string) => newValue);
+    const local = store('foo', (state: string, newValue: string) => newValue)();
 
     const change = jasmine.createSpy('change', () => {
       local.dispatch('bar');

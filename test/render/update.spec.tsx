@@ -9,7 +9,7 @@ describe('rendering the elements', () => {
   let local: storeResult<string, string>;
   beforeEach(() => {
 
-    local = store(() => 'foo', (previousState: string, newValue: string) => newValue);
+    local = store('foo', (previousState: string, newValue: string) => newValue)();
 
     plusnew = new Plusnew();
     container = document.createElement('div');
