@@ -1,4 +1,4 @@
-import store, { storeResult } from 'redchain';
+import redchain, { store } from 'redchain';
 import Plusnew from 'index';
 import component from 'interfaces/component';
 
@@ -6,10 +6,10 @@ import component from 'interfaces/component';
 describe('rendering the elements', () => {
   let plusnew: Plusnew;
   let container: HTMLElement;
-  let local: storeResult<string, string>;
+  let local: store<string, string>;
   beforeEach(() => {
 
-    local = store('foo', (previousState: string, newValue: string) => newValue)();
+    local = redchain('foo', (previousState: string, newValue: string) => newValue);
 
     plusnew = new Plusnew();
     container = document.createElement('div');

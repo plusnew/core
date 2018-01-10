@@ -24,7 +24,7 @@ describe('rendering nested components', () => {
       };
     };
 
-    const local = store('foo', (state: string, newValue: string) => newValue)();
+    const local = store('foo', (state: string, newValue: string) => newValue);
 
     const MainComponent: component<{}, { local: typeof local }> = () => {
       return {

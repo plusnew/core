@@ -3,7 +3,7 @@ import Plusnew from 'index';
 import component from 'interfaces/component';
 
 const list = ['first', 'second', 'third'];
-const local =  store(list, (state: string[], newValue: string) => [...state, newValue]);
+const local =  () => store(list, (state: string[], newValue: string) => [...state, newValue]);
 
 describe('rendering nested components', () => {
   let plusnew: Plusnew;

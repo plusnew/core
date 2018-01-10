@@ -13,7 +13,7 @@ import Counter from './Counter';
 type props = {};
 
 const component: component<props> = () => {
-  const local = store(0, state: number => state + 1)();
+  const local = store(0, state: number => state + 1);
 
   return {
     dependencies: { local },
