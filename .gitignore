@@ -5,3 +5,4 @@ node_modules
 /core
 .vscode
 test/coverage
+.idea/*
