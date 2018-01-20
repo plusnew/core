@@ -15,7 +15,7 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: D
             instance.children[i] = newInstance;
           }
         } else {
-          factory(newAbstractElement.props.children[i], instance, instance.previousAbstractSiblingCount);
+          instance.children.push(factory(newAbstractElement.props.children[i], instance, instance.getPreviousLength.bind(instance, i)));
         }
 
       }
