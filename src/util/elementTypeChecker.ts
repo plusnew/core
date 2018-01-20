@@ -23,7 +23,9 @@ export class ElementTypeChecker {
   }
 
   public isComponentElement(abstractElement: ApplicationElement) {
-    if (this.isArrayElement(abstractElement) === false && this.isTextElement(abstractElement) === false) {
+    if (this.isArrayElement(abstractElement) === false &&
+        this.isTextElement(abstractElement) === false &&
+        this.isPlaceholderElement(abstractElement) === false) {
       return typeof ((abstractElement as PlusnewAbstractElement).type) !== 'string';
     }
 
