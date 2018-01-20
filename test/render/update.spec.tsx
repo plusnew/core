@@ -158,4 +158,26 @@ describe('rendering the elements', () => {
 
     expect(container.innerHTML).toBe('bar');
   });
+
+
+  it('nested text-elements creation of not previously existing element', () => {
+    const local = redchain(true, (previousState, action: boolean) => action);
+    const component: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => local.state === true ? <div /> : <div>foo</div>,
+        dependencies: { local },
+      };
+    };
+    plusnew.render(component, container);
+
+    const target = container.childNodes[0] as HTMLElement;
+    expect(target.nodeName).toBe('DIV');
+    expect(target.innerHTML).toBe('');
+
+    local.dispatch(false);
+
+    const targetSecond = container.childNodes[0] as HTMLElement;
+    expect(targetSecond.nodeName).toBe('DIV');
+    expect(targetSecond.innerHTML).toBe('foo');
+  });
 });
