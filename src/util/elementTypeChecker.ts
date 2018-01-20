@@ -18,6 +18,10 @@ export class ElementTypeChecker {
     return false;
   }
 
+  public isPlaceholderElement(abstractElement: ApplicationElement) {
+    return abstractElement === false;
+  }
+
   public isComponentElement(abstractElement: ApplicationElement) {
     if (this.isArrayElement(abstractElement) === false && this.isTextElement(abstractElement) === false) {
       return typeof ((abstractElement as PlusnewAbstractElement).type) !== 'string';

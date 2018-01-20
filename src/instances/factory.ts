@@ -1,6 +1,7 @@
 import { ApplicationElement } from '../interfaces/component';
 import Instance from './types/Instance';
 import ArrayInstance from './types/Array/Instance';
+import PlaceHolderInstance from './types/PlaceHolder/Instance';
 import DomInstance from './types/Dom/Instance';
 import ComponentInstance from './types/Component/Instance';
 import TextInstance from './types/Text/Instance';
@@ -19,6 +20,9 @@ export default function (abstractElement: ApplicationElement, parentInstance: In
   }
   if (elementTypeChecker.isDomElement(abstractElement) === true) {
     return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
+  }
+  if (elementTypeChecker.isPlaceholderElement(abstractElement) === true) {
+    return new PlaceHolderInstance(abstractElement as false, parentInstance, previousAbstractSiblingCount);
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     return new ComponentInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);

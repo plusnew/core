@@ -180,4 +180,25 @@ describe('rendering the elements', () => {
     expect(targetSecond.nodeName).toBe('DIV');
     expect(targetSecond.innerHTML).toBe('foo');
   });
+
+  it('conditional rendering', () => {
+    const local = redchain(false, (previousState, action: boolean) => action);
+    const component: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => <div>{local.state && 'foo'}</div>,
+        dependencies: { local },
+      };
+    };
+    plusnew.render(component, container);
+
+    const target = container.childNodes[0] as HTMLElement;
+    expect(target.nodeName).toBe('DIV');
+    expect(target.innerHTML).toBe('');
+
+    local.dispatch(true);
+
+    const targetSecond = container.childNodes[0] as HTMLElement;
+    expect(targetSecond.nodeName).toBe('DIV');
+    expect(targetSecond.innerHTML).toBe('foo');
+  });
 });
