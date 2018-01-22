@@ -34,6 +34,9 @@ export class Reconciler {
         arrayReconcile(newAbstractElement as PlusnewAbstractElement[], instance as ArrayInstance);
       } else if (instance.type === types.Component) {
         componentReconcile(newAbstractElement as PlusnewAbstractElement, instance as ComponentInstance);
+      } else if (instance.type === types.Placeholder) {
+        // When its a placeholder, there is no need for updating, nothing will change there
+        // it will get replaced, but that's it
       } else {
         throw new Error('Updating this element is not yet implemented');
       }
@@ -47,7 +50,6 @@ export class Reconciler {
    * checks if the abstractElements are the same
    */
   public isSameAbstractElement(newAbstractElement: ApplicationElement, oldAbstractElement: ApplicationElement) {
-    // return this.isSameAbstractElementType(newAbstractElement, oldAbstractElement);
     // The following code does the key-property check, not yet stable
     if (this.isSameAbstractElementType(newAbstractElement, oldAbstractElement) === true) {
       if (elementTypeChecker.isComponentElement(newAbstractElement) === true || elementTypeChecker.isDomElement(newAbstractElement)) {
@@ -97,6 +99,16 @@ export class Reconciler {
 
     if (elementTypeChecker.isComponentElement(newAbstractElement)) {
       if (elementTypeChecker.isComponentElement(oldAbtractElement)) {
+        // newAbstractElement and oldAbtractElement are components, but are they the same function
+        return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
+      }
+
+      // newAbstractElement is a component, but oldAbtractElement isn't
+      return false;
+    }
+
+    if (elementTypeChecker.isPlaceholderElement(newAbstractElement)) {
+      if (elementTypeChecker.isPlaceholderElement(oldAbtractElement)) {
         // newAbstractElement and oldAbtractElement are components, but are they the same function
         return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
       }

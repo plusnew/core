@@ -181,11 +181,11 @@ describe('rendering the elements', () => {
     expect(targetSecond.innerHTML).toBe('foo');
   });
 
-  it('conditional rendering', () => {
+  it('conditional rendering - inclduing correct ordering', () => {
     const local = redchain(false, (previousState, action: boolean) => action);
     const component: component<{}, { local: typeof local }> = () => {
       return {
-        render: () => <div>{local.state && 'foo'}</div>,
+        render: () => <div><span />{local.state && 'foo'}<span /></div>,
         dependencies: { local },
       };
     };
@@ -193,12 +193,38 @@ describe('rendering the elements', () => {
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
-    expect(target.innerHTML).toBe('');
+    expect(target.childNodes.length).toBe(2);
+    expect(target.childNodes[0].nodeName).toBe('SPAN');
+    expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('');
+    expect(target.childNodes[1].nodeName).toBe('SPAN');
+    expect((target.childNodes[1] as HTMLElement).innerHTML).toBe('');
 
     local.dispatch(true);
 
-    const targetSecond = container.childNodes[0] as HTMLElement;
-    expect(targetSecond.nodeName).toBe('DIV');
-    expect(targetSecond.innerHTML).toBe('foo');
+    expect(target.childNodes.length).toBe(3);
+    expect(target.childNodes[0].nodeName).toBe('SPAN');
+    expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('');
+    expect(target.childNodes[1].nodeName).toBe('#text');
+    expect((target.childNodes[1] as Text).textContent).toBe('foo');
+    expect(target.childNodes[2].nodeName).toBe('SPAN');
+    expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('');
+  });
+
+  it('placeholder rendering - update', () => {
+    const local = redchain(0, (previousState, action: null) => previousState + 1);
+    const component: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => <div>{false}{local.state}</div>,
+        dependencies: { local },
+      };
+    };
+    plusnew.render(component, container);
+
+    const target = container.childNodes[0] as HTMLElement;
+    expect(target.innerHTML).toBe('0');
+
+    local.dispatch(null);
+
+    expect(target.innerHTML).toBe('1');
   });
 });
