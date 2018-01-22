@@ -42,7 +42,7 @@ export class Reconciler {
   /**
    * checks if the abstractElements are the same
    */
-  private isSameAbstractElement(newAbstractElement: ApplicationElement, oldAbstractElement: ApplicationElement) {
+  public isSameAbstractElement(newAbstractElement: ApplicationElement, oldAbstractElement: ApplicationElement) {
     return this.isSameAbstractElementType(newAbstractElement, oldAbstractElement);
     // The following code does the key-property check, not yet stable
     // if (this.isSameAbstractElementType(newAbstractElement, oldAbstractElement) === true) {
@@ -93,8 +93,19 @@ export class Reconciler {
       // newAbstractElement is a domElement, but oldAbtractElement isn't
       return false;
     }
+
     if (elementTypeChecker.isComponentElement(newAbstractElement)) {
       if (elementTypeChecker.isComponentElement(oldAbtractElement)) {
+        // newAbstractElement and oldAbtractElement are components, but are they the same function
+        return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
+      }
+
+      // newAbstractElement is a component, but oldAbtractElement isn't
+      return false;
+    }
+
+    if (elementTypeChecker.isPlaceholderElement(newAbstractElement)) {
+      if (elementTypeChecker.isPlaceholderElement(oldAbtractElement)) {
         // newAbstractElement and oldAbtractElement are components, but are they the same function
         return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
       }
