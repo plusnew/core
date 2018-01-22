@@ -40,6 +40,18 @@ export default abstract class ChildrenInstance extends Instance {
     return length;
   }
 
+
+  /**
+   * moves the children to another dom position
+   */
+  public move(position: number) {
+    for (let i = this.getLength(); i > 0; i -= 1) {
+      this.children[i].move(position);
+    }
+
+    return this;
+  }
+
   /**
    * removes the children from the dom
    */

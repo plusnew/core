@@ -82,8 +82,19 @@ export default class DomInstance extends ChildrenInstance {
   /**
    * by the children should add themselfs to our element
    */
-  public appendChild(element: Node) {
-    this.ref.appendChild(element);
+  public appendChild(element: Node, index: number) {
+    this.ref.insertBefore(element, this.ref.childNodes[index]);
+
+    return this;
+  }
+
+
+  /**
+   * moves the domnode from the parent
+   */
+  public move(position: number) {
+    const parentNode = (this.ref.parentNode as Node);
+    parentNode.insertBefore(this.ref, parentNode.childNodes[position].nextSibling);
 
     return this;
   }

@@ -15,6 +15,8 @@ import textReconcile from './types/Text/reconcile';
 import ComponentInstance from './types/Component/Instance';
 import componentReconcile from './types/Component/reconcile';
 
+import ArrayInstance from 'instances/types/Array/Instance';
+import arrayReconcile from 'instances/types/Array/reconcile';
 
 export class Reconciler {
   /**
@@ -28,6 +30,8 @@ export class Reconciler {
         domReconcile(newAbstractElement as PlusnewAbstractElement, instance as DomInstance);
       } else if (instance.type === types.Text) {
         textReconcile(newAbstractElement as 'string', instance as TextInstance);
+      } else if (instance.type === types.Array) {
+        arrayReconcile(newAbstractElement as PlusnewAbstractElement[], instance as ArrayInstance);
       } else if (instance.type === types.Component) {
         componentReconcile(newAbstractElement as PlusnewAbstractElement, instance as ComponentInstance);
       } else {
@@ -42,34 +46,31 @@ export class Reconciler {
   /**
    * checks if the abstractElements are the same
    */
-  private isSameAbstractElement(newAbstractElement: ApplicationElement, oldAbstractElement: ApplicationElement) {
-    return this.isSameAbstractElementType(newAbstractElement, oldAbstractElement);
+  public isSameAbstractElement(newAbstractElement: ApplicationElement, oldAbstractElement: ApplicationElement) {
+    // return this.isSameAbstractElementType(newAbstractElement, oldAbstractElement);
     // The following code does the key-property check, not yet stable
-    // if (this.isSameAbstractElementType(newAbstractElement, oldAbstractElement) === true) {
-    //   if (elementTypeChecker.isComponentElement(newAbstractElement) === true || elementTypeChecker.isDomElement(newAbstractElement)) {
-    //     if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
-    //       if ((oldAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
-    //         // newAbstractElement and oldAbstractElement, have a key - is it the same?
-    //         return (newAbstractElement as PlusnewAbstractElement).props.key === (oldAbstractElement as PlusnewAbstractElement).props.key 
-    //       } else {
-    //         // newAbstractElement has key, but oldAbstractElement has not
-    //         return false;
-    //       }
-    //     } else if ((oldAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
-    //       // newAbstractElement has no key, but oldAbstractElement has
-    //       return false;
-    //     } else {
-    //       // newAbstractElement and oldAbstractElement dont have a key, because of that its assumed they are the same
-    //       return true;
-    //     }
-    //   } else {
-    //     // newAbstractElement and oldAbstractElement, are either text or array. these are handled the same
-    //     return true;
-    //   }
-    // } else {
-    //   // it's not the same type, therefore it can't be the same element
-    //   return false;
-    // }
+    if (this.isSameAbstractElementType(newAbstractElement, oldAbstractElement) === true) {
+      if (elementTypeChecker.isComponentElement(newAbstractElement) === true || elementTypeChecker.isDomElement(newAbstractElement)) {
+        if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
+          if ((oldAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
+            // newAbstractElement and oldAbstractElement, have a key - is it the same?
+            return (newAbstractElement as PlusnewAbstractElement).props.key === (oldAbstractElement as PlusnewAbstractElement).props.key 
+          }
+          // newAbstractElement has key, but oldAbstractElement has not
+          return false;
+        }
+        if ((oldAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
+          // newAbstractElement has no key, but oldAbstractElement has
+          return false;
+        }
+        // newAbstractElement and oldAbstractElement dont have a key, because of that its assumed they are the same
+        return true;
+      }
+      // newAbstractElement and oldAbstractElement, are either text or array. these are handled the same
+      return true;
+    }
+    // it's not the same type, therefore it can't be the same element
+    return false;
   }
 
   /**
@@ -93,6 +94,7 @@ export class Reconciler {
       // newAbstractElement is a domElement, but oldAbtractElement isn't
       return false;
     }
+
     if (elementTypeChecker.isComponentElement(newAbstractElement)) {
       if (elementTypeChecker.isComponentElement(oldAbtractElement)) {
         // newAbstractElement and oldAbtractElement are components, but are they the same function

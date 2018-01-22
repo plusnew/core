@@ -5,6 +5,7 @@ describe('Does the root-instance behave correctly', () => {
   beforeEach(() => {
     class TestInstance extends Abstract {
       getLength() {return 0;}
+      move() { return this;}
       remove() { return this;}
     }
 

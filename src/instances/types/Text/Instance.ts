@@ -24,6 +24,16 @@ export default class TextInstance extends Instance {
     return this;
   }
 
+    /**
+   * moves this textnode inside the dom
+   */
+  public move(position: number) {
+    const parentNode = (this.ref.parentNode as Node);
+    parentNode.insertBefore(this.ref, parentNode.childNodes[position].nextSibling);
+
+    return this;
+  }
+
   /**
    * removes this textnode from the dom
    */

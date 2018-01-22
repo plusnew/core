@@ -69,6 +69,15 @@ export default class ComponentInstance extends Instance {
     return this;
   }
 
+  /**
+   * moves the children to another dom position
+   */
+  public move(position: number) {
+    this.children.move(position);
+
+    return this;
+  }
+
   public getLength() {
     return this.children.getLength();
   }

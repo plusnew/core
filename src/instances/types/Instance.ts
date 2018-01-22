@@ -43,7 +43,13 @@ export default abstract class Instance {
   public abstract getLength(): number;
 
   /**
+   * orders to move itself to another place
+   */
+  public abstract move(position: number): Instance;
+
+  /**
    * orders to remove itself from the dom
    */
   public abstract remove(): Instance;
+
 }
