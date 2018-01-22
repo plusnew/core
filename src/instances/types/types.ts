@@ -5,7 +5,7 @@ enum InstanceTypes {
   Dom,
   Array,
   Text,
-  PlaceHolder,
+  Placeholder,
   Component,
   Root,
 }

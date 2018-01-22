@@ -209,4 +209,22 @@ describe('rendering the elements', () => {
     expect(target.childNodes[2].nodeName).toBe('SPAN');
     expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('');
   });
+
+  it('placeholder rendering - update', () => {
+    const local = redchain(0, (previousState, action: null) => previousState + 1);
+    const component: component<{}, { local: typeof local }> = () => {
+      return {
+        render: () => <div>{false}{local.state}</div>,
+        dependencies: { local },
+      };
+    };
+    plusnew.render(component, container);
+
+    const target = container.childNodes[0] as HTMLElement;
+    expect(target.innerHTML).toBe('0');
+
+    local.dispatch(null);
+
+    expect(target.innerHTML).toBe('1');
+  });
 });

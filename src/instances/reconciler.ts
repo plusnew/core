@@ -30,6 +30,9 @@ export class Reconciler {
         textReconcile(newAbstractElement as 'string', instance as TextInstance);
       } else if (instance.type === types.Component) {
         componentReconcile(newAbstractElement as PlusnewAbstractElement, instance as ComponentInstance);
+      } else if (instance.type === types.Placeholder) {
+        // When its a placeholder, there is no need for updating, nothing will change there
+        // it will get replaced, but that's it
       } else {
         throw new Error('Updating this element is not yet implemented');
       }

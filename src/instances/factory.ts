@@ -1,7 +1,7 @@
 import { ApplicationElement } from '../interfaces/component';
 import Instance from './types/Instance';
 import ArrayInstance from './types/Array/Instance';
-import PlaceHolderInstance from './types/PlaceHolder/Instance';
+import PlaceHolderInstance from './types/Placeholder/Instance';
 import DomInstance from './types/Dom/Instance';
 import ComponentInstance from './types/Component/Instance';
 import TextInstance from './types/Text/Instance';
