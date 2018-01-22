@@ -20,7 +20,7 @@ const component: component<props> = () => {
     render: (props: props) =>
       <div>
         <button
-          onclick={(evt: KeyboardEvent) => local.dispatch()}
+          onclick={(evt: MouseEvent) => local.dispatch()}
         />
         <Counter value={local.state} />
       </div>,
