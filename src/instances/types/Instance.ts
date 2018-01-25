@@ -22,6 +22,7 @@ export default abstract class Instance {
     } else {
       this.parentInstance.appendChild(element, index);
     }
+
     return this;
   }
 
@@ -34,6 +35,7 @@ export default abstract class Instance {
     } else {
       this.parentInstance.appendChild(element, index);
     }
+
     return this;
   }
 

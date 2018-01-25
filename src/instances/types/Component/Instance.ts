@@ -37,6 +37,8 @@ export default class ComponentInstance extends Instance {
   private handleChildren() {
     const abstractChildren = this.componentResult.render(this.abstractElement.props, this.componentResult.dependencies);
     this.children = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
+
+    return this;
   }
 
   /**

@@ -27,6 +27,8 @@ export default abstract class ChildrenInstance extends Instance {
     for (let i = 0; i < children.length; i += 1) {
       this.children.push(factory(children[i], this, this.getPreviousLength.bind(this, i)));
     }
+
+    return this;
   }
 
   /**
