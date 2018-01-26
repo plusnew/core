@@ -100,23 +100,27 @@ describe('rendering nested components', () => {
       initialList.push(li);
     });
 
-    // dependencies.local.dispatch([
-    //   { key: 1, value: 'previously second' },
-    //   { key: 4, value: 'zero' },
-    //   { key: 2, value: 'previously third' },
-    //   { key: 0, value: 'previously first' },
-    // ]);
+    const newList = [
+      { key: 1, value: 'previously second' },
+      { key: 4, value: 'zero' },
+      { key: 2, value: 'previously third' },
+      { key: 0, value: 'previously first' },
+    ];
+    (window as any).foo = true;
+    dependencies.local.dispatch(newList);
+    (window as any).foo = false;
 
-    // debugger;
-    // expect(ul.childNodes.length).toBe(4);
-    // ul.childNodes.forEach((li: Node, index) => {
-    //   if (index === 0) {
-    //     expect((li as HTMLElement).tagName).toBe('LI');
-    //     expect((li as HTMLElement).innerHTML).toBe('zero');
-    //   } else {
-    //     expect((li as Node)).toBe(initialList[index - 1]);
-    //     expect((li as HTMLElement).innerHTML).toBe(list[index - 1].value);
-    //   }
-    // });
+    expect(ul.childNodes.length).toBe(newList.length);
+
+    newList.forEach((newListItem, newListIndex) => {
+      for (let i = 0; i < list.length; i += 1) {
+        if (newListItem.key === list[i].key) {
+          console.log(initialList[i]);
+          expect(ul.childNodes[newListIndex]).toBe(initialList[i]);
+        }
+      }
+      expect((ul.childNodes[newListIndex] as HTMLElement).tagName).toBe('LI');
+      expect((ul.childNodes[newListIndex] as HTMLElement).innerHTML).toBe(newListItem.value);
+    });
   });
 });
