@@ -106,21 +106,60 @@ describe('rendering nested components', () => {
       { key: 2, value: 'previously third' },
       { key: 0, value: 'previously first' },
     ];
-    (window as any).foo = true;
+
     dependencies.local.dispatch(newList);
-    (window as any).foo = false;
 
     expect(ul.childNodes.length).toBe(newList.length);
 
     newList.forEach((newListItem, newListIndex) => {
       for (let i = 0; i < list.length; i += 1) {
         if (newListItem.key === list[i].key) {
-          console.log(initialList[i]);
           expect(ul.childNodes[newListIndex]).toBe(initialList[i]);
         }
       }
       expect((ul.childNodes[newListIndex] as HTMLElement).tagName).toBe('LI');
       expect((ul.childNodes[newListIndex] as HTMLElement).innerHTML).toBe(newListItem.value);
     });
+  });
+
+  it('rerendering with different order and inserted elements', () => {
+    const dependencies = {
+      local: store(list, (previousStore, action: typeof list) => action),
+    };
+
+    const PartialComponent:component<{value: string}> = () => {
+      return {
+        dependencies: {},
+        render: props => props.value,
+      };
+    };
+
+    const MainComponent: component<{}, typeof dependencies> = () => {
+      return {
+        dependencies,
+        render: (props, { local }: typeof dependencies) => <span>{local.state.map(item => <PartialComponent key={item.key} value={item.value}/>)}</span>,
+      };
+    };
+
+    plusnew.render(MainComponent, container);
+
+    const span = container.childNodes[0] as HTMLElement;
+    expect(container.childNodes.length).toBe(1);
+    expect(span.tagName).toBe('SPAN');
+    expect(span.childNodes.length).toBe(list.length);
+    const initialList: Node[] = [];
+    span.childNodes.forEach((li: Node, index) => {
+      expect((li as Text).textContent).toBe(list[index].value);
+      initialList.push(li);
+    });
+
+
+    const newList = [
+      { key: 2, value: 'previously third' },
+      { key: 1, value: 'previously second' },
+      { key: 4, value: 'zero' },
+    ];
+
+    dependencies.local.dispatch(newList);
   });
 });

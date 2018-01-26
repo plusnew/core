@@ -31,13 +31,10 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
         instance.children[oldIndex].previousAbstractSiblingCount = previousLength;
         // instance should move to the new position
         instance.children.splice(i, 0, instance.children[oldIndex]);
+
         // remove old instance
-        // debugger;
-        if (i < oldIndex) {
-          instance.children.splice(oldIndex + 1, 1);
-        } else {
-          instance.children.splice(oldIndex, 1);
-        }
+        // it needs the +1 offset, because a line before it just got inserted and the oldIndex is one after it was before
+        instance.children.splice(oldIndex + 1, 1);
 
         instance.children[i].move(i);
         reconciler.update(newAbstractElement, instance.children[i]);

@@ -29,7 +29,7 @@ export default class TextInstance extends Instance {
    */
   public move(position: number) {
     const parentNode = (this.ref.parentNode as Node);
-    parentNode.insertBefore(this.ref, parentNode.childNodes[position].nextSibling);
+    parentNode.insertBefore(this.ref, parentNode.childNodes[position]);
 
     return this;
   }

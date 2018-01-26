@@ -94,7 +94,6 @@ export default class DomInstance extends ChildrenInstance {
    */
   public move(position: number) {
     const parentNode = (this.ref.parentNode as Node);
-    if ('foo' in window) { debugger;}
     parentNode.insertBefore(this.ref, parentNode.childNodes[position]);
 
     return this;
