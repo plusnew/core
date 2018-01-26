@@ -161,5 +161,16 @@ describe('rendering nested components', () => {
     ];
 
     dependencies.local.dispatch(newList);
+
+    expect(span.childNodes.length).toBe(3);
+
+    newList.forEach((newListItem, newListIndex) => {
+      for (let i = 0; i < list.length; i += 1) {
+        if (newListItem.key === list[i].key) {
+          expect(span.childNodes[newListIndex]).toBe(initialList[i]);
+        }
+      }
+      expect((span.childNodes[newListIndex] as Text).textContent).toBe(newListItem.value);
+    });
   });
 });
