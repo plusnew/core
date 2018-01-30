@@ -17,10 +17,9 @@ function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractEle
 export default function (newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance) {
   for (let i = 0; i < newAbstractElements.length; i += 1) {
     const newAbstractElement = newAbstractElements[i];
-    const oldAbstractElement = instance.children[i].abstractElement;
     const previousLength = instance.getPreviousLength.bind(instance, i);
 
-    if (reconciler.isSameAbstractElement(newAbstractElement, oldAbstractElement)) {
+    if (i < instance.children.length && reconciler.isSameAbstractElement(newAbstractElement, instance.children[i].abstractElement)) {
       instance.children[i].previousAbstractSiblingCount = previousLength;
       reconciler.update(newAbstractElement, instance.children[i]);
     } else {

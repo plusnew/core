@@ -75,6 +75,39 @@ describe('rendering nested components', () => {
     });
   });
 
+  it('does a initial empty list work, and updating it', () => {
+    const dependencies = {
+      local: store([] as typeof list, (store, action: typeof list) => action),
+    };
+
+    const MainComponent: component<{}, typeof dependencies> = () => {
+      return {
+        dependencies,
+        render: (props, { local }: typeof dependencies) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
+      };
+    };
+
+    plusnew.render(MainComponent, container);
+
+    const ul = container.childNodes[0] as HTMLElement;
+    expect(container.childNodes.length).toBe(1);
+    expect(ul.tagName).toBe('UL');
+    expect(ul.childNodes.length).toBe(0);
+
+    dependencies.local.dispatch(list);
+    expect(ul.childNodes.length).toBe(list.length);
+
+    ul.childNodes.forEach((li: Node, index) => {
+      expect((li as HTMLElement).tagName).toBe('LI');
+      if (index === 3) {
+        expect((li as HTMLElement).innerHTML).toBe('foo');
+      } else {
+        expect((li as HTMLElement).innerHTML).toBe(list[index].value);
+      }
+    });
+  });
+
+
   it('rerendering with different order and inserted elements', () => {
     const dependencies = {
       local: store(list, (previousStore, action: typeof list) => action),
