@@ -15,8 +15,8 @@ import textReconcile from './types/Text/reconcile';
 import ComponentInstance from './types/Component/Instance';
 import componentReconcile from './types/Component/reconcile';
 
-import ArrayInstance from 'instances/types/Array/Instance';
-import arrayReconcile from 'instances/types/Array/reconcile';
+import ArrayInstance from './types/Array/Instance';
+import arrayReconcile from './types/Array/reconcile';
 
 export class Reconciler {
   /**
