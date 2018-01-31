@@ -19,7 +19,10 @@ export class ElementTypeChecker {
   }
 
   public isPlaceholderElement(abstractElement: ApplicationElement) {
-    return abstractElement === false;
+    return abstractElement === false ||
+           abstractElement === true ||
+           abstractElement === null ||
+           abstractElement === undefined;
   }
 
   public isComponentElement(abstractElement: ApplicationElement) {

@@ -109,4 +109,54 @@ describe('rendering the elements', () => {
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('1');
   });
+
+  it('check if null is created on root', () => {
+    const component: component = () => {
+      return {
+        render: () => null,
+        dependencies: {},
+      };
+    };
+
+    plusnew.render(component, container);
+    expect(container.childNodes.length).toBe(0);
+  });
+
+  it('check if undefined is created on root', () => {
+    const component: component = () => {
+      return {
+        render: () => undefined,
+        dependencies: {},
+      };
+    };
+
+    plusnew.render(component, container);
+    expect(container.childNodes.length).toBe(0);
+  });
+
+
+
+  it('check if true is created on root', () => {
+    const component: component = () => {
+      return {
+        render: () => true,
+        dependencies: {},
+      };
+    };
+
+    plusnew.render(component, container);
+    expect(container.childNodes.length).toBe(0);
+  });
+
+  it('check if true is created on root', () => {
+    const component: component = () => {
+      return {
+        render: () => false,
+        dependencies: {},
+      };
+    };
+
+    plusnew.render(component, container);
+    expect(container.childNodes.length).toBe(0);
+  });
 });

@@ -1,7 +1,13 @@
 import { store } from 'redchain';
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
 
-export type ApplicationElement = PlusnewAbstractElement | (PlusnewAbstractElement | string | number)[] | string | number | false;
+export type ApplicationElement = PlusnewAbstractElement |
+                                 string |
+                                 number |
+                                 boolean |
+                                 null |
+                                 undefined |
+                                 (PlusnewAbstractElement | string | number | boolean | null | undefined)[];
 
 export interface props {
   [key: string]: any;

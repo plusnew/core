@@ -12,17 +12,18 @@ import elementTypeChecker from '../util/elementTypeChecker';
  * because data from jsx can be anything, this factory is needed to decide what type of instance should be created
  */
 export default function (abstractElement: ApplicationElement, parentInstance: Instance, previousAbstractSiblingCount: () => number): Instance {
+  // @TODO add something for invalid functions
+  if (elementTypeChecker.isPlaceholderElement(abstractElement) === true) {
+    return new PlaceHolderInstance(abstractElement as false, parentInstance, previousAbstractSiblingCount);
+  }
   if (elementTypeChecker.isTextElement(abstractElement) === true) {
     return new TextInstance(abstractElement as string, parentInstance, previousAbstractSiblingCount);
   }
   if (elementTypeChecker.isArrayElement(abstractElement) === true) {
-    return new ArrayInstance(abstractElement as (PlusnewAbstractElement | string)[], parentInstance, previousAbstractSiblingCount);
+    return new ArrayInstance(abstractElement as (PlusnewAbstractElement)[], parentInstance, previousAbstractSiblingCount);
   }
   if (elementTypeChecker.isDomElement(abstractElement) === true) {
     return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
-  }
-  if (elementTypeChecker.isPlaceholderElement(abstractElement) === true) {
-    return new PlaceHolderInstance(abstractElement as false, parentInstance, previousAbstractSiblingCount);
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     return new ComponentInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
