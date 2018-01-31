@@ -1,7 +1,9 @@
 import Plusnew from 'index';
+import store from 'redchain';
 import component from 'interfaces/component';
 
 describe('rendering the elements', () => {
+  const local = store(0, (previousState, action: undefined) => previousState + 1);
   let plusnew: Plusnew;
   let container: HTMLElement;
   beforeEach(() => {
@@ -114,12 +116,13 @@ describe('rendering the elements', () => {
     const component: component = () => {
       return {
         render: () => null,
-        dependencies: {},
+        dependencies: { local },
       };
     };
 
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(0);
+    local.dispatch(undefined);
   });
 
   it('check if undefined is created on root', () => {
@@ -140,23 +143,25 @@ describe('rendering the elements', () => {
     const component: component = () => {
       return {
         render: () => true,
-        dependencies: {},
+        dependencies: { local },
       };
     };
 
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(0);
+    local.dispatch(undefined);
   });
 
   it('check if true is created on root', () => {
     const component: component = () => {
       return {
         render: () => false,
-        dependencies: {},
+        dependencies: { local },
       };
     };
 
     plusnew.render(component, container);
     expect(container.childNodes.length).toBe(0);
+    local.dispatch(undefined);
   });
 });

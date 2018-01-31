@@ -11,7 +11,9 @@ export class ElementTypeChecker {
   }
 
   public isDomElement(abstractElement: ApplicationElement) {
-    if (this.isArrayElement(abstractElement) === false && this.isTextElement(abstractElement) === false) {
+    if (this.isPlaceholderElement(abstractElement) === false && 
+        this.isArrayElement(abstractElement) === false &&
+        this.isTextElement(abstractElement) === false) {
       return typeof ((abstractElement as PlusnewAbstractElement).type) === 'string';
     }
 

@@ -26,7 +26,10 @@ export class Reconciler {
    */
   public update(newAbstractElement: ApplicationElement, instance: Instance): Instance {
     if (this.isSameAbstractElement(newAbstractElement, instance.abstractElement)) {
-      if (instance.type === types.Dom) {
+      if (instance.type === types.Placeholder) {
+        // When its a placeholder, there is no need for updating, nothing will change there
+        // it will get replaced, but that's it
+      } else if (instance.type === types.Dom) {
         domReconcile(newAbstractElement as PlusnewAbstractElement, instance as DomInstance);
       } else if (instance.type === types.Text) {
         textReconcile(newAbstractElement as 'string', instance as TextInstance);
@@ -34,9 +37,6 @@ export class Reconciler {
         arrayReconcile(newAbstractElement as PlusnewAbstractElement[], instance as ArrayInstance);
       } else if (instance.type === types.Component) {
         componentReconcile(newAbstractElement as PlusnewAbstractElement, instance as ComponentInstance);
-      } else if (instance.type === types.Placeholder) {
-        // When its a placeholder, there is no need for updating, nothing will change there
-        // it will get replaced, but that's it
       } else {
         throw new Error('Updating this element is not yet implemented');
       }
@@ -56,7 +56,7 @@ export class Reconciler {
         if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
           if ((oldAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
             // newAbstractElement and oldAbstractElement, have a key - is it the same?
-            return (newAbstractElement as PlusnewAbstractElement).props.key === (oldAbstractElement as PlusnewAbstractElement).props.key 
+            return (newAbstractElement as PlusnewAbstractElement).props.key === (oldAbstractElement as PlusnewAbstractElement).props.key;
           }
           // newAbstractElement has key, but oldAbstractElement has not
           return false;
@@ -79,6 +79,10 @@ export class Reconciler {
    * checks if the abstractElements are the same type
    */
   private isSameAbstractElementType(newAbstractElement: ApplicationElement, oldAbtractElement: ApplicationElement) {
+    if (elementTypeChecker.isPlaceholderElement(newAbstractElement)) {
+      return elementTypeChecker.isPlaceholderElement(oldAbtractElement);
+    }
+
     if (elementTypeChecker.isTextElement(newAbstractElement)) {
       return elementTypeChecker.isTextElement(oldAbtractElement);
     }
@@ -99,16 +103,6 @@ export class Reconciler {
 
     if (elementTypeChecker.isComponentElement(newAbstractElement)) {
       if (elementTypeChecker.isComponentElement(oldAbtractElement)) {
-        // newAbstractElement and oldAbtractElement are components, but are they the same function
-        return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
-      }
-
-      // newAbstractElement is a component, but oldAbtractElement isn't
-      return false;
-    }
-
-    if (elementTypeChecker.isPlaceholderElement(newAbstractElement)) {
-      if (elementTypeChecker.isPlaceholderElement(oldAbtractElement)) {
         // newAbstractElement and oldAbtractElement are components, but are they the same function
         return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
       }
