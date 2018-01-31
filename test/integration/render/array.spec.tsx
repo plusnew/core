@@ -206,4 +206,71 @@ describe('rendering nested components', () => {
       expect((span.childNodes[newListIndex] as Text).textContent).toBe(newListItem.value);
     });
   });
+
+  it('rerendering with different order and inserted elements', () => {
+    const dependencies = {
+      local: store(list, (previousStore, action: typeof list) => action),
+    };
+
+    const PartialComponent:component<{value: string}> = () => {
+      return {
+        dependencies: {},
+        render: props => [<span key={0}>{props.value}0</span>,<div key={1}>{props.value}1</div>],
+      };
+    };
+
+    const MainComponent: component<{}, typeof dependencies> = () => {
+      return {
+        dependencies,
+        render: (props, { local }: typeof dependencies) => <span>{local.state.map(item => <PartialComponent key={item.key} value={item.value}/>)}</span>,
+      };
+    };
+
+    plusnew.render(MainComponent, container);
+
+    const span = container.childNodes[0] as HTMLElement;
+    expect(container.childNodes.length).toBe(1);
+    expect(span.tagName).toBe('SPAN');
+    expect(span.childNodes.length).toBe(list.length * 2);
+    const initialList: (HTMLElement[])[] = [];
+    list.forEach((listItem, index) => {
+      const firstChild = span.childNodes[index * 2] as HTMLSpanElement;
+      const secondChild = span.childNodes[index * 2 + 1] as HTMLDivElement;
+
+      expect(firstChild.tagName).toBe('SPAN');
+      expect(firstChild.innerHTML).toBe(listItem.value + 0);
+      expect(secondChild.tagName).toBe('DIV');
+      expect(secondChild.innerHTML).toBe(listItem.value + 1);
+      
+      initialList.push([firstChild, secondChild]);
+    });
+
+
+    const newList = [
+      { key: 2, value: 'previously third' },
+      { key: 1, value: 'previously second' },
+      { key: 4, value: 'zero' },
+    ];
+
+    dependencies.local.dispatch(newList);
+
+    expect(span.childNodes.length).toBe(newList.length * 2);
+
+    newList.forEach((newListItem, newListIndex) => {
+
+      const firstChild = span.childNodes[newListIndex * 2] as HTMLElement;
+      const secondChild = span.childNodes[newListIndex * 2 + 1] as HTMLElement;
+
+      for (let i = 0; i < list.length; i += 1) {
+        if (newListItem.key === list[i].key) {
+          expect(firstChild).toBe(initialList[i][0]);
+          expect(secondChild).toBe(initialList[i][1]);
+        }
+      }
+      expect(firstChild.tagName).toBe('SPAN');
+      expect(firstChild.innerHTML).toBe(newListItem.value + 0);
+      expect(secondChild.tagName).toBe('DIV');
+      expect(secondChild.innerHTML).toBe(newListItem.value + 1);
+    });
+  });
 });
