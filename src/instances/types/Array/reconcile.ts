@@ -35,7 +35,7 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
         // it needs the +1 offset, because a line before it just got inserted and the oldIndex is one after it was before
         instance.children.splice(oldIndex + 1, 1);
 
-        instance.children[i].move(i);
+        instance.children[i].move(previousLength());
         reconciler.update(newAbstractElement, instance.children[i]);
       }
     }

@@ -48,7 +48,7 @@ export default abstract class ChildrenInstance extends Instance {
    */
   public move(position: number) {
     for (let i = this.getLength(); i > 0; i -= 1) {
-      this.children[i].move(position);
+      this.children[i - 1].move(position);
     }
 
     return this;
