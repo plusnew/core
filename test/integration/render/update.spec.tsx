@@ -1,7 +1,6 @@
 import redchain, { store } from 'redchain';
 import Plusnew from 'index';
-import component from 'interfaces/component';
-
+import factory from 'components/factory';
 
 describe('rendering the elements', () => {
   let plusnew: Plusnew;
@@ -22,13 +21,12 @@ describe('rendering the elements', () => {
   });
 
   it('does a value change with store', () => {
-    const component: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => <div className={local.state}>{local.state}</div>,
-        dependencies: { local },
-      };
-    };
-    plusnew.render(component, container);
+    const Component = factory(
+      () => ({ local }), 
+      (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
+    );
+
+    plusnew.render(Component, container);
 
     expect(container.childNodes.length).toBe(1);
 
@@ -48,14 +46,12 @@ describe('rendering the elements', () => {
   });
 
   it('with the same values, all objects should be the same', () => {
-    const component: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => <div className={local.state}>{local.state}</div>,
-        dependencies: { local },
-      };
-    };
+    const Component = factory(
+      () => ({ local }), 
+      (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
+    );
 
-    plusnew.render(component, container);
+    plusnew.render(Component, container);
 
     expect(container.childNodes.length).toBe(1);
 
@@ -74,101 +70,97 @@ describe('rendering the elements', () => {
   });
 
   it('does a value change with store with JSX.Element to string', () => {
-    const component: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => local.state === 'foo' ? <div>{local.state}</div> : local.state,
-        dependencies: { local },
-      };
-    };
-    plusnew.render(component, container);
+    const Component = factory(
+      () => ({ local }), 
+      (props: {}, { local }) => local.state === 'foo' ? <div><span>{local.state}</span></div> : <div>{local.state}</div>,
+    );
+
+    plusnew.render(Component, container);
 
     expect(container.childNodes.length).toBe(1);
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
-    expect(target.innerHTML).toBe('foo');
+    expect(target.childNodes[0].nodeName).toBe('SPAN');
+    expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
 
     local.dispatch('bar');
 
-    expect(container.innerHTML).toBe('bar');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('bar');
   });
 
 
   it('does a value change with store with string to JSX.Element', () => {
-    const component: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => local.state === 'foo' ? local.state : <div>{local.state}</div>,
-        dependencies: { local },
-      };
-    };
-    plusnew.render(component, container);
 
-    expect(container.innerHTML).toBe('foo');
+    const Component = factory(
+      () => ({ local }), 
+      (props: {}, { local }) => local.state === 'foo' ? <div>{local.state}</div> : <div><span>{local.state}</span></div>,
+    );
+
+    plusnew.render(Component, container);
+
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
 
     local.dispatch('bar');
 
-    expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
-    expect(target.innerHTML).toBe('bar');
+    expect(target.childNodes[0].nodeName).toBe('SPAN');
+    expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('bar');
   });
 
   it('does a value change with store with string to JSX.Element[]', () => {
-    const component: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => local.state === 'foo' ? local.state : [<div>{local.state}</div>, <span>{local.state}</span>],
-        dependencies: { local },
-      };
-    };
-    plusnew.render(component, container);
+    const Component = factory(
+      () => ({ local }), 
+      (props: {}, { local }) => local.state === 'foo' ? <span>{local.state}</span> : <span><div>{local.state}</div><span>{local.state}</span></span>,
+    );
 
-    expect(container.innerHTML).toBe('foo');
+    plusnew.render(Component, container);
+
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
 
     local.dispatch('bar');
 
-    expect(container.childNodes.length).toBe(2);
-    const target = container.childNodes[0] as HTMLElement;
+    expect(container.childNodes[0].childNodes.length).toBe(2);
+    const target = container.childNodes[0].childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
     expect(target.innerHTML).toBe('bar');
 
-    const targetSecond = container.childNodes[1] as HTMLElement;
+    const targetSecond = container.childNodes[0].childNodes[1] as HTMLElement;
     expect(targetSecond.nodeName).toBe('SPAN');
     expect(targetSecond.innerHTML).toBe('bar');
   });
 
   it('does a value change with store with JSX.Element[] to string', () => {
-    const component: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => local.state === 'foo' ? [<div>{local.state}</div>, <span>{local.state}</span>] : local.state,
-        dependencies: { local },
-      };
-    };
-    plusnew.render(component, container);
+    const Component = factory(
+      () => ({ local }), 
+      (props: {}, { local }) => local.state === 'foo' ? <span>{[<div>{local.state}</div>, <span>{local.state}</span>]}</span> : <span>{local.state}</span>,
+    );
 
-    expect(container.childNodes.length).toBe(2);
-    const target = container.childNodes[0] as HTMLElement;
+    plusnew.render(Component, container);
+
+    expect(container.childNodes[0].childNodes.length).toBe(2);
+    const target = container.childNodes[0].childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
     expect(target.innerHTML).toBe('foo');
 
-    const targetSecond = container.childNodes[1] as HTMLElement;
+    const targetSecond = container.childNodes[0].childNodes[1] as HTMLElement;
     expect(targetSecond.nodeName).toBe('SPAN');
     expect(targetSecond.innerHTML).toBe('foo');
-
     local.dispatch('bar');
 
-    expect(container.innerHTML).toBe('bar');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('bar');
   });
 
 
   it('nested text-elements creation of not previously existing element', () => {
     const local = redchain(true, (previousState, action: boolean) => action);
-    const component: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => local.state === true ? <div /> : <div>foo</div>,
-        dependencies: { local },
-      };
-    };
-    plusnew.render(component, container);
+    const Component = factory(
+      () => ({ local }), 
+      (props: {}, { local }) => local.state === true ? <div /> : <div>foo</div>,
+    );
+
+    plusnew.render(Component, container);
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
@@ -183,16 +175,15 @@ describe('rendering the elements', () => {
 
   it('conditional rendering - inclduing correct ordering', () => {
     const local = redchain(false, (previousState, action: boolean) => action);
-    const component: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => <div><span />{local.state && 'foo'}<span /></div>,
-        dependencies: { local },
-      };
-    };
-    plusnew.render(component, container);
+    const Component = factory(
+      () => ({ local }),
+      (props: {}, { local }) => <div><span />{local.state && 'foo'}<span /></div>,
+    );
+    plusnew.render(Component, container);
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
+
     expect(target.childNodes.length).toBe(2);
     expect(target.childNodes[0].nodeName).toBe('SPAN');
     expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('');
@@ -212,13 +203,11 @@ describe('rendering the elements', () => {
 
   it('placeholder rendering - update', () => {
     const local = redchain(0, (previousState, action: null) => previousState + 1);
-    const component: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => <div>{false}{local.state}</div>,
-        dependencies: { local },
-      };
-    };
-    plusnew.render(component, container);
+    const Component = factory(
+      () => ({ local }),
+      (props: {}, { local }) => <div>{false}{local.state}</div>,
+    );
+    plusnew.render(Component, container);
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.innerHTML).toBe('0');

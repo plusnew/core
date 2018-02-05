@@ -1,5 +1,5 @@
 import Plusnew from 'index';
-import component from 'interfaces/component';
+import factory from 'components/factory';
 import store from 'redchain';
 
 describe('rendering nested components', () => {
@@ -21,13 +21,11 @@ describe('rendering nested components', () => {
       local.dispatch('bar');
     });
 
-    const component: component<{}, {}> = () => {
-      return {
-        render: () => <input onchange={change} value={local.state}/>,
-        dependencies: { local },
-      };
-    };
-
+    const component = factory(
+      () => ({ local }), 
+      (props: {}, { local }) => <input onchange={change} value={local.state}/>,
+    );
+    
     plusnew.render(component, container);
 
     const input = document.getElementsByTagName('input')[0];

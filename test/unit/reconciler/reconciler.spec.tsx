@@ -1,6 +1,6 @@
 import Plusnew from 'index';
 import reconciler from 'instances/reconciler';
-import component from 'interfaces/component';
+import component from 'components/factory';
 
 describe('checking if reconciler works as expected', () => {
   describe('placeholder elements', () => {
@@ -23,12 +23,10 @@ describe('checking if reconciler works as expected', () => {
       });
 
       it('placeholder same as component', () => {
-        const Component = () => {
-          return {
-            render: () => <div />,
-            dependencies: {},
-          };
-        };
+        const Component = component(
+          () => ({}),
+          () => <div />,
+        );
         expect(reconciler.isSameAbstractElement(false, <Component />)).toBe(false);
       });
     });
@@ -68,30 +66,23 @@ describe('checking if reconciler works as expected', () => {
       });
 
       it('same as component', () => {
-        const Component: component = () => {
-          return {
-            render: () => <div />,
-            dependencies: {},
-          };
-        };
+        const Component = component(
+          () => ({}),
+          () => <div />,
+        );
         expect(reconciler.isSameAbstractElement(false, <Component />)).toBe(false);
       });
     });
 
     describe('component', () => {
-      let Component: component;
-      let AnotherComponent: component;
-      beforeEach(() => {
-        Component = () => ({
-          render: () => <div />,
-          dependencies: {},
-        });
-
-        AnotherComponent = () => ({
-          render: () => <div />,
-          dependencies: {},
-        });
-      });
+      const Component = component(
+        () => ({}),
+        () => <div />,
+      );
+      const AnotherComponent = component(
+        () => ({}),
+        () => <div />,
+      );
 
       it('are components the same', () => {
         expect(reconciler.isSameAbstractElement(<Component />, <Component />)).toBe(true);
