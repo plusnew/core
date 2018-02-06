@@ -12,7 +12,7 @@ import Counter from './Counter';
 
 const INITIAL_COUNTER_VALUE = 0;
 
-const component = component(
+export default component(
   // Function who returns all dependencies, when the component should rerender
   () => ({ counter:  store(INITIAL_COUNTER_VALUE, state: number => state + 1) }),
 
@@ -26,7 +26,5 @@ const component = component(
     </div>,
   };
 };
-
-export default component;
 
 ```
