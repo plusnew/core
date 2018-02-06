@@ -1,6 +1,6 @@
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
 import { store } from 'redchain';
-import ComponentInstance from 'instances/types/Component/Instance';
+import ComponentInstance from '../instances/types/Component/Instance';
 
 export type ApplicationElement = PlusnewAbstractElement |
                                  string |
