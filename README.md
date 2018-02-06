@@ -24,7 +24,6 @@ export default component(
       />
       <Counter value={counter.state} />
     </div>,
-  };
-};
+);
 
 ```
