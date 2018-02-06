@@ -12,5 +12,9 @@ declare global {
     interface IntrinsicElements {
       [elementName: string]: any;
     }
+
+    interface IntrinsicAttributes {
+      key?: string | number;
+    }
   }
 }
