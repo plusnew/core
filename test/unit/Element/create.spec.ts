@@ -1,4 +1,5 @@
 import Plusnew from 'index';
+import factory from 'components/factory';
 
 describe('checking if createElement works as expected', () => {
   let plusnew: Plusnew;
@@ -62,12 +63,10 @@ describe('checking if createElement works as expected', () => {
   });
 
   it('check if component gets safed', () => {
-    const component = () => {
-      return {
-        render: () => plusnew.createElement('div', null),
-        dependencies: {},
-      };
-    };
+    const component = factory(
+      () => ({}),
+      () => plusnew.createElement('div', null),
+    );
 
     const props = { foo: 'bar' };
     const instance = plusnew.createElement(component, props);

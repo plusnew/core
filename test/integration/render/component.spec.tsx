@@ -1,11 +1,10 @@
 import store from 'redchain';
 import Plusnew from 'index';
-import component from 'interfaces/component';
+import factory from 'components/factory';
 
 describe('rendering nested components', () => {
   let plusnew: Plusnew;
   let container: HTMLElement;
-
 
   beforeEach(() => {
     plusnew = new Plusnew();
@@ -16,22 +15,17 @@ describe('rendering nested components', () => {
   });
 
   it('checks if nesting the components works', () => {
-    type props = { value: string };
-    const NestedComponent: component<props> = () => {
-      return {
-        render: (props: props) => <div className={props.value}>{props.value}</div>,
-        dependencies: {},
-      };
-    };
+    const NestedComponent = factory(
+      () => ({}),
+      (props: { value: string }) => <div className={props.value}>{props.value}</div>,
+    );
 
     const local = store('foo', (state: string, newValue: string) => newValue);
 
-    const MainComponent: component<{}, { local: typeof local }> = () => {
-      return {
-        render: () => <NestedComponent value={local.state} />,
-        dependencies: { local },
-      };
-    };
+    const MainComponent = factory(
+      () => ({ local }),
+      (props: {}) => <NestedComponent value={local.state} />,
+    );
 
     plusnew.render(MainComponent, container);
 

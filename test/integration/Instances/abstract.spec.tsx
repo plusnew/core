@@ -1,15 +1,20 @@
 import Abstract from 'instances/types/Instance';
+import Plusnew from 'index';
 
 describe('Does the root-instance behave correctly', () => {
   let abstract: Abstract;
+  let plusnew: Plusnew;
+
   beforeEach(() => {
+    plusnew = new Plusnew();
+
     class TestInstance extends Abstract {
       getLength() {return 0;}
       move() { return this;}
       remove() { return this;}
     }
 
-    abstract = new TestInstance('foo', undefined, () => 0);
+    abstract = new TestInstance(<div />, undefined, () => 0);
   });
   
   it('appendToParent should throw exception', () => {

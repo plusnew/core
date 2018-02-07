@@ -10,24 +10,20 @@ This avoids nesting the component in containers for i18n and others.
 import plusnew, { component, store } from 'plusnew';
 import Counter from './Counter';
 
-type props = {};
+const INITIAL_COUNTER_VALUE = 0;
 
-const component: component<props> = () => {
-  const initialState = 0;
-  const local = store(initialState, state: number => state + 1);
+export default component(
+  // Function who returns all dependencies, when the component should rerender
+  () => ({ counter:  store(INITIAL_COUNTER_VALUE, state: number => state + 1) }),
 
-  return {
-    dependencies: { local },
-    render: (props: props) =>
-      <div>
-        <button
-          onclick={(evt: MouseEvent) => local.dispatch()}
-        />
-        <Counter value={local.state} />
-      </div>,
-  };
-};
-
-export default component;
+  // The actual stateless renderfunction
+  (props: {}, { counter }) =>
+    <div>
+      <button
+        onclick={(evt: MouseEvent) => counter.dispatch()}
+      />
+      <Counter value={counter.state} />
+    </div>,
+);
 
 ```

@@ -1,9 +1,13 @@
 import Root from 'instances/types/Root/Instance';
+import Plusnew from 'index';
 
 describe('Does the root-instance behave correctly', () => {
   let root: Root;
+  let plusnew: Plusnew;
+
   beforeEach(() => {
-    root = new Root('foo', undefined, () => 0);
+    plusnew = new Plusnew();
+    root = new Root(<div />, undefined, () => 0);
   });
   
   it('getLength should throw exception', () => {
