@@ -3,7 +3,7 @@ import PlusnewAbstractElement from '../PlusnewAbstractElement';
 
 export class ElementTypeChecker {
   public isTextElement(abstractElement: ApplicationElement) {
-    return typeof (abstractElement) === 'string' || typeof (abstractElement) === 'number';
+    return typeof abstractElement === 'string' || typeof abstractElement === 'number';
   }
 
   public isArrayElement(abstractElement: ApplicationElement) {
@@ -11,27 +11,30 @@ export class ElementTypeChecker {
   }
 
   public isDomElement(abstractElement: ApplicationElement) {
-    if (this.isPlaceholderElement(abstractElement) === false && 
-        this.isArrayElement(abstractElement) === false &&
-        this.isTextElement(abstractElement) === false) {
-      return typeof ((abstractElement as PlusnewAbstractElement).type) === 'string';
+    if (
+      this.isPlaceholderElement(abstractElement) === false &&
+      this.isArrayElement(abstractElement) === false &&
+      this.isTextElement(abstractElement) === false
+    ) {
+      return typeof (abstractElement as PlusnewAbstractElement).type === 'string';
     }
 
     return false;
   }
 
   public isPlaceholderElement(abstractElement: ApplicationElement) {
-    return abstractElement === false ||
-           abstractElement === true ||
-           abstractElement === null ||
-           abstractElement === undefined;
+    return (
+      abstractElement === false || abstractElement === true || abstractElement === null || abstractElement === undefined
+    );
   }
 
   public isComponentElement(abstractElement: ApplicationElement) {
-    if (this.isArrayElement(abstractElement) === false &&
-        this.isTextElement(abstractElement) === false &&
-        this.isPlaceholderElement(abstractElement) === false) {
-      return typeof ((abstractElement as PlusnewAbstractElement).type) !== 'string';
+    if (
+      this.isArrayElement(abstractElement) === false &&
+      this.isTextElement(abstractElement) === false &&
+      this.isPlaceholderElement(abstractElement) === false
+    ) {
+      return typeof (abstractElement as PlusnewAbstractElement).type !== 'string';
     }
 
     return false;

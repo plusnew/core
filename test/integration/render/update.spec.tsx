@@ -7,7 +7,6 @@ describe('rendering the elements', () => {
   let container: HTMLElement;
   let local: store<string, string>;
   beforeEach(() => {
-
     local = redchain('foo', (previousState: string, newValue: string) => newValue);
 
     plusnew = new Plusnew();
@@ -22,7 +21,7 @@ describe('rendering the elements', () => {
 
   it('does a value change with store', () => {
     const Component = factory(
-      () => ({ local }), 
+      () => ({ local }),
       (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
     );
 
@@ -47,7 +46,7 @@ describe('rendering the elements', () => {
 
   it('with the same values, all objects should be the same', () => {
     const Component = factory(
-      () => ({ local }), 
+      () => ({ local }),
       (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
     );
 
@@ -71,8 +70,15 @@ describe('rendering the elements', () => {
 
   it('does a value change with store with JSX.Element to string', () => {
     const Component = factory(
-      () => ({ local }), 
-      (props: {}, { local }) => local.state === 'foo' ? <div><span>{local.state}</span></div> : <div>{local.state}</div>,
+      () => ({ local }),
+      (props: {}, { local }) =>
+        local.state === 'foo' ? (
+          <div>
+            <span>{local.state}</span>
+          </div>
+        ) : (
+          <div>{local.state}</div>
+        ),
     );
 
     plusnew.render(Component, container);
@@ -89,12 +95,17 @@ describe('rendering the elements', () => {
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('bar');
   });
 
-
   it('does a value change with store with string to JSX.Element', () => {
-
     const Component = factory(
-      () => ({ local }), 
-      (props: {}, { local }) => local.state === 'foo' ? <div>{local.state}</div> : <div><span>{local.state}</span></div>,
+      () => ({ local }),
+      (props: {}, { local }) =>
+        local.state === 'foo' ? (
+          <div>{local.state}</div>
+        ) : (
+          <div>
+            <span>{local.state}</span>
+          </div>
+        ),
     );
 
     plusnew.render(Component, container);
@@ -111,8 +122,16 @@ describe('rendering the elements', () => {
 
   it('does a value change with store with string to JSX.Element[]', () => {
     const Component = factory(
-      () => ({ local }), 
-      (props: {}, { local }) => local.state === 'foo' ? <span>{local.state}</span> : <span><div>{local.state}</div><span>{local.state}</span></span>,
+      () => ({ local }),
+      (props: {}, { local }) =>
+        local.state === 'foo' ? (
+          <span>{local.state}</span>
+        ) : (
+          <span>
+            <div>{local.state}</div>
+            <span>{local.state}</span>
+          </span>
+        ),
     );
 
     plusnew.render(Component, container);
@@ -133,8 +152,13 @@ describe('rendering the elements', () => {
 
   it('does a value change with store with JSX.Element[] to string', () => {
     const Component = factory(
-      () => ({ local }), 
-      (props: {}, { local }) => local.state === 'foo' ? <span>{[<div>{local.state}</div>, <span>{local.state}</span>]}</span> : <span>{local.state}</span>,
+      () => ({ local }),
+      (props: {}, { local }) =>
+        local.state === 'foo' ? (
+          <span>{[<div>{local.state}</div>, <span>{local.state}</span>]}</span>
+        ) : (
+          <span>{local.state}</span>
+        ),
     );
 
     plusnew.render(Component, container);
@@ -152,12 +176,11 @@ describe('rendering the elements', () => {
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('bar');
   });
 
-
   it('nested text-elements creation of not previously existing element', () => {
     const local = redchain(true, (previousState, action: boolean) => action);
     const Component = factory(
-      () => ({ local }), 
-      (props: {}, { local }) => local.state === true ? <div /> : <div>foo</div>,
+      () => ({ local }),
+      (props: {}, { local }) => (local.state === true ? <div /> : <div>foo</div>),
     );
 
     plusnew.render(Component, container);
@@ -177,7 +200,13 @@ describe('rendering the elements', () => {
     const local = redchain(false, (previousState, action: boolean) => action);
     const Component = factory(
       () => ({ local }),
-      (props: {}, { local }) => <div><span />{local.state && 'foo'}<span /></div>,
+      (props: {}, { local }) => (
+        <div>
+          <span />
+          {local.state && 'foo'}
+          <span />
+        </div>
+      ),
     );
     plusnew.render(Component, container);
 
@@ -205,7 +234,12 @@ describe('rendering the elements', () => {
     const local = redchain(0, (previousState, action: null) => previousState + 1);
     const Component = factory(
       () => ({ local }),
-      (props: {}, { local }) => <div>{false}{local.state}</div>,
+      (props: {}, { local }) => (
+        <div>
+          {false}
+          {local.state}
+        </div>
+      ),
     );
     plusnew.render(Component, container);
 

@@ -7,7 +7,6 @@ describe('checking if createElement works as expected', () => {
     plusnew = new Plusnew();
   });
 
-
   it('Is div element created', () => {
     const instance = plusnew.createElement('div', null);
     expect(instance.type).toBe('div');
@@ -53,7 +52,6 @@ describe('checking if createElement works as expected', () => {
     expect(props).not.toContain('children');
   });
 
-
   it('Is div props correct created when creating multiple children', () => {
     const firstChild = plusnew.createElement('span', null);
     const secondChild = plusnew.createElement('ul', null);
@@ -63,10 +61,7 @@ describe('checking if createElement works as expected', () => {
   });
 
   it('check if component gets safed', () => {
-    const component = factory(
-      () => ({}),
-      () => plusnew.createElement('div', null),
-    );
+    const component = factory(() => ({}), () => plusnew.createElement('div', null));
 
     const props = { foo: 'bar' };
     const instance = plusnew.createElement(component, props);

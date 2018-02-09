@@ -9,14 +9,20 @@ describe('Does the root-instance behave correctly', () => {
     plusnew = new Plusnew();
 
     class TestInstance extends Abstract {
-      getLength() {return 0;}
-      move() { return this;}
-      remove() { return this;}
+      getLength() {
+        return 0;
+      }
+      move() {
+        return this;
+      }
+      remove() {
+        return this;
+      }
     }
 
     abstract = new TestInstance(<div />, undefined, () => 0);
   });
-  
+
   it('appendToParent should throw exception', () => {
     const element = document.createElement('div');
     expect(() => abstract.appendToParent(element, 0)).toThrow(new Error('Cant append element to not existing parent'));

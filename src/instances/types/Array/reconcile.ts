@@ -19,7 +19,10 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
     const newAbstractElement = newAbstractElements[i];
     const previousLength = instance.getPreviousLength.bind(instance, i);
 
-    if (i < instance.children.length && reconciler.isSameAbstractElement(newAbstractElement, instance.children[i].abstractElement)) {
+    if (
+      i < instance.children.length &&
+      reconciler.isSameAbstractElement(newAbstractElement, instance.children[i].abstractElement)
+    ) {
       instance.children[i].previousAbstractSiblingCount = previousLength;
       reconciler.update(newAbstractElement, instance.children[i]);
     } else {
