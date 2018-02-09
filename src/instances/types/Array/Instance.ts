@@ -7,7 +7,11 @@ export default class ArrayInstance extends ChildrenInstance {
   public type = types.Array;
   public abstractElement: (PlusnewAbstractElement)[];
 
-  constructor(abstractElements: (PlusnewAbstractElement)[], parentInstance: Instance, previousAbstractSiblingCount: () => number) {
+  constructor(
+    abstractElements: (PlusnewAbstractElement)[],
+    parentInstance: Instance,
+    previousAbstractSiblingCount: () => number,
+  ) {
     super(abstractElements, parentInstance, previousAbstractSiblingCount);
 
     this.addChildren(abstractElements);

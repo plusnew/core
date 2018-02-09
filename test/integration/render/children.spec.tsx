@@ -14,19 +14,12 @@ describe('rendering nested components', () => {
     document.body.appendChild(container);
   });
 
-
   describe('children in nested component', () => {
     it('static children', () => {
       const local = store('foo', (state, action: string) => action);
-      const NestedComponent = factory(
-        () => ({}),
-        (props: {children: any}) => <span>{props.children}</span>,
-      );
-      
-      const MainComponent = factory(
-        () => ({ local }),
-        () => <NestedComponent>{local.state}</NestedComponent>,
-      );
+      const NestedComponent = factory(() => ({}), (props: { children: any }) => <span>{props.children}</span>);
+
+      const MainComponent = factory(() => ({ local }), () => <NestedComponent>{local.state}</NestedComponent>);
 
       plusnew.render(MainComponent, container);
 

@@ -5,7 +5,11 @@ import factory from '../factory';
 export default abstract class ChildrenInstance extends Instance {
   public children: Instance[];
 
-  constructor(abstractElement: ApplicationElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
+  constructor(
+    abstractElement: ApplicationElement,
+    parentInstance: Instance,
+    previousAbstractSiblingCount: () => number,
+  ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
     this.children = [];
@@ -41,7 +45,6 @@ export default abstract class ChildrenInstance extends Instance {
     }
     return length;
   }
-
 
   /**
    * moves the children to another dom position

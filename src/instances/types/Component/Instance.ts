@@ -12,10 +12,13 @@ export default class ComponentInstance extends Instance {
   public render: render<any>;
   public dependencies: deps;
 
-  constructor(abstractElement: PlusnewAbstractElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
+  constructor(
+    abstractElement: PlusnewAbstractElement,
+    parentInstance: Instance,
+    previousAbstractSiblingCount: () => number,
+  ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
-    this.initialiseComponent()
-      .handleChildren();
+    this.initialiseComponent().handleChildren();
   }
 
   /**

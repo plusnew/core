@@ -17,16 +17,13 @@ describe('checking if reconciler works as expected', () => {
       it('placeholder same as array', () => {
         expect(reconciler.isSameAbstractElement(false, [])).toBe(false);
       });
-      
+
       it('placeholder same as dom', () => {
         expect(reconciler.isSameAbstractElement(false, <div />)).toBe(false);
       });
 
       it('placeholder same as component', () => {
-        const Component = component(
-          () => ({}),
-          () => <div />,
-        );
+        const Component = component(() => ({}), () => <div />);
         expect(reconciler.isSameAbstractElement(false, <Component />)).toBe(false);
       });
     });
@@ -39,7 +36,7 @@ describe('checking if reconciler works as expected', () => {
       it('same as array', () => {
         expect(reconciler.isSameAbstractElement(<div />, [])).toBe(false);
       });
-      
+
       it('same as dom, of equal type', () => {
         expect(reconciler.isSameAbstractElement(<div />, <div />)).toBe(true);
       });
@@ -49,63 +46,53 @@ describe('checking if reconciler works as expected', () => {
       });
 
       it('same as dom, of equal type, with same key', () => {
-        expect(reconciler.isSameAbstractElement(<div key="0"/>, <div key="0"/>)).toBe(true);
+        expect(reconciler.isSameAbstractElement(<div key="0" />, <div key="0" />)).toBe(true);
       });
 
       it('same as dom, of equal type, with different key', () => {
-        expect(reconciler.isSameAbstractElement(<div key="0"/>, <div key="1"/>)).toBe(false);
+        expect(reconciler.isSameAbstractElement(<div key="0" />, <div key="1" />)).toBe(false);
       });
 
       it('same as dom, of equal type, with one key', () => {
-        expect(reconciler.isSameAbstractElement(<div key="0"/>, <div/>)).toBe(false);
+        expect(reconciler.isSameAbstractElement(<div key="0" />, <div />)).toBe(false);
       });
 
-
       it('same as dom, of equal type, with one key', () => {
-        expect(reconciler.isSameAbstractElement(<div />, <div  key="0"/>)).toBe(false);
+        expect(reconciler.isSameAbstractElement(<div />, <div key="0" />)).toBe(false);
       });
 
       it('same as component', () => {
-        const Component = component(
-          () => ({}),
-          () => <div />,
-        );
+        const Component = component(() => ({}), () => <div />);
         expect(reconciler.isSameAbstractElement(false, <Component />)).toBe(false);
       });
     });
 
     describe('component', () => {
-      const Component = component(
-        () => ({}),
-        () => <div />,
-      );
-      const AnotherComponent = component(
-        () => ({}),
-        () => <div />,
-      );
+      const Component = component(() => ({}), () => <div />);
+      const AnotherComponent = component(() => ({}), () => <div />);
 
       it('are components the same', () => {
         expect(reconciler.isSameAbstractElement(<Component />, <Component />)).toBe(true);
       });
 
       it('are components the same with same key', () => {
-        expect(reconciler.isSameAbstractElement(<Component key={1}/>, <Component key={1}/>)).toBe(true);
+        expect(reconciler.isSameAbstractElement(<Component key={1} />, <Component key={1} />)).toBe(true);
       });
 
       it('are components the same with different key', () => {
-        expect(reconciler.isSameAbstractElement(<Component key={1}/>, <Component key={2}/>)).toBe(false);
+        expect(reconciler.isSameAbstractElement(<Component key={1} />, <Component key={2} />)).toBe(false);
       });
-      
+
       it('are different components the same', () => {
         expect(reconciler.isSameAbstractElement(<Component />, <AnotherComponent />)).toBe(false);
       });
 
       it('are different components the same with same key', () => {
-        expect(reconciler.isSameAbstractElement(<Component key={1}/>, <AnotherComponent key={1}/>)).toBe(false);
+        expect(reconciler.isSameAbstractElement(<Component key={1} />, <AnotherComponent key={1} />)).toBe(false);
       });
 
       it('are different components the same with different key', () => {
-        expect(reconciler.isSameAbstractElement(<Component key={1}/>, <AnotherComponent key={2}/>)).toBe(false);
+        expect(reconciler.isSameAbstractElement(<Component key={1} />, <AnotherComponent key={2} />)).toBe(false);
       });
 
       it('are components the same as dom', () => {

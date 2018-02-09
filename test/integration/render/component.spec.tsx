@@ -22,10 +22,7 @@ describe('rendering nested components', () => {
 
     const local = store('foo', (state: string, newValue: string) => newValue);
 
-    const MainComponent = factory(
-      () => ({ local }),
-      (props: {}) => <NestedComponent value={local.state} />,
-    );
+    const MainComponent = factory(() => ({ local }), (props: {}) => <NestedComponent value={local.state} />);
 
     plusnew.render(MainComponent, container);
 

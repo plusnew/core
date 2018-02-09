@@ -8,13 +8,16 @@ export default class DomInstance extends ChildrenInstance {
   public abstractElement: PlusnewAbstractElement;
   public ref: HTMLElement;
 
-  constructor(abstractElement: PlusnewAbstractElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
+  constructor(
+    abstractElement: PlusnewAbstractElement,
+    parentInstance: Instance,
+    previousAbstractSiblingCount: () => number,
+  ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
     this.ref = document.createElement(abstractElement.type as string);
 
-    this.setProps()
-      .addChildren(abstractElement.props.children);
+    this.setProps().addChildren(abstractElement.props.children);
 
     this.appendToParent(this.ref, previousAbstractSiblingCount());
   }
@@ -84,12 +87,11 @@ export default class DomInstance extends ChildrenInstance {
     return this;
   }
 
-
   /**
    * moves the domnode from the parent
    */
   public move(position: number) {
-    const parentNode = (this.ref.parentNode as Node);
+    const parentNode = this.ref.parentNode as Node;
     parentNode.insertBefore(this.ref, parentNode.childNodes[position]);
 
     return this;

@@ -9,7 +9,7 @@ describe('Does the root-instance behave correctly', () => {
     plusnew = new Plusnew();
     root = new Root(<div />, undefined, () => 0);
   });
-  
+
   it('getLength should throw exception', () => {
     expect(() => root.getLength()).toThrow(new Error('getLength of RootElement is irrelevant'));
   });

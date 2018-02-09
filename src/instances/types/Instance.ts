@@ -7,7 +7,11 @@ export default abstract class Instance {
   public abstractElement: ApplicationElement;
   public previousAbstractSiblingCount: () => number;
 
-  constructor(abstractElement: ApplicationElement, parentInstance: Instance | undefined, previousAbstractSiblingCount: () => number) {
+  constructor(
+    abstractElement: ApplicationElement,
+    parentInstance: Instance | undefined,
+    previousAbstractSiblingCount: () => number,
+  ) {
     this.abstractElement = abstractElement;
     this.parentInstance = parentInstance;
     this.previousAbstractSiblingCount = previousAbstractSiblingCount;
@@ -53,5 +57,4 @@ export default abstract class Instance {
    * orders to remove itself from the dom
    */
   public abstract remove(): Instance;
-
 }

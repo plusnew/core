@@ -22,10 +22,10 @@ describe('rendering nested components', () => {
     });
 
     const component = factory(
-      () => ({ local }), 
-      (props: {}, { local }) => <input onchange={change} value={local.state}/>,
+      () => ({ local }),
+      (props: {}, { local }) => <input onchange={change} value={local.state} />,
     );
-    
+
     plusnew.render(component, container);
 
     const input = document.getElementsByTagName('input')[0];
