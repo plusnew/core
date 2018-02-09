@@ -176,6 +176,28 @@ describe('rendering the elements', () => {
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('bar');
   });
 
+  it('does a value change with store with JSX.Element to null', () => {
+    const Component = factory(
+      () => ({ local }),
+      (props: {}, { local }) =>
+        local.state === 'foo' ? (
+          <div>foo</div>
+        ) : (
+          null
+        ),
+    );
+
+    plusnew.render(Component, container);
+
+    expect(container.childNodes.length).toBe(1);
+    const target = container.childNodes[0] as HTMLElement;
+    expect(target.nodeName).toBe('DIV');
+    expect(target.innerHTML).toBe('foo');
+
+    local.dispatch('bar');
+    expect(container.childNodes.length).toBe(0);
+  });
+
   it('nested text-elements creation of not previously existing element', () => {
     const local = redchain(true, (previousState, action: boolean) => action);
     const Component = factory(
