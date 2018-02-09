@@ -1,13 +1,11 @@
-import Plusnew from 'index';
+import plusnew from 'index';
 import store from 'redchain';
 import factory from 'components/factory';
 
 describe('rendering the elements', () => {
   const local = store(0, (previousState, action: undefined) => previousState + 1);
-  let plusnew: Plusnew;
   let container: HTMLElement;
   beforeEach(() => {
-    plusnew = new Plusnew();
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
     document.body.appendChild(container);

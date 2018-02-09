@@ -1,12 +1,10 @@
 import Root from 'instances/types/Root/Instance';
-import Plusnew from 'index';
+import plusnew from 'index';
 
 describe('Does the root-instance behave correctly', () => {
   let root: Root;
-  let plusnew: Plusnew;
 
   beforeEach(() => {
-    plusnew = new Plusnew();
     root = new Root(<div />, undefined, () => 0);
   });
 

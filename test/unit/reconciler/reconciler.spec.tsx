@@ -1,14 +1,9 @@
-import Plusnew from 'index';
+import plusnew from 'index';
 import reconciler from 'instances/reconciler';
 import component from 'components/factory';
 
 describe('checking if reconciler works as expected', () => {
   describe('placeholder elements', () => {
-    let plusnew: Plusnew;
-    beforeEach(() => {
-      plusnew = new Plusnew();
-    });
-
     describe('placeholder', () => {
       it('placeholder same as placeholder', () => {
         expect(reconciler.isSameAbstractElement(false, false)).toBe(true);

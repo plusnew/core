@@ -1,17 +1,14 @@
 import store from 'redchain';
-import Plusnew from 'index';
+import plusnew from 'index';
 import factory from 'components/factory';
 
 const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
 const local = () => store(list, (state, newValue: { key: number; value: string }) => [newValue, ...state]);
 
 describe('rendering nested components', () => {
-  let plusnew: Plusnew;
   let container: HTMLElement;
 
   beforeEach(() => {
-    plusnew = new Plusnew();
-
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
     document.body.appendChild(container);

@@ -1,12 +1,7 @@
-import Plusnew from 'index';
+import plusnew from 'index';
 import factory from 'components/factory';
 
 describe('checking if createElement works as expected', () => {
-  let plusnew: Plusnew;
-  beforeEach(() => {
-    plusnew = new Plusnew();
-  });
-
   it('Is div element created', () => {
     const instance = plusnew.createElement('div', null);
     expect(instance.type).toBe('div');
