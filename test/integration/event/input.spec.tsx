@@ -1,14 +1,11 @@
-import Plusnew from 'index';
+import plusnew from 'index';
 import factory from 'components/factory';
 import store from 'redchain';
 
 describe('rendering nested components', () => {
-  let plusnew: Plusnew;
   let container: HTMLElement;
 
   beforeEach(() => {
-    plusnew = new Plusnew();
-
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
     document.body.appendChild(container);

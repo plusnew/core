@@ -2,7 +2,9 @@ import component from './interfaces/component';
 import PlusnewAbstractElement from './PlusnewAbstractElement';
 import factory from './instances/factory';
 import RootInstance from './instances/types/Root/Instance';
+import InputEvent from './interfaces/InputEvent';
 import Instance from './instances/types/Instance';
+import { store } from 'redchain';
 
 class Plusnew {
   /**
@@ -28,5 +30,7 @@ class Plusnew {
   }
 }
 
-export default Plusnew;
-export { Instance };
+export { store, Plusnew, Instance, component, InputEvent };
+
+export default new Plusnew();
+
