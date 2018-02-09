@@ -52,11 +52,17 @@ export class Reconciler {
   public isSameAbstractElement(newAbstractElement: ApplicationElement, oldAbstractElement: ApplicationElement) {
     // The following code does the key-property check, not yet stable
     if (this.isSameAbstractElementType(newAbstractElement, oldAbstractElement) === true) {
-      if (elementTypeChecker.isComponentElement(newAbstractElement) === true || elementTypeChecker.isDomElement(newAbstractElement)) {
+      if (
+        elementTypeChecker.isComponentElement(newAbstractElement) === true ||
+        elementTypeChecker.isDomElement(newAbstractElement)
+      ) {
         if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
           if ((oldAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
             // newAbstractElement and oldAbstractElement, have a key - is it the same?
-            return (newAbstractElement as PlusnewAbstractElement).props.key === (oldAbstractElement as PlusnewAbstractElement).props.key;
+            return (
+              (newAbstractElement as PlusnewAbstractElement).props.key ===
+              (oldAbstractElement as PlusnewAbstractElement).props.key
+            );
           }
           // newAbstractElement has key, but oldAbstractElement has not
           return false;
@@ -94,7 +100,9 @@ export class Reconciler {
     if (elementTypeChecker.isDomElement(newAbstractElement)) {
       if (elementTypeChecker.isDomElement(oldAbtractElement)) {
         // newAbstractElement and oldAbtractElement are dom elements, but is elementNode the same
-        return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
+        return (
+          (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type
+        );
       }
 
       // newAbstractElement is a domElement, but oldAbtractElement isn't
@@ -104,7 +112,9 @@ export class Reconciler {
     if (elementTypeChecker.isComponentElement(newAbstractElement)) {
       if (elementTypeChecker.isComponentElement(oldAbtractElement)) {
         // newAbstractElement and oldAbtractElement are components, but are they the same function
-        return (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type;
+        return (
+          (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type
+        );
       }
 
       // newAbstractElement is a component, but oldAbtractElement isn't
