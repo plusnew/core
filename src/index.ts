@@ -6,6 +6,7 @@ import RootInstance from './instances/types/Root/Instance';
 import InputEvent from './interfaces/InputEvent';
 import Instance from './instances/types/Instance';
 import store from 'redchain';
+import './interfaces/jsx';
 
 class Plusnew {
   /**
