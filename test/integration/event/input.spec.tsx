@@ -1,4 +1,4 @@
-import plusnew, { component } from 'index';
+import plusnew from 'index';
 import factory from 'components/factory';
 import store from 'redchain';
 
