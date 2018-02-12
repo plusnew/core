@@ -18,7 +18,7 @@ export default class ComponentInstance extends Instance {
     previousAbstractSiblingCount: () => number,
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
-    this.initialiseComponent().handleChildren();
+    this.initialiseComponent();
   }
 
   /**
@@ -31,21 +31,28 @@ export default class ComponentInstance extends Instance {
     return this;
   }
 
-  public registerRender(render: render<any>) {
+  private registerRender(render: render<any>) {
     this.render = render;
+
+    return this;
   }
 
-  public registerDependencies(dependencies: deps) {
+  private registerDependencies(dependencies: deps) {
     for (const dependencyIndex in dependencies) {
       const dependency = dependencies[dependencyIndex];
       dependency.addOnChange(this.update.bind(this));
     }
     this.dependencies = dependencies;
+
+    return this;
   }
   /**
    * asks the component what should be changed and puts it to the factory
    */
-  private handleChildren() {
+  public handleChildren(render: render<any>, dependencies: deps) {
+    this.registerRender(render)
+        .registerDependencies(dependencies);
+
     const abstractChildren = this.render(this.abstractElement.props, this.dependencies);
     this.children = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
 
