@@ -1,6 +1,4 @@
-import store from 'redchain';
-import plusnew from 'index';
-import factory from 'components/factory';
+import plusnew, { store, component } from 'index';
 
 const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
 const local = () => store(list, (state, newValue: { key: number; value: string }) => [newValue, ...state]);
@@ -15,7 +13,7 @@ describe('rendering nested components', () => {
   });
 
   it('does a initial list work, with pushing values', () => {
-    const Component = factory(
+    const Component = component(
       () => ({ local: local() }),
       (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
     );
@@ -34,7 +32,7 @@ describe('rendering nested components', () => {
 
   it('does a initial list work, appended li', () => {
     const list = ['first', 'second', 'third'];
-    const Component = factory(
+    const Component = component(
       () => ({ local: local() }),
       (props: {}, { local }) => (
         <ul>
@@ -65,7 +63,7 @@ describe('rendering nested components', () => {
       local: store([] as typeof list, (store, action: typeof list) => action),
     };
 
-    const Component = factory(
+    const Component = component(
       () => dependencies,
       (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
     );
@@ -95,7 +93,7 @@ describe('rendering nested components', () => {
       local: store(list, (previousStore, action: typeof list) => action),
     };
 
-    const Component = factory(
+    const Component = component(
       () => dependencies,
       (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
     );
@@ -140,9 +138,9 @@ describe('rendering nested components', () => {
       local: store(list, (previousStore, action: typeof list) => action),
     };
 
-    const PartialComponent = factory(() => {}, (props: { value: string }) => <span>{props.value}</span>);
+    const PartialComponent = component(() => {}, (props: { value: string }) => <span>{props.value}</span>);
 
-    const MainComponent = factory(
+    const MainComponent = component(
       () => dependencies,
       (props: {}, { local }) => (
         <span>{local.state.map(item => <PartialComponent key={item.key} value={item.value} />)}</span>
@@ -187,12 +185,12 @@ describe('rendering nested components', () => {
       local: store(list, (previousStore, action: typeof list) => action),
     };
 
-    const PartialComponent = factory(
+    const PartialComponent = component(
       () => ({}),
       (props: { value: string }) => [<span key={0}>{props.value}0</span>, <div key={1}>{props.value}1</div>] as any,
     );
 
-    const MainComponent = factory(
+    const MainComponent = component(
       () => dependencies,
       (props, { local }: typeof dependencies) => (
         <span>{local.state.map(item => <PartialComponent key={item.key} value={item.value} />)}</span>

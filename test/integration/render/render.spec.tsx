@@ -1,6 +1,4 @@
-import plusnew from 'index';
-import store from 'redchain';
-import factory from 'components/factory';
+import plusnew, { store, component } from 'index';
 
 describe('rendering the elements', () => {
   const local = store(0, (previousState, action: undefined) => previousState + 1);
@@ -16,7 +14,7 @@ describe('rendering the elements', () => {
   });
 
   it('check if element is inserted', () => {
-    const Component = factory(() => ({}), (props: {}, {}) => <div className="foo" />);
+    const Component = component(() => ({}), (props: {}, {}) => <div className="foo" />);
     plusnew.render(Component, container);
 
     expect(container.childNodes.length).toBe(1);
@@ -26,7 +24,7 @@ describe('rendering the elements', () => {
   });
 
   it('check if elements are inserted', () => {
-    const Component = factory(
+    const Component = component(
       () => ({}),
       (props: {}, {}) => (
         <div>
@@ -49,7 +47,7 @@ describe('rendering the elements', () => {
   });
 
   it('check if nesting works', () => {
-    const Component = factory(
+    const Component = component(
       () => ({}),
       (props: {}, {}) => (
         <div className="foo">
@@ -67,23 +65,23 @@ describe('rendering the elements', () => {
   });
 
   it('check if textnode is created on root', () => {
-    const component = factory(() => ({}), () => 'foo' as any);
+    const Component = component(() => ({}), () => 'foo' as any);
 
-    plusnew.render(component, container);
+    plusnew.render(Component, container);
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('foo');
   });
 
   it('check if textnode is created on root, even with number', () => {
-    const component = factory(() => ({}), () => 1 as any);
+    const Component = component(() => ({}), () => 1 as any);
 
-    plusnew.render(component, container);
+    plusnew.render(Component, container);
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('1');
   });
 
   it('check if textnode is created', () => {
-    const Component = factory(() => ({}), (props: {}, {}) => <div className="foo">bar</div>);
+    const Component = component(() => ({}), (props: {}, {}) => <div className="foo">bar</div>);
     plusnew.render(Component, container);
 
     expect(container.childNodes.length).toBe(1);
@@ -94,7 +92,7 @@ describe('rendering the elements', () => {
   });
 
   it('check if null is created on root', () => {
-    const Component = factory(() => ({}), (props: {}, {}) => null);
+    const Component = component(() => ({}), (props: {}, {}) => null);
     plusnew.render(Component, container);
 
     expect(container.childNodes.length).toBe(0);
@@ -102,24 +100,24 @@ describe('rendering the elements', () => {
   });
 
   it('check if undefined is created on root', () => {
-    const component = factory(() => ({}), () => undefined as any);
+    const Component = component(() => ({}), () => undefined as any);
 
-    plusnew.render(component, container);
+    plusnew.render(Component, container);
     expect(container.childNodes.length).toBe(0);
   });
 
   it('check if true is created on root', () => {
-    const component = factory(() => ({ local }), () => true as any);
+    const Component = component(() => ({ local }), () => true as any);
 
-    plusnew.render(component, container);
+    plusnew.render(Component, container);
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
   });
 
   it('check if false is created on root', () => {
-    const component = factory(() => ({ local }), () => false as any);
+    const Component = component(() => ({ local }), () => false as any);
 
-    plusnew.render(component, container);
+    plusnew.render(Component, container);
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
   });
