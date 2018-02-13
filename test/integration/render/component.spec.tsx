@@ -39,4 +39,26 @@ describe('rendering nested components', () => {
     expect(target.innerHTML).toBe('bar');
     expect(textElement).toBe(textElement);
   });
+
+  it('checks if dependencies are transmitted to constructor', () => {
+    type props = { value: string };
+    const NestedComponent = factory(
+      (props: props) => ({ echo: store(props.value, state => state) }),
+      (props: props, { echo }) => <div className={echo.state}>{echo.state}</div>,
+    );
+
+    const MainComponent = factory(() => ({}), (props: {}) => <NestedComponent value="foo" />);
+
+    plusnew.render(MainComponent, container);
+
+    expect(container.childNodes.length).toBe(1);
+
+    const target = container.childNodes[0] as HTMLElement;
+    const textElement = target.childNodes[0] as Text;
+
+    expect(target.nodeName).toBe('DIV');
+    expect(target.className).toBe('foo');
+    expect(target.innerHTML).toBe('foo');
+    expect(textElement.textContent).toBe('foo');
+  });
 });

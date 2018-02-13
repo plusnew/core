@@ -1,10 +1,12 @@
 import component from './interfaces/component';
 import PlusnewAbstractElement from './PlusnewAbstractElement';
 import factory from './instances/factory';
+import componentFactory from './components/factory';
 import RootInstance from './instances/types/Root/Instance';
 import InputEvent from './interfaces/InputEvent';
 import Instance from './instances/types/Instance';
-import { store } from 'redchain';
+import store from 'redchain';
+import './interfaces/jsx';
 
 class Plusnew {
   /**
@@ -30,7 +32,7 @@ class Plusnew {
   }
 }
 
-export { store, Plusnew, Instance, component, InputEvent };
+export { store, Plusnew, Instance, componentFactory as component, InputEvent };
 
 export default new Plusnew();
 
