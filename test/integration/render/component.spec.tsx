@@ -1,6 +1,4 @@
-import store from 'redchain';
-import plusnew from 'index';
-import factory from 'components/factory';
+import plusnew, { store, component } from 'index';
 
 describe('rendering nested components', () => {
   let container: HTMLElement;
@@ -12,14 +10,14 @@ describe('rendering nested components', () => {
   });
 
   it('checks if nesting the components works', () => {
-    const NestedComponent = factory(
+    const NestedComponent = component(
       () => ({}),
       (props: { value: string }) => <div className={props.value}>{props.value}</div>,
     );
 
     const local = store('foo', (state: string, newValue: string) => newValue);
 
-    const MainComponent = factory(() => ({ local }), (props: {}) => <NestedComponent value={local.state} />);
+    const MainComponent = component(() => ({ local }), (props: {}) => <NestedComponent value={local.state} />);
 
     plusnew.render(MainComponent, container);
 
@@ -42,12 +40,12 @@ describe('rendering nested components', () => {
 
   it('checks if dependencies are transmitted to constructor', () => {
     type props = { value: string };
-    const NestedComponent = factory(
+    const NestedComponent = component(
       (props: props) => ({ echo: store(props.value, state => state) }),
       (props: props, { echo }) => <div className={echo.state}>{echo.state}</div>,
     );
 
-    const MainComponent = factory(() => ({}), (props: {}) => <NestedComponent value="foo" />);
+    const MainComponent = component(() => ({}), (props: {}) => <NestedComponent value="foo" />);
 
     plusnew.render(MainComponent, container);
 

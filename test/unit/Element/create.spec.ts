@@ -1,5 +1,4 @@
-import plusnew from 'index';
-import factory from 'components/factory';
+import plusnew, { component } from 'index';
 
 describe('checking if createElement works as expected', () => {
   it('Is div element created', () => {
@@ -56,11 +55,11 @@ describe('checking if createElement works as expected', () => {
   });
 
   it('check if component gets safed', () => {
-    const component = factory(() => ({}), () => plusnew.createElement('div', null));
+    const Component = component(() => ({}), () => plusnew.createElement('div', null));
 
     const props = { foo: 'bar' };
-    const instance = plusnew.createElement(component, props);
-    expect(instance.type).toBe(component);
+    const instance = plusnew.createElement(Component, props);
+    expect(instance.type).toBe(Component);
     expect(instance.props).toEqual({ ...props, children: [] });
     expect(instance.props).not.toBe(props as any);
   });

@@ -1,6 +1,4 @@
-import plusnew from 'index';
-import store from 'redchain';
-import factory from 'components/factory';
+import plusnew, { store, component } from 'index';
 
 describe('rendering nested components', () => {
   let container: HTMLElement;
@@ -14,9 +12,9 @@ describe('rendering nested components', () => {
   describe('children in nested component', () => {
     it('static children', () => {
       const local = store('foo', (state, action: string) => action);
-      const NestedComponent = factory(() => ({}), (props: { children: any }) => <span>{props.children}</span>);
+      const NestedComponent = component(() => ({}), (props: { children: any }) => <span>{props.children}</span>);
 
-      const MainComponent = factory(() => ({ local }), () => <NestedComponent>{local.state}</NestedComponent>);
+      const MainComponent = component(() => ({ local }), () => <NestedComponent>{local.state}</NestedComponent>);
 
       plusnew.render(MainComponent, container);
 
