@@ -1,12 +1,11 @@
-import redchain, { store } from 'redchain';
-import plusnew from 'index';
-import factory from 'components/factory';
+import { store as storeType } from 'redchain';
+import plusnew, { store, component } from 'index';
 
 describe('rendering the elements', () => {
   let container: HTMLElement;
-  let local: store<string, string>;
+  let local: storeType<string, string>;
   beforeEach(() => {
-    local = redchain('foo', (previousState: string, newValue: string) => newValue);
+    local = store('foo', (previousState: string, newValue: string) => newValue);
 
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
@@ -18,7 +17,7 @@ describe('rendering the elements', () => {
   });
 
   it('does a value change with store', () => {
-    const Component = factory(
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
     );
@@ -43,7 +42,7 @@ describe('rendering the elements', () => {
   });
 
   it('with the same values, all objects should be the same', () => {
-    const Component = factory(
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
     );
@@ -67,7 +66,7 @@ describe('rendering the elements', () => {
   });
 
   it('does a value change with store with JSX.Element to string', () => {
-    const Component = factory(
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -94,7 +93,7 @@ describe('rendering the elements', () => {
   });
 
   it('does a value change with store with string to JSX.Element', () => {
-    const Component = factory(
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -119,7 +118,7 @@ describe('rendering the elements', () => {
   });
 
   it('does a value change with store with string to JSX.Element[]', () => {
-    const Component = factory(
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -149,7 +148,7 @@ describe('rendering the elements', () => {
   });
 
   it('does a value change with store with JSX.Element[] to string', () => {
-    const Component = factory(
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -175,7 +174,7 @@ describe('rendering the elements', () => {
   });
 
   it('does a value change with store with JSX.Element to null', () => {
-    const Component = factory(
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -197,8 +196,8 @@ describe('rendering the elements', () => {
   });
 
   it('nested text-elements creation of not previously existing element', () => {
-    const local = redchain(true, (previousState, action: boolean) => action);
-    const Component = factory(
+    const local = store(true, (previousState, action: boolean) => action);
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) => (local.state === true ? <div /> : <div>foo</div>),
     );
@@ -217,8 +216,8 @@ describe('rendering the elements', () => {
   });
 
   it('conditional rendering - inclduing correct ordering', () => {
-    const local = redchain(false, (previousState, action: boolean) => action);
-    const Component = factory(
+    const local = store(false, (previousState, action: boolean) => action);
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) => (
         <div>
@@ -251,8 +250,8 @@ describe('rendering the elements', () => {
   });
 
   it('placeholder rendering - update', () => {
-    const local = redchain(0, (previousState, action: null) => previousState + 1);
-    const Component = factory(
+    const local = store(0, (previousState, action: null) => previousState + 1);
+    const Component = component(
       () => ({ local }),
       (props: {}, { local }) => (
         <div>
