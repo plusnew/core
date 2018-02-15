@@ -3,18 +3,18 @@ import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 
-export default class ArrayInstance extends ChildrenInstance {
-  public type = types.Array;
-  public abstractElement: (PlusnewAbstractElement)[];
+export default class FragmentInstance extends ChildrenInstance {
+  public type = types.Fragment;
+  public abstractElement: PlusnewAbstractElement;
 
   constructor(
-    abstractElements: (PlusnewAbstractElement)[],
+    abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
     previousAbstractSiblingCount: () => number,
   ) {
-    super(abstractElements, parentInstance, previousAbstractSiblingCount);
+    super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
-    this.addChildren(abstractElements);
+    this.addChildren(abstractElement.props.children);
   }
 
   /**

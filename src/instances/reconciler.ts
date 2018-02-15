@@ -6,6 +6,9 @@ import Instance from './types/Instance';
 import types from './types/types';
 import elementTypeChecker from '../util/elementTypeChecker';
 
+import FragmentInstance from './types/Fragment/Instance';
+import fragmentReconcile from './types/Fragment/reconcile';
+
 import DomInstance from './types/Dom/Instance';
 import domReconcile from './types/Dom/reconcile';
 
@@ -29,6 +32,8 @@ export class Reconciler {
       if (instance.type === types.Placeholder) {
         // When its a placeholder, there is no need for updating, nothing will change there
         // it will get replaced, but that's it
+      } else if (instance.type === types.Fragment) {
+        fragmentReconcile(newAbstractElement as PlusnewAbstractElement, instance as FragmentInstance);
       } else if (instance.type === types.Dom) {
         domReconcile(newAbstractElement as PlusnewAbstractElement, instance as DomInstance);
       } else if (instance.type === types.Text) {
@@ -95,6 +100,10 @@ export class Reconciler {
 
     if (elementTypeChecker.isArrayElement(newAbstractElement)) {
       return elementTypeChecker.isArrayElement(oldAbtractElement);
+    }
+
+    if (elementTypeChecker.isFragmentElement(newAbstractElement)) {
+      return elementTypeChecker.isFragmentElement(oldAbtractElement);
     }
 
     if (elementTypeChecker.isDomElement(newAbstractElement)) {

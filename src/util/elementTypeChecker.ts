@@ -10,6 +10,18 @@ export class ElementTypeChecker {
     return Array.isArray(abstractElement);
   }
 
+  public isFragmentElement(abstractElement: ApplicationElement) {
+    if (
+      this.isPlaceholderElement(abstractElement) === false &&
+      this.isArrayElement(abstractElement) === false &&
+      this.isTextElement(abstractElement) === false
+    ) {
+      return (abstractElement as PlusnewAbstractElement).type === undefined;
+    }
+
+    return false;
+  }
+
   public isDomElement(abstractElement: ApplicationElement) {
     if (
       this.isPlaceholderElement(abstractElement) === false &&
@@ -34,7 +46,7 @@ export class ElementTypeChecker {
       this.isTextElement(abstractElement) === false &&
       this.isPlaceholderElement(abstractElement) === false
     ) {
-      return typeof (abstractElement as PlusnewAbstractElement).type !== 'string';
+      return typeof (abstractElement as PlusnewAbstractElement).type === 'function';
     }
 
     return false;
