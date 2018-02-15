@@ -285,4 +285,41 @@ describe('rendering nested components', () => {
     expect((div.childNodes[2] as HTMLElement).tagName).toBe('SPAN');
     expect((div.childNodes[2] as HTMLElement).innerHTML).toBe('some other element');
   });
+
+  it('updating component with text', () => {
+    const dependencies = {
+      local: store([{ key: 0 }, { key: 1 }], (previousStore, action: {key: number}[]) => action),
+    };
+
+    const PartialComponent = component(
+      () => ({}),
+      (props: {key: number}) => 'element' + props.key as any,
+    );
+
+    const MainComponent = component(
+      () => dependencies,
+      (props, { local }) =>
+        <div>
+          {local.state.map(item => <PartialComponent key={item.key} />)}
+        </div>,
+    );
+
+    plusnew.render(MainComponent, container);
+
+    const div = container.childNodes[0] as HTMLElement;
+    expect(div.childNodes.length).toBe(2);
+    const firstText = div.childNodes[0] as Text;
+    const secondText = div.childNodes[1] as Text;
+    expect(firstText.textContent).toBe('element0');
+    expect(secondText.textContent).toBe('element1');
+
+    dependencies.local.dispatch([{ key: 1 }, { key: 0 }]);
+
+    expect(div.childNodes.length).toBe(2);
+
+    expect(div.childNodes[0] as Text).toBe(secondText);
+    expect(secondText.textContent).toBe('element1');
+    expect(div.childNodes[1] as Text).toBe(firstText);
+    expect(firstText.textContent).toBe('element0');
+  });
 });
