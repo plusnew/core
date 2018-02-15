@@ -15,17 +15,7 @@ export default abstract class ChildrenInstance extends Instance {
     this.children = [];
   }
 
-  /**
-   * calculates the previous siblinglength
-   */
-  public getPreviousLength(instanceIndex: number) {
-    let previousCount = this.previousAbstractSiblingCount();
-
-    for (let i = 0; i < instanceIndex; i += 1) {
-      previousCount += this.children[i].getLength();
-    }
-    return previousCount;
-  }
+  abstract getPreviousLength(instanceIndex: number): number;
 
   public addChildren(children: ApplicationElement[]) {
     for (let i = 0; i < children.length; i += 1) {
