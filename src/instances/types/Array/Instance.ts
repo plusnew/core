@@ -16,4 +16,16 @@ export default class ArrayInstance extends ChildrenInstance {
 
     this.addChildren(abstractElements);
   }
+
+  /**
+   * calculates the previous siblinglength
+   */
+  public getPreviousLength(instanceIndex: number) {
+    let previousCount = this.previousAbstractSiblingCount();
+
+    for (let i = 0; i < instanceIndex; i += 1) {
+      previousCount += this.children[i].getLength();
+    }
+    return previousCount;
+  }
 }
