@@ -242,4 +242,84 @@ describe('rendering nested components', () => {
       expect(secondChild.innerHTML).toBe(newListItem.value + 1);
     });
   });
+
+  it('updating should insert correct next to siblings', () => {
+    const dependencies = {
+      local: store([] as typeof list, (previousStore, action: typeof list) => action),
+    };
+
+    const PartialComponent = component(
+      () => ({}),
+      () => <span>some other element</span>,
+    );
+
+    const MainComponent = component(
+      () => dependencies,
+      (props, { local }) =>
+        <div>
+          <div />
+          <div>
+            {local.state.map(item => <div key={item.key}>{item.value}</div>)}
+            <PartialComponent />
+          </div>
+        </div>,
+    );
+
+    plusnew.render(MainComponent, container);
+
+    const div = container.childNodes[0].childNodes[1] as HTMLElement;
+    expect(div.childNodes.length).toBe(1);
+    const partialElement = (div.childNodes[0] as HTMLElement);
+    expect(partialElement.tagName).toBe('SPAN');
+    expect(partialElement.innerHTML).toBe('some other element');
+
+    dependencies.local.dispatch([{ key: 0, value: 'entity1' }, { key: 1, value: 'entity2' }]);
+
+    expect(div.childNodes.length).toBe(3);
+
+    expect((div.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((div.childNodes[0] as HTMLElement).innerHTML).toBe('entity1');
+    expect((div.childNodes[1] as HTMLElement).tagName).toBe('DIV');
+    expect((div.childNodes[1] as HTMLElement).innerHTML).toBe('entity2');
+    expect((div.childNodes[2] as HTMLElement)).toBe(partialElement);
+    expect((div.childNodes[2] as HTMLElement).tagName).toBe('SPAN');
+    expect((div.childNodes[2] as HTMLElement).innerHTML).toBe('some other element');
+  });
+
+  it('updating component with text', () => {
+    const dependencies = {
+      local: store([{ key: 0 }, { key: 1 }], (previousStore, action: {key: number}[]) => action),
+    };
+
+    const PartialComponent = component(
+      () => ({}),
+      (props: {key: number}) => 'element' + props.key as any,
+    );
+
+    const MainComponent = component(
+      () => dependencies,
+      (props, { local }) =>
+        <div>
+          {local.state.map(item => <PartialComponent key={item.key} />)}
+        </div>,
+    );
+
+    plusnew.render(MainComponent, container);
+
+    const div = container.childNodes[0] as HTMLElement;
+    expect(div.childNodes.length).toBe(2);
+    const firstText = div.childNodes[0] as Text;
+    const secondText = div.childNodes[1] as Text;
+    expect(firstText.textContent).toBe('element0');
+    expect(secondText.textContent).toBe('element1');
+
+    dependencies.local.dispatch([{ key: 1 }, { key: 0 }]);
+
+    expect(div.childNodes.length).toBe(2);
+
+    expect(div.childNodes[0] as Text).toBe(secondText);
+    expect(secondText.textContent).toBe('element1');
+    expect(div.childNodes[1] as Text).toBe(firstText);
+    expect(firstText.textContent).toBe('element0');
+  });
 });
