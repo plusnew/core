@@ -23,6 +23,18 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   /**
+   * calculates the previous siblinglength
+   */
+  public getPreviousLength(instanceIndex: number) {
+    let previousCount = 0;
+
+    for (let i = 0; i < instanceIndex; i += 1) {
+      previousCount += this.children[i].getLength();
+    }
+    return previousCount;
+  }
+
+  /**
    * sets the attributes to the element
    */
   private setProps() {
