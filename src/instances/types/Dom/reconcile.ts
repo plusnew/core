@@ -19,7 +19,7 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: D
           );
         }
       }
-    } else if (propIndex !== 'children') {
+    } else {
       // @TODO add special-values to a specific place
       if (instance.abstractElement.props[propIndex] !== newAbstractElement.props[propIndex]) {
         instance.setProp(propIndex, newAbstractElement.props[propIndex]);
