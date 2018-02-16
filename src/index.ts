@@ -1,7 +1,7 @@
 import component from './interfaces/component';
 import PlusnewAbstractElement from './PlusnewAbstractElement';
 import factory from './instances/factory';
-import componentFactory from './components/factory';
+import componentFactory, { componentResult } from './components/factory';
 import RootInstance from './instances/types/Root/Instance';
 import InputEvent from './interfaces/InputEvent';
 import Instance from './instances/types/Instance';
@@ -19,20 +19,20 @@ class Plusnew {
   /**
    * mounts the root component
    */
-  public render(component: component<{}>, containerElement: HTMLElement) {
+  public render(element: PlusnewAbstractElement, containerElement: HTMLElement) {
     // Fake RootInstance
-    const wrapper = new RootInstance(new PlusnewAbstractElement(component, {}, []), undefined, () => 0);
+    const wrapper = new RootInstance(element, undefined, () => 0);
     wrapper.ref = containerElement;
 
     while (containerElement.childNodes.length) {
       containerElement.removeChild(containerElement.childNodes[0]);
     }
 
-    return factory(new PlusnewAbstractElement(component, {}, []), wrapper, () => 0);
+    return factory(element, wrapper, () => 0);
   }
 }
 
-export { store, Plusnew, Instance, componentFactory as component, InputEvent };
+export { store, Plusnew, Instance, componentFactory as component, InputEvent, componentResult };
 
 export default new Plusnew();
 

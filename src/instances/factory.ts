@@ -3,6 +3,7 @@ import Instance from './types/Instance';
 import ArrayInstance from './types/Array/Instance';
 import PlaceHolderInstance from './types/Placeholder/Instance';
 import DomInstance from './types/Dom/Instance';
+import FragmentInstance from './types/Fragment/Instance';
 import ComponentInstance from './types/Component/Instance';
 import TextInstance from './types/Text/Instance';
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
@@ -29,6 +30,9 @@ export default function (
       parentInstance,
       previousAbstractSiblingCount,
     );
+  }
+  if (elementTypeChecker.isFragmentElement(abstractElement) === true) {
+    return new FragmentInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
   }
   if (elementTypeChecker.isDomElement(abstractElement) === true) {
     return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);

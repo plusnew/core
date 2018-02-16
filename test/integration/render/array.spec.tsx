@@ -18,7 +18,7 @@ describe('rendering nested components', () => {
       (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -42,7 +42,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -68,7 +68,7 @@ describe('rendering nested components', () => {
       (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -98,7 +98,7 @@ describe('rendering nested components', () => {
       (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -147,7 +147,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(MainComponent, container);
+    plusnew.render(<MainComponent />, container);
 
     const span = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -197,7 +197,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(MainComponent, container);
+    plusnew.render(<MainComponent />, container);
 
     const span = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -265,7 +265,7 @@ describe('rendering nested components', () => {
         </div>,
     );
 
-    plusnew.render(MainComponent, container);
+    plusnew.render(<MainComponent />, container);
 
     const div = container.childNodes[0].childNodes[1] as HTMLElement;
     expect(div.childNodes.length).toBe(1);
@@ -304,7 +304,7 @@ describe('rendering nested components', () => {
         </div>,
     );
 
-    plusnew.render(MainComponent, container);
+    plusnew.render(<MainComponent />, container);
 
     const div = container.childNodes[0] as HTMLElement;
     expect(div.childNodes.length).toBe(2);
