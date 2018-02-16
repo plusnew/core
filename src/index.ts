@@ -1,7 +1,7 @@
 import component from './interfaces/component';
 import PlusnewAbstractElement from './PlusnewAbstractElement';
 import factory from './instances/factory';
-import componentFactory from './components/factory';
+import componentFactory, { componentResult } from './components/factory';
 import RootInstance from './instances/types/Root/Instance';
 import InputEvent from './interfaces/InputEvent';
 import Instance from './instances/types/Instance';
@@ -32,7 +32,7 @@ class Plusnew {
   }
 }
 
-export { store, Plusnew, Instance, componentFactory as component, InputEvent };
+export { store, Plusnew, Instance, componentFactory as component, InputEvent, componentResult };
 
 export default new Plusnew();
 
