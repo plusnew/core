@@ -19,7 +19,7 @@ describe('fragments', () => {
         </>,
     );
 
-    plusnew.render(MainComponent, container);
+    plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -50,7 +50,7 @@ describe('fragments', () => {
         </div>,
     );
 
-    plusnew.render(MainComponent, container);
+    plusnew.render(<MainComponent />, container);
 
     const div = container.childNodes[0];
     expect(div.childNodes.length).toBe(2);
@@ -92,7 +92,7 @@ describe('fragments', () => {
         </>,
     );
 
-    plusnew.render(MainComponent, container);
+    plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');

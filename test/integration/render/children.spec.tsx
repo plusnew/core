@@ -16,7 +16,7 @@ describe('rendering nested components', () => {
 
       const MainComponent = component(() => ({ local }), () => <NestedComponent>{local.state}</NestedComponent>);
 
-      plusnew.render(MainComponent, container);
+      plusnew.render(<MainComponent />, container);
 
       const nestedElement = container.childNodes[0] as HTMLElement;
       expect(container.childNodes.length).toBe(1);

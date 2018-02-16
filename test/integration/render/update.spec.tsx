@@ -22,7 +22,7 @@ describe('rendering the elements', () => {
       (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes.length).toBe(1);
 
@@ -47,7 +47,7 @@ describe('rendering the elements', () => {
       (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes.length).toBe(1);
 
@@ -78,7 +78,7 @@ describe('rendering the elements', () => {
         ),
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes.length).toBe(1);
 
@@ -105,7 +105,7 @@ describe('rendering the elements', () => {
         ),
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
 
@@ -131,7 +131,7 @@ describe('rendering the elements', () => {
         ),
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
 
@@ -158,7 +158,7 @@ describe('rendering the elements', () => {
         ),
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes[0].childNodes.length).toBe(2);
     const target = container.childNodes[0].childNodes[0] as HTMLElement;
@@ -184,7 +184,7 @@ describe('rendering the elements', () => {
         ),
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -202,7 +202,7 @@ describe('rendering the elements', () => {
       (props: {}, { local }) => (local.state === true ? <div /> : <div>foo</div>),
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
@@ -227,7 +227,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
@@ -260,7 +260,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.innerHTML).toBe('0');
