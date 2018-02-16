@@ -1,6 +1,9 @@
 import ComponentInstance from '../instances/types/Component/Instance';
 
 export type result = JSX.Element | null;
+export interface componentResult<props> {
+  (props: props, instance: ComponentInstance): JSX.Element | null;
+}
 
 export interface factory {
   <dependencies, props>(
