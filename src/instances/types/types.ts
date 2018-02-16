@@ -8,6 +8,7 @@ enum InstanceTypes {
   Placeholder,
   Component,
   Root,
+  Fragment,
 }
 
 export default InstanceTypes;
