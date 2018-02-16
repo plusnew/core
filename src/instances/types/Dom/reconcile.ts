@@ -3,7 +3,6 @@ import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import reconciler from '../../reconciler';
 import factory from '../../factory';
 
-
 export default function (newAbstractElement: PlusnewAbstractElement, instance: DomInstance) {
   for (const propIndex in newAbstractElement.props) {
     if (propIndex === 'children') {
@@ -15,11 +14,13 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: D
             instance.children[i] = newInstance;
           }
         } else {
-          instance.children.push(factory(newAbstractElement.props.children[i], instance, instance.getPreviousLength.bind(instance, i)));
+          instance.children.push(
+            factory(newAbstractElement.props.children[i], instance, instance.getPreviousLength.bind(instance, i)),
+          );
         }
-
       }
-    } else if (propIndex !== 'children') { // @TODO add special-values to a specific place
+    } else {
+      // @TODO add special-values to a specific place
       if (instance.abstractElement.props[propIndex] !== newAbstractElement.props[propIndex]) {
         instance.setProp(propIndex, newAbstractElement.props[propIndex]);
       }

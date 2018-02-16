@@ -1,14 +1,9 @@
-import Plusnew from 'index';
-import factory from 'components/factory';
-import store from 'redchain';
+import plusnew, { component, store } from 'index';
 
 describe('rendering nested components', () => {
-  let plusnew: Plusnew;
   let container: HTMLElement;
 
   beforeEach(() => {
-    plusnew = new Plusnew();
-
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
     document.body.appendChild(container);
@@ -21,12 +16,12 @@ describe('rendering nested components', () => {
       local.dispatch('bar');
     });
 
-    const component = factory(
-      () => ({ local }), 
-      (props: {}, { local }) => <input onchange={change} value={local.state}/>,
+    const Component = component(
+      () => ({ local }),
+      (props: {}, { local }) => <input onchange={change} value={local.state} />,
     );
-    
-    plusnew.render(component, container);
+
+    plusnew.render(<Component />, container);
 
     const input = document.getElementsByTagName('input')[0];
     input.value = 'bar';

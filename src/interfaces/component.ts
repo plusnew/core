@@ -2,13 +2,14 @@ import PlusnewAbstractElement from '../PlusnewAbstractElement';
 import { store } from 'redchain';
 import ComponentInstance from '../instances/types/Component/Instance';
 
-export type ApplicationElement = PlusnewAbstractElement |
-                                 string |
-                                 number |
-                                 boolean |
-                                 null |
-                                 undefined |
-                                 (PlusnewAbstractElement | string | number | boolean | null | undefined)[];
+export type ApplicationElement =
+  | PlusnewAbstractElement
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | (PlusnewAbstractElement | string | number | boolean | null | undefined)[];
 
 export interface props {
   [key: string]: any;

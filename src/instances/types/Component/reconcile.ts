@@ -4,7 +4,7 @@ import ComponentInstance from './Instance';
 
 export default function (newAbstractElement: PlusnewAbstractElement, instance: ComponentInstance) {
   const newAbstractChildren = instance.render(newAbstractElement.props, instance.dependencies);
-  // if()
+
   const newChildrenInstance = reconciler.update(newAbstractChildren, instance.children);
   if (newChildrenInstance !== instance.children) {
     instance.children.remove();

@@ -5,17 +5,23 @@ import factory from '../factory';
 export default abstract class ChildrenInstance extends Instance {
   public children: Instance[];
 
-  constructor(abstractElement: ApplicationElement, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
+  constructor(
+    abstractElement: ApplicationElement,
+    parentInstance: Instance,
+    previousAbstractSiblingCount: () => number,
+  ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
     this.children = [];
   }
 
+  abstract getPreviousSiblingsForChildren(): number;
+
   /**
    * calculates the previous siblinglength
    */
   public getPreviousLength(instanceIndex: number) {
-    let previousCount = this.previousAbstractSiblingCount();
+    let previousCount = this.getPreviousSiblingsForChildren();
 
     for (let i = 0; i < instanceIndex; i += 1) {
       previousCount += this.children[i].getLength();
@@ -41,7 +47,6 @@ export default abstract class ChildrenInstance extends Instance {
     }
     return length;
   }
-
 
   /**
    * moves the children to another dom position
