@@ -19,16 +19,16 @@ class Plusnew {
   /**
    * mounts the root component
    */
-  public render(component: component<{}>, containerElement: HTMLElement) {
+  public render(element: PlusnewAbstractElement, containerElement: HTMLElement) {
     // Fake RootInstance
-    const wrapper = new RootInstance(new PlusnewAbstractElement(component, {}, []), undefined, () => 0);
+    const wrapper = new RootInstance(element, undefined, () => 0);
     wrapper.ref = containerElement;
 
     while (containerElement.childNodes.length) {
       containerElement.removeChild(containerElement.childNodes[0]);
     }
 
-    return factory(new PlusnewAbstractElement(component, {}, []), wrapper, () => 0);
+    return factory(element, wrapper, () => 0);
   }
 }
 

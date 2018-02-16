@@ -15,7 +15,7 @@ describe('rendering the elements', () => {
 
   it('check if element is inserted', () => {
     const Component = component(() => ({}), (props: {}, {}) => <div className="foo" />);
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -33,7 +33,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes[0].childNodes.length).toBe(2);
 
@@ -55,7 +55,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -67,7 +67,7 @@ describe('rendering the elements', () => {
   it('check if textnode is created on root', () => {
     const Component = component(() => ({}), () => 'foo' as any);
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('foo');
   });
@@ -75,14 +75,14 @@ describe('rendering the elements', () => {
   it('check if textnode is created on root, even with number', () => {
     const Component = component(() => ({}), () => 1 as any);
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('1');
   });
 
   it('check if textnode is created', () => {
     const Component = component(() => ({}), (props: {}, {}) => <div className="foo">bar</div>);
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -93,7 +93,7 @@ describe('rendering the elements', () => {
 
   it('check if null is created on root', () => {
     const Component = component(() => ({}), (props: {}, {}) => null);
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
@@ -102,14 +102,14 @@ describe('rendering the elements', () => {
   it('check if undefined is created on root', () => {
     const Component = component(() => ({}), () => undefined as any);
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
     expect(container.childNodes.length).toBe(0);
   });
 
   it('check if true is created on root', () => {
     const Component = component(() => ({ local }), () => true as any);
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
   });
@@ -117,7 +117,7 @@ describe('rendering the elements', () => {
   it('check if false is created on root', () => {
     const Component = component(() => ({ local }), () => false as any);
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
   });

@@ -19,7 +19,7 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(() => ({ local }), (props: {}) => <NestedComponent value={local.state} />);
 
-    plusnew.render(MainComponent, container);
+    plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(1);
 
@@ -47,7 +47,7 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(() => ({}), (props: {}) => <NestedComponent value="foo" />);
 
-    plusnew.render(MainComponent, container);
+    plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(1);
 

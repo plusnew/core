@@ -21,7 +21,7 @@ describe('rendering nested components', () => {
       (props: {}, { local }) => <input onchange={change} value={local.state} />,
     );
 
-    plusnew.render(Component, container);
+    plusnew.render(<Component />, container);
 
     const input = document.getElementsByTagName('input')[0];
     input.value = 'bar';
