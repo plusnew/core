@@ -138,7 +138,7 @@ describe('rendering nested components', () => {
       local: store(list, (previousStore, action: typeof list) => action),
     };
 
-    const PartialComponent = component(() => {}, (props: { value: string }) => <span>{props.value}</span>);
+    const PartialComponent = component(() => ({}), (props: { value: string }) => <span>{props.value}</span>);
 
     const MainComponent = component(
       () => dependencies,
