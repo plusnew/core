@@ -1,12 +1,17 @@
 import ComponentInstance from '../instances/types/Component/Instance';
+import { store } from 'redchain';
 
 export type result = JSX.Element | null;
 export interface componentResult<props> {
   (props: props, instance: ComponentInstance): JSX.Element | null;
 }
 
+export interface stores {
+  [key: string]: store<any, any>;
+}
+
 export interface factory {
-  <dependencies, props>(
+  <dependencies extends stores, props>(
     constructor: (props: props) => dependencies,
     render: (props: props, dependencies: dependencies) => result,
   ): (props: props, instance: ComponentInstance) => result;
