@@ -10,4 +10,6 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: C
     instance.children.remove();
     instance.children = newChildrenInstance;
   }
+
+  instance.abstractElement = newAbstractElement;
 }

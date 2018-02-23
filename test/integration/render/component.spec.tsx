@@ -59,4 +59,43 @@ describe('rendering nested components', () => {
     expect(target.innerHTML).toBe('foo');
     expect(textElement.textContent).toBe('foo');
   });
+
+  it('saving new props of component', () => {
+    const mainStore = store('foo-0', (store, action: string) => action);
+    const nestedStore = store('bar-0', (store, action: string) => action);
+
+    const NestedComponent = component(
+      () => ({ nestedStore }),
+      (props: {value: string}, { nestedStore }) =>
+        <>
+          <span>{props.value}</span>
+          <span>{nestedStore.state}</span>
+        </>,
+    );
+    const MainComponent = component(
+      () => ({ mainStore }),
+      (props: {}, { mainStore }) =>
+        <NestedComponent value={mainStore.state} />,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(2);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo-0');
+    expect((container.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('bar-0');
+
+    mainStore.dispatch('foo-1');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo-1');
+    expect((container.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('bar-0');
+
+    nestedStore.dispatch('bar-1');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo-1');
+    expect((container.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('bar-1');
+  });
 });
