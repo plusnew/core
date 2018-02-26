@@ -26,6 +26,11 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: D
       }
     }
   }
+  Object.keys(instance.abstractElement.props).forEach((index) => {
+    if (index in newAbstractElement.props === false) {
+      instance.unsetProp(index);
+    }
+  });
 
   instance.abstractElement = newAbstractElement; // updating the shadowdom
 }
