@@ -269,4 +269,24 @@ describe('rendering the elements', () => {
 
     expect(target.innerHTML).toBe('1');
   });
+
+  it('dom with lesser attributes after update', () => {
+    const local = store(true, (previousState, action: boolean) => action);
+    const Component = component(
+      () => ({ local }),
+      (props: {}, { local }) =>
+        local.state ?
+          <div className="foo" />
+        :
+          <div />,
+    );
+    plusnew.render(<Component />, container);
+
+    const target = container.childNodes[0] as HTMLElement;
+
+    expect(target.className).toBe('foo');
+    local.dispatch(false);
+
+    expect(target.className).toBe('');
+  });
 });

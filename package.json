@@ -1,6 +1,6 @@
 {
   "name": "plusnew",
-  "version": "0.5.53",
+  "version": "0.5.54",
   "description": "ts framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,8 +8,8 @@
     "prepublish": "npm test && npm run build",
     "build": "tsc --pretty",
     "start": "tsc --pretty --watch",
-    "test": "node_modules/karma/bin/karma start karma.conf.js --no-auto-watch --single-run",
-    "test:watch": "node_modules/karma/bin/karma start karma.conf.js"
+    "test": "karma start karma.conf.js --no-auto-watch --single-run",
+    "test:watch": "karma start karma.conf.js"
   },
   "repository": {
     "type": "git",
