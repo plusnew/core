@@ -3,6 +3,13 @@ import types from '../types';
 import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 
+const PropToAttribbuteMapping = {
+  acceptCharset: 'accept-charset',
+  className: 'class',
+  htmlFor: 'for',
+  httpEquiv: 'http-equiv',
+};
+
 export default class DomInstance extends ChildrenInstance {
   public type = types.Dom;
   public abstractElement: PlusnewAbstractElement;
@@ -74,8 +81,41 @@ export default class DomInstance extends ChildrenInstance {
     return this;
   }
 
+  /**
+   * sets the actual property on the element
+   */
   private setNormalProp(key: string, value: any) {
-    (this.ref as any)[key] = value; // @TODO should probably be improved
+    const keyName = this.getAttributeNameFromProp(key);
+    if (typeof value === 'function') {
+      (this.ref as any)[keyName] = value;
+    } else {
+      this.ref.setAttribute(keyName, value);
+    }
+  }
+
+
+  /**
+   * deletes a property from dom element
+   */
+  public unsetProp(key: string) {
+    const keyName = this.getAttributeNameFromProp(key);
+
+    if (typeof (this.ref as any)[keyName] === 'function') {
+      (this.ref as any)[keyName] = null;
+    } else {
+      this.ref.removeAttribute(this.getAttributeNameFromProp(key));
+    }
+    return this;
+  }
+
+  /**
+   * gets the correct attributename, className gets to class etc
+   */
+  private getAttributeNameFromProp(key: string): string {
+    if (PropToAttribbuteMapping.hasOwnProperty(key)) {
+      return (PropToAttribbuteMapping as any)[key];
+    }
+    return key.toLowerCase();
   }
 
   /**
