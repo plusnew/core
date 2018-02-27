@@ -289,4 +289,25 @@ describe('rendering the elements', () => {
 
     expect(target.className).toBe('');
   });
+
+  it('dom with lesser attributes after update, even for events', () => {
+    const clickHandler = () => {};
+    const local = store(true, (previousState, action: boolean) => action);
+    const Component = component(
+      () => ({ local }),
+      (props: {}, { local }) =>
+        local.state ?
+          <div onclick={clickHandler} />
+        :
+          <div />,
+    );
+    plusnew.render(<Component />, container);
+
+    const target = container.childNodes[0] as HTMLElement;
+
+    expect(target.onclick).toBe(clickHandler);
+    local.dispatch(false);
+
+    expect(target.onclick).toBe(null);
+  });
 });

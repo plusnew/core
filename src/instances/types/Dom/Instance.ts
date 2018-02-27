@@ -85,7 +85,12 @@ export default class DomInstance extends ChildrenInstance {
    * sets the actual property on the element
    */
   private setNormalProp(key: string, value: any) {
-    this.ref.setAttribute(this.getAttributeNameFromProp(key), value);
+    const keyName = this.getAttributeNameFromProp(key);
+    if (typeof value === 'function') {
+      (this.ref as any)[keyName] = value;
+    } else {
+      this.ref.setAttribute(keyName, value);
+    }
   }
 
 
@@ -93,8 +98,13 @@ export default class DomInstance extends ChildrenInstance {
    * deletes a property from dom element
    */
   public unsetProp(key: string) {
-    this.ref.removeAttribute(this.getAttributeNameFromProp(key));
+    const keyName = this.getAttributeNameFromProp(key);
 
+    if (typeof (this.ref as any)[keyName] === 'function') {
+      (this.ref as any)[keyName] = null;
+    } else {
+      this.ref.removeAttribute(this.getAttributeNameFromProp(key));
+    }
     return this;
   }
 
