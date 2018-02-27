@@ -60,4 +60,18 @@ describe('dom handling', () => {
     expect(target.httpEquiv).toBe('refresh');
   });
 
+  it('correct handling of onclick', () => {
+    const clickHandler = () => {};
+
+    const Component = component(
+      () => ({}),
+      (props: {}) =>
+        <span onclick={clickHandler} />,
+    );
+    plusnew.render(<Component />, container);
+
+    const target = container.childNodes[0] as HTMLMetaElement;
+
+    expect(target.onclick).toBe(clickHandler);
+  });
 });
