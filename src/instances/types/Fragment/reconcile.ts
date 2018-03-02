@@ -17,4 +17,10 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: F
       );
     }
   }
+
+  for (let i = newAbstractElement.props.children.length; i < instance.abstractElement.props.children.length; i += 1) {
+    instance.children[i].remove();
+  }
+
+  instance.abstractElement = newAbstractElement; // updating the shadowdom
 }

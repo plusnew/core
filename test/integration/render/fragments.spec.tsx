@@ -104,4 +104,41 @@ describe('fragments', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('bar');
   });
+
+  it('replacing children of fragments', () => {
+    const local = store(true, (state, action: boolean) => action);
+    const MainComponent = component(
+      () => ({  local }),
+      () =>
+        local.state ?
+          <>
+            <span>foo</span>
+          </>
+        :
+          <>
+            <span>bar</span>
+            <span>baz</span>
+          </>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
+
+    local.dispatch(false);
+
+    expect(container.childNodes.length).toBe(2);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('bar');
+    expect((container.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('baz');
+
+    local.dispatch(true);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
+  });
 });

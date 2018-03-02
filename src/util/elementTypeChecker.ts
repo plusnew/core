@@ -1,5 +1,6 @@
 import { ApplicationElement } from '../interfaces/component';
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
+import { Fragment } from './symbols';
 
 export class ElementTypeChecker {
   public isTextElement(abstractElement: ApplicationElement) {
@@ -16,7 +17,7 @@ export class ElementTypeChecker {
       this.isArrayElement(abstractElement) === false &&
       this.isTextElement(abstractElement) === false
     ) {
-      return (abstractElement as PlusnewAbstractElement).type === undefined;
+      return (abstractElement as PlusnewAbstractElement).type === Fragment;
     }
 
     return false;

@@ -63,4 +63,9 @@ describe('checking if createElement works as expected', () => {
     expect(instance.props).toEqual({ ...props, children: [] });
     expect(instance.props).not.toBe(props as any);
   });
+
+  it('Is text element created', () => {
+    const instance = plusnew.createElement(plusnew.Fragment, null);
+    expect(instance.type).toBe(plusnew.Fragment);
+  });
 });
