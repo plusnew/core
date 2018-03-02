@@ -1,10 +1,12 @@
 import component, { props } from '../interfaces/component';
 
+type PlusnewElement = string | number | component<any> | Symbol;
+
 export default class PlusnewAbstractElement {
   /**
    * The information if what domnode it is, or if it is a component
    */
-  public type: string | number | component<any>;
+  public type: PlusnewElement;
   /**
    * what properties should your parent give you
    */
@@ -12,14 +14,14 @@ export default class PlusnewAbstractElement {
   /**
    * Lightweight representation of a DOM or Component Node, this component is immutable and is used for comparison
    */
-  constructor(type: string | number | component<any>, props: {} | null, children: PlusnewAbstractElement[]) {
+  constructor(type: PlusnewElement, props: {} | null, children: PlusnewAbstractElement[]) {
     this.setType(type).setProps(props, children);
   }
 
   /**
    * sets the information what domnode or component this is
    */
-  private setType(type: string | number | component<any>) {
+  private setType(type: PlusnewElement) {
     this.type = type;
 
     return this;
@@ -45,3 +47,5 @@ export default class PlusnewAbstractElement {
     return key !== 'children'; // @TODO add ref/key
   }
 }
+
+export { PlusnewElement };

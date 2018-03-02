@@ -26,6 +26,11 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: D
       }
     }
   }
+
+  for (let i = newAbstractElement.props.children.length; i < instance.abstractElement.props.children.length; i += 1) {
+    instance.children[i].remove();
+  }
+
   Object.keys(instance.abstractElement.props).forEach((index) => {
     if (index in newAbstractElement.props === false) {
       instance.unsetProp(index);

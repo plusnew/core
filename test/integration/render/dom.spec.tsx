@@ -1,4 +1,4 @@
-import plusnew, { component } from 'index';
+import plusnew, { component, store } from 'index';
 
 describe('dom handling', () => {
   let container: HTMLElement;
@@ -73,5 +73,45 @@ describe('dom handling', () => {
     const target = container.childNodes[0] as HTMLMetaElement;
 
     expect(target.onclick).toBe(clickHandler);
+  });
+
+
+  it('replacing children of dom', () => {
+    const local = store(true, (state, action: boolean) => action);
+    const MainComponent = component(
+      () => ({  local }),
+      () =>
+        local.state ?
+          <div>
+            <span>foo</span>
+          </div>
+        :
+          <div>
+            <span>bar</span>
+            <span>baz</span>
+          </div>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+
+    expect(container.childNodes[0].childNodes.length).toBe(1);
+    expect((container.childNodes[0].childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0].childNodes[0] as HTMLElement).innerHTML).toBe('foo');
+
+    local.dispatch(false);
+
+    expect(container.childNodes[0].childNodes.length).toBe(2);
+    expect((container.childNodes[0].childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0].childNodes[0] as HTMLElement).innerHTML).toBe('bar');
+    expect((container.childNodes[0].childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0].childNodes[1] as HTMLElement).innerHTML).toBe('baz');
+
+    local.dispatch(true);
+
+    expect(container.childNodes[0].childNodes.length).toBe(1);
+    expect((container.childNodes[0].childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0].childNodes[0] as HTMLElement).innerHTML).toBe('foo');
   });
 });
