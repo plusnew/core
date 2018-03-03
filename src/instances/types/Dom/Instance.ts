@@ -148,6 +148,7 @@ export default class DomInstance extends ChildrenInstance {
    * removes the domnode from the parent
    */
   public remove() {
+    this.children.forEach(child => child.remove());
     (this.ref.parentNode as Node).removeChild(this.ref);
 
     return this;
