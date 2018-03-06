@@ -86,7 +86,7 @@ module.exports = function (config) {
       coverageOptions: {
         exclude: [
           /node_modules/,
-          /src\/Interface/,
+          /src\/interfaces/,
           /test/,
         ]
       }
