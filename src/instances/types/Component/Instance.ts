@@ -18,6 +18,9 @@ export default class ComponentInstance extends Instance {
     previousAbstractSiblingCount: () => number,
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
+
+    // Each instance needs its own update method - to have a unique method to be removed from the dependency-listeners
+    this.update = this.update.bind(this);
     this.initialiseComponent();
   }
 
@@ -40,7 +43,7 @@ export default class ComponentInstance extends Instance {
   private registerDependencies(dependencies: deps) {
     for (const dependencyIndex in dependencies) {
       const dependency = dependencies[dependencyIndex];
-      dependency.addOnChange(this.update.bind(this));
+      dependency.addOnChange(this.update);
     }
     this.dependencies = dependencies;
 
@@ -85,8 +88,19 @@ export default class ComponentInstance extends Instance {
    * removes the children from the dom
    */
   public remove() {
+    this.removeDependencyListeners();
     this.children.remove();
 
     return this;
+  }
+
+  /**
+   * removes the dependencylisteners from the instance
+   * without this there would be memoryleaks and unecessary reconsiling without any visible effect
+  */
+  private removeDependencyListeners() {
+    for (const index in this.dependencies) {
+      this.dependencies[index].removeOnChange(this.update);
+    }
   }
 }
