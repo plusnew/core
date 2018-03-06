@@ -24,14 +24,14 @@ export default class RootInstance extends Instance {
   /**
    * Nobody is above the root, and because of that nobody is able to move the root
    */
-  public move(): Instance {
+  public move(): never {
     throw new Error('The root element can\'t remove itself');
   }
 
   /**
    * Nobody is above the root, and because of that nobody is able to remove the root
    */
-  public remove(): Instance {
+  public remove(): never {
     throw new Error('The root element can\'t remove itself');
   }
 }

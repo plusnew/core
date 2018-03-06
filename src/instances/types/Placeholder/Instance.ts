@@ -14,8 +14,9 @@ export default class PlaceHolderInstance extends Instance {
   /**
    * placeholder has no object, which needs moving
    */
-  move() {
-    return this;
+  move(): never {
+    // This line should never be executed, please create a github-issue how to reproduce that
+    throw new Error('Placeholder elements cant be moved');
   }
 
   /**
