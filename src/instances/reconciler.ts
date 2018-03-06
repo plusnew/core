@@ -43,7 +43,7 @@ export class Reconciler {
       } else if (instance.type === types.Component) {
         componentReconcile(newAbstractElement as PlusnewAbstractElement, instance as ComponentInstance);
       } else {
-        throw new Error('Updating this element is not yet implemented');
+        throw new Error('Updating unknown Elementtype');
       }
       return instance;
     }
