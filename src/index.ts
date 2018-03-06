@@ -37,4 +37,3 @@ class Plusnew {
 export { store, Plusnew, Instance, componentFactory as component, InputEvent, componentResult };
 
 export default new Plusnew();
-

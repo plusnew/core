@@ -1,4 +1,4 @@
-import plusnew, { component, store } from 'index';
+import plusnew, { component, store, InputEvent } from 'index';
 
 describe('dom handling', () => {
   let container: HTMLElement;
@@ -150,5 +150,80 @@ describe('dom handling', () => {
     expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
     expect((container.childNodes[0] as any).key).toBe(undefined);
     expect((container.childNodes[0] as HTMLDivElement).getAttribute('key')).toBe(null);
+  });
+
+  it('input onchange', () => {
+    const local = store('foo', (state, action: string) => action);
+
+    const Component = component(
+      () => ({ local }),
+      () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const target = container.childNodes[0] as HTMLInputElement;
+    expect(target.tagName).toBe('INPUT');
+    expect(target.value).toBe('foo');
+
+    const inputEvent = new Event('input');
+    target.value = 'mep';
+
+    target.dispatchEvent(inputEvent);
+
+    expect(local.state).toBe('mep');
+
+    target.value = 'anothermep';
+
+    target.dispatchEvent(inputEvent);
+
+    expect(local.state).toBe('anothermep');
+  });
+
+  it('input onchange', () => {
+    const local = store('foo', (state, action: string) => action + 'suffix');
+
+    const Component = component(
+      () => ({ local }),
+      () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const target = container.childNodes[0] as HTMLInputElement;
+    expect(target.tagName).toBe('INPUT');
+    expect(target.value).toBe('foo');
+
+    const inputEvent = new Event('input');
+    target.value = 'mep';
+    target.dispatchEvent(inputEvent);
+
+    expect(local.state).toBe('mepsuffix');
+  });
+
+  it('input onchange', () => {
+    const local = store('foo', (state, action: string) => 'blarg');
+
+    const Component = component(
+      () => ({ local }),
+      () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const target = container.childNodes[0] as HTMLInputElement;
+    expect(target.tagName).toBe('INPUT');
+    expect(target.value).toBe('foo');
+
+    const inputEvent = new Event('input');
+    target.value = 'mep';
+    target.dispatchEvent(inputEvent);
+
+    expect(local.state).toBe('blarg');
+
+    target.value = 'meps';
+    target.dispatchEvent(inputEvent);
+
+    expect(local.state).toBe('blarg');
   });
 });
