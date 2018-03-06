@@ -81,15 +81,30 @@ export default class DomInstance extends ChildrenInstance {
     return this;
   }
 
+  private isInternalPlusnewProp(key: string) {
+    return key === 'key';
+  }
+
   /**
    * sets the actual property on the element
    */
   private setNormalProp(key: string, value: any) {
     const keyName = this.getAttributeNameFromProp(key);
-    if (typeof value === 'function') {
+    if (this.isInternalPlusnewProp(key)) {
+      // When its an internal property, it should not be set to dom element
+    } else if (typeof value === 'function') {
       (this.ref as any)[keyName] = value;
+    } else if (typeof(value) === 'boolean') {
+      if (value === true) {
+        // The standard says, that boolean attributes should have the keyname as the value
+        this.ref.setAttribute(keyName, keyName);
+      } else {
+        // boolean attributes have to be removed, to be invalidated
+        this.ref.removeAttribute(keyName);
+      }
     } else {
-      this.ref.setAttribute(keyName, value);
+      // All the other attributes are strings
+      this.ref.setAttribute(keyName, value + '');
     }
   }
 

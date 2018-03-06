@@ -114,4 +114,41 @@ describe('dom handling', () => {
     expect((container.childNodes[0].childNodes[0] as HTMLElement).tagName).toBe('SPAN');
     expect((container.childNodes[0].childNodes[0] as HTMLElement).innerHTML).toBe('foo');
   });
+
+  it('boolean attributes', () => {
+    const local = store(true, (state, action: boolean) => action);
+
+    const Component = component(
+      () => ({ local }),
+      () => <input disabled={local.state} />,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect((container.childNodes[0] as HTMLInputElement).tagName).toBe('INPUT');
+    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.state);
+
+    local.dispatch(false);
+
+    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.state);
+
+    local.dispatch(true);
+
+    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.state);
+  });
+
+  it('plusnew attributes', () => {
+    const local = store(true, (state, action: boolean) => action);
+
+    const Component = component(
+      () => ({ local }),
+      () => <div key="foo" />,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as any).key).toBe(undefined);
+    expect((container.childNodes[0] as HTMLDivElement).getAttribute('key')).toBe(null);
+  });
 });
