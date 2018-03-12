@@ -41,7 +41,11 @@ export default class DomInstance extends ChildrenInstance {
    */
   private setProps() {
     for (const index in this.abstractElement.props) {
-      this.setProp(index, this.abstractElement.props[index]);
+      if (index === 'style') {
+        this.setStyleProps(this.abstractElement.props.style);
+      } else {
+        this.setProp(index, this.abstractElement.props[index]);
+      }
     }
 
     return this;
@@ -73,6 +77,8 @@ export default class DomInstance extends ChildrenInstance {
           DomInstance.prototype.setNormalProp.call(this, key, value);
           preventDefault = true;
         }
+
+        return this;
       };
       this.abstractElement.props.onchange(evt);
 
@@ -110,6 +116,8 @@ export default class DomInstance extends ChildrenInstance {
       // All the other attributes are strings
       this.ref.setAttribute(keyName, value + '');
     }
+
+    return this;
   }
 
 
@@ -124,6 +132,35 @@ export default class DomInstance extends ChildrenInstance {
     } else {
       this.ref.removeAttribute(this.getAttributeNameFromProp(key));
     }
+    return this;
+  }
+
+  /**
+   * sets all the style attributes
+   */
+  setStyleProps(style: {[styleIndex: string]: any}) {
+    for (const styleIndex in style) {
+      this.setStyleProp(styleIndex, style[styleIndex]);
+    }
+
+    return this;
+  }
+
+  /**
+   * sets a single style attribute
+   */
+  setStyleProp(key: string, value: any) {
+    (this.ref.style as any)[key] = value;
+
+    return this;
+  }
+
+  /**
+   * unsets a single style attribute
+   */
+  unsetStyleProp(key: string) {
+    this.ref.style.removeProperty(key);
+
     return this;
   }
 

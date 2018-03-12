@@ -19,8 +19,9 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: D
           );
         }
       }
+    } else if (propIndex === 'style') {
+      instance.setStyleProps(newAbstractElement.props.style);
     } else {
-      // @TODO add special-values to a specific place
       if (instance.abstractElement.props[propIndex] !== newAbstractElement.props[propIndex]) {
         instance.setProp(propIndex, newAbstractElement.props[propIndex]);
       }
@@ -36,6 +37,14 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: D
       instance.unsetProp(index);
     }
   });
+
+  if (instance.abstractElement.props.style) {
+    Object.keys(instance.abstractElement.props.style).forEach((index) => {
+      if ('style' in newAbstractElement.props === false || index in newAbstractElement.props.style === false) {
+        instance.unsetStyleProp(index);
+      }
+    });
+  }
 
   instance.abstractElement = newAbstractElement; // updating the shadowdom
 }
