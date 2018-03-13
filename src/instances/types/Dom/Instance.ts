@@ -41,11 +41,7 @@ export default class DomInstance extends ChildrenInstance {
    */
   private setProps() {
     for (const index in this.abstractElement.props) {
-      if (index === 'style') {
-        this.setStyleProps(this.abstractElement.props.style);
-      } else {
-        this.setProp(index, this.abstractElement.props[index]);
-      }
+      this.setProp(index, this.abstractElement.props[index]);
     }
 
     return this;
@@ -113,8 +109,15 @@ export default class DomInstance extends ChildrenInstance {
         this.ref.removeAttribute(keyName);
       }
     } else {
-      // All the other attributes are strings
-      this.ref.setAttribute(keyName, value + '');
+      if (key === 'style') {
+        // style gets set as a attribute, not by property
+        // because of better debuggability when set by this way
+        // When an invalid property gets set, the browser just sucks it up and ignores it without errors
+        this.ref.setAttribute(keyName, this.getStylePropsAsAttribute(value));
+      } else {
+        // All the other attributes are strings
+        this.ref.setAttribute(keyName, value + '');
+      }
     }
 
     return this;
@@ -138,30 +141,8 @@ export default class DomInstance extends ChildrenInstance {
   /**
    * sets all the style attributes
    */
-  setStyleProps(style: {[styleIndex: string]: any}) {
-    for (const styleIndex in style) {
-      this.setStyleProp(styleIndex, style[styleIndex]);
-    }
-
-    return this;
-  }
-
-  /**
-   * sets a single style attribute
-   */
-  setStyleProp(key: string, value: any) {
-    (this.ref.style as any)[key] = value;
-
-    return this;
-  }
-
-  /**
-   * unsets a single style attribute
-   */
-  unsetStyleProp(key: string) {
-    this.ref.style.removeProperty(key);
-
-    return this;
+  getStylePropsAsAttribute(style: {[styleIndex: string]: string}): string {
+    return Object.keys(style).reduce((styleString, styleIndex) => `${styleString}${styleIndex}:${style[styleIndex]};`, '');
   }
 
   /**

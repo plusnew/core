@@ -79,6 +79,18 @@ describe('dom handling', () => {
 
     expect(target.style.width).toBe('30px');
     expect(target.style.height).toBe('');
+  });
 
+  it('updating style invalidattributes', () => {
+    const Component = component(
+      () => ({}),
+      () => <div style={{ width: 'foo' }}/>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const target = container.childNodes[0] as HTMLDivElement;
+    expect(target.getAttribute('style')).toBe('width:foo;');
+    expect(target.style.width).toBe('');
   });
 });
