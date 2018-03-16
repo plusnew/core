@@ -1,15 +1,14 @@
 {
   "name": "plusnew",
-  "version": "0.5.60",
+  "version": "0.5.61",
   "description": "ts framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "prepublish": "npm test && npm run build",
-    "build": "tsc --pretty",
-    "start": "tsc --pretty --watch",
-    "test": "karma start karma.conf.js --no-auto-watch --single-run",
-    "test:watch": "karma start karma.conf.js"
+    "build": "webpack --config configs/webpack.base.conf.js",
+    "test": "webpack --config configs/webpack.test.conf.js && karma start configs/karma.conf.js --no-auto-watch --single-run",
+    "test:watch": "concurrently  \"webpack --config configs/webpack.test.conf.js\" \"karma start karma.conf.js\""
   },
   "repository": {
     "type": "git",
@@ -27,13 +26,18 @@
   },
   "devDependencies": {
     "@types/jasmine": "2.8.2",
+    "awesome-typescript-loader": "^4.0.1",
+    "concurrently": "^3.5.1",
     "jasmine-core": "2.8.0",
     "karma": "1.7.1",
     "karma-chrome-launcher": "2.2.0",
     "karma-jasmine": "1.1.1",
+    "karma-sourcemap-loader": "^0.3.7",
     "karma-typescript": "3.0.8",
     "tslint": "5.8.0",
     "tslint-config-airbnb": "5.4.2",
-    "typescript": "2.7.1"
+    "typescript": "2.7.1",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12"
   }
 }
