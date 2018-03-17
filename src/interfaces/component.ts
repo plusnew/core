@@ -2,6 +2,11 @@ import PlusnewAbstractElement from '../PlusnewAbstractElement';
 import { store } from 'redchain';
 import ComponentInstance from '../instances/types/Component/Instance';
 
+// @FIXME this is needed to trick typescript into generating .d.ts file
+// if a file doesn't export anything other than types, it won't generate the .d.ts file
+const nothing = null;
+export { nothing };
+
 export type ApplicationElement =
   | PlusnewAbstractElement
   | string

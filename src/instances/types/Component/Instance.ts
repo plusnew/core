@@ -3,7 +3,11 @@ import Instance from '../Instance';
 import factory from '../../factory';
 import componentReconcile from './reconcile';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import component, { render, deps } from '../../../interfaces/component';
+import component, { render, deps, nothing } from '../../../interfaces/component';
+
+// @FIXME this is needed to trick typescript into generating .d.ts file
+// if a file doesn't export anything other than types, it won't generate the .d.ts file
+nothing;
 
 export default class ComponentInstance extends Instance {
   public type = types.Component;
