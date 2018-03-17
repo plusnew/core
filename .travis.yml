@@ -18,7 +18,7 @@ install:
   - "npm install"
 
 after_success:
-  - "cat test/coverage/*/lcov.info | node_modules/coveralls/bin/coveralls.js"
+  - "cat test/coverage/lcov.info | node_modules/coveralls/bin/coveralls.js"
 
 notifications:
   email:

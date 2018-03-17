@@ -4,44 +4,28 @@
 // Generated on Fri May 13 2016 20:43:12 GMT+0200 (CEST)
 
 module.exports = function (config) {
-  var files = [
-    'index.ts',
-    'src/**/*.ts',
-    'test/**/*.spec.ts',
-    'test/**/*.spec.tsx',
-    'node_modules/redchain/index.ts',
-  ];
-
-  var configuration = {
-
+  config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: '../dist',
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'karma-typescript'],
+    frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
-    files: files,
-
-    include: files,
+    files: ['index.test.js'],
 
     // list of files to exclude
     exclude: [],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-      'src/**/*.ts': ['karma-typescript'],
-      'test/**/*.spec.ts': ['karma-typescript'],
-      'test/**/*.spec.tsx': ['karma-typescript'],
-      'node_modules/redchain/index.ts': ['karma-typescript'],
-    },
+    // preprocessors: {},
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'karma-typescript'],
+    reporters: ['progress', 'karma-remap-istanbul'],
 
     // web server port
     port: 9876,
@@ -64,40 +48,25 @@ module.exports = function (config) {
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
 
+    plugins: [
+      'karma-jasmine',
+      'karma-sourcemap-loader',
+      'karma-chrome-launcher',
+      'karma-remap-istanbul'
+    ],
+
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
-    karmaTypescriptConfig: {
-      include: files,
-      exclude: [],
-      tsconfig: "./tsconfig.json",
-      compilerOptions: {
-        sourceMap: true,
-        module: 'commonjs',
-      },
+    remapIstanbulReporter: {
+      remapOptions: {}, //additional remap options
+      reportOptions: {}, //additional report options
       reports: {
-        lcovonly: {
-          directory: 'test/coverage/',
-          filename: 'lcov.info',
-        },
-        text: ""
-      },
-      coverageOptions: {
-        exclude: [
-          /node_modules/,
-          /src\/interfaces/,
-          /test/,
-        ]
+        lcovonly: 'test/coverage/lcov.info',
+        html: 'test/coverage/report',
+        text: ''
       }
-    },
-    coverageReporter: {
-      dir: ['test/coverage/'],
-      instrumenterOptions: {
-        istanbul: { noCompact: true },
-      },
-    },
-  };
-
-  config.set(configuration);
+    }
+  });
 };
