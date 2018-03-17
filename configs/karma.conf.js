@@ -20,14 +20,12 @@ module.exports = function (config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-      'app.test.js': ['sourcemap'],
-    },
+    // preprocessors: {},
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'karma-remap-istanbul'],
 
     // web server port
     port: 9876,
@@ -54,17 +52,21 @@ module.exports = function (config) {
       'karma-jasmine',
       'karma-sourcemap-loader',
       'karma-chrome-launcher',
-      'karma-coverage'
+      'karma-remap-istanbul'
     ],
 
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity,
-    coverageReporter: {
-      dir: '../../coverage/',
-      instrumenterOptions: {
-        istanbul: { noCompact: true },
-      },
-    },
+
+    remapIstanbulReporter: {
+      remapOptions: {}, //additional remap options
+      reportOptions: {}, //additional report options
+      reports: {
+        lcovonly: 'test/coverage/lcov.info',
+        html: 'test/coverage/report',
+        text: ''
+      }
+    }
   });
 };

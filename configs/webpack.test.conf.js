@@ -22,6 +22,8 @@ getTestFiles('test');
 
 config.entry = testfiles//testfiles.map(testFile => testFile.slice(0, 4) === 'src/' ? testFile.slice(4) : '../' + testFile);
 config.output.filename = 'index.test.js';
+config.devtool = 'source-map-inline';
+
 
 if(!config.plugins) config.plugins = [];
 
@@ -32,12 +34,12 @@ config.plugins.push(
   })
 );
 
-// config.module.rules.push({
-//   enforce: 'post',
-//   test: /\.(ts|tsx)$/,
-//   loader: 'istanbul-instrumenter-loader',
-//   include: path.resolve('src/'),
-//   exclude: /\.test\.(ts|tsx)$/,
-// });
+config.module.rules.push({
+  enforce: 'post',
+  test: /\.(ts|tsx)$/,
+  loader: 'istanbul-instrumenter-loader',
+  include: path.resolve('src/'),
+  exclude: /\.test\.(ts|tsx)$/,
+});
 
 module.exports = config;
