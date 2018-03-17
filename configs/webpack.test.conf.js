@@ -39,7 +39,10 @@ config.module.rules.push({
   test: /\.(ts|tsx)$/,
   loader: 'istanbul-instrumenter-loader',
   include: path.resolve('src/'),
-  exclude: /\.test\.(ts|tsx)$/,
+  exclude: [
+    /\.test\.(ts|tsx)$/,
+    /src\/interfaces/,
+  ]
 });
 
 module.exports = config;
