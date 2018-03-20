@@ -1,7 +1,8 @@
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import types from '../types';
 import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
+import { hasOnchangeEvent, hasInputEvent } from 'util/dom';
 
 const PropToAttribbuteMapping = {
   acceptCharset: 'accept-charset',
@@ -27,6 +28,7 @@ export default class DomInstance extends ChildrenInstance {
     this.setProps().addChildren(abstractElement.props.children);
 
     this.appendToParent(this.ref, previousAbstractSiblingCount());
+    this.setOnChangeEvent();
   }
 
   /**
@@ -48,55 +50,11 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   /**
-   * sets a property
-   */
-  public setProp(key: string, value: any) {
-    if (this.abstractElement.shouldAddPropToElement(key) === true) {
-      if (key === 'onchange') {
-        this.setOnChangeEvent(value);
-      } else {
-        this.setNormalProp(key, value);
-      }
-    }
-
-    return this;
-  }
-
-  private setOnChangeEvent(callback: (evt: Event) => void) {
-    this.ref.oninput = (evt: Event) => {
-      let preventDefault = true;
-      this.setNormalProp = (key, value) => {
-        if ((evt.target as HTMLInputElement).value === value) {
-          preventDefault = false;
-
-        } else {
-          DomInstance.prototype.setNormalProp.call(this, key, value);
-          preventDefault = true;
-        }
-
-        return this;
-      };
-      this.abstractElement.props.onchange(evt);
-
-      if (preventDefault === true) {
-        (this.ref as HTMLInputElement).value = this.abstractElement.props.value;
-      }
-      delete this.setNormalProp;
-    };
-
-    return this;
-  }
-
-  private isInternalPlusnewProp(key: string) {
-    return key === 'key';
-  }
-
-  /**
    * sets the actual property on the element
    */
-  private setNormalProp(key: string, value: any) {
+  public setProp(key: string, value: any) {
     const keyName = this.getAttributeNameFromProp(key);
-    if (this.isInternalPlusnewProp(key)) {
+    if (this.ignoreProperty(key)) {
       // When its an internal property, it should not be set to dom element
     } else if (typeof value === 'function') {
       (this.ref as any)[keyName] = value;
@@ -117,10 +75,60 @@ export default class DomInstance extends ChildrenInstance {
       } else {
         // All the other attributes are strings
         this.ref.setAttribute(keyName, value + '');
+        if (this.setAttributeAsProperty(keyName)) {
+          // input-values need to be set directly as property, for overwriting purpose of browser behaviour
+          (this.ref as any)[keyName] = value;
+        }
       }
     }
 
     return this;
+  }
+
+
+  private setOnChangeEvent() {
+    if (hasOnchangeEvent(this.abstractElement)) {
+      const onchangeWrapper = (evt: Event) => {
+        let preventDefault = true;
+        this.setProp = (key, value) => {
+          if ((evt.target as HTMLInputElement).value === value) {
+            preventDefault = false;
+
+          } else {
+            DomInstance.prototype.setProp.call(this, key, value);
+            preventDefault = true;
+          }
+
+          return this;
+        };
+
+        this.abstractElement.props.onchange(evt);
+
+        if (preventDefault === true) {
+          (this.ref as HTMLInputElement).value = this.abstractElement.props.value;
+        }
+        delete this.setProp;
+      };
+
+      if (hasInputEvent(this.abstractElement)) {
+        this.ref.oninput = onchangeWrapper;
+      }
+      this.ref.onchange = onchangeWrapper;
+    }
+
+    return this;
+  }
+
+  private ignoreProperty(key: string) {
+    return (
+      key === 'key' ||
+      key === 'children' ||
+      (key === 'onchange' && hasOnchangeEvent(this.abstractElement))
+    );
+  }
+
+  setAttributeAsProperty(keyName: string) {
+    return this.abstractElement.type === 'input' && keyName === 'value';
   }
 
 

@@ -1,4 +1,4 @@
-import component, { props } from '../interfaces/component';
+import component, { props } from 'interfaces/component';
 
 type PlusnewElement = string | number | component<any> | Symbol;
 
@@ -38,13 +38,6 @@ export default class PlusnewAbstractElement {
     }
 
     return this;
-  }
-
-  /**
-   * Checks if the key is a custom element and checks for vulnerable values
-   */
-  public shouldAddPropToElement(key: string) {
-    return key !== 'children'; // @TODO add ref/key
   }
 }
 

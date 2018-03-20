@@ -1,6 +1,6 @@
-import plusnew, { component, store } from 'index';
+import plusnew, { component, store, InputEvent } from 'index';
 
-describe('rendering nested components', () => {
+describe('firing input events', () => {
   let container: HTMLElement;
 
   beforeEach(() => {
@@ -9,12 +9,12 @@ describe('rendering nested components', () => {
     document.body.appendChild(container);
   });
 
-  it('does a initial list work, with pushing values', () => {
-    const local = store('foo', (state: string, newValue: string) => newValue);
+  it('is onchange called on text', () => {
+    const local = store('foo', (state, newValue: string) => newValue);
 
-    const change = jasmine.createSpy('change', () => {
-      local.dispatch('bar');
-    });
+    const change = jasmine.createSpy('change', (evt: InputEvent) => {
+      local.dispatch(evt.target.value);
+    }).and.callThrough();
 
     const Component = component(
       () => ({ local }),
@@ -26,6 +26,71 @@ describe('rendering nested components', () => {
     const input = document.getElementsByTagName('input')[0];
     input.value = 'bar';
     const event = new CustomEvent('input', { detail: { target: input } });
+    input.dispatchEvent(event);
+
+    expect(change.calls.count()).toEqual(1);
+    expect(change).toHaveBeenCalledWith(event);
+    expect(local.state).toBe('bar');
+
+    input.value = 'barbar';
+    const eventTwo = new CustomEvent('change', { detail: { target: input } });
+    input.dispatchEvent(eventTwo);
+
+    expect(change.calls.count()).toEqual(2);
+    expect(change).toHaveBeenCalledWith(eventTwo);
+    expect(local.state).toBe('barbar');
+  });
+
+  it('is onchange called on explicit text', () => {
+    const local = store('foo', (state, newValue: string) => newValue);
+
+    const change = jasmine.createSpy('changex', (evt: InputEvent) => {
+      local.dispatch(evt.target.value);
+    }).and.callThrough();
+
+    const Component = component(
+      () => ({ local }),
+      (props: {}, { local }) => <input onchange={change} value={local.state} type="text" />,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const input = document.getElementsByTagName('input')[0];
+    input.value = 'bar';
+    const event = new CustomEvent('input', { detail: { target: input } });
+    input.dispatchEvent(event);
+
+    console.log('test: ', change.calls.count());
+
+    expect(change.calls.count()).toEqual(1);
+    expect(change).toHaveBeenCalledWith(event);
+
+    input.value = 'barbar';
+    const eventTwo = new CustomEvent('change', { detail: { target: input } });
+    input.dispatchEvent(eventTwo);
+
+    expect(change.calls.count()).toEqual(2);
+    expect(change).toHaveBeenCalledWith(eventTwo);
+    expect(local.state).toBe('barbar');
+  });
+
+  it('is onchange called on checkbox', () => {
+    const local = store(true, (state, newValue: boolean) => newValue);
+
+    const change = jasmine.createSpy('change', (evt: KeyboardEvent) => {
+      local.dispatch((evt.target as any).value as boolean);
+    }).and.callThrough();
+
+    const Component = component(
+      () => ({ local }),
+      (props: {}, { local }) => <input onchange={change} value={local.state} type="checkbox" />,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const input = document.getElementsByTagName('input')[0];
+    input.value = 'bar';
+    const event = new CustomEvent('change', { detail: { target: input } });
     input.dispatchEvent(event);
 
     expect(change.calls.count()).toEqual(1);
