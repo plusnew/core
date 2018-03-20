@@ -8,7 +8,7 @@
     "prepublish": "npm test && npm run build",
     "build": "webpack --config configs/webpack.base.conf.js",
     "test": "webpack --config configs/webpack.test.conf.js && karma start configs/karma.conf.js --no-auto-watch --single-run",
-    "test:watch": "concurrently  \"webpack --config configs/webpack.test.conf.js\" \"karma start configs/karma.conf.js\""
+    "test:watch": "concurrently  \"webpack --config configs/webpack.test.conf.js --watch\" \"karma start configs/karma.conf.js\""
   },
   "repository": {
     "type": "git",
@@ -21,24 +21,24 @@
   },
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {
-    "coveralls": "^3.0.0",
     "redchain": "0.5.43"
   },
   "devDependencies": {
-    "@types/jasmine": "2.8.2",
-    "awesome-typescript-loader": "^4.0.1",
-    "concurrently": "^3.5.1",
-    "istanbul-instrumenter-loader": "^3.0.0",
+   "@types/jasmine": "2.8.2",
+    "awesome-typescript-loader": "4.0.1",
+    "coveralls": "3.0.0",
+    "concurrently": "3.5.1",
+    "istanbul-instrumenter-loader": "3.0.0",
     "jasmine-core": "2.8.0",
     "karma": "1.7.1",
     "karma-chrome-launcher": "2.2.0",
     "karma-jasmine": "1.1.1",
-    "karma-remap-istanbul": "^0.6.0",
-    "karma-sourcemap-loader": "^0.3.7",
+    "karma-remap-istanbul": "0.6.0",
+    "karma-sourcemap-loader": "0.3.7",
     "tslint": "5.8.0",
     "tslint-config-airbnb": "5.4.2",
     "typescript": "2.7.1",
-    "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.12"
+    "webpack": "4.1.1",
+    "webpack-cli": "2.0.12"
   }
 }
