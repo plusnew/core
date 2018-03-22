@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {
-    "coveralls": "^3.0.0",
     "redchain": "0.5.43"
   },
   "devDependencies": {
@@ -34,12 +33,12 @@
     "karma": "1.7.1",
     "karma-chrome-launcher": "2.2.0",
     "karma-jasmine": "1.1.1",
-    "karma-remap-istanbul": "^0.6.0",
-    "karma-sourcemap-loader": "^0.3.7",
+    "karma-remap-istanbul": "0.6.0",
+    "karma-sourcemap-loader": "0.3.7",
     "tslint": "5.8.0",
     "tslint-config-airbnb": "5.4.2",
     "typescript": "2.7.1",
-    "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.12"
+    "webpack": "4.1.1",
+    "webpack-cli": "2.0.12"
   }
 }

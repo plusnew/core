@@ -322,4 +322,37 @@ describe('rendering nested components', () => {
     expect(div.childNodes[1] as Text).toBe(firstText);
     expect(firstText.textContent).toBe('element0');
   });
+
+  it('moving component with boolean', () => {
+    const dependencies = {
+      local: store([{ key: 0 }, { key: 1 }], (previousStore, action: {key: number}[]) => action),
+    };
+
+    const PartialComponent = component(
+      () => ({}),
+      (props: {key: number}) => props.key === 0 ? 'foo' : false as any,
+    );
+
+    const MainComponent = component(
+      () => dependencies,
+      (props, { local }) =>
+        <div>
+          {local.state.map(item => <PartialComponent key={item.key} />)}
+        </div>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    const div = container.childNodes[0] as HTMLElement;
+    expect(div.childNodes.length).toBe(1);
+    const firstText = div.childNodes[0] as Text;
+    expect(firstText.textContent).toBe('foo');
+
+    dependencies.local.dispatch([{ key: 1 }, { key: 0 }]);
+
+    expect(div.childNodes.length).toBe(1);
+
+    expect(div.childNodes[0] as Text).toBe(firstText);
+    expect(firstText.textContent).toBe('foo');
+  });
 });
