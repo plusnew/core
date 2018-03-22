@@ -23,7 +23,7 @@ describe('firing input events', () => {
 
     plusnew.render(<Component />, container);
 
-    const input = document.getElementsByTagName('input')[0];
+    const input = container.childNodes[0] as HTMLInputElement;
     input.value = 'bar';
     const event = new CustomEvent('input', { detail: { target: input } });
     input.dispatchEvent(event);
@@ -50,17 +50,15 @@ describe('firing input events', () => {
 
     const Component = component(
       () => ({ local }),
-      (props: {}, { local }) => <input onchange={change} value={local.state} type="text" />,
+      (props: {}, { local }) => <input onchange={change} value={local.state}  />,
     );
 
     plusnew.render(<Component />, container);
 
-    const input = document.getElementsByTagName('input')[0];
+    const input = container.childNodes[0] as HTMLInputElement;
     input.value = 'bar';
     const event = new CustomEvent('input', { detail: { target: input } });
     input.dispatchEvent(event);
-
-    console.log('test: ', change.calls.count());
 
     expect(change.calls.count()).toEqual(1);
     expect(change).toHaveBeenCalledWith(event);
@@ -88,7 +86,7 @@ describe('firing input events', () => {
 
     plusnew.render(<Component />, container);
 
-    const input = document.getElementsByTagName('input')[0];
+    const input = container.childNodes[0] as HTMLInputElement;
     input.value = 'bar';
     const event = new CustomEvent('change', { detail: { target: input } });
     input.dispatchEvent(event);
