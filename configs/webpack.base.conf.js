@@ -1,11 +1,13 @@
+const path = require('path');
 const webpack = require('webpack');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   entry: ['./index.ts'],
   output: {
-      path: __dirname + '/../dist',
+      path: path.join(__dirname, '..', 'dist'),
       filename: 'index.js',
       library: "plusnew",
       libraryTarget: "umd",
@@ -23,4 +25,7 @@ module.exports = {
       loader: 'awesome-typescript-loader',
     }]
   },
+  plugins: [
+    new CleanWebpackPlugin('dist', { root: path.join(__dirname, '..')}),
+  ],
 };
