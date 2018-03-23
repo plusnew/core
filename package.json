@@ -1,6 +1,6 @@
 {
   "name": "plusnew",
-  "version": "0.5.63",
+  "version": "0.5.73",
   "description": "ts framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,14 +21,14 @@
   },
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {
-    "redchain": "0.5.43"
+    "redchain": "0.5.73"
   },
   "devDependencies": {
-   "@types/jasmine": "2.8.2",
-    "awesome-typescript-loader": "4.0.1",
-    "coveralls": "3.0.0",
-    "concurrently": "3.5.1",
-    "istanbul-instrumenter-loader": "3.0.0",
+    "@types/jasmine": "2.8.2",
+    "awesome-typescript-loader": "^4.0.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "concurrently": "^3.5.1",
+    "istanbul-instrumenter-loader": "^3.0.0",
     "jasmine-core": "2.8.0",
     "karma": "1.7.1",
     "karma-chrome-launcher": "2.2.0",
