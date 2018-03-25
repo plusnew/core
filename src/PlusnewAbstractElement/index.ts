@@ -39,13 +39,6 @@ export default class PlusnewAbstractElement {
 
     return this;
   }
-
-  /**
-   * Checks if the key is a custom element and checks for vulnerable values
-   */
-  public shouldAddPropToElement(key: string) {
-    return key !== 'children'; // @TODO add ref/key
-  }
 }
 
 export { PlusnewElement };

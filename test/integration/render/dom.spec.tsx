@@ -178,6 +178,10 @@ describe('dom handling', () => {
     target.dispatchEvent(inputEvent);
 
     expect(local.state).toBe('anothermep');
+
+    local.dispatch('completly other value');
+
+    expect(target.value).toBe('completly other value');
   });
 
   it('input onchange', () => {
