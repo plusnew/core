@@ -1,15 +1,19 @@
 import { store as storeType } from 'redchain';
 import plusnew, { store, component } from 'index';
+import TextInstance from 'instances/types/Text/Instance';
 
 describe('rendering the elements', () => {
   let container: HTMLElement;
   let local: storeType<string, string>;
+  let setTextSpy: jasmine.Spy;
   beforeEach(() => {
     local = store('foo', (previousState: string, newValue: string) => newValue);
 
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
     document.body.appendChild(container);
+
+    setTextSpy = spyOn(TextInstance.prototype, 'setText').and.callThrough();
   });
 
   afterEach(() => {
@@ -309,5 +313,45 @@ describe('rendering the elements', () => {
     local.dispatch(false);
 
     expect(target.onclick).toBe(null);
+  });
+
+  it('dont call setText when text changed', () => {
+    const local = store(0, (previousState, action: number) => previousState + action);
+    const Component = component(
+      () => ({ local }),
+      (props: {}, { local }) =>
+        <div>{local.state}</div>,
+    );
+    plusnew.render(<Component />, container);
+
+    const staticText = container.childNodes[0] as Text;
+
+    expect(staticText.textContent).toBe('0');
+    expect(setTextSpy.calls.count()).toBe(0);
+
+    local.dispatch(1);
+
+    expect(staticText.textContent).toBe('1');
+    expect(setTextSpy.calls.count()).toBe(1);
+  });
+
+  it('dont call setText when text didnt change', () => {
+    const local = store(0, (previousState, action: number) => previousState + action);
+    const Component = component(
+      () => ({ local }),
+      (props: {}, { local }) =>
+        <div>static text</div>,
+    );
+    plusnew.render(<Component />, container);
+
+    const staticText = container.childNodes[0] as Text;
+
+    expect(staticText.textContent).toBe('static text');
+    expect(setTextSpy.calls.count()).toBe(0);
+
+    local.dispatch(1);
+
+    expect(staticText.textContent).toBe('static text');
+    expect(setTextSpy.calls.count()).toBe(0);
   });
 });
