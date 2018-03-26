@@ -15,6 +15,26 @@ function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractEle
 }
 
 export default function (newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance) {
+
+  // Checks old abstract elements, if they should get removed
+  // reason for that is, that we dont want to move new elements, because of old elements which get deleted
+  // moving causes animations to trigger, and that would be wrong in that case
+  for (let oldIndex = 0; oldIndex < instance.abstractElement.length; oldIndex += 1) {
+    let found = reconciler.isSameAbstractElement(instance.children[oldIndex].abstractElement, newAbstractElements[oldIndex]);
+    for (let newIndex = 0; newIndex < newAbstractElements.length && found === false; newIndex += 1) {
+      if (reconciler.isSameAbstractElement(instance.children[oldIndex].abstractElement, newAbstractElements[newIndex])) {
+        found = true;
+      }
+    }
+
+    if (!found) {
+      instance.children[oldIndex].remove();
+      instance.children.splice(oldIndex, 1);
+      instance.abstractElement.splice(oldIndex, 1);
+      oldIndex -= 1;
+    }
+  }
+
   for (let i = 0; i < newAbstractElements.length; i += 1) {
     const newAbstractElement = newAbstractElements[i];
     const previousLength = instance.getPreviousLength.bind(instance, i);
@@ -47,4 +67,6 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
   instance.children.splice(newAbstractElements.length, instance.children.length).forEach((childInstance) => {
     childInstance.remove();
   });
+
+  instance.abstractElement = newAbstractElements;
 }
