@@ -396,4 +396,38 @@ describe('rendering nested components', () => {
 
     expect(moveSpy.calls.count()).toBe(0);
   });
+
+  it('last element got removed', () => {
+    const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
+    const local = store(list, (state, newValues: { key: number; value: string }[]) => newValues);
+
+    const Component = component(
+      () => ({ local }),
+      (props: {}, { local }) => (
+        <ul>
+          {local.state.map(item => <li key={item.key}>{item.value}</li>)}
+        </ul>
+      ),
+    );
+
+    plusnew.render(<Component />, container);
+
+    const ul = container.childNodes[0];
+
+    expect(ul.childNodes.length).toBe(3);
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('LI');
+    expect((ul.childNodes[0] as HTMLElement).innerHTML).toBe('first');
+    expect((ul.childNodes[1] as HTMLElement).tagName).toBe('LI');
+    expect((ul.childNodes[1] as HTMLElement).innerHTML).toBe('second');
+    expect((ul.childNodes[2] as HTMLElement).tagName).toBe('LI');
+    expect((ul.childNodes[2] as HTMLElement).innerHTML).toBe('third');
+
+    local.dispatch([list[0], list[1]]);
+
+    expect(ul.childNodes.length).toBe(2);
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('LI');
+    expect((ul.childNodes[0] as HTMLElement).innerHTML).toBe('first');
+    expect((ul.childNodes[1] as HTMLElement).tagName).toBe('LI');
+    expect((ul.childNodes[1] as HTMLElement).innerHTML).toBe('second');
+  });
 });

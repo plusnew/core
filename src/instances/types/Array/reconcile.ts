@@ -64,9 +64,5 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
     }
   }
 
-  instance.children.splice(newAbstractElements.length, instance.children.length).forEach((childInstance) => {
-    childInstance.remove();
-  });
-
   instance.abstractElement = newAbstractElements;
 }
