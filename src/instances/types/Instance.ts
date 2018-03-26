@@ -6,6 +6,7 @@ export default abstract class Instance {
   public parentInstance?: Instance;
   public abstractElement: ApplicationElement;
   public previousAbstractSiblingCount: () => number;
+  public namespace?: string;
 
   constructor(
     abstractElement: ApplicationElement,
@@ -15,6 +16,9 @@ export default abstract class Instance {
     this.abstractElement = abstractElement;
     this.parentInstance = parentInstance;
     this.previousAbstractSiblingCount = previousAbstractSiblingCount;
+    if (this.parentInstance) {
+      this.namespace = this.parentInstance.namespace;
+    }
   }
 
   /**

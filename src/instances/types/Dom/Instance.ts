@@ -2,7 +2,8 @@ import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import types from '../types';
 import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
-import { hasOnchangeEvent, hasInputEvent } from 'util/dom';
+import { getSpecialNamespace } from '../../../util/namespace';
+import { hasOnchangeEvent, hasInputEvent } from '../../../util/dom';
 
 const PropToAttribbuteMapping = {
   acceptCharset: 'accept-charset',
@@ -14,7 +15,7 @@ const PropToAttribbuteMapping = {
 export default class DomInstance extends ChildrenInstance {
   public type = types.Dom;
   public abstractElement: PlusnewAbstractElement;
-  public ref: HTMLElement;
+  public ref: Element;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -23,12 +24,22 @@ export default class DomInstance extends ChildrenInstance {
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
-    this.ref = document.createElement(abstractElement.type as string);
+    this.setNamespace();
+
+    if (this.namespace) {
+      this.ref = document.createElementNS(this.namespace, abstractElement.type as string);
+    } else {
+      this.ref = document.createElement(abstractElement.type as string);
+    }
 
     this.setProps().addChildren(abstractElement.props.children);
 
     this.appendToParent(this.ref, previousAbstractSiblingCount());
     this.setOnChangeEvent();
+  }
+
+  private setNamespace() {
+    this.namespace = getSpecialNamespace(this.abstractElement.type as string) || this.namespace;
   }
 
   /**
@@ -85,7 +96,6 @@ export default class DomInstance extends ChildrenInstance {
     return this;
   }
 
-
   private setOnChangeEvent() {
     if (hasOnchangeEvent(this.abstractElement)) {
       const onchangeWrapper = (evt: Event) => {
@@ -111,9 +121,9 @@ export default class DomInstance extends ChildrenInstance {
       };
 
       if (hasInputEvent(this.abstractElement)) {
-        this.ref.oninput = onchangeWrapper;
+        (this.ref as HTMLElement).oninput = onchangeWrapper;
       }
-      this.ref.onchange = onchangeWrapper;
+      (this.ref as HTMLElement).onchange = onchangeWrapper;
     }
 
     return this;

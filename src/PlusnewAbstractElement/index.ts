@@ -1,4 +1,4 @@
-import component, { props } from 'interfaces/component';
+import component, { props } from '../interfaces/component';
 
 type PlusnewElement = string | number | component<any> | Symbol;
 

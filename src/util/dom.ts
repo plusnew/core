@@ -1,4 +1,4 @@
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import PlusnewAbstractElement from '../PlusnewAbstractElement';
 
 export function isInputElement(element: PlusnewAbstractElement) {
   return element.type === 'input';
