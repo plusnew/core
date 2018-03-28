@@ -1,9 +1,9 @@
 import ComponentInstance from '../instances/types/Component/Instance';
 import { store } from 'redchain';
 
-export type result = JSX.Element | null;
+export type result = plusnew.JSX.Element | null;
 export interface componentResult<props> {
-  (props: props, instance: ComponentInstance): JSX.Element | null;
+  (props: props, instance: ComponentInstance): plusnew.JSX.Element | null;
 }
 
 export interface stores {

@@ -25,7 +25,7 @@ export interface deps {
   [key: string]: store<any, any>;
 }
 
-export type render<props> = (props: props, deps: deps) => JSX.Element | null;
+export type render<props> = (props: props, deps: deps) => plusnew.JSX.Element | null;
 
 /**
  * thats how a application component should look like
