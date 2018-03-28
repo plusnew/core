@@ -128,7 +128,7 @@ describe('rendering nested components', () => {
     newList.forEach((newListItem, newListIndex) => {
       for (let i = 0; i < list.length; i += 1) {
         if (newListItem.key === list[i].key) {
-          expect(ul.childNodes[newListIndex]).toBe(initialList[i]);
+          expect(ul.childNodes[newListIndex] as Node).toBe(initialList[i]);
         }
       }
       expect((ul.childNodes[newListIndex] as HTMLElement).tagName).toBe('LI');
@@ -175,7 +175,7 @@ describe('rendering nested components', () => {
     newList.forEach((newListItem, newListIndex) => {
       for (let i = 0; i < list.length; i += 1) {
         if (newListItem.key === list[i].key) {
-          expect(span.childNodes[newListIndex]).toBe(initialList[i]);
+          expect(span.childNodes[newListIndex] as Node).toBe(initialList[i]);
         }
       }
 
