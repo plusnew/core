@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "yarn run test && yarn run build",
-    "build": "webpack --config configs/webpack.base.conf.js",
+    "prepublishOnly": "yarn run test && yarn run build",
+    "build": "webpack --config configs/webpack.prod.conf.js",
     "test": "webpack --config configs/webpack.test.conf.js && karma start configs/karma.conf.js --no-auto-watch --single-run",
     "test:watch": "concurrently  \"webpack --config configs/webpack.test.conf.js --watch\" \"karma start configs/karma.conf.js\""
   },
