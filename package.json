@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "npm test && npm run build",
-    "build": "webpack --config configs/webpack.base.conf.js",
+    "prepublishOnly": "yarn run test && yarn run build",
+    "build": "webpack --config configs/webpack.prod.conf.js",
     "test": "webpack --config configs/webpack.test.conf.js && karma start configs/karma.conf.js --no-auto-watch --single-run",
     "test:watch": "concurrently  \"webpack --config configs/webpack.test.conf.js --watch\" \"karma start configs/karma.conf.js\""
   },
@@ -24,21 +24,11 @@
     "redchain": "0.5.73"
   },
   "devDependencies": {
-    "@types/jasmine": "2.8.6",
-    "awesome-typescript-loader": "^4.0.1",
-    "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.5.1",
-    "istanbul-instrumenter-loader": "^3.0.0",
-    "jasmine-core": "2.8.0",
-    "karma": "1.7.1",
-    "karma-chrome-launcher": "2.2.0",
-    "karma-jasmine": "1.1.1",
-    "karma-remap-istanbul": "0.6.0",
-    "karma-sourcemap-loader": "0.3.7",
+    "plusnew-karma-config": "^0.5.69",
+    "plusnew-webpack-config": "^0.5.80",
     "tslint": "5.8.0",
     "tslint-config-airbnb": "5.4.2",
-    "typescript": "2.8.1",
-    "webpack": "4.1.1",
-    "webpack-cli": "2.0.12"
+    "typescript": "2.8.1"
   }
 }

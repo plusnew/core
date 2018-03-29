@@ -8,14 +8,7 @@ node_js:
 sudo: required
 
 before_install:
-  - "npm config set spin false"
-  - "npm --version"
-  - "npm install coveralls"
-  - "rm -f /tmp/*.dmp"
-  - "google-chrome --version"
-
-install:
-  - "npm install"
+  - "yarn add coveralls"
 
 after_success:
   - "cat test/coverage/lcov.info | node_modules/coveralls/bin/coveralls.js"
