@@ -38,6 +38,10 @@ export default function (
     return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
+    if (parentInstance.createChildrenComponents === false) {
+      return new PlaceHolderInstance(false, parentInstance, previousAbstractSiblingCount);
+    }
+
     return new ComponentInstance(
       abstractElement as PlusnewAbstractElement,
       parentInstance,

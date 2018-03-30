@@ -301,4 +301,29 @@ describe('rendering nested components', () => {
     expect(nestedNode.tagName).toBe('SPAN');
     expect(nestedNode.innerHTML).toBe('');
   });
+
+  it('nested component should not be created when shallow mode is active', () => {
+    const NestedComponent = component(
+      () => ({}),
+      () => <div />,
+    );
+
+    const MainComponent = component(
+      () => ({}),
+      () =>
+        <>
+          <span />
+          <NestedComponent />
+        </>,
+    );
+
+    const MainComponentElement = <MainComponent />;
+    MainComponentElement.createChildrenComponents = false;
+
+    plusnew.render(MainComponentElement, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+  });
 });

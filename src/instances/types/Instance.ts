@@ -7,6 +7,7 @@ export default abstract class Instance {
   public abstractElement: ApplicationElement;
   public previousAbstractSiblingCount: () => number;
   public namespace?: string;
+  public createChildrenComponents = true;
 
   constructor(
     abstractElement: ApplicationElement,
@@ -18,6 +19,7 @@ export default abstract class Instance {
     this.previousAbstractSiblingCount = previousAbstractSiblingCount;
     if (this.parentInstance) {
       this.namespace = this.parentInstance.namespace;
+      this.createChildrenComponents = this.parentInstance.createChildrenComponents;
     }
   }
 
