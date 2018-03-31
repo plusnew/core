@@ -3,7 +3,7 @@ import Instance from '../Instance';
 import factory from '../../factory';
 import componentReconcile from './reconcile';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import component, { render, deps, nothing } from '../../../interfaces/component';
+import component, { render, deps, nothing, props } from '../../../interfaces/component';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
@@ -11,10 +11,10 @@ nothing;
 
 export default class ComponentInstance extends Instance {
   public nodeType = types.Component;
-  public props: PlusnewAbstractElement;
   public rendered: Instance;
   public render: render<any>;
   public dependencies: deps;
+  public props: props;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -23,6 +23,8 @@ export default class ComponentInstance extends Instance {
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
+    this.type = abstractElement.type;
+    this.props = abstractElement.props;
     // Each instance needs its own update method - to have a unique method to be removed from the dependency-listeners
     this.update = this.update.bind(this);
     this.initialiseComponent();
@@ -32,8 +34,8 @@ export default class ComponentInstance extends Instance {
    * calls the renderfunction with the properties and gives lifecyclehooks to the applicationcode
    */
   private initialiseComponent() {
-    const props = this.props.props;
-    (this.props.type as component<any>)(props, this);
+    const props = this.props;
+    (this.type as component<any>)(props, this);
 
     return this;
   }
@@ -60,7 +62,7 @@ export default class ComponentInstance extends Instance {
     this.registerRender(render)
         .registerDependencies(dependencies);
 
-    const abstractChildren = this.render(this.props.props, this.dependencies);
+    const abstractChildren = this.render(this.props, this.dependencies);
     this.rendered = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
 
     return this;

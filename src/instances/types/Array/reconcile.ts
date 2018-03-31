@@ -7,7 +7,7 @@ const NOT_FOUND = -1;
 
 function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractElement, startIndex: number) {
   for (let i = startIndex; i < instance.rendered.length; i += 1) {
-    if (reconciler.isSameAbstractElement(instance.rendered[i].props, newAbstractElement)) {
+    if (reconciler.isSameAbstractElement(newAbstractElement, instance.rendered[i])) {
       return i;
     }
   }
@@ -20,9 +20,9 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
   // reason for that is, that we dont want to move new elements, because of old elements which get deleted
   // moving causes animations to trigger, and that would be wrong in that case
   for (let oldIndex = 0; oldIndex < instance.props.length; oldIndex += 1) {
-    let found = reconciler.isSameAbstractElement(instance.rendered[oldIndex].props, newAbstractElements[oldIndex]);
+    let found = reconciler.isSameAbstractElement(newAbstractElements[oldIndex], instance.rendered[oldIndex]);
     for (let newIndex = 0; newIndex < newAbstractElements.length && found === false; newIndex += 1) {
-      if (reconciler.isSameAbstractElement(instance.rendered[oldIndex].props, newAbstractElements[newIndex])) {
+      if (reconciler.isSameAbstractElement(newAbstractElements[newIndex], instance.rendered[oldIndex])) {
         found = true;
       }
     }
@@ -41,7 +41,7 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
 
     if (
       i < instance.rendered.length &&
-      reconciler.isSameAbstractElement(newAbstractElement, instance.rendered[i].props)
+      reconciler.isSameAbstractElement(newAbstractElement, instance.rendered[i])
     ) {
       instance.rendered[i].previousAbstractSiblingCount = previousLength;
       reconciler.update(newAbstractElement, instance.rendered[i]);

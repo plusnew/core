@@ -1,9 +1,9 @@
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import { props } from '../../../interfaces/component';
 import reconciler from '../../reconciler';
 import ComponentInstance from './Instance';
 
-export default function (newAbstractElement: PlusnewAbstractElement, instance: ComponentInstance) {
-  const newAbstractChildren = instance.render(newAbstractElement.props, instance.dependencies);
+export default function (props: props, instance: ComponentInstance) {
+  const newAbstractChildren = instance.render(props, instance.dependencies);
 
   const newChildrenInstance = reconciler.update(newAbstractChildren, instance.rendered);
   if (newChildrenInstance !== instance.rendered) {
@@ -11,5 +11,5 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: C
     instance.rendered = newChildrenInstance;
   }
 
-  instance.props = newAbstractElement;
+  instance.props = props;
 }

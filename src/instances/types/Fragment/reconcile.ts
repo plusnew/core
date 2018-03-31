@@ -18,9 +18,9 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: F
     }
   }
 
-  for (let i = newAbstractElement.props.children.length; i < instance.props.props.children.length; i += 1) {
+  for (let i = newAbstractElement.props.children.length; i < instance.props.children.length; i += 1) {
     instance.rendered[i].remove();
   }
 
-  instance.props = newAbstractElement; // updating the shadowdom
+  instance.props = newAbstractElement.props; // updating the shadowdom
 }

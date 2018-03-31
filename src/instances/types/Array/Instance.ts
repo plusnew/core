@@ -5,6 +5,7 @@ import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 
 export default class ArrayInstance extends ChildrenInstance {
   public nodeType = types.Array;
+  public type = types.Array;
   public props: (PlusnewAbstractElement)[];
 
   constructor(
@@ -13,7 +14,7 @@ export default class ArrayInstance extends ChildrenInstance {
     previousAbstractSiblingCount: () => number,
   ) {
     super(abstractElements, parentInstance, previousAbstractSiblingCount);
-
+    this.props = abstractElements;
     this.addChildren(abstractElements);
   }
 

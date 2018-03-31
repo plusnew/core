@@ -4,6 +4,7 @@ import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import { getSpecialNamespace } from '../../../util/namespace';
 import { hasOnchangeEvent, hasInputEvent } from '../../../util/dom';
+import { props } from '../../../interfaces/component';
 
 const PropToAttribbuteMapping = {
   acceptCharset: 'accept-charset',
@@ -14,8 +15,8 @@ const PropToAttribbuteMapping = {
 
 export default class DomInstance extends ChildrenInstance {
   public nodeType = types.Dom;
-  public props: PlusnewAbstractElement;
   public ref: Element;
+  public props: props;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -23,7 +24,8 @@ export default class DomInstance extends ChildrenInstance {
     previousAbstractSiblingCount: () => number,
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
-
+    this.type = abstractElement.type;
+    this.props = abstractElement.props;
     this.setNamespace();
 
     if (this.namespace) {
@@ -39,7 +41,7 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   private setNamespace() {
-    this.namespace = getSpecialNamespace(this.props.type as string) || this.namespace;
+    this.namespace = getSpecialNamespace(this.type as string) || this.namespace;
   }
 
   /**
@@ -53,8 +55,8 @@ export default class DomInstance extends ChildrenInstance {
    * sets the attributes to the element
    */
   private setProps() {
-    for (const index in this.props.props) {
-      this.setProp(index, this.props.props[index]);
+    for (const index in this.props) {
+      this.setProp(index, this.props[index]);
     }
 
     return this;
@@ -97,7 +99,7 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   private setOnChangeEvent() {
-    if (hasOnchangeEvent(this.props)) {
+    if (hasOnchangeEvent(this.type, this.props)) {
       const onchangeWrapper = (evt: Event) => {
         let preventDefault = true;
         this.setProp = (key, value) => {
@@ -112,15 +114,15 @@ export default class DomInstance extends ChildrenInstance {
           return this;
         };
 
-        this.props.props.onchange(evt);
+        this.props.onchange(evt);
 
         if (preventDefault === true) {
-          (this.ref as HTMLInputElement).value = this.props.props.value;
+          (this.ref as HTMLInputElement).value = this.props.value;
         }
         delete this.setProp;
       };
 
-      if (hasInputEvent(this.props)) {
+      if (hasInputEvent(this.type, this.props)) {
         (this.ref as HTMLElement).oninput = onchangeWrapper;
       }
       (this.ref as HTMLElement).onchange = onchangeWrapper;
@@ -133,7 +135,7 @@ export default class DomInstance extends ChildrenInstance {
     return (
       key === 'key' ||
       key === 'children' ||
-      (key === 'onchange' && hasOnchangeEvent(this.props))
+      (key === 'onchange' && hasOnchangeEvent(this.type, this.props))
     );
   }
 

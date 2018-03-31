@@ -9,6 +9,7 @@ type renderOptions = {
 
 export default class RootInstance extends Instance {
   public nodeType = types.Root;
+  public type = types.Root;
   public ref: Element;
 
   constructor(
