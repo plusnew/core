@@ -21,7 +21,7 @@ class Plusnew {
    */
   public render(element: PlusnewAbstractElement, containerElement: HTMLElement) {
     // Fake RootInstance
-    const wrapper = new RootInstance(element, undefined, () => 0);
+    const wrapper = new RootInstance(true, undefined, () => 0);
     wrapper.ref = containerElement;
 
     while (containerElement.childNodes.length) {

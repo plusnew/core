@@ -23,6 +23,7 @@ export default class ComponentInstance extends Instance {
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
+    this.createChildrenComponents = this.abstractElement.createChildrenComponents;
     // Each instance needs its own update method - to have a unique method to be removed from the dependency-listeners
     this.update = this.update.bind(this);
     this.initialiseComponent();
