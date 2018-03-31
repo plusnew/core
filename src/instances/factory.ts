@@ -8,6 +8,7 @@ import ComponentInstance from './types/Component/Instance';
 import TextInstance from './types/Text/Instance';
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
 import elementTypeChecker from '../util/elementTypeChecker';
+import types from './types/types';
 
 /**
  * because data from jsx can be anything, this factory is needed to decide what type of instance should be created
@@ -38,7 +39,7 @@ export default function (
     return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
-    if (parentInstance.createChildrenComponents === false) {
+    if (parentInstance.createChildrenComponents === false && parentInstance.nodeType !== types.Root) {
       return new PlaceHolderInstance(false, parentInstance, previousAbstractSiblingCount);
     }
 

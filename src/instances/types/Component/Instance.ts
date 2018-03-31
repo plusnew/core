@@ -10,9 +10,9 @@ import component, { render, deps, nothing } from '../../../interfaces/component'
 nothing;
 
 export default class ComponentInstance extends Instance {
-  public type = types.Component;
-  public abstractElement: PlusnewAbstractElement;
-  public children: Instance;
+  public nodeType = types.Component;
+  public props: PlusnewAbstractElement;
+  public rendered: Instance;
   public render: render<any>;
   public dependencies: deps;
 
@@ -23,7 +23,6 @@ export default class ComponentInstance extends Instance {
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
-    this.createChildrenComponents = this.abstractElement.createChildrenComponents;
     // Each instance needs its own update method - to have a unique method to be removed from the dependency-listeners
     this.update = this.update.bind(this);
     this.initialiseComponent();
@@ -33,8 +32,8 @@ export default class ComponentInstance extends Instance {
    * calls the renderfunction with the properties and gives lifecyclehooks to the applicationcode
    */
   private initialiseComponent() {
-    const props = this.abstractElement.props;
-    (this.abstractElement.type as component<any>)(props, this);
+    const props = this.props.props;
+    (this.props.type as component<any>)(props, this);
 
     return this;
   }
@@ -61,8 +60,8 @@ export default class ComponentInstance extends Instance {
     this.registerRender(render)
         .registerDependencies(dependencies);
 
-    const abstractChildren = this.render(this.abstractElement.props, this.dependencies);
-    this.children = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
+    const abstractChildren = this.render(this.props.props, this.dependencies);
+    this.rendered = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
 
     return this;
   }
@@ -71,7 +70,7 @@ export default class ComponentInstance extends Instance {
    * rerenders and informs the domhandler
    */
   private update() {
-    componentReconcile(this.abstractElement, this);
+    componentReconcile(this.props, this);
 
     return this;
   }
@@ -80,13 +79,13 @@ export default class ComponentInstance extends Instance {
    * moves the children to another dom position
    */
   public move(position: number) {
-    this.children.move(position);
+    this.rendered.move(position);
 
     return this;
   }
 
   public getLength() {
-    return this.children.getLength();
+    return this.rendered.getLength();
   }
 
   /**
@@ -94,7 +93,7 @@ export default class ComponentInstance extends Instance {
    */
   public remove() {
     this.removeDependencyListeners();
-    this.children.remove();
+    this.rendered.remove();
 
     return this;
   }
