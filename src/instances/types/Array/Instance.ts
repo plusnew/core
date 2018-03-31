@@ -4,8 +4,8 @@ import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 
 export default class ArrayInstance extends ChildrenInstance {
-  public type = types.Array;
-  public abstractElement: (PlusnewAbstractElement)[];
+  public nodeType = types.Array;
+  public props: (PlusnewAbstractElement)[];
 
   constructor(
     abstractElements: (PlusnewAbstractElement)[],

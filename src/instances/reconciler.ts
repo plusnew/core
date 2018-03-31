@@ -28,19 +28,19 @@ export class Reconciler {
    * or if it should be removed and replaced
    */
   public update(newAbstractElement: ApplicationElement, instance: Instance): Instance {
-    if (this.isSameAbstractElement(newAbstractElement, instance.abstractElement)) {
-      if (instance.type === types.Placeholder) {
+    if (this.isSameAbstractElement(newAbstractElement, instance.props)) {
+      if (instance.nodeType === types.Placeholder) {
         // When its a placeholder, there is no need for updating, nothing will change there
         // it will get replaced, but that's it
-      } else if (instance.type === types.Fragment) {
+      } else if (instance.nodeType === types.Fragment) {
         fragmentReconcile(newAbstractElement as PlusnewAbstractElement, instance as FragmentInstance);
-      } else if (instance.type === types.Dom) {
+      } else if (instance.nodeType === types.Dom) {
         domReconcile(newAbstractElement as PlusnewAbstractElement, instance as DomInstance);
-      } else if (instance.type === types.Text) {
+      } else if (instance.nodeType === types.Text) {
         textReconcile(newAbstractElement as 'string', instance as TextInstance);
-      } else if (instance.type === types.Array) {
+      } else if (instance.nodeType === types.Array) {
         arrayReconcile(newAbstractElement as PlusnewAbstractElement[], instance as ArrayInstance);
-      } else if (instance.type === types.Component) {
+      } else if (instance.nodeType === types.Component) {
         componentReconcile(newAbstractElement as PlusnewAbstractElement, instance as ComponentInstance);
       } else {
         throw new Error('Updating unknown Elementtype');

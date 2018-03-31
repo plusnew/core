@@ -3,7 +3,7 @@ import Instance from './Instance';
 import factory from '../factory';
 
 export default abstract class ChildrenInstance extends Instance {
-  public children: Instance[];
+  public rendered: Instance[];
 
   constructor(
     abstractElement: ApplicationElement,
@@ -12,7 +12,7 @@ export default abstract class ChildrenInstance extends Instance {
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
-    this.children = [];
+    this.rendered = [];
   }
 
   abstract getPreviousSiblingsForChildren(): number;
@@ -24,14 +24,14 @@ export default abstract class ChildrenInstance extends Instance {
     let previousCount = this.getPreviousSiblingsForChildren();
 
     for (let i = 0; i < instanceIndex; i += 1) {
-      previousCount += this.children[i].getLength();
+      previousCount += this.rendered[i].getLength();
     }
     return previousCount;
   }
 
   public addChildren(children: ApplicationElement[]) {
     for (let i = 0; i < children.length; i += 1) {
-      this.children.push(factory(children[i], this, this.getPreviousLength.bind(this, i)));
+      this.rendered.push(factory(children[i], this, this.getPreviousLength.bind(this, i)));
     }
 
     return this;
@@ -42,8 +42,8 @@ export default abstract class ChildrenInstance extends Instance {
    */
   public getLength() {
     let length = 0;
-    for (let i = 0; i < this.children.length; i += 1) {
-      length += this.children[i].getLength();
+    for (let i = 0; i < this.rendered.length; i += 1) {
+      length += this.rendered[i].getLength();
     }
     return length;
   }
@@ -53,7 +53,7 @@ export default abstract class ChildrenInstance extends Instance {
    */
   public move(position: number) {
     for (let i = this.getLength(); i > 0; i -= 1) {
-      this.children[i - 1].move(position);
+      this.rendered[i - 1].move(position);
     }
 
     return this;
@@ -63,7 +63,7 @@ export default abstract class ChildrenInstance extends Instance {
    * removes the children from the dom
    */
   public remove() {
-    this.children.forEach(child => child.remove());
+    this.rendered.forEach(child => child.remove());
 
     return this;
   }

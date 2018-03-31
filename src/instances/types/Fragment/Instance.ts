@@ -4,8 +4,8 @@ import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 
 export default class FragmentInstance extends ChildrenInstance {
-  public type = types.Fragment;
-  public abstractElement: PlusnewAbstractElement;
+  public nodeType = types.Fragment;
+  public props: PlusnewAbstractElement;
 
   constructor(
     abstractElement: PlusnewAbstractElement,

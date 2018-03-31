@@ -2,8 +2,8 @@ import types from '../types';
 import Instance from '../Instance';
 
 export default class TextInstance extends Instance {
-  public type = types.Text;
-  public abstractElement: string;
+  public nodeType = types.Text;
+  public props: string;
   public ref: Text;
 
   constructor(abstractElement: string, parentInstance: Instance, previousAbstractSiblingCount: () => number) {

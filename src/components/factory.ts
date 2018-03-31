@@ -24,7 +24,7 @@ const factory: factory = <props, dependencies>(
   return (props: props, instance: ComponentInstance) => {
     instance.handleChildren(render as any, dependencies(props) as any);
 
-    return instance.abstractElement;
+    return instance.props;
   };
 };
 

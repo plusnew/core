@@ -13,8 +13,8 @@ const PropToAttribbuteMapping = {
 };
 
 export default class DomInstance extends ChildrenInstance {
-  public type = types.Dom;
-  public abstractElement: PlusnewAbstractElement;
+  public nodeType = types.Dom;
+  public props: PlusnewAbstractElement;
   public ref: Element;
 
   constructor(
@@ -39,7 +39,7 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   private setNamespace() {
-    this.namespace = getSpecialNamespace(this.abstractElement.type as string) || this.namespace;
+    this.namespace = getSpecialNamespace(this.props.type as string) || this.namespace;
   }
 
   /**
@@ -53,8 +53,8 @@ export default class DomInstance extends ChildrenInstance {
    * sets the attributes to the element
    */
   private setProps() {
-    for (const index in this.abstractElement.props) {
-      this.setProp(index, this.abstractElement.props[index]);
+    for (const index in this.props.props) {
+      this.setProp(index, this.props.props[index]);
     }
 
     return this;
@@ -97,7 +97,7 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   private setOnChangeEvent() {
-    if (hasOnchangeEvent(this.abstractElement)) {
+    if (hasOnchangeEvent(this.props)) {
       const onchangeWrapper = (evt: Event) => {
         let preventDefault = true;
         this.setProp = (key, value) => {
@@ -112,15 +112,15 @@ export default class DomInstance extends ChildrenInstance {
           return this;
         };
 
-        this.abstractElement.props.onchange(evt);
+        this.props.props.onchange(evt);
 
         if (preventDefault === true) {
-          (this.ref as HTMLInputElement).value = this.abstractElement.props.value;
+          (this.ref as HTMLInputElement).value = this.props.props.value;
         }
         delete this.setProp;
       };
 
-      if (hasInputEvent(this.abstractElement)) {
+      if (hasInputEvent(this.props)) {
         (this.ref as HTMLElement).oninput = onchangeWrapper;
       }
       (this.ref as HTMLElement).onchange = onchangeWrapper;
@@ -133,12 +133,12 @@ export default class DomInstance extends ChildrenInstance {
     return (
       key === 'key' ||
       key === 'children' ||
-      (key === 'onchange' && hasOnchangeEvent(this.abstractElement))
+      (key === 'onchange' && hasOnchangeEvent(this.props))
     );
   }
 
   setAttributeAsProperty(keyName: string) {
-    return this.abstractElement.type === 'input' && keyName === 'value';
+    return this.props.type === 'input' && keyName === 'value';
   }
 
 
@@ -203,7 +203,7 @@ export default class DomInstance extends ChildrenInstance {
    * removes the domnode from the parent
    */
   public remove() {
-    this.children.forEach(child => child.remove());
+    this.rendered.forEach(child => child.remove());
     (this.ref.parentNode as Node).removeChild(this.ref);
 
     return this;
