@@ -326,4 +326,134 @@ describe('rendering nested components', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
   });
+
+  describe('nested render call', () => {
+    it('nested component should not rerender without properties', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          <NestedComponent />,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      (window as any).foo = true;
+      local.dispatch(1);
+      (window as any).foo = false;
+
+      expect(renderSpy.calls.count()).toBe(1);
+    });
+
+    it('nested component should not rerender with properties', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const foo = {};
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          <NestedComponent foo={foo}/>,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(1);
+    });
+
+    it('nested component should rerender on propertychange', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const foo = {};
+      const bar = {};
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent foo={foo}/>
+          :
+            <NestedComponent foo={bar}/>,
+
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+
+    it('nested component should rerender on more propertychange', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const foo = {};
+      const bar = {};
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent foo={foo}/>
+          :
+            <NestedComponent foo={foo} bar={bar}/>,
+
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+  });
+
+
 });
