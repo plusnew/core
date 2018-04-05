@@ -350,9 +350,7 @@ describe('rendering nested components', () => {
       expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
       expect(renderSpy.calls.count()).toBe(1);
 
-      (window as any).foo = true;
       local.dispatch(1);
-      (window as any).foo = false;
 
       expect(renderSpy.calls.count()).toBe(1);
     });
