@@ -326,4 +326,388 @@ describe('rendering nested components', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
   });
+
+  describe('nested render call', () => {
+    it('nested component should not rerender without properties', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          <NestedComponent />,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(1);
+    });
+
+    it('nested component should not rerender with properties', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const foo = {};
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          <NestedComponent foo={foo}/>,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(1);
+    });
+
+    it('nested component should rerender on propertychange', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const foo = {};
+      const bar = {};
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent foo={foo}/>
+          :
+            <NestedComponent foo={bar}/>,
+
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+
+    it('nested component should rerender on more propertychange', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const foo = {};
+      const bar = {};
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent foo={foo}/>
+          :
+            <NestedComponent foo={foo} bar={bar}/>,
+
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+
+    it('nested component should not rerender with same children', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const foo = {};
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent><div foo={foo} /></NestedComponent>
+          :
+            <NestedComponent><div foo={foo} /></NestedComponent>,
+
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(1);
+    });
+
+    it('nested component should rerender with changed children', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const foo = {};
+      const bar = {};
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent><div foo={foo} /></NestedComponent>
+          :
+            <NestedComponent><div foo={bar} /></NestedComponent>,
+
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+
+    it('nested component should rerender with different amount children', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const foo = {};
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent><div foo={foo} /><div foo={foo} /></NestedComponent>
+          :
+            <NestedComponent><div foo={foo} /></NestedComponent>,
+
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+
+    it('nested component should rerender with different amount children', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const foo = {};
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent><div foo={foo} /></NestedComponent>
+          :
+            <NestedComponent><div foo={foo} /><div foo={foo} /></NestedComponent>,
+
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+
+    it('nested component should rerender with different types of children', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const foo = {};
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent><div foo={foo} /></NestedComponent>
+          :
+            <NestedComponent><span foo={foo} /></NestedComponent>,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+
+
+    it('nested component should not rerender with same content', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent>foo</NestedComponent>
+          :
+            <NestedComponent>foo</NestedComponent>,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(1);
+    });
+
+    it('nested component should rerender with different content', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent>foo</NestedComponent>
+          :
+            <NestedComponent>bar</NestedComponent>,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+
+    it('nested component should rerender with different content types', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent>{'1'}</NestedComponent>
+          :
+            <NestedComponent>{1}</NestedComponent>,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+  });
+
+
 });

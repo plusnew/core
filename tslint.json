@@ -8,6 +8,7 @@
     "import-name": [
       false
     ],
-    "variable-name": false
+    "variable-name": false,
+    "align": false
   }
 }
