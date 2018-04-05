@@ -707,6 +707,97 @@ describe('rendering nested components', () => {
 
       expect(renderSpy.calls.count()).toBe(2);
     });
+
+    it('nested component should rerender with null types', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent>{null}</NestedComponent>
+          :
+            <NestedComponent>{null}</NestedComponent>,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(1);
+    });
+
+
+    it('nested component should rerender with null types', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent><div /></NestedComponent>
+          :
+            <NestedComponent>{null}</NestedComponent>,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
+
+    it('nested component should rerender with null types', () => {
+      const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+      const local = store(0, (state, action: number) => state + action);
+
+      const NestedComponent = component(
+        () => ({}),
+        renderSpy,
+      );
+
+      const MainComponent = component(
+        () => ({ local }),
+        () =>
+          local.state === 0 ?
+            <NestedComponent>{null}</NestedComponent>
+          :
+            <NestedComponent><div /></NestedComponent>,
+      );
+
+      plusnew.render(<MainComponent />, container);
+  
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+      expect(renderSpy.calls.count()).toBe(1);
+
+      local.dispatch(1);
+
+      expect(renderSpy.calls.count()).toBe(2);
+    });
   });
 
 
