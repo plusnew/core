@@ -48,6 +48,6 @@ export default function (
       previousAbstractSiblingCount,
     );
   }
-  debugger;
+
   throw new Error('Factory couldn\'t create unknown element type');
 }

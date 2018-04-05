@@ -2,20 +2,44 @@ import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import reconciler from '../../reconciler';
 import ComponentInstance from './Instance';
 
-function isEqual(a: {[key: string]: any}, b: {[key: string]: any}) {
+/**
+ * checks if a component is the same as before
+ */
+function isEqual(a: {[key: string]: any}, b: {[key: string]: any}): boolean {
+  let isSame = true;
+
   const keys = Object.keys(a);
   if (keys.length === Object.keys(b).length) {
-    return keys.reduce((result, currentKey) => {
-      // @TODO check for *children* should be different
-      if (currentKey in b === false || a[currentKey] !== b[currentKey]) {
-        return false;
+    for (let keyIndex = 0; keyIndex < keys.length && isSame === true; keyIndex += 1) {
+      const currentKey = keys[keyIndex];
+      if (currentKey === 'children') {
+        if (a.children.length === b.children.length) {
+          for (let childrenIndex = 0; childrenIndex < a.children.length; childrenIndex += 1)
+            if (typeof a.children[childrenIndex] === 'object' && typeof b.children[childrenIndex] === 'object') {
+              if (a.children[childrenIndex].type === b.children[childrenIndex].type) {
+                isSame = isEqual(a.children[childrenIndex].props, b.children[childrenIndex].props);
+              } else {
+                isSame = false;
+              }
+            } else {
+              isSame = a.children[childrenIndex] === b.children[childrenIndex];
+            }
+        } else {
+          isSame = false;
+        }
+      } else if (currentKey in b === false || a[currentKey] !== b[currentKey]) {
+        isSame = false;
       }
-      return result;
-    }, true);
+    }
+  } else {
+    isSame = false;
   }
-  return false;
+  return isSame;
 }
 
+/**
+ * checks if a component needs updates, if the props are the same it does not need an update
+ */
 function shouldUpdate(newAbstractElement: PlusnewAbstractElement, instance: ComponentInstance) {
   return isEqual(newAbstractElement.props, instance.abstractElement.props) === false;
 }
