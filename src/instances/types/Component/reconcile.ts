@@ -15,7 +15,10 @@ function isEqual(a: {[key: string]: any}, b: {[key: string]: any}): boolean {
       if (currentKey === 'children') {
         if (a.children.length === b.children.length) {
           for (let childrenIndex = 0; childrenIndex < a.children.length; childrenIndex += 1)
-            if (typeof a.children[childrenIndex] === 'object' && typeof b.children[childrenIndex] === 'object') {
+            if (typeof a.children[childrenIndex] === 'object' &&
+                typeof b.children[childrenIndex] === 'object' &&
+                a.children[childrenIndex] !== null &&
+                b.children[childrenIndex] !== null) {
               if (a.children[childrenIndex].type === b.children[childrenIndex].type) {
                 isSame = isEqual(a.children[childrenIndex].props, b.children[childrenIndex].props);
               } else {
