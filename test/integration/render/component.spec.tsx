@@ -707,6 +707,7 @@ describe('rendering nested components', () => {
 
       expect(renderSpy.calls.count()).toBe(2);
     });
+<<<<<<< HEAD
 
     it('nested component should rerender with null types', () => {
       const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
@@ -798,6 +799,8 @@ describe('rendering nested components', () => {
 
       expect(renderSpy.calls.count()).toBe(2);
     });
+=======
+>>>>>>> master
   });
 
 

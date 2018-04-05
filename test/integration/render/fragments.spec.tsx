@@ -141,4 +141,66 @@ describe('fragments', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
   });
+
+  it('removing multiple children one at a time', () => {
+    const local = store(0, (state, action: number) => action);
+
+    const MainComponent = component(
+      () => ({  local }),
+      () => {
+        if (local.state === 0) {
+          return (
+            <>
+              <span>foo1</span>
+              <span>foo2</span>
+              <span>foo3</span>
+          </>);
+        }
+        if (local.state === 1) {
+          return (
+            <>
+              <span>foo1</span>
+              <span>foo2</span>
+          </>);
+        }
+
+        if (local.state === 2) {
+          return (
+            <>
+              <span>foo1</span>
+          </>);
+        }
+
+        return <></>;
+      },
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(3);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo1');
+    expect((container.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('foo2');
+    expect((container.childNodes[2] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[2] as HTMLElement).innerHTML).toBe('foo3');
+
+    local.dispatch(1);
+
+    expect(container.childNodes.length).toBe(2);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo1');
+    expect((container.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('foo2');
+
+    local.dispatch(2);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo1');
+
+    local.dispatch(3);
+
+    expect(container.childNodes.length).toBe(0);
+  });
 });
