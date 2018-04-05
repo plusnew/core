@@ -20,7 +20,11 @@ function isEqual(a: {[key: string]: any}, b: {[key: string]: any}): boolean {
                 a.children[childrenIndex] !== null &&
                 b.children[childrenIndex] !== null) {
               if (a.children[childrenIndex].type === b.children[childrenIndex].type) {
-                isSame = isEqual(a.children[childrenIndex].props, b.children[childrenIndex].props);
+                if (a.children[childrenIndex] instanceof Array || a.children[childrenIndex] instanceof Array) {
+                  isSame = false;
+                } else {
+                  isSame = isEqual(a.children[childrenIndex].props, b.children[childrenIndex].props);
+                }
               } else {
                 isSame = false;
               }
