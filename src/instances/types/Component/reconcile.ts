@@ -52,7 +52,7 @@ function shouldUpdate(newAbstractElement: PlusnewAbstractElement, instance: Comp
 }
 
 export default function (newAbstractElement: PlusnewAbstractElement, instance: ComponentInstance) {
-  const newAbstractChildren = instance.render(newAbstractElement.props, instance.dependencies);
+  const newAbstractChildren = instance.render(newAbstractElement.props, instance.dependencies, instance.options);
 
   const newChildrenInstance = reconciler.update(newAbstractChildren, instance.children);
   if (newChildrenInstance !== instance.children) {

@@ -27,10 +27,13 @@ export interface deps {
 }
 
 export interface options<props, deps> {
+  [key: string]: any;
   componentWillUnmount?: (props: props, deps: deps) => void;
 }
 
-export type render<props> = (props: props, deps: deps) => plusnew.JSX.Element | null;
+export type constructor<props, componentDependencies extends deps> = (props: props, options: options<props, componentDependencies>) => componentDependencies;
+
+export type render<props> = (props: props, deps: deps, options: options<props, any>) => plusnew.JSX.Element | null;
 
 /**
  * thats how a application component should look like

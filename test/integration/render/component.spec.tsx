@@ -1,4 +1,4 @@
-import plusnew, { store, component } from 'index';
+import plusnew, { store, component, componentOptions } from 'index';
 import Instance from 'instances/types/Component/Instance';
 
 describe('rendering nested components', () => {
@@ -833,7 +833,7 @@ describe('rendering nested components', () => {
   });
 
 
-  it('nested component should rerender when an new array occured', () => {
+  it('removed nested component gets a componentWillUnmount call', () => {
     const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
 
     const local = store(true, (state, action: boolean) => action);
@@ -843,11 +843,11 @@ describe('rendering nested components', () => {
     };
 
     const NestedComponent = component(
-      () => dependencies,
-      () => <div />,
-      {
-        componentWillUnmount: componentWillUnmountSpy,
+      (props: {}, config: componentOptions<{}, {}>) => {
+        config.componentWillUnmount = componentWillUnmountSpy;
+        return dependencies;
       },
+      () => <div />,
     );
 
 
@@ -873,7 +873,7 @@ describe('rendering nested components', () => {
   });
 
 
-  it('nested component should rerender when an new array occured', () => {
+  it('removed nested component gets a componentWillUnmount call with dependencies', () => {
     const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
 
     const local = store(true, (state, action: boolean) => action);
@@ -882,14 +882,14 @@ describe('rendering nested components', () => {
       someStore: store(true, (state, action: boolean) => action),
     };
 
+    type props = { foo: string };
     const NestedComponent = component(
-      () => dependencies,
-      (props: { foo: string }) => <div />,
-      {
-        componentWillUnmount: componentWillUnmountSpy,
+      (props: props, config: componentOptions<props, {}>) => {
+        config.componentWillUnmount = componentWillUnmountSpy;
+        return dependencies;
       },
+      (props: props) => <div />,
     );
-
 
     const MainComponent = component(
       () => ({ local }),
@@ -910,5 +910,25 @@ describe('rendering nested components', () => {
 
     expect(componentWillUnmountSpy.calls.count()).toBe(1);
     expect(componentWillUnmountSpy).toHaveBeenCalledWith({ foo: 'bar', children: [] }, dependencies);
+  });
+
+  it('config object is shared by constructor and render function', () => {
+
+    const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+    const MainComponent = component(
+      (props: {}, options: componentOptions<any, any>) => {
+        options.foo = 'bar';
+        return {};
+      },
+      renderSpy,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+
+    expect(renderSpy).toHaveBeenCalledWith({ children: [] }, {}, { foo: 'bar' });
   });
 });

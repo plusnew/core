@@ -3,6 +3,7 @@ import factory from './instances/factory';
 import componentFactory, { componentResult } from './components/factory';
 import RootInstance from './instances/types/Root/Instance';
 import InputEvent, { nothing } from './interfaces/InputEvent';
+import { options } from './interfaces/component';
 import Instance from './instances/types/Instance';
 import { Fragment } from './util/symbols';
 import store from 'redchain';
@@ -38,6 +39,14 @@ class Plusnew {
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
 nothing;
 
-export { store, Plusnew, Instance, componentFactory as component, InputEvent, componentResult };
+export {
+  store,
+  Plusnew,
+  Instance,
+  componentFactory as component,
+  InputEvent,
+  componentResult,
+  options as componentOptions,
+};
 
 export default new Plusnew();
