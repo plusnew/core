@@ -1,5 +1,5 @@
-import PlusnewAbstractElement from '../PlusnewAbstractElement';
 import { store } from 'redchain';
+import PlusnewAbstractElement from '../PlusnewAbstractElement';
 import ComponentInstance from '../instances/types/Component/Instance';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
@@ -18,11 +18,16 @@ export type ApplicationElement =
 
 export interface props {
   [key: string]: any;
+  key?: number | string;
   children: ApplicationElement[];
 }
 
 export interface deps {
   [key: string]: store<any, any>;
+}
+
+export interface options<props, deps> {
+  componentWillUnmount?: (props: props, deps: deps) => void;
 }
 
 export type render<props> = (props: props, deps: deps) => plusnew.JSX.Element | null;
