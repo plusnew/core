@@ -19,12 +19,12 @@ export interface factory {
   ): (props: componentProps, instance: ComponentInstance) => result;
 }
 
-const factory: factory = <props extends Partial<props>, dependencies extends stores>(
-  constructor: (props: props) => dependencies,
-  render: (props: props, dependencies: dependencies) => result,
-  options?: options<props, dependencies>,
+const factory: factory = <componentProps extends Partial<props>, dependencies extends stores>(
+  constructor: (props: componentProps) => dependencies,
+  render: (props: componentProps, dependencies: dependencies) => result,
+  options?: options<componentProps, dependencies>,
 ) => {
-  return (props: props, instance: ComponentInstance) => {
+  return (props: componentProps, instance: ComponentInstance) => {
     instance.setComponentParts(render as any, constructor(props), options);
 
     return instance.abstractElement;
