@@ -831,4 +831,84 @@ describe('rendering nested components', () => {
       expect(renderSpy.calls.count()).toBe(2);
     });
   });
+
+
+  it('nested component should rerender when an new array occured', () => {
+    const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
+
+    const local = store(true, (state, action: boolean) => action);
+
+    const dependencies = {
+      someStore: store(true, (state, action: boolean) => action),
+    };
+
+    const NestedComponent = component(
+      () => dependencies,
+      () => <div />,
+      {
+        componentWillUnmount: componentWillUnmountSpy,
+      },
+    );
+
+
+    const MainComponent = component(
+      () => ({ local }),
+      () =>
+        local.state === true ?
+          <NestedComponent />
+        :
+          null,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect(componentWillUnmountSpy.calls.count()).toBe(0);
+
+    local.dispatch(false);
+
+    expect(componentWillUnmountSpy.calls.count()).toBe(1);
+    expect(componentWillUnmountSpy).toHaveBeenCalledWith({ children: [] }, dependencies);
+  });
+
+
+  it('nested component should rerender when an new array occured', () => {
+    const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
+
+    const local = store(true, (state, action: boolean) => action);
+
+    const dependencies = {
+      someStore: store(true, (state, action: boolean) => action),
+    };
+
+    const NestedComponent = component(
+      () => dependencies,
+      (props: { foo: string }) => <div />,
+      {
+        componentWillUnmount: componentWillUnmountSpy,
+      },
+    );
+
+
+    const MainComponent = component(
+      () => ({ local }),
+      () =>
+        local.state === true ?
+          <NestedComponent foo="bar" />
+        :
+          null,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect(componentWillUnmountSpy.calls.count()).toBe(0);
+
+    local.dispatch(false);
+
+    expect(componentWillUnmountSpy.calls.count()).toBe(1);
+    expect(componentWillUnmountSpy).toHaveBeenCalledWith({ foo: 'bar', children: [] }, dependencies);
+  });
 });
