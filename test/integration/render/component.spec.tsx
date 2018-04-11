@@ -884,8 +884,8 @@ describe('rendering nested components', () => {
 
     type props = { foo: string };
     const NestedComponent = component(
-      (props: props, config: componentOptions<props, {}>) => {
-        config.componentWillUnmount = componentWillUnmountSpy;
+      (props: props, options: componentOptions<props, {}>) => {
+        options.componentWillUnmount = componentWillUnmountSpy;
         return dependencies;
       },
       (props: props) => <div />,
