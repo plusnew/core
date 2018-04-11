@@ -13,19 +13,17 @@ export interface stores {
 
 export interface factory {
   <dependencies extends stores, componentProps extends Partial<props>>(
-    constructor: (props: componentProps) => dependencies,
-    render: (props: componentProps, dependencies: dependencies) => result,
-    options?: options<componentProps, dependencies>,
+    constructor: (props: componentProps, options: options<componentProps, dependencies>) => dependencies,
+    render: (props: componentProps, dependencies: dependencies, options: options<componentProps, dependencies>) => result,
   ): (props: componentProps, instance: ComponentInstance) => result;
 }
 
 const factory: factory = <componentProps extends Partial<props>, dependencies extends stores>(
-  constructor: (props: componentProps) => dependencies,
-  render: (props: componentProps, dependencies: dependencies) => result,
-  options?: options<componentProps, dependencies>,
+  constructor: (props: componentProps, options: options<componentProps, dependencies>) => dependencies,
+  render: (props: componentProps, dependencies: dependencies, options: options<componentProps, dependencies>) => result,
 ) => {
   return (props: componentProps, instance: ComponentInstance) => {
-    instance.setComponentParts(render as any, constructor(props), options);
+    instance.setComponentParts(constructor, render as any);
 
     return instance.abstractElement;
   };

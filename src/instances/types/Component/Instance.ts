@@ -3,7 +3,7 @@ import Instance from '../Instance';
 import factory from '../../factory';
 import componentReconcile from './reconcile';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import component, { render, deps, options, nothing } from '../../../interfaces/component';
+import component, { constructor, render, deps, options, nothing } from '../../../interfaces/component';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
@@ -13,7 +13,7 @@ export default class ComponentInstance extends Instance {
   public type = types.Component;
   public abstractElement: PlusnewAbstractElement;
   public children: Instance;
-  public options?: options<any, any>;
+  public options: options<any, any> = {};
   public render: render<any>;
   public dependencies: deps;
 
@@ -40,12 +40,6 @@ export default class ComponentInstance extends Instance {
     return this;
   }
 
-  private registerOptions(options?: options<any, any>) {
-    this.options = options;
-
-    return this;
-  }
-
   private registerRender(render: render<any>) {
     this.render = render;
 
@@ -64,13 +58,12 @@ export default class ComponentInstance extends Instance {
   /**
    * asks the component what should be changed and puts it to the factory
    */
-  public setComponentParts(render: render<any>, dependencies: deps, options?: options<any, any>) {
+  public setComponentParts(constructor: constructor<any, any>, render: render<any>) {
     this
-        .registerOptions(options)
         .registerRender(render)
-        .registerDependencies(dependencies);
+        .registerDependencies(constructor(this.abstractElement.props, this.options));
 
-    const abstractChildren = this.render(this.abstractElement.props, this.dependencies);
+    const abstractChildren = this.render(this.abstractElement.props, this.dependencies, this.options);
     this.children = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
 
     return this;
@@ -103,7 +96,7 @@ export default class ComponentInstance extends Instance {
    */
   public remove() {
     this.removeDependencyListeners();
-    if (this.options && this.options.componentWillUnmount) {
+    if (this.options.componentWillUnmount) {
       this.options.componentWillUnmount(this.abstractElement.props, this.dependencies);
     }
     this.children.remove();
