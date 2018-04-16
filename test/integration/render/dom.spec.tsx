@@ -306,4 +306,30 @@ describe('dom handling', () => {
 
     expect(target.childNodes.length).toBe(0);
   });
+
+  it('adding input without focus ', () => {
+    const local = store(true, (state, action: boolean) => action);
+    const MainComponent = component(
+      () => ({  local }),
+      () =>
+        <input autofocus={false} />,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(document.activeElement).not.toBe(container.childNodes[0] as Element);
+  });
+
+  it('adding input with focus ', () => {
+    const local = store(true, (state, action: boolean) => action);
+    const MainComponent = component(
+      () => ({  local }),
+      () =>
+        <input value="djfngjnfdg" autofocus={true} />,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(document.activeElement).toBe(container.childNodes[0] as Element);
+  });
 });
