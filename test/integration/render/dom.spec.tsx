@@ -75,6 +75,18 @@ describe('dom handling', () => {
     expect(target.onclick).toBe(clickHandler);
   });
 
+  it('correct handling of viewBox', () => {
+    const Component = component(
+      () => ({}),
+      (props: {}) =>
+        <svg viewBox="0 0 100 100" />,
+    );
+    plusnew.render(<Component />, container);
+
+    const target = container.childNodes[0] as SVGSVGElement;
+
+    expect(target.getAttribute('viewBox')).toBe('0 0 100 100');
+  });
 
   it('replacing children of dom', () => {
     const local = store(true, (state, action: boolean) => action);
