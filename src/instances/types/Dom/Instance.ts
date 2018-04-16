@@ -32,10 +32,11 @@ export default class DomInstance extends ChildrenInstance {
       this.ref = document.createElement(abstractElement.type as string);
     }
 
-    this.setProps().addChildren(abstractElement.props.children);
-
-    this.appendToParent(this.ref, previousAbstractSiblingCount());
-    this.setOnChangeEvent();
+    this.setProps()
+        .addChildren(abstractElement.props.children)
+        .appendToParent(this.ref, previousAbstractSiblingCount())
+        .setAutofocusIfNeeded()
+        .setOnChangeEvent();
   }
 
   private setNamespace() {
@@ -47,6 +48,14 @@ export default class DomInstance extends ChildrenInstance {
    */
   public getPreviousSiblingsForChildren() {
     return 0;
+  }
+
+  private setAutofocusIfNeeded() {
+    if (this.abstractElement.props.autofocus === true && 'focus' in this.ref) {
+      (this.ref as HTMLInputElement).focus();
+    }
+
+    return this;
   }
 
   /**
