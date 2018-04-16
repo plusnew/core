@@ -308,9 +308,8 @@ describe('dom handling', () => {
   });
 
   it('adding input without focus ', () => {
-    const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
-      () => ({  local }),
+      () => ({}),
       () =>
         <input autofocus={false} />,
     );
@@ -321,9 +320,8 @@ describe('dom handling', () => {
   });
 
   it('adding input with focus ', () => {
-    const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
-      () => ({  local }),
+      () => ({}),
       () =>
         <input value="djfngjnfdg" autofocus={true} />,
     );
@@ -331,5 +329,27 @@ describe('dom handling', () => {
     plusnew.render(<MainComponent />, container);
 
     expect(document.activeElement).toBe(container.childNodes[0] as Element);
+  });
+
+  it('adding nested input with focus ', () => {
+    const MainComponent = component(
+      () => ({}),
+      () =>
+        <div><input value="djfngjnfdg" autofocus={true} /></div>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(document.activeElement).toBe(container.childNodes[0].childNodes[0] as Element);
+  });
+
+  it('adding focus on not focusable element', () => {
+    const MainComponent = component(
+      () => ({}),
+      () =>
+        <div autofocus></div>,
+    );
+
+    plusnew.render(<MainComponent />, container);
   });
 });
