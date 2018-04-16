@@ -170,7 +170,7 @@ export default class DomInstance extends ChildrenInstance {
     if (PropToAttribbuteMapping.hasOwnProperty(key)) {
       return (PropToAttribbuteMapping as any)[key];
     }
-    return key.toLowerCase();
+    return key;
   }
 
   /**
