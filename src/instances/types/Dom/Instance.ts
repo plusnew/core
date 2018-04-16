@@ -52,10 +52,14 @@ export default class DomInstance extends ChildrenInstance {
 
   private setAutofocusIfNeeded() {
     if (this.abstractElement.props.autofocus === true) {
-      // Focus can only be set from the browser, when the dom got inserted to the dom
-      (this.ref as HTMLElement).addEventListener('DOMNodeInsertedIntoDocument', () => {
+      const addFocus = () => {
         (this.ref as HTMLElement).focus();
-      });
+        // remove eventlistener to not have memoryleaks
+        this.ref.removeEventListener('DOMNodeInsertedIntoDocument', addFocus);
+      };
+
+      // Focus can only be set from the browser, when the dom got inserted to the dom
+      (this.ref as HTMLElement).addEventListener('DOMNodeInsertedIntoDocument', addFocus);
     }
 
     return this;
