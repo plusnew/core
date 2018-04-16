@@ -34,8 +34,8 @@ export default class DomInstance extends ChildrenInstance {
 
     this.setProps()
         .addChildren(abstractElement.props.children)
-        .appendToParent(this.ref, previousAbstractSiblingCount())
         .setAutofocusIfNeeded()
+        .appendToParent(this.ref, previousAbstractSiblingCount())
         .setOnChangeEvent();
   }
 
@@ -51,8 +51,11 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   private setAutofocusIfNeeded() {
-    if (this.abstractElement.props.autofocus === true && 'focus' in this.ref) {
-      (this.ref as HTMLInputElement).focus();
+    if (this.abstractElement.props.autofocus === true) {
+      // Focus can only be set from the browser, when the dom got inserted to the dom
+      (this.ref as HTMLElement).addEventListener('DOMNodeInsertedIntoDocument', () => {
+        (this.ref as HTMLElement).focus();
+      });
     }
 
     return this;
