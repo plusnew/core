@@ -342,14 +342,4 @@ describe('dom handling', () => {
 
     expect(document.activeElement).toBe(container.childNodes[0].childNodes[0] as Element);
   });
-
-  it('adding focus on not focusable element', () => {
-    const MainComponent = component(
-      () => ({}),
-      () =>
-        <div autofocus></div>,
-    );
-
-    plusnew.render(<MainComponent />, container);
-  });
 });
