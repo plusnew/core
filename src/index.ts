@@ -5,6 +5,7 @@ import RootInstance, { renderOptions } from './instances/types/Root/Instance';
 import InputEvent, { nothing } from './interfaces/InputEvent';
 import Instance from './instances/types/Instance';
 import { Fragment } from './util/symbols';
+import elementTypeChecker from './util/elementTypeChecker';
 import store from 'redchain';
 import './interfaces/jsx';
 
@@ -40,6 +41,16 @@ class Plusnew {
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
 nothing;
 
-export { store, Plusnew, Instance, componentFactory as component, InputEvent, componentResult, renderOptions };
+export {
+  store,
+  Plusnew,
+  Instance,
+  componentFactory as component,
+  InputEvent,
+  componentResult,
+  renderOptions,
+  PlusnewAbstractElement,
+  elementTypeChecker,
+};
 
 export default new Plusnew();
