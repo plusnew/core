@@ -7,7 +7,7 @@ enum InstanceTypes {
   Text = 'text',
   Placeholder = 'placeholder',
   Component = 'function',
-  Root = 'placeholder',
+  Root = 'root',
   Fragment = 'fragment',
 }
 
