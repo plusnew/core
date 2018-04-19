@@ -191,7 +191,6 @@ describe('dom handling', () => {
 
     expect(local.state).toBe('anothermep');
 
-    debugger;
     local.dispatch('completly other value');
 
     expect(target.value).toBe('completly other value');
