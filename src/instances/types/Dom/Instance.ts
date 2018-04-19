@@ -155,8 +155,8 @@ export default class DomInstance extends ChildrenInstance {
     );
   }
 
-  setAttributeAsProperty(keyName: string) {
-    return this.props.type === 'input' && keyName === 'value';
+  private setAttributeAsProperty(keyName: string) {
+    return this.type === 'input' && keyName === 'value';
   }
 
 
