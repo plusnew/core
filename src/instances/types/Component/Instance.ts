@@ -3,7 +3,7 @@ import Instance from '../Instance';
 import factory from '../../factory';
 import componentReconcile from './reconcile';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import component, { render, deps, nothing, props } from '../../../interfaces/component';
+import component, { constructor, render, deps, options, nothing, props } from '../../../interfaces/component';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
@@ -12,6 +12,7 @@ nothing;
 export default class ComponentInstance extends Instance {
   public nodeType = types.Component;
   public rendered: Instance;
+  public options: options<any, any> = {};
   public render: render<any>;
   public dependencies: deps;
   public props: props;
@@ -58,11 +59,12 @@ export default class ComponentInstance extends Instance {
   /**
    * asks the component what should be changed and puts it to the factory
    */
-  public handleChildren(render: render<any>, dependencies: deps) {
-    this.registerRender(render)
-        .registerDependencies(dependencies);
+  public setComponentParts(constructor: constructor<any, any>, render: render<any>) {
+    this
+        .registerRender(render)
+        .registerDependencies(constructor(this.props, this.options));
 
-    const abstractChildren = this.render(this.props, this.dependencies);
+    const abstractChildren = this.render(this.props, this.dependencies, this.options);
     this.rendered = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
 
     return this;
@@ -95,6 +97,9 @@ export default class ComponentInstance extends Instance {
    */
   public remove() {
     this.removeDependencyListeners();
+    if (this.options.componentWillUnmount) {
+      this.options.componentWillUnmount(this.props, this.dependencies);
+    }
     this.rendered.remove();
 
     return this;

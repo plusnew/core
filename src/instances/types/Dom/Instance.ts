@@ -34,10 +34,11 @@ export default class DomInstance extends ChildrenInstance {
       this.ref = document.createElement(abstractElement.type as string);
     }
 
-    this.setProps().addChildren(abstractElement.props.children);
-
-    this.appendToParent(this.ref, previousAbstractSiblingCount());
-    this.setOnChangeEvent();
+    this.setProps()
+        .addChildren(abstractElement.props.children)
+        .setAutofocusIfNeeded()
+        .appendToParent(this.ref, previousAbstractSiblingCount())
+        .setOnChangeEvent();
   }
 
   private setNamespace() {
@@ -49,6 +50,21 @@ export default class DomInstance extends ChildrenInstance {
    */
   public getPreviousSiblingsForChildren() {
     return 0;
+  }
+
+  private setAutofocusIfNeeded() {
+    if (this.props.autofocus === true) {
+      const addFocus = () => {
+        (this.ref as HTMLElement).focus();
+        // remove eventlistener to not have memoryleaks
+        this.ref.removeEventListener('DOMNodeInsertedIntoDocument', addFocus);
+      };
+
+      // Focus can only be set from the browser, when the dom got inserted to the dom
+      (this.ref as HTMLElement).addEventListener('DOMNodeInsertedIntoDocument', addFocus);
+    }
+
+    return this;
   }
 
   /**
@@ -172,7 +188,7 @@ export default class DomInstance extends ChildrenInstance {
     if (PropToAttribbuteMapping.hasOwnProperty(key)) {
       return (PropToAttribbuteMapping as any)[key];
     }
-    return key.toLowerCase();
+    return key;
   }
 
   /**

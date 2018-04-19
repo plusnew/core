@@ -16,7 +16,7 @@ import TextInstance from './types/Text/Instance';
 import textReconcile from './types/Text/reconcile';
 
 import ComponentInstance from './types/Component/Instance';
-import componentReconcile from './types/Component/reconcile';
+import componentReconcile, { shouldUpdate } from './types/Component/reconcile';
 
 import ArrayInstance from './types/Array/Instance';
 import arrayReconcile from './types/Array/reconcile';
@@ -41,8 +41,11 @@ export class Reconciler {
       } else if (instance.nodeType === types.Array) {
         arrayReconcile(newAbstractElement as PlusnewAbstractElement[], instance as ArrayInstance);
       } else if (instance.nodeType === types.Component) {
-        componentReconcile((newAbstractElement as PlusnewAbstractElement).props, instance as ComponentInstance);
+        if (shouldUpdate((newAbstractElement as PlusnewAbstractElement).props, instance as ComponentInstance)) {
+          componentReconcile((newAbstractElement as PlusnewAbstractElement).props, instance as ComponentInstance);
+        }
       } else {
+        debugger;
         throw new Error('Updating unknown Elementtype');
       }
       return instance;

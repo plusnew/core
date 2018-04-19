@@ -18,8 +18,9 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: F
     }
   }
 
-  for (let i = newAbstractElement.props.children.length; i < instance.props.children.length; i += 1) {
-    instance.rendered[i].remove();
+  while (instance.rendered.length > newAbstractElement.props.children.length) {
+    instance.rendered[newAbstractElement.props.children.length].remove();
+    instance.rendered.splice(newAbstractElement.props.children.length, 1);
   }
 
   instance.props = newAbstractElement.props; // updating the shadowdom

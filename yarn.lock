@@ -1482,7 +1482,7 @@ concat-stream@^1.5.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-concurrently@^3.5.1:
+concurrently@3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/concurrently/-/concurrently-3.5.1.tgz#ee8b60018bbe86b02df13e5249453c6ececd2521"
   dependencies:
@@ -4316,7 +4316,7 @@ pkg-dir@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
-plusnew-karma-config@^0.5.69:
+plusnew-karma-config@0.5.69:
   version "0.5.69"
   resolved "https://registry.yarnpkg.com/plusnew-karma-config/-/plusnew-karma-config-0.5.69.tgz#46b6c849f272b4c328cf9f65e1214f29405a65b9"
   dependencies:
@@ -4328,7 +4328,7 @@ plusnew-karma-config@^0.5.69:
     karma-remap-istanbul "0.6.0"
     karma-sourcemap-loader "0.3.7"
 
-plusnew-webpack-config@^0.5.93:
+plusnew-webpack-config@0.5.93:
   version "0.5.93"
   resolved "https://registry.yarnpkg.com/plusnew-webpack-config/-/plusnew-webpack-config-0.5.93.tgz#e8f782a239171efa2f4cb8f159660accb2e8ded3"
   dependencies:

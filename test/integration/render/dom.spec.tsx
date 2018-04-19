@@ -75,6 +75,18 @@ describe('dom handling', () => {
     expect(target.onclick).toBe(clickHandler);
   });
 
+  it('correct handling of viewBox', () => {
+    const Component = component(
+      () => ({}),
+      (props: {}) =>
+        <svg viewBox="0 0 100 100" />,
+    );
+    plusnew.render(<Component />, container);
+
+    const target = container.childNodes[0] as SVGSVGElement;
+
+    expect(target.getAttribute('viewBox')).toBe('0 0 100 100');
+  });
 
   it('replacing children of dom', () => {
     const local = store(true, (state, action: boolean) => action);
@@ -229,5 +241,105 @@ describe('dom handling', () => {
     target.dispatchEvent(inputEvent);
 
     expect(local.state).toBe('blarg');
+  });
+
+  it('removing multiple children one at a time', () => {
+    const local = store(0, (state, action: number) => action);
+
+    const MainComponent = component(
+      () => ({  local }),
+      () => {
+        if (local.state === 0) {
+          return (
+            <div>
+              <span>foo1</span>
+              <span>foo2</span>
+              <span>foo3</span>
+          </div>);
+        }
+        if (local.state === 1) {
+          return (
+            <div>
+              <span>foo1</span>
+              <span>foo2</span>
+          </div>);
+        }
+
+        if (local.state === 2) {
+          return (
+            <div>
+              <span>foo1</span>
+          </div>);
+        }
+
+        return <div></div>;
+      },
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    const target = container.childNodes[0];
+
+    expect(target.childNodes.length).toBe(3);
+    expect((target.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('foo1');
+    expect((target.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+    expect((target.childNodes[1] as HTMLElement).innerHTML).toBe('foo2');
+    expect((target.childNodes[2] as HTMLElement).tagName).toBe('SPAN');
+    expect((target.childNodes[2] as HTMLElement).innerHTML).toBe('foo3');
+
+    local.dispatch(1);
+
+    expect(target.childNodes.length).toBe(2);
+    expect((target.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('foo1');
+    expect((target.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+    expect((target.childNodes[1] as HTMLElement).innerHTML).toBe('foo2');
+
+    local.dispatch(2);
+
+    expect(target.childNodes.length).toBe(1);
+    expect((target.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((target.childNodes[0] as HTMLElement).innerHTML).toBe('foo1');
+
+    local.dispatch(3);
+
+    expect(target.childNodes.length).toBe(0);
+  });
+
+  it('adding input without focus ', () => {
+    const MainComponent = component(
+      () => ({}),
+      () =>
+        <input autofocus={false} />,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(document.activeElement).not.toBe(container.childNodes[0] as Element);
+  });
+
+  it('adding input with focus ', () => {
+    const MainComponent = component(
+      () => ({}),
+      () =>
+        <input value="djfngjnfdg" autofocus={true} />,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(document.activeElement).toBe(container.childNodes[0] as Element);
+  });
+
+  it('adding nested input with focus ', () => {
+    const MainComponent = component(
+      () => ({}),
+      () =>
+        <div><input value="djfngjnfdg" autofocus={true} /></div>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(document.activeElement).toBe(container.childNodes[0].childNodes[0] as Element);
   });
 });

@@ -26,8 +26,9 @@ export default function (props: props, instance: DomInstance) {
     }
   }
 
-  for (let i = props.children.length; i < instance.props.children.length; i += 1) {
-    instance.rendered[i].remove();
+  while (instance.rendered.length > props.children.length) {
+    instance.rendered[props.children.length].remove();
+    instance.rendered.splice(props.children.length, 1);
   }
 
   Object.keys(instance.props).forEach((index) => {

@@ -1,9 +1,10 @@
 import ComponentInstance from '../instances/types/Component/Instance';
+import { props, options } from '../interfaces/component';
 import { store } from 'redchain';
 
 export type result = plusnew.JSX.Element | null;
-export interface componentResult<props> {
-  (props: props, instance: ComponentInstance): plusnew.JSX.Element | null;
+export interface componentResult<componentProps extends Partial<props>> {
+  (props: componentProps, instance: ComponentInstance): plusnew.JSX.Element | null;
 }
 
 export interface stores {
@@ -11,18 +12,18 @@ export interface stores {
 }
 
 export interface factory {
-  <dependencies extends stores, props>(
-    constructor: (props: props) => dependencies,
-    render: (props: props, dependencies: dependencies) => result,
-  ): (props: props, instance: ComponentInstance) => result;
+  <dependencies extends stores, componentProps extends Partial<props>>(
+    constructor: (props: componentProps, options: options<componentProps, dependencies>) => dependencies,
+    render: (props: componentProps, dependencies: dependencies, options: options<componentProps, dependencies>) => result,
+  ): (props: componentProps, instance: ComponentInstance) => result;
 }
 
-const factory: factory = <props, dependencies>(
-  dependencies: (props: props) => dependencies,
-  render: (props: props, dependencies: dependencies) => result,
+const factory: factory = <componentProps extends Partial<props>, dependencies extends stores>(
+  constructor: (props: componentProps, options: options<componentProps, dependencies>) => dependencies,
+  render: (props: componentProps, dependencies: dependencies, options: options<componentProps, dependencies>) => result,
 ) => {
-  return (props: props, instance: ComponentInstance) => {
-    instance.handleChildren(render as any, dependencies(props) as any);
+  return (props: componentProps, instance: ComponentInstance) => {
+    instance.setComponentParts(constructor, render as any);
 
     return {
       type: instance.type,

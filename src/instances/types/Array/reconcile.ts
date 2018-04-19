@@ -16,22 +16,26 @@ function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractEle
 
 export default function (newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance) {
 
-  // Checks old abstract elements, if they should get removed
-  // reason for that is, that we dont want to move new elements, because of old elements which get deleted
-  // moving causes animations to trigger, and that would be wrong in that case
-  for (let oldIndex = 0; oldIndex < instance.props.length; oldIndex += 1) {
-    let found = reconciler.isSameAbstractElement(newAbstractElements[oldIndex], instance.rendered[oldIndex]);
-    for (let newIndex = 0; newIndex < newAbstractElements.length && found === false; newIndex += 1) {
-      if (reconciler.isSameAbstractElement(newAbstractElements[newIndex], instance.rendered[oldIndex])) {
-        found = true;
-      }
-    }
 
-    if (!found) {
-      instance.rendered[oldIndex].remove();
-      instance.rendered.splice(oldIndex, 1);
-      instance.props.splice(oldIndex, 1);
-      oldIndex -= 1;
+  // Removal of old-elements just works if key-property is existent
+  if (instance.props.length && instance.props[0].props && instance.props[0].props.key !== undefined) {
+    // Checks old abstract elements, if they should get removed
+    // reason for that is, that we dont want to move new elements, because of old elements which get deleted
+    // moving causes animations to trigger, and that would be wrong in that case
+    for (let oldIndex = 0; oldIndex < instance.props.length; oldIndex += 1) {
+      let found = reconciler.isSameAbstractElement(newAbstractElements[oldIndex], instance.rendered[oldIndex]);
+      for (let newIndex = 0; newIndex < newAbstractElements.length && found === false; newIndex += 1) {
+        if (reconciler.isSameAbstractElement(newAbstractElements[newIndex], instance.rendered[oldIndex])) {
+          found = true;
+        }
+      }
+
+      if (!found) {
+        instance.rendered[oldIndex].remove();
+        instance.rendered.splice(oldIndex, 1);
+        instance.props.splice(oldIndex, 1);
+        oldIndex -= 1;
+      }
     }
   }
 
@@ -63,6 +67,11 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
       }
     }
   }
+
+  instance.rendered.splice(
+    newAbstractElements.length,
+    instance.rendered.length - newAbstractElements.length,
+  ).forEach(childInstance => childInstance.remove());
 
   instance.props = newAbstractElements;
 }

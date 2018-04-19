@@ -1,6 +1,6 @@
 {
   "name": "plusnew",
-  "version": "0.5.82",
+  "version": "0.5.93",
   "description": "ts framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,9 +24,9 @@
     "redchain": "0.5.73"
   },
   "devDependencies": {
-    "concurrently": "^3.5.1",
-    "plusnew-karma-config": "^0.5.69",
-    "plusnew-webpack-config": "^0.5.93",
+    "concurrently": "3.5.1",
+    "plusnew-karma-config": "0.5.69",
+    "plusnew-webpack-config": "0.5.93",
     "tslint": "5.8.0",
     "tslint-config-airbnb": "5.4.2",
     "typescript": "2.8.1"

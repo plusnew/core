@@ -3,6 +3,7 @@ import factory from './instances/factory';
 import componentFactory, { componentResult } from './components/factory';
 import RootInstance, { renderOptions } from './instances/types/Root/Instance';
 import InputEvent, { nothing } from './interfaces/InputEvent';
+import { options } from './interfaces/component';
 import Instance from './instances/types/Instance';
 import { Fragment } from './util/symbols';
 import elementTypeChecker from './util/elementTypeChecker';
@@ -51,6 +52,7 @@ export {
   renderOptions,
   PlusnewAbstractElement,
   elementTypeChecker,
+  options as componentOptions,
 };
 
 export default new Plusnew();
