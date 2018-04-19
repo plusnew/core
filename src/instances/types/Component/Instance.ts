@@ -3,19 +3,19 @@ import Instance from '../Instance';
 import factory from '../../factory';
 import componentReconcile from './reconcile';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import component, { constructor, render, deps, options, nothing } from '../../../interfaces/component';
+import component, { constructor, render, deps, options, nothing, props } from '../../../interfaces/component';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
 nothing;
 
 export default class ComponentInstance extends Instance {
-  public type = types.Component;
-  public abstractElement: PlusnewAbstractElement;
-  public children: Instance;
+  public nodeType = types.Component;
+  public rendered: Instance;
   public options: options<any, any> = {};
   public render: render<any>;
   public dependencies: deps;
+  public props: props;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -24,7 +24,8 @@ export default class ComponentInstance extends Instance {
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
-    this.createChildrenComponents = this.abstractElement.createChildrenComponents;
+    this.type = abstractElement.type;
+    this.props = abstractElement.props;
     // Each instance needs its own update method - to have a unique method to be removed from the dependency-listeners
     this.update = this.update.bind(this);
     this.initialiseComponent();
@@ -34,8 +35,8 @@ export default class ComponentInstance extends Instance {
    * calls the renderfunction with the properties and gives lifecyclehooks to the applicationcode
    */
   private initialiseComponent() {
-    const props = this.abstractElement.props;
-    (this.abstractElement.type as component<any>)(props, this);
+    const props = this.props;
+    (this.type as component<any>)(props, this);
 
     return this;
   }
@@ -61,10 +62,10 @@ export default class ComponentInstance extends Instance {
   public setComponentParts(constructor: constructor<any, any>, render: render<any>) {
     this
         .registerRender(render)
-        .registerDependencies(constructor(this.abstractElement.props, this.options));
+        .registerDependencies(constructor(this.props, this.options));
 
-    const abstractChildren = this.render(this.abstractElement.props, this.dependencies, this.options);
-    this.children = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
+    const abstractChildren = this.render(this.props, this.dependencies, this.options);
+    this.rendered = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
 
     return this;
   }
@@ -73,7 +74,7 @@ export default class ComponentInstance extends Instance {
    * rerenders and informs the domhandler
    */
   private update() {
-    componentReconcile(this.abstractElement, this);
+    componentReconcile(this.props, this);
 
     return this;
   }
@@ -82,13 +83,13 @@ export default class ComponentInstance extends Instance {
    * moves the children to another dom position
    */
   public move(position: number) {
-    this.children.move(position);
+    this.rendered.move(position);
 
     return this;
   }
 
   public getLength() {
-    return this.children.getLength();
+    return this.rendered.getLength();
   }
 
   /**
@@ -97,9 +98,9 @@ export default class ComponentInstance extends Instance {
   public remove() {
     this.removeDependencyListeners();
     if (this.options.componentWillUnmount) {
-      this.options.componentWillUnmount(this.abstractElement.props, this.dependencies);
+      this.options.componentWillUnmount(this.props, this.dependencies);
     }
-    this.children.remove();
+    this.rendered.remove();
 
     return this;
   }

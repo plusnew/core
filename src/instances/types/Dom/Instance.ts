@@ -4,6 +4,7 @@ import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import { getSpecialNamespace } from '../../../util/namespace';
 import { hasOnchangeEvent, hasInputEvent } from '../../../util/dom';
+import { props } from '../../../interfaces/component';
 
 const PropToAttribbuteMapping = {
   acceptCharset: 'accept-charset',
@@ -13,9 +14,9 @@ const PropToAttribbuteMapping = {
 };
 
 export default class DomInstance extends ChildrenInstance {
-  public type = types.Dom;
-  public abstractElement: PlusnewAbstractElement;
+  public nodeType = types.Dom;
   public ref: Element;
+  public props: props;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -23,7 +24,8 @@ export default class DomInstance extends ChildrenInstance {
     previousAbstractSiblingCount: () => number,
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
-
+    this.type = abstractElement.type;
+    this.props = abstractElement.props;
     this.setNamespace();
 
     if (this.namespace) {
@@ -40,7 +42,7 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   private setNamespace() {
-    this.namespace = getSpecialNamespace(this.abstractElement.type as string) || this.namespace;
+    this.namespace = getSpecialNamespace(this.type as string) || this.namespace;
   }
 
   /**
@@ -51,7 +53,7 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   private setAutofocusIfNeeded() {
-    if (this.abstractElement.props.autofocus === true) {
+    if (this.props.autofocus === true) {
       const addFocus = () => {
         (this.ref as HTMLElement).focus();
         // remove eventlistener to not have memoryleaks
@@ -69,8 +71,8 @@ export default class DomInstance extends ChildrenInstance {
    * sets the attributes to the element
    */
   private setProps() {
-    for (const index in this.abstractElement.props) {
-      this.setProp(index, this.abstractElement.props[index]);
+    for (const index in this.props) {
+      this.setProp(index, this.props[index]);
     }
 
     return this;
@@ -113,7 +115,7 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   private setOnChangeEvent() {
-    if (hasOnchangeEvent(this.abstractElement)) {
+    if (hasOnchangeEvent(this.type, this.props)) {
       const onchangeWrapper = (evt: Event) => {
         let preventDefault = true;
         this.setProp = (key, value) => {
@@ -128,15 +130,15 @@ export default class DomInstance extends ChildrenInstance {
           return this;
         };
 
-        this.abstractElement.props.onchange(evt);
+        this.props.onchange(evt);
 
         if (preventDefault === true) {
-          (this.ref as HTMLInputElement).value = this.abstractElement.props.value;
+          (this.ref as HTMLInputElement).value = this.props.value;
         }
         delete this.setProp;
       };
 
-      if (hasInputEvent(this.abstractElement)) {
+      if (hasInputEvent(this.type, this.props)) {
         (this.ref as HTMLElement).oninput = onchangeWrapper;
       }
       (this.ref as HTMLElement).onchange = onchangeWrapper;
@@ -149,12 +151,12 @@ export default class DomInstance extends ChildrenInstance {
     return (
       key === 'key' ||
       key === 'children' ||
-      (key === 'onchange' && hasOnchangeEvent(this.abstractElement))
+      (key === 'onchange' && hasOnchangeEvent(this.type, this.props))
     );
   }
 
-  setAttributeAsProperty(keyName: string) {
-    return this.abstractElement.type === 'input' && keyName === 'value';
+  private setAttributeAsProperty(keyName: string) {
+    return this.type === 'input' && keyName === 'value';
   }
 
 
@@ -219,7 +221,7 @@ export default class DomInstance extends ChildrenInstance {
    * removes the domnode from the parent
    */
   public remove() {
-    this.children.forEach(child => child.remove());
+    this.rendered.forEach(child => child.remove());
     (this.ref.parentNode as Node).removeChild(this.ref);
 
     return this;

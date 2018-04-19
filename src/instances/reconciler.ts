@@ -1,5 +1,5 @@
-import PlusnewAbstractElement from '../PlusnewAbstractElement';
-import { ApplicationElement } from '../interfaces/component';
+import PlusnewAbstractElement  from '../PlusnewAbstractElement';
+import { ApplicationElement, props } from '../interfaces/component';
 
 import factory from './factory';
 import Instance from './types/Instance';
@@ -28,23 +28,24 @@ export class Reconciler {
    * or if it should be removed and replaced
    */
   public update(newAbstractElement: ApplicationElement, instance: Instance): Instance {
-    if (this.isSameAbstractElement(newAbstractElement, instance.abstractElement)) {
-      if (instance.type === types.Placeholder) {
+    if (this.isSameAbstractElement(newAbstractElement, instance)) {
+      if (instance.nodeType === types.Placeholder) {
         // When its a placeholder, there is no need for updating, nothing will change there
         // it will get replaced, but that's it
-      } else if (instance.type === types.Fragment) {
+      } else if (instance.nodeType === types.Fragment) {
         fragmentReconcile(newAbstractElement as PlusnewAbstractElement, instance as FragmentInstance);
-      } else if (instance.type === types.Dom) {
-        domReconcile(newAbstractElement as PlusnewAbstractElement, instance as DomInstance);
-      } else if (instance.type === types.Text) {
+      } else if (instance.nodeType === types.Dom) {
+        domReconcile((newAbstractElement as PlusnewAbstractElement).props, instance as DomInstance);
+      } else if (instance.nodeType === types.Text) {
         textReconcile(newAbstractElement as 'string', instance as TextInstance);
-      } else if (instance.type === types.Array) {
+      } else if (instance.nodeType === types.Array) {
         arrayReconcile(newAbstractElement as PlusnewAbstractElement[], instance as ArrayInstance);
-      } else if (instance.type === types.Component) {
-        if (shouldUpdate(newAbstractElement as PlusnewAbstractElement, instance as ComponentInstance)) {
-          componentReconcile(newAbstractElement as PlusnewAbstractElement, instance as ComponentInstance);
+      } else if (instance.nodeType === types.Component) {
+        if (shouldUpdate((newAbstractElement as PlusnewAbstractElement).props, instance as ComponentInstance)) {
+          componentReconcile((newAbstractElement as PlusnewAbstractElement).props, instance as ComponentInstance);
         }
       } else {
+        debugger;
         throw new Error('Updating unknown Elementtype');
       }
       return instance;
@@ -56,25 +57,25 @@ export class Reconciler {
   /**
    * checks if the abstractElements are the same
    */
-  public isSameAbstractElement(newAbstractElement: ApplicationElement, oldAbstractElement: ApplicationElement) {
+  public isSameAbstractElement(newAbstractElement: ApplicationElement, instance: Instance) {
     // The following code does the key-property check, not yet stable
-    if (this.isSameAbstractElementType(newAbstractElement, oldAbstractElement) === true) {
+    if (this.isSameAbstractElementType(newAbstractElement, instance) === true) {
       if (
         elementTypeChecker.isComponentElement(newAbstractElement) === true ||
         elementTypeChecker.isDomElement(newAbstractElement)
       ) {
         if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
-          if ((oldAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
+          if ((instance.props as props).hasOwnProperty('key')) {
             // newAbstractElement and oldAbstractElement, have a key - is it the same?
             return (
               (newAbstractElement as PlusnewAbstractElement).props.key ===
-              (oldAbstractElement as PlusnewAbstractElement).props.key
+              (instance.props as props).key
             );
           }
           // newAbstractElement has key, but oldAbstractElement has not
           return false;
         }
-        if ((oldAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
+        if ((instance.props as props).hasOwnProperty('key')) {
           // newAbstractElement has no key, but oldAbstractElement has
           return false;
         }
@@ -91,28 +92,28 @@ export class Reconciler {
   /**
    * checks if the abstractElements are the same type
    */
-  private isSameAbstractElementType(newAbstractElement: ApplicationElement, oldAbtractElement: ApplicationElement) {
+  private isSameAbstractElementType(newAbstractElement: ApplicationElement, instance: Instance) {
     if (elementTypeChecker.isPlaceholderElement(newAbstractElement)) {
-      return elementTypeChecker.isPlaceholderElement(oldAbtractElement);
+      return instance.nodeType === types.Placeholder;
     }
 
     if (elementTypeChecker.isTextElement(newAbstractElement)) {
-      return elementTypeChecker.isTextElement(oldAbtractElement);
+      return instance.nodeType === types.Text;
     }
 
     if (elementTypeChecker.isArrayElement(newAbstractElement)) {
-      return elementTypeChecker.isArrayElement(oldAbtractElement);
+      return instance.nodeType === types.Array;
     }
 
     if (elementTypeChecker.isFragmentElement(newAbstractElement)) {
-      return elementTypeChecker.isFragmentElement(oldAbtractElement);
+      return instance.nodeType === types.Fragment;
     }
 
     if (elementTypeChecker.isDomElement(newAbstractElement)) {
-      if (elementTypeChecker.isDomElement(oldAbtractElement)) {
+      if (instance.nodeType === types.Dom) {
         // newAbstractElement and oldAbtractElement are dom elements, but is elementNode the same
         return (
-          (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type
+          (newAbstractElement as PlusnewAbstractElement).type === instance.type
         );
       }
 
@@ -121,10 +122,10 @@ export class Reconciler {
     }
 
     if (elementTypeChecker.isComponentElement(newAbstractElement)) {
-      if (elementTypeChecker.isComponentElement(oldAbtractElement)) {
+      if (instance.nodeType === types.Component) {
         // newAbstractElement and oldAbtractElement are components, but are they the same function
         return (
-          (newAbstractElement as PlusnewAbstractElement).type === (oldAbtractElement as PlusnewAbstractElement).type
+          (newAbstractElement as PlusnewAbstractElement).type === instance.type
         );
       }
 

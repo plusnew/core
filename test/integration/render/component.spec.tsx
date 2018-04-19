@@ -312,15 +312,14 @@ describe('rendering nested components', () => {
       () => ({}),
       () =>
         <>
-          <span />
           <NestedComponent />
+          <span />
         </>,
     );
 
     const MainComponentElement = <MainComponent />;
-    MainComponentElement.createChildrenComponents = false;
 
-    plusnew.render(MainComponentElement, container);
+    plusnew.render(MainComponentElement, container, { createChildrenComponents: false });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');

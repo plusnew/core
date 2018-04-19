@@ -2,10 +2,13 @@ import types from '../types';
 import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import { props } from '../../../interfaces/component';
+
 
 export default class FragmentInstance extends ChildrenInstance {
+  public nodeType = types.Fragment;
   public type = types.Fragment;
-  public abstractElement: PlusnewAbstractElement;
+  public props: props;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -13,7 +16,7 @@ export default class FragmentInstance extends ChildrenInstance {
     previousAbstractSiblingCount: () => number,
   ) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
-
+    this.props = abstractElement.props;
     this.addChildren(abstractElement.props.children);
   }
 

@@ -25,7 +25,10 @@ const factory: factory = <componentProps extends Partial<props>, dependencies ex
   return (props: componentProps, instance: ComponentInstance) => {
     instance.setComponentParts(constructor, render as any);
 
-    return instance.abstractElement;
+    return {
+      type: instance.type,
+      props: instance.props,
+    } as plusnew.JSX.Element;
   };
 };
 

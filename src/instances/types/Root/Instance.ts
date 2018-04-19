@@ -1,10 +1,35 @@
 import types from '../types';
 import Instance from '../Instance';
+import { ApplicationElement } from '../../../interfaces/component';
+
+type renderOptions = {
+  createChildrenComponents?: boolean;
+  namespace?: string;
+};
 
 export default class RootInstance extends Instance {
+  public nodeType = types.Root;
   public type = types.Root;
   public ref: Element;
 
+  constructor(
+    abstractElement: ApplicationElement,
+    parentInstance: Instance | undefined,
+    previousAbstractSiblingCount: () => number,
+    options?: renderOptions,
+  ) {
+    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+
+    if (options) {
+      if (options.namespace !== undefined) {
+        this.namespace = options.namespace;
+      }
+
+      if (options.createChildrenComponents !== undefined) {
+        this.createChildrenComponents = options.createChildrenComponents;
+      }
+    }
+  }
   /**
    * appends the element to the rootcontainer
    */
@@ -35,3 +60,5 @@ export default class RootInstance extends Instance {
     throw new Error('The root element can\'t remove itself');
   }
 }
+
+export { renderOptions };

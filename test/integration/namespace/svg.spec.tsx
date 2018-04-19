@@ -72,4 +72,15 @@ describe('rendering svg components', () => {
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
   });
+
+  it('check if element with renderoption is set to the namespace', () => {
+    const Component = component(
+      () => ({}),
+      (props: {}) => <g />,
+    );
+
+    plusnew.render(<Component />, container, { namespace: svgNamespace });  
+
+    expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
+  });
 });

@@ -1,13 +1,15 @@
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
 import factory from './instances/factory';
 import componentFactory, { componentResult } from './components/factory';
-import RootInstance from './instances/types/Root/Instance';
+import RootInstance, { renderOptions } from './instances/types/Root/Instance';
 import InputEvent, { nothing } from './interfaces/InputEvent';
 import { options } from './interfaces/component';
 import Instance from './instances/types/Instance';
 import { Fragment } from './util/symbols';
+import elementTypeChecker from './util/elementTypeChecker';
 import store from 'redchain';
 import './interfaces/jsx';
+
 
 class Plusnew {
   /**
@@ -20,9 +22,10 @@ class Plusnew {
   /**
    * mounts the root component
    */
-  public render(element: PlusnewAbstractElement, containerElement: HTMLElement) {
+  public render(element: PlusnewAbstractElement, containerElement: HTMLElement, options?: renderOptions) {
     // Fake RootInstance
-    const wrapper = new RootInstance(true, undefined, () => 0);
+    const wrapper = new RootInstance(true, undefined, () => 0, options);
+
     wrapper.ref = containerElement;
 
     while (containerElement.childNodes.length) {
@@ -46,6 +49,9 @@ export {
   componentFactory as component,
   InputEvent,
   componentResult,
+  renderOptions,
+  PlusnewAbstractElement,
+  elementTypeChecker,
   options as componentOptions,
 };
 

@@ -1,41 +1,41 @@
 import DomInstance from './Instance';
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import { props } from '../../../interfaces/component';
 import reconciler from '../../reconciler';
 import factory from '../../factory';
 
-export default function (newAbstractElement: PlusnewAbstractElement, instance: DomInstance) {
-  for (const propIndex in newAbstractElement.props) {
+export default function (props: props, instance: DomInstance) {
+  for (const propIndex in props) {
     if (propIndex === 'children') {
-      for (let i = 0; i < newAbstractElement.props.children.length; i += 1) {
-        if (i < instance.children.length) {
-          const newInstance = reconciler.update(newAbstractElement.props.children[i], instance.children[i]);
-          if (newInstance !== instance.children[i]) {
-            instance.children[i].remove();
-            instance.children[i] = newInstance;
+      for (let i = 0; i < props.children.length; i += 1) {
+        if (i < instance.rendered.length) {
+          const newInstance = reconciler.update(props.children[i], instance.rendered[i]);
+          if (newInstance !== instance.rendered[i]) {
+            instance.rendered[i].remove();
+            instance.rendered[i] = newInstance;
           }
         } else {
-          instance.children.push(
-            factory(newAbstractElement.props.children[i], instance, instance.getPreviousLength.bind(instance, i)),
+          instance.rendered.push(
+            factory(props.children[i], instance, instance.getPreviousLength.bind(instance, i)),
           );
         }
       }
     } else {
-      if (instance.abstractElement.props[propIndex] !== newAbstractElement.props[propIndex]) {
-        instance.setProp(propIndex, newAbstractElement.props[propIndex]);
+      if (instance.props[propIndex] !== props[propIndex]) {
+        instance.setProp(propIndex, props[propIndex]);
       }
     }
   }
 
-  while (instance.children.length > newAbstractElement.props.children.length) {
-    instance.children[newAbstractElement.props.children.length].remove();
-    instance.children.splice(newAbstractElement.props.children.length, 1);
+  while (instance.rendered.length > props.children.length) {
+    instance.rendered[props.children.length].remove();
+    instance.rendered.splice(props.children.length, 1);
   }
 
-  Object.keys(instance.abstractElement.props).forEach((index) => {
-    if (index in newAbstractElement.props === false) {
+  Object.keys(instance.props).forEach((index) => {
+    if (index in props === false) {
       instance.unsetProp(index);
     }
   });
 
-  instance.abstractElement = newAbstractElement; // updating the shadowdom
+  instance.props = props; // updating the shadowdom
 }

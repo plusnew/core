@@ -1,4 +1,4 @@
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import { props } from '../../../interfaces/component';
 import reconciler from '../../reconciler';
 import ComponentInstance from './Instance';
 
@@ -47,20 +47,20 @@ function isEqual(a: {[key: string]: any}, b: {[key: string]: any}): boolean {
 /**
  * checks if a component needs updates, if the props are the same it does not need an update
  */
-function shouldUpdate(newAbstractElement: PlusnewAbstractElement, instance: ComponentInstance) {
-  return isEqual(newAbstractElement.props, instance.abstractElement.props) === false;
+function shouldUpdate(props: props, instance: ComponentInstance) {
+  return isEqual(props, instance.props) === false;
 }
 
-export default function (newAbstractElement: PlusnewAbstractElement, instance: ComponentInstance) {
-  const newAbstractChildren = instance.render(newAbstractElement.props, instance.dependencies, instance.options);
+export default function (props: props, instance: ComponentInstance) {
+  const newAbstractChildren = instance.render(props, instance.dependencies, instance.options);
 
-  const newChildrenInstance = reconciler.update(newAbstractChildren, instance.children);
-  if (newChildrenInstance !== instance.children) {
-    instance.children.remove();
-    instance.children = newChildrenInstance;
+  const newChildrenInstance = reconciler.update(newAbstractChildren, instance.rendered);
+  if (newChildrenInstance !== instance.rendered) {
+    instance.rendered.remove();
+    instance.rendered = newChildrenInstance;
   }
 
-  instance.abstractElement = newAbstractElement;
+  instance.props = props;
 }
 
 export { shouldUpdate };

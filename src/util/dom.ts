@@ -1,21 +1,22 @@
-import PlusnewAbstractElement from '../PlusnewAbstractElement';
+import { PlusnewElement } from '../PlusnewAbstractElement';
+import { props } from '../interfaces/component';
 
-export function isInputElement(element: PlusnewAbstractElement) {
-  return element.type === 'input';
+export function isInputElement(type: PlusnewElement, props: props) {
+  return type === 'input';
 }
 
-export function isTextInput(element: PlusnewAbstractElement) {
-  return isInputElement(element) && (element.props.type === undefined || element.props.type === 'text');
+export function isTextInput(type: PlusnewElement, props: props) {
+  return isInputElement(type, props) && (props.type === undefined || props.type === 'text');
 }
 
-export function isTextArea(element: PlusnewAbstractElement) {
-  return element.type === 'textarea';
+export function isTextArea(type: PlusnewElement, props: props) {
+  return type === 'textarea';
 }
 
-export function hasInputEvent(element: PlusnewAbstractElement) {
-  return isTextInput(element) || isTextArea(element);
+export function hasInputEvent(type: PlusnewElement, props: props) {
+  return isTextInput(type, props) || isTextArea(type, props);
 }
 
-export function hasOnchangeEvent(element: PlusnewAbstractElement) {
-  return isInputElement(element) || isTextArea(element);
+export function hasOnchangeEvent(type: PlusnewElement, props: props) {
+  return isInputElement(type, props) || isTextArea(type, props);
 }

@@ -1,10 +1,12 @@
-import { ApplicationElement } from '../../interfaces/component';
+import { ApplicationElement, props } from '../../interfaces/component';
+import { PlusnewElement } from '../../PlusnewAbstractElement';
 import types from './types';
 
 export default abstract class Instance {
-  public type: types;
+  public nodeType: types;
   public parentInstance?: Instance;
-  public abstractElement: ApplicationElement;
+  public type: PlusnewElement;
+  public props: ApplicationElement | props;
   public previousAbstractSiblingCount: () => number;
   public namespace?: string;
   public createChildrenComponents = true;
@@ -14,7 +16,6 @@ export default abstract class Instance {
     parentInstance: Instance | undefined,
     previousAbstractSiblingCount: () => number,
   ) {
-    this.abstractElement = abstractElement;
     this.parentInstance = parentInstance;
     this.previousAbstractSiblingCount = previousAbstractSiblingCount;
     if (this.parentInstance) {

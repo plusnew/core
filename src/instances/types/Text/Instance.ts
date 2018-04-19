@@ -2,13 +2,15 @@ import types from '../types';
 import Instance from '../Instance';
 
 export default class TextInstance extends Instance {
+  public nodeType = types.Text;
   public type = types.Text;
-  public abstractElement: string;
+  public props: string;
   public ref: Text;
 
   constructor(abstractElement: string, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
     super(abstractElement, parentInstance, previousAbstractSiblingCount);
 
+    this.props = abstractElement;
     this.ref = document.createTextNode(abstractElement);
     this.appendToParent(this.ref, previousAbstractSiblingCount());
   }
@@ -21,6 +23,7 @@ export default class TextInstance extends Instance {
 
   public setText(abstractElement: string) {
     this.ref.textContent = abstractElement;
+
     return this;
   }
 

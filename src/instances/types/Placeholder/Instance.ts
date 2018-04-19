@@ -2,7 +2,8 @@ import types from '../types';
 import Instance from '../Instance';
 
 export default class PlaceHolderInstance extends Instance {
-  public type = types.Placeholder;
+  public nodeType = types.Placeholder;
+  public type = types.Fragment;
 
   /**
    * the placeholder is not a dom object, that's why it has no length

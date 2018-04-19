@@ -4,11 +4,6 @@ type PlusnewElement = string | number | component<any> | Symbol;
 
 export default class PlusnewAbstractElement {
   /**
-   * this is needed for shallow rendering, when set to false children components will not be created
-   */
-  public createChildrenComponents = true;
-
-  /**
    * The information if what domnode it is, or if it is a component
    */
   public type: PlusnewElement;
