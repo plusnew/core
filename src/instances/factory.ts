@@ -40,7 +40,13 @@ export default function (
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     if (parentInstance.createChildrenComponents === false && parentInstance.nodeType !== types.Root) {
-      return new PlaceHolderInstance(false, parentInstance, previousAbstractSiblingCount);
+      const placeholder =  new PlaceHolderInstance(false, parentInstance, previousAbstractSiblingCount);
+      // the given shallow component should be inside the abstract elements, but without any real dom elements
+      // But it should look like a normal component
+      (placeholder as any).type = abstractElement.type;
+      placeholder.nodeType = types.Component;
+      placeholder.props = abstractElement.props;
+      return placeholder;
     }
 
     return new ComponentInstance(

@@ -1,7 +1,7 @@
 import types from '../types';
 import Instance from '../Instance';
 import factory from '../../factory';
-import componentReconcile from './reconcile';
+import reconcile, { shouldUpdate } from './reconcile';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import component, { constructor, render, deps, options, nothing, props } from '../../../interfaces/component';
 
@@ -74,8 +74,15 @@ export default class ComponentInstance extends Instance {
    * rerenders and informs the domhandler
    */
   private update() {
-    componentReconcile(this.props, this);
+    reconcile(this.props, this);
 
+    return this;
+  }
+
+  public reconcile(newAbstractElement: PlusnewAbstractElement) {
+    if (shouldUpdate((newAbstractElement as PlusnewAbstractElement).props, this)) {
+      reconcile(newAbstractElement.props, this);
+    }
     return this;
   }
 

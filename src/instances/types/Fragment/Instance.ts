@@ -3,7 +3,7 @@ import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import { props } from '../../../interfaces/component';
-
+import reconcile from './reconcile';
 
 export default class FragmentInstance extends ChildrenInstance {
   public nodeType = types.Fragment;
@@ -25,5 +25,10 @@ export default class FragmentInstance extends ChildrenInstance {
    */
   public getPreviousSiblingsForChildren() {
     return this.previousAbstractSiblingCount();
+  }
+
+  public reconcile(newAbstractElement: PlusnewAbstractElement) {
+    reconcile(newAbstractElement, this);
+    return this;
   }
 }

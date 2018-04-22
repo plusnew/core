@@ -64,4 +64,9 @@ export default abstract class Instance {
    * orders to remove itself from the dom
    */
   public abstract remove(): Instance;
+
+  /**
+   * orders to remove itself from the dom
+   */
+  public abstract reconcile(newAbstractElement: ApplicationElement): Instance;
 }

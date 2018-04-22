@@ -15,6 +15,9 @@ describe('Does the root-instance behave correctly', () => {
       remove() {
         return this;
       }
+      reconcile() {
+        return this;
+      }
     }
 
     abstract = new TestInstance(<div />, undefined, () => 0);

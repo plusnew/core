@@ -1,5 +1,7 @@
 import plusnew, { store, component, componentOptions } from 'index';
-import Instance from 'instances/types/Component/Instance';
+import ComponentInstance from 'instances/types/Component/Instance';
+import FragmentInstance from 'instances/types/Fragment/Instance';
+import types from 'instances/types/types';
 
 describe('rendering nested components', () => {
   let container: HTMLElement;
@@ -119,7 +121,7 @@ describe('rendering nested components', () => {
         </>,
     );
 
-    const updateSpy = spyOn(Instance.prototype, 'update' as any).and.callThrough();
+    const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
     plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(2);
@@ -172,7 +174,7 @@ describe('rendering nested components', () => {
         </>,
     );
 
-    const updateSpy = spyOn(Instance.prototype, 'update' as any).and.callThrough();
+    const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
     plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(2);
@@ -223,7 +225,7 @@ describe('rendering nested components', () => {
         </>,
     );
 
-    const updateSpy = spyOn(Instance.prototype, 'update' as any).and.callThrough();
+    const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
     plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(2);
@@ -274,7 +276,7 @@ describe('rendering nested components', () => {
         </>,
     );
 
-    const updateSpy = spyOn(Instance.prototype, 'update' as any).and.callThrough();
+    const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
     plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(2);
@@ -305,25 +307,29 @@ describe('rendering nested components', () => {
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
       () => ({}),
-      () => <div />,
+      (props: {foo: string}) => <div />,
     );
 
     const MainComponent = component(
       () => ({}),
       () =>
         <>
-          <NestedComponent />
+          <NestedComponent foo="bar"/>
           <span />
         </>,
     );
 
     const MainComponentElement = <MainComponent />;
 
-    plusnew.render(MainComponentElement, container, { createChildrenComponents: false });
+    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance;
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
+    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance;
+    expect(nestedComponent.nodeType).toBe(types.Component);
+    expect(nestedComponent.type as any).toBe(NestedComponent);
+    expect(nestedComponent.props).toEqual({ foo: 'bar', children: [] });
   });
 
   describe('nested render call', () => {

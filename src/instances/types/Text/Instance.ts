@@ -1,5 +1,6 @@
 import types from '../types';
 import Instance from '../Instance';
+import reconcile from './reconcile';
 
 export default class TextInstance extends Instance {
   public nodeType = types.Text;
@@ -43,6 +44,11 @@ export default class TextInstance extends Instance {
   public remove() {
     this.ref.remove();
 
+    return this;
+  }
+
+  public reconcile(newAbstractElement: string) {
+    reconcile(newAbstractElement, this);
     return this;
   }
 }

@@ -8,14 +8,14 @@ export default class PlaceHolderInstance extends Instance {
   /**
    * the placeholder is not a dom object, that's why it has no length
    */
-  getLength() {
+  public getLength() {
     return 0;
   }
 
   /**
    * placeholder has no object, which needs moving
    */
-  move() {
+  public move() {
     // Because placeholders are not really inserted in the dom, no actual action is needed
     return this;
   }
@@ -23,7 +23,11 @@ export default class PlaceHolderInstance extends Instance {
   /**
    * placeholder has no object, which needs removing
    */
-  remove() {
+  public remove() {
+    return this;
+  }
+
+  public reconcile(newAbstractElement: false) {
     return this;
   }
 }

@@ -2,6 +2,7 @@ import types from '../types';
 import Instance from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import reconcile from './reconcile';
 
 export default class ArrayInstance extends ChildrenInstance {
   public nodeType = types.Array;
@@ -23,5 +24,10 @@ export default class ArrayInstance extends ChildrenInstance {
    */
   public getPreviousSiblingsForChildren() {
     return this.previousAbstractSiblingCount();
+  }
+
+  public reconcile(newAbstractElements: PlusnewAbstractElement[]) {
+    reconcile(newAbstractElements, this);
+    return this;
   }
 }
