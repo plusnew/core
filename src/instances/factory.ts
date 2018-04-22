@@ -5,6 +5,7 @@ import PlaceHolderInstance from './types/Placeholder/Instance';
 import DomInstance from './types/Dom/Instance';
 import FragmentInstance from './types/Fragment/Instance';
 import ComponentInstance from './types/Component/Instance';
+import ShallowInstance from './types/Shallow/Instance';
 import TextInstance from './types/Text/Instance';
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
 import elementTypeChecker from '../util/elementTypeChecker';
@@ -40,13 +41,11 @@ export default function (
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     if (parentInstance.createChildrenComponents === false && parentInstance.nodeType !== types.Root) {
-      const placeholder =  new PlaceHolderInstance(false, parentInstance, previousAbstractSiblingCount);
-      // the given shallow component should be inside the abstract elements, but without any real dom elements
-      // But it should look like a normal component
-      (placeholder as any).type = abstractElement.type;
-      placeholder.nodeType = types.Component;
-      placeholder.props = abstractElement.props;
-      return placeholder;
+      return new ShallowInstance(
+        abstractElement as PlusnewAbstractElement,
+        parentInstance,
+        previousAbstractSiblingCount,
+      );
     }
 
     return new ComponentInstance(
