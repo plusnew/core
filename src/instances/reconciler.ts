@@ -6,21 +6,6 @@ import Instance from './types/Instance';
 import types from './types/types';
 import elementTypeChecker from '../util/elementTypeChecker';
 
-import FragmentInstance from './types/Fragment/Instance';
-import fragmentReconcile from './types/Fragment/reconcile';
-
-import DomInstance from './types/Dom/Instance';
-import domReconcile from './types/Dom/reconcile';
-
-import TextInstance from './types/Text/Instance';
-import textReconcile from './types/Text/reconcile';
-
-import ComponentInstance from './types/Component/Instance';
-import componentReconcile, { shouldUpdate } from './types/Component/reconcile';
-
-import ArrayInstance from './types/Array/Instance';
-import arrayReconcile from './types/Array/reconcile';
-
 export class Reconciler {
   /**
    * Checks if something changed
@@ -29,25 +14,7 @@ export class Reconciler {
    */
   public update(newAbstractElement: ApplicationElement, instance: Instance): Instance {
     if (this.isSameAbstractElement(newAbstractElement, instance)) {
-      if (instance.nodeType === types.Placeholder) {
-        // When its a placeholder, there is no need for updating, nothing will change there
-        // it will get replaced, but that's it
-      } else if (instance.nodeType === types.Fragment) {
-        fragmentReconcile(newAbstractElement as PlusnewAbstractElement, instance as FragmentInstance);
-      } else if (instance.nodeType === types.Dom) {
-        domReconcile((newAbstractElement as PlusnewAbstractElement).props, instance as DomInstance);
-      } else if (instance.nodeType === types.Text) {
-        textReconcile(newAbstractElement as 'string', instance as TextInstance);
-      } else if (instance.nodeType === types.Array) {
-        arrayReconcile(newAbstractElement as PlusnewAbstractElement[], instance as ArrayInstance);
-      } else if (instance.nodeType === types.Component) {
-        if (shouldUpdate((newAbstractElement as PlusnewAbstractElement).props, instance as ComponentInstance)) {
-          componentReconcile((newAbstractElement as PlusnewAbstractElement).props, instance as ComponentInstance);
-        }
-      } else {
-        debugger;
-        throw new Error('Updating unknown Elementtype');
-      }
+      instance.reconcile(newAbstractElement);
       return instance;
     }
 

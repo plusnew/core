@@ -1,5 +1,8 @@
 import plusnew, { store, component, componentOptions } from 'index';
-import Instance from 'instances/types/Component/Instance';
+import ComponentInstance from 'instances/types/Component/Instance';
+import FragmentInstance from 'instances/types/Fragment/Instance';
+import types from 'instances/types/types';
+import PlaceHolderInstance from 'instances/types/Placeholder/Instance';
 
 describe('rendering nested components', () => {
   let container: HTMLElement;
@@ -119,7 +122,7 @@ describe('rendering nested components', () => {
         </>,
     );
 
-    const updateSpy = spyOn(Instance.prototype, 'update' as any).and.callThrough();
+    const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
     plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(2);
@@ -172,7 +175,7 @@ describe('rendering nested components', () => {
         </>,
     );
 
-    const updateSpy = spyOn(Instance.prototype, 'update' as any).and.callThrough();
+    const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
     plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(2);
@@ -223,7 +226,7 @@ describe('rendering nested components', () => {
         </>,
     );
 
-    const updateSpy = spyOn(Instance.prototype, 'update' as any).and.callThrough();
+    const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
     plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(2);
@@ -274,7 +277,7 @@ describe('rendering nested components', () => {
         </>,
     );
 
-    const updateSpy = spyOn(Instance.prototype, 'update' as any).and.callThrough();
+    const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
     plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(2);
@@ -305,25 +308,130 @@ describe('rendering nested components', () => {
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
       () => ({}),
-      () => <div />,
+      (props: {foo: number}) => <div />,
     );
 
+    const local = store(0, (_state, action: number) => action);
+
     const MainComponent = component(
-      () => ({}),
+      () => ({ local }),
       () =>
         <>
-          <NestedComponent />
+          <NestedComponent foo={ local.state }/>
           <span />
         </>,
     );
 
     const MainComponentElement = <MainComponent />;
 
-    plusnew.render(MainComponentElement, container, { createChildrenComponents: false });
+    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance;
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
+    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance;
+    expect(nestedComponent.nodeType).toBe(types.Component);
+    expect(nestedComponent.type as any).toBe(NestedComponent);
+    expect(nestedComponent.props).toEqual({ foo: 0, children: [] });
+
+    local.dispatch(1);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    expect(nestedComponent.nodeType).toBe(types.Component);
+    expect(nestedComponent.type as any).toBe(NestedComponent);
+    expect(nestedComponent.props).toEqual({ foo: 1, children: [] });
+  });
+
+  it('nested component should not be created when shallow mode is active', () => {
+    const NestedComponent = component(
+      () => ({}),
+      (props: {foo: number}) => <div />,
+    );
+
+    const local = store(0, (_state, action: number) => action);
+
+    const MainComponent = component(
+      () => ({ local }),
+      () =>
+        <>
+          {local.state < 1 &&
+            <NestedComponent foo={ local.state }/>
+          }
+          <span />
+        </>,
+    );
+
+    const MainComponentElement = <MainComponent />;
+
+    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance;
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance;
+    expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
+    expect(nestedComponent.nodeType).toBe(types.Component);
+    expect(nestedComponent.type as any).toBe(NestedComponent);
+    expect(nestedComponent.props).toEqual({ foo: 0, children: [] });
+
+    local.dispatch(1);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
+    expect((mainComponent.rendered as FragmentInstance).rendered[0] instanceof PlaceHolderInstance).toBe(true);
+    expect((mainComponent.rendered as FragmentInstance).rendered[0]).not.toBe(nestedComponent);
+  });
+
+  it('nested component should not be created when shallow mode is active', () => {
+    const NestedComponent = component(
+      () => ({}),
+      (props: {foo: number}) => <div />,
+    );
+
+    const local = store(0, (_state, action: number) => action);
+
+    const MainComponent = component(
+      () => ({ local }),
+      () => {
+        return (
+          local.state < 1 ? [
+            <span key={1}/>,
+            <NestedComponent key={0} foo={ local.state }/>,
+          ] :  [
+            <NestedComponent key={0} foo={ local.state }/>,
+            <span key={1}/>,
+          ]
+        ) as any;
+      },
+    );
+
+    const MainComponentElement = <MainComponent />;
+
+    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance;
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[1] as ComponentInstance;
+    expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
+    expect(nestedComponent.nodeType).toBe(types.Component);
+    expect(nestedComponent.type as any).toBe(NestedComponent);
+    expect(nestedComponent.props).toEqual({ key: 0, foo: 0, children: [] });
+
+    local.dispatch(1);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    expect((mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance).toBe(nestedComponent);
+    expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
+    expect(nestedComponent.nodeType).toBe(types.Component);
+    expect(nestedComponent.type as any).toBe(NestedComponent);
+    expect(nestedComponent.props).toEqual({ key: 0, foo: 1, children: [] });
   });
 
   describe('nested render call', () => {

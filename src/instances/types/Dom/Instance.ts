@@ -5,6 +5,7 @@ import ChildrenInstance from '../ChildrenInstance';
 import { getSpecialNamespace } from '../../../util/namespace';
 import { hasOnchangeEvent, hasInputEvent } from '../../../util/dom';
 import { props } from '../../../interfaces/component';
+import reconcile from './reconcile';
 
 const PropToAttribbuteMapping = {
   acceptCharset: 'accept-charset',
@@ -177,7 +178,7 @@ export default class DomInstance extends ChildrenInstance {
   /**
    * sets all the style attributes
    */
-  getStylePropsAsAttribute(style: {[styleIndex: string]: string}): string {
+  private getStylePropsAsAttribute(style: {[styleIndex: string]: string}): string {
     return Object.keys(style).reduce((styleString, styleIndex) => `${styleString}${styleIndex}:${style[styleIndex]};`, '');
   }
 
@@ -224,6 +225,11 @@ export default class DomInstance extends ChildrenInstance {
     this.rendered.forEach(child => child.remove());
     (this.ref.parentNode as Node).removeChild(this.ref);
 
+    return this;
+  }
+
+  public reconcile(newAbstractElement: PlusnewAbstractElement) {
+    reconcile(newAbstractElement.props, this);
     return this;
   }
 }

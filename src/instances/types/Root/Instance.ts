@@ -50,7 +50,7 @@ export default class RootInstance extends Instance {
    * Nobody is above the root, and because of that nobody is able to move the root
    */
   public move(): never {
-    throw new Error('The root element can\'t remove itself');
+    throw new Error('The root element can\'t move itself');
   }
 
   /**
@@ -58,6 +58,10 @@ export default class RootInstance extends Instance {
    */
   public remove(): never {
     throw new Error('The root element can\'t remove itself');
+  }
+
+  public reconcile(newAbstractElement: false): never {
+    throw new Error('The root element can\'t reconcile itself');
   }
 }
 

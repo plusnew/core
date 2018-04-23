@@ -13,17 +13,6 @@ function createInstance(applicationElement: ApplicationElement) {
   return factory(applicationElement, wrapper, () => 0);
 }
 describe('checking if reconciler works as expected', () => {
-  describe('update()', () => {
-    beforeEach(() => {
-      spyOn(reconciler, 'isSameAbstractElement').and.returnValue(true);
-    });
-    it('unknown element', () => {
-      expect(() => {
-        reconciler.update('string', { type: 'foo' } as any);
-      }).toThrow(new Error('Updating unknown Elementtype'));
-    });
-  });
-
   describe('isSameAbstractElement()', () => {
     describe('placeholder elements', () => {
       describe('placeholder', () => {

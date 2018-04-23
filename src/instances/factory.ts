@@ -5,6 +5,7 @@ import PlaceHolderInstance from './types/Placeholder/Instance';
 import DomInstance from './types/Dom/Instance';
 import FragmentInstance from './types/Fragment/Instance';
 import ComponentInstance from './types/Component/Instance';
+import ShallowInstance from './types/Shallow/Instance';
 import TextInstance from './types/Text/Instance';
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
 import elementTypeChecker from '../util/elementTypeChecker';
@@ -40,7 +41,11 @@ export default function (
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     if (parentInstance.createChildrenComponents === false && parentInstance.nodeType !== types.Root) {
-      return new PlaceHolderInstance(false, parentInstance, previousAbstractSiblingCount);
+      return new ShallowInstance(
+        abstractElement as PlusnewAbstractElement,
+        parentInstance,
+        previousAbstractSiblingCount,
+      );
     }
 
     return new ComponentInstance(
