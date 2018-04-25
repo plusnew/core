@@ -28,6 +28,7 @@ export interface deps {
 
 export interface options<props, deps> {
   [key: string]: any;
+  instance: ComponentInstance;
   componentWillUnmount?: (props: props, deps: deps) => void;
 }
 
