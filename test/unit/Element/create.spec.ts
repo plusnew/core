@@ -55,7 +55,7 @@ describe('checking if createElement works as expected', () => {
   });
 
   it('check if component gets safed', () => {
-    const Component = component(() => ({}), () => plusnew.createElement('div', null));
+    const Component = component('Component',() => ({}), () => plusnew.createElement('div', null));
 
     const props = { foo: 'bar' };
     const instance = plusnew.createElement(Component, props);

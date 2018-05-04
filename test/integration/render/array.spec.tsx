@@ -17,6 +17,7 @@ describe('rendering nested components', () => {
 
   it('does a initial list work, with pushing values', () => {
     const Component = component(
+      'Component',
       () => ({ local: local() }),
       (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
     );
@@ -36,6 +37,7 @@ describe('rendering nested components', () => {
   it('does a initial list work, appended li', () => {
     const list = ['first', 'second', 'third'];
     const Component = component(
+      'Component',
       () => ({ local: local() }),
       (props: {}, { local }) => (
         <ul>
@@ -67,6 +69,7 @@ describe('rendering nested components', () => {
     };
 
     const Component = component(
+      'Component',
       () => dependencies,
       (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
     );
@@ -97,6 +100,7 @@ describe('rendering nested components', () => {
     };
 
     const Component = component(
+      'Component',
       () => dependencies,
       (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
     );
@@ -141,9 +145,11 @@ describe('rendering nested components', () => {
       local: store(list, (previousStore, action: typeof list) => action),
     };
 
-    const PartialComponent = component(() => ({}), (props: { value: string }) => <span>{props.value}</span>);
+    const PartialComponent = component(
+      'Component',() => ({}), (props: { value: string }) => <span>{props.value}</span>);
 
     const MainComponent = component(
+      'Component',
       () => dependencies,
       (props: {}, { local }) => (
         <span>{local.state.map(item => <PartialComponent key={item.key} value={item.value} />)}</span>
@@ -189,11 +195,13 @@ describe('rendering nested components', () => {
     };
 
     const PartialComponent = component(
+      'Component',
       () => ({}),
       (props: { value: string }) => [<span key={0}>{props.value}0</span>, <div key={1}>{props.value}1</div>] as any,
     );
 
     const MainComponent = component(
+      'Component',
       () => dependencies,
       (props, { local }: typeof dependencies) => (
         <span>{local.state.map(item => <PartialComponent key={item.key} value={item.value} />)}</span>
@@ -252,11 +260,13 @@ describe('rendering nested components', () => {
     };
 
     const PartialComponent = component(
+      'Component',
       () => ({}),
       () => <span>some other element</span>,
     );
 
     const MainComponent = component(
+      'Component',
       () => dependencies,
       (props, { local }) =>
         <div>
@@ -295,11 +305,13 @@ describe('rendering nested components', () => {
     };
 
     const PartialComponent = component(
+      'Component',
       () => ({}),
       (props: {key: number}) => 'element' + props.key as any,
     );
 
     const MainComponent = component(
+      'Component',
       () => dependencies,
       (props, { local }) =>
         <div>
@@ -332,11 +344,13 @@ describe('rendering nested components', () => {
     };
 
     const PartialComponent = component(
+      'Component',
       () => ({}),
       (props: {key: number}) => props.key === 0 ? 'foo' : false as any,
     );
 
     const MainComponent = component(
+      'Component',
       () => dependencies,
       (props, { local }) =>
         <div>
@@ -364,6 +378,7 @@ describe('rendering nested components', () => {
     const local = store(list, (state, newValues: { key: number; value: string }[]) => newValues);
 
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => (
         <ul>
@@ -402,6 +417,7 @@ describe('rendering nested components', () => {
     const local = store(list, (state, newValues: { key: number; value: string }[]) => newValues);
 
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => (
         <ul>
@@ -437,6 +453,7 @@ describe('rendering nested components', () => {
     const local = store(list, (state, newValues: { key: number; value: string }[]) => newValues);
 
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => (
         <ul>

@@ -12,6 +12,7 @@ describe('dom handling', () => {
     const local = store('20px', (state, action: string) => action);
 
     const Component = component(
+      'Component',
       () => ({ local }),
       () => <div style={{ width: local.state }} />,
     );
@@ -30,6 +31,7 @@ describe('dom handling', () => {
     const local = store(true, (state, action: boolean) => action);
 
     const Component = component(
+      'Component',
       () => ({ local }),
       () => 
         local.state ?
@@ -56,6 +58,7 @@ describe('dom handling', () => {
     const local = store(true, (state, action: boolean) => action);
 
     const Component = component(
+      'Component',
       () => ({ local }),
       () => 
         local.state ?
@@ -83,6 +86,7 @@ describe('dom handling', () => {
 
   it('updating style invalidattributes', () => {
     const Component = component(
+      'Component',
       () => ({}),
       () => <div style={{ width: 'foo' }}/>,
     );

@@ -14,6 +14,7 @@ describe('rendering svg components', () => {
   
   it('check if div element has correct namespace', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) => <div />,
     );
@@ -26,6 +27,7 @@ describe('rendering svg components', () => {
   
   it('check if nested div element has correct namespace', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) => <span><div /></span>,
     );
@@ -40,6 +42,7 @@ describe('rendering svg components', () => {
   
   it('check if svg element has correct namespace', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) => <svg />,
     );
@@ -51,6 +54,7 @@ describe('rendering svg components', () => {
 
   it('check if nested svg element has correct namespace', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) => <span><svg /></span>,
     );
@@ -63,6 +67,7 @@ describe('rendering svg components', () => {
 
   it('check if nested element in svg element has correct namespace', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) => <svg><g /></svg>,
     );
@@ -75,6 +80,7 @@ describe('rendering svg components', () => {
 
   it('check if element with renderoption is set to the namespace', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) => <g />,
     );
