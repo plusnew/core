@@ -13,6 +13,8 @@ import Counter from './Counter';
 const INITIAL_COUNTER_VALUE = 0;
 
 export default component(
+  // ComponentName for debuggability enhancements
+  'ComponentName',
   // Function who returns all dependencies, when the component should rerender
   () => ({
     counter:  store(INITIAL_COUNTER_VALUE, (state, action: number) => state + action)
