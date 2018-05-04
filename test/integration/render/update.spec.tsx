@@ -22,6 +22,7 @@ describe('rendering the elements', () => {
 
   it('does a value change with store', () => {
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
     );
@@ -47,6 +48,7 @@ describe('rendering the elements', () => {
 
   it('with the same values, all objects should be the same', () => {
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
     );
@@ -71,6 +73,7 @@ describe('rendering the elements', () => {
 
   it('does a value change with store with JSX.Element to string', () => {
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -98,6 +101,7 @@ describe('rendering the elements', () => {
 
   it('does a value change with store with string to JSX.Element', () => {
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -123,6 +127,7 @@ describe('rendering the elements', () => {
 
   it('does a value change with store with string to JSX.Element[]', () => {
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -153,6 +158,7 @@ describe('rendering the elements', () => {
 
   it('does a value change with store with JSX.Element[] to string', () => {
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -179,6 +185,7 @@ describe('rendering the elements', () => {
 
   it('does a value change with store with JSX.Element to null', () => {
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) =>
         local.state === 'foo' ? (
@@ -202,6 +209,7 @@ describe('rendering the elements', () => {
   it('nested text-elements creation of not previously existing element', () => {
     const local = store(true, (previousState, action: boolean) => action);
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => (local.state === true ? <div /> : <div>foo</div>),
     );
@@ -222,6 +230,7 @@ describe('rendering the elements', () => {
   it('conditional rendering - inclduing correct ordering', () => {
     const local = store(false, (previousState, action: boolean) => action);
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => (
         <div>
@@ -256,6 +265,7 @@ describe('rendering the elements', () => {
   it('placeholder rendering - update', () => {
     const local = store(0, (previousState, action: null) => previousState + 1);
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => (
         <div>
@@ -277,6 +287,7 @@ describe('rendering the elements', () => {
   it('dom with lesser attributes after update', () => {
     const local = store(true, (previousState, action: boolean) => action);
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) =>
         local.state ?
@@ -298,6 +309,7 @@ describe('rendering the elements', () => {
     const clickHandler = () => {};
     const local = store(true, (previousState, action: boolean) => action);
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) =>
         local.state ?
@@ -318,6 +330,7 @@ describe('rendering the elements', () => {
   it('dont call setText when text changed', () => {
     const local = store(0, (previousState, action: number) => previousState + action);
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) =>
         <div>{local.state}</div>,
@@ -338,6 +351,7 @@ describe('rendering the elements', () => {
   it('dont call setText when text didnt change', () => {
     const local = store(0, (previousState, action: number) => previousState + action);
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) =>
         <div>static text</div>,

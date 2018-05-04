@@ -17,6 +17,7 @@ describe('firing input events', () => {
     }).and.callThrough();
 
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => <input onchange={change} value={local.state} />,
     );
@@ -49,6 +50,7 @@ describe('firing input events', () => {
     }).and.callThrough();
 
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => <input onchange={change} value={local.state}  />,
     );
@@ -80,6 +82,7 @@ describe('firing input events', () => {
     }).and.callThrough();
 
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => <input onchange={change} value={local.state} type="checkbox" />,
     );

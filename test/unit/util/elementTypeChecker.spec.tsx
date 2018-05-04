@@ -25,6 +25,7 @@ describe('elementTypeChecker', () => {
 
     it('is placeholder a fragment', () => {
       const Component = component(
+        'Component',
         () => ({}),
         () => null,
       );

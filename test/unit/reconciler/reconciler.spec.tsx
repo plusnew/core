@@ -29,7 +29,7 @@ describe('checking if reconciler works as expected', () => {
         });
 
         it('placeholder same as component', () => {
-          const Component = component(() => ({}), () => <div />);
+          const Component = component('Component',() => ({}), () => <div />);
           expect(reconciler.isSameAbstractElement(false, createInstance(<Component />))).toBe(false);
         });
       });
@@ -68,14 +68,14 @@ describe('checking if reconciler works as expected', () => {
         });
 
         it('same as component', () => {
-          const Component = component(() => ({}), () => <div />);
+          const Component = component('Component',() => ({}), () => <div />);
           expect(reconciler.isSameAbstractElement(false, createInstance(<Component />))).toBe(false);
         });
       });
 
-      describe('component', () => {
-        const Component = component(() => ({}), () => <div />);
-        const AnotherComponent = component(() => ({}), () => <div />);
+      describe('Component', () => {
+        const Component = component('Component',() => ({}), () => <div />);
+        const AnotherComponent = component('Component',() => ({}), () => <div />);
 
         it('are components the same', () => {
           expect(reconciler.isSameAbstractElement(<Component />, createInstance(<Component />))).toBe(true);
