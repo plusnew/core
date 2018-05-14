@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance from '../Instance';
+import Instance, { getSuccessor, successor } from '../Instance';
 import factory from '../../factory';
 import reconcile, { shouldUpdate } from './reconcile';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
@@ -20,9 +20,9 @@ export default class ComponentInstance extends Instance {
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
-    previousAbstractSiblingCount: () => number,
+    getSuccessor: getSuccessor,
   ) {
-    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+    super(abstractElement, parentInstance, getSuccessor);
 
     this.type = abstractElement.type;
     this.props = abstractElement.props;
@@ -65,9 +65,13 @@ export default class ComponentInstance extends Instance {
         .registerDependencies(constructor(this.props, this.options));
 
     const abstractChildren = this.render(this.props, this.dependencies, this.options);
-    this.rendered = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
+    this.rendered = factory(abstractChildren, this, () => this.getSuccessor());
 
     return this;
+  }
+
+  public getFirstIntrinsicElement() {
+    return this.rendered.getFirstIntrinsicElement();
   }
 
   /**
@@ -89,14 +93,10 @@ export default class ComponentInstance extends Instance {
   /**
    * moves the children to another dom position
    */
-  public move(position: number) {
-    this.rendered.move(position);
+  public move(successor: successor) {
+    this.rendered.move(successor);
 
     return this;
-  }
-
-  public getLength() {
-    return this.rendered.getLength();
   }
 
   /**

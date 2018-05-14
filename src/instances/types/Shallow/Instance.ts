@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance from '../Instance';
+import Instance, { getSuccessor } from '../Instance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 
 export default class ShallowInstance extends Instance {
@@ -8,19 +8,16 @@ export default class ShallowInstance extends Instance {
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
-    previousAbstractSiblingCount: () => number,
+    getSucceessor: getSuccessor,
   ) {
-    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+    super(abstractElement, parentInstance, getSucceessor);
 
     this.type = abstractElement.type;
     this.props = abstractElement.props;
   }
 
- /**
-   * the shallowcomponent is not a dom object, that's why it has no length
-   */
-  public getLength() {
-    return 0;
+  public getFirstIntrinsicElement() {
+    return null;
   }
 
   /**

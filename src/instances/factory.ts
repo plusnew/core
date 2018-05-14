@@ -1,5 +1,5 @@
 import { ApplicationElement } from '../interfaces/component';
-import Instance from './types/Instance';
+import Instance, { getSuccessor } from './types/Instance';
 import ArrayInstance from './types/Array/Instance';
 import PlaceHolderInstance from './types/Placeholder/Instance';
 import DomInstance from './types/Dom/Instance';
@@ -17,41 +17,41 @@ import types from './types/types';
 export default function (
   abstractElement: ApplicationElement,
   parentInstance: Instance,
-  previousAbstractSiblingCount: () => number,
+  getSuccessor: getSuccessor,
 ): Instance {
   // @TODO add something for invalid functions
   if (elementTypeChecker.isPlaceholderElement(abstractElement) === true) {
-    return new PlaceHolderInstance(abstractElement as false, parentInstance, previousAbstractSiblingCount);
+    return new PlaceHolderInstance(abstractElement as false, parentInstance, getSuccessor);
   }
   if (elementTypeChecker.isTextElement(abstractElement) === true) {
-    return new TextInstance(abstractElement as string, parentInstance, previousAbstractSiblingCount);
+    return new TextInstance(abstractElement as string, parentInstance, getSuccessor);
   }
   if (elementTypeChecker.isArrayElement(abstractElement) === true) {
     return new ArrayInstance(
       abstractElement as (PlusnewAbstractElement)[],
       parentInstance,
-      previousAbstractSiblingCount,
+      getSuccessor,
     );
   }
   if (elementTypeChecker.isFragmentElement(abstractElement) === true) {
-    return new FragmentInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
+    return new FragmentInstance(abstractElement as PlusnewAbstractElement, parentInstance, getSuccessor);
   }
   if (elementTypeChecker.isDomElement(abstractElement) === true) {
-    return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, previousAbstractSiblingCount);
+    return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, getSuccessor);
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     if (parentInstance.createChildrenComponents === false && parentInstance.nodeType !== types.Root) {
       return new ShallowInstance(
         abstractElement as PlusnewAbstractElement,
         parentInstance,
-        previousAbstractSiblingCount,
+        getSuccessor,
       );
     }
 
     return new ComponentInstance(
       abstractElement as PlusnewAbstractElement,
       parentInstance,
-      previousAbstractSiblingCount,
+      getSuccessor,
     );
   }
 

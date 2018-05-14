@@ -1,6 +1,6 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import types from '../types';
-import Instance from '../Instance';
+import Instance, { getSuccessor, successor } from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import { getSpecialNamespace } from '../../../util/namespace';
 import { hasOnchangeEvent, hasInputEvent } from '../../../util/dom';
@@ -22,9 +22,9 @@ export default class DomInstance extends ChildrenInstance {
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
-    previousAbstractSiblingCount: () => number,
+    successor: getSuccessor,
   ) {
-    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+    super(abstractElement, parentInstance, successor);
     this.type = abstractElement.type;
     this.props = abstractElement.props;
     this.setNamespace();
@@ -38,19 +38,21 @@ export default class DomInstance extends ChildrenInstance {
     this.setProps()
         .addChildren(abstractElement.props.children)
         .setAutofocusIfNeeded()
-        .appendToParent(this.ref, previousAbstractSiblingCount())
+        .appendToParent(this.ref, successor())
         .setOnChangeEvent();
+  }
+
+
+  public getFirstIntrinsicElement() {
+    return this.ref;
+  }
+
+  public getChildrenSuccessor() {
+    return () => null;
   }
 
   private setNamespace() {
     this.namespace = getSpecialNamespace(this.type as string) || this.namespace;
-  }
-
-  /**
-   * Dom is its own element, children siblingcount start by 0
-   */
-  public getPreviousSiblingsForChildren() {
-    return 0;
   }
 
   private setAutofocusIfNeeded() {
@@ -193,17 +195,10 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   /**
-   * domnode is always a length of one
-   */
-  public getLength() {
-    return 1;
-  }
-
-  /**
    * by the children should add themselfs to our element
    */
-  public appendChild(element: Node, index: number) {
-    this.ref.insertBefore(element, this.ref.childNodes[index]);
+  public appendChild(element: Node, successor: Node | null) {
+    this.ref.insertBefore(element, successor);
 
     return this;
   }
@@ -211,9 +206,9 @@ export default class DomInstance extends ChildrenInstance {
   /**
    * moves the domnode from the parent
    */
-  public move(position: number) {
+  public move(successor: successor) {
     const parentNode = this.ref.parentNode as Node;
-    parentNode.insertBefore(this.ref, parentNode.childNodes[position]);
+    parentNode.insertBefore(this.ref, successor);
 
     return this;
   }

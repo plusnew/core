@@ -5,13 +5,10 @@ export default class PlaceHolderInstance extends Instance {
   public nodeType = types.Placeholder;
   public type = types.Fragment;
 
-  /**
-   * the placeholder is not a dom object, that's why it has no length
-   */
-  public getLength() {
-    return 0;
-  }
 
+  public getFirstIntrinsicElement() {
+    return null;
+  }
   /**
    * placeholder has no object, which needs moving
    */

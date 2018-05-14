@@ -4613,9 +4613,9 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-redchain@0.5.73:
-  version "0.5.73"
-  resolved "https://registry.yarnpkg.com/redchain/-/redchain-0.5.73.tgz#888a4a156ec42242db360f4464ad4d7fc56ea8cf"
+redchain@0.5.101:
+  version "0.5.101"
+  resolved "https://registry.yarnpkg.com/redchain/-/redchain-0.5.101.tgz#7e34361e7d85435a62b22ed0e70a35cc7f21338d"
 
 redent@^1.0.0:
   version "1.0.0"

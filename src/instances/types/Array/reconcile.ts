@@ -41,20 +41,20 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
 
   for (let i = 0; i < newAbstractElements.length; i += 1) {
     const newAbstractElement = newAbstractElements[i];
-    const previousLength = instance.getPreviousLength.bind(instance, i);
+    const getSuccessor = instance.getSuccessorOf.bind(instance, i);
 
     if (
       i < instance.rendered.length &&
       reconciler.isSameAbstractElement(newAbstractElement, instance.rendered[i])
     ) {
-      instance.rendered[i].previousAbstractSiblingCount = previousLength;
+      instance.rendered[i].getSuccessor = getSuccessor;
       reconciler.update(newAbstractElement, instance.rendered[i]);
     } else {
       const oldIndex = indexOf(instance, newAbstractElement, i);
       if (oldIndex === NOT_FOUND) {
-        instance.rendered.splice(i, 0, factory(newAbstractElement, instance, previousLength));
+        instance.rendered.splice(i, 0, factory(newAbstractElement, instance, getSuccessor));
       } else {
-        instance.rendered[oldIndex].previousAbstractSiblingCount = previousLength;
+        instance.rendered[oldIndex].getSuccessor = getSuccessor;
         // instance should move to the new position
         instance.rendered.splice(i, 0, instance.rendered[oldIndex]);
 
@@ -62,7 +62,7 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
         // it needs the +1 offset, because a line before it just got inserted and the oldIndex is one after it was before
         instance.rendered.splice(oldIndex + 1, 1);
 
-        instance.rendered[i].move(previousLength());
+        instance.rendered[i].move(getSuccessor());
         reconciler.update(newAbstractElement, instance.rendered[i]);
       }
     }
