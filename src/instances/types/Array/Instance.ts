@@ -25,6 +25,6 @@ export default class ArrayInstance extends ChildrenInstance {
   }
 
   public getChildrenSuccessor() {
-    return () => this.getSuccessor();
+    return this.getSuccessor();
   }
 }

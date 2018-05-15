@@ -48,7 +48,7 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   public getChildrenSuccessor() {
-    return () => null;
+    return null;
   }
 
   private setNamespace() {

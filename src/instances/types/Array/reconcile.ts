@@ -16,7 +16,6 @@ function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractEle
 
 export default function (newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance) {
 
-
   // Removal of old-elements just works if key-property is existent
   if (instance.props.length && instance.props[0].props && instance.props[0].props.key !== undefined) {
     // Checks old abstract elements, if they should get removed
@@ -41,28 +40,38 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
 
   for (let i = 0; i < newAbstractElements.length; i += 1) {
     const newAbstractElement = newAbstractElements[i];
-    const getSuccessor = instance.getSuccessorOf.bind(instance, i);
+
+    const getSuccessor = instance.getFirstIntrinsicElementOf.bind(instance, i + 1);
 
     if (
       i < instance.rendered.length &&
       reconciler.isSameAbstractElement(newAbstractElement, instance.rendered[i])
     ) {
       instance.rendered[i].getSuccessor = getSuccessor;
+
       reconciler.update(newAbstractElement, instance.rendered[i]);
     } else {
       const oldIndex = indexOf(instance, newAbstractElement, i);
       if (oldIndex === NOT_FOUND) {
-        instance.rendered.splice(i, 0, factory(newAbstractElement, instance, getSuccessor));
+        // temporary is needed, because of the time when factory is executed, the instance is not yet inside the renderer included
+        const temporaryGetSuccessor = instance.getFirstIntrinsicElementOf.bind(instance, i);
+        const newInstance = factory(newAbstractElement, instance, temporaryGetSuccessor);
+        newInstance.getSuccessor = getSuccessor;
+        instance.rendered.splice(i, 0, newInstance);
       } else {
-        instance.rendered[oldIndex].getSuccessor = getSuccessor;
-        // instance should move to the new position
-        instance.rendered.splice(i, 0, instance.rendered[oldIndex]);
+        const moveInstance = instance.rendered[oldIndex];
+        moveInstance.getSuccessor = getSuccessor;
 
-        // remove old instance
-        // it needs the +1 offset, because a line before it just got inserted and the oldIndex is one after it was before
-        instance.rendered.splice(oldIndex + 1, 1);
+        // first the instance needs to removed, to be moved
+        // if it doesn't get removed, the getSuccessor might run endlessly, if it doesn't have intrinsic elements inside
+        instance.rendered.splice(oldIndex, 1);
 
         instance.rendered[i].move(getSuccessor());
+
+        // instance should move to the new position
+        // remove old instance
+        instance.rendered.splice(i, 0, moveInstance);
+
         reconciler.update(newAbstractElement, instance.rendered[i]);
       }
     }

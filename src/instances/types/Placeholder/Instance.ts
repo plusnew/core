@@ -9,6 +9,7 @@ export default class PlaceHolderInstance extends Instance {
   public getFirstIntrinsicElement() {
     return null;
   }
+
   /**
    * placeholder has no object, which needs moving
    */

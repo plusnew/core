@@ -15,36 +15,36 @@ export default abstract class ChildrenInstance extends Instance {
     this.rendered = [];
   }
 
-  abstract getChildrenSuccessor(): getSuccessor;
+  abstract getChildrenSuccessor(): successor;
 
   public addChildren(children: ApplicationElement[]) {
     for (let i = 0; i < children.length; i += 1) {
-      this.rendered.push(factory(children[i], this, this.getChildrenSuccessor()));
+      this.rendered.push(factory(children[i], this, this.getFirstIntrinsicElementOf.bind(this, i + 1)));
     }
 
     return this;
   }
 
-  public getSuccessorOf(index: number) {
-    for (let successor = index + 1; successor < this.rendered.length; successor += 1) {
-      const successorElement =  this.rendered[successor].getFirstIntrinsicElement();
+  public getFirstIntrinsicElement() {
+    return this.getFirstIntrinsicElementOf(0);
+  }
+
+  public getFirstIntrinsicElementOf(index: number) {
+    for (let i = index; i < this.rendered.length; i += 1) {
+      const successorElement =  this.rendered[i].getFirstIntrinsicElement();
       if (successorElement !== null) {
         return successorElement;
       }
     }
-    return this.getSuccessor();
-  }
-
-  public getFirstIntrinsicElement() {
-    return this.getSuccessorOf(0);
+    return this.getChildrenSuccessor();
   }
 
   /**
    * moves the children to another dom position
    */
   public move(successor: successor) {
-    for (let i = this.rendered.length; i > 0; i -= 1) {
-      this.rendered[i - 1].move(successor);
+    for (let i = 0; i < this.rendered.length; i += 1) {
+      this.rendered[i].move(successor);
     }
 
     return this;

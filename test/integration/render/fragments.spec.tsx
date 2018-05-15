@@ -34,7 +34,7 @@ describe('fragments', () => {
     const list = store([{ key: 1, value: 'one' }], (state, action: entity[]) => action);
 
     const PartialComponent = component(
-      'Component',
+      'PartialComponent',
       () => ({}),
       (props: {value: string}) =>
         <>
@@ -43,7 +43,7 @@ describe('fragments', () => {
         </>,
     );
     const MainComponent = component(
-      'Component',
+      'MainComponent',
       () => ({ list }),
       () =>
         <div>
