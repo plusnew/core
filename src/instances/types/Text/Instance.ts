@@ -13,6 +13,7 @@ export default class TextInstance extends Instance {
 
     this.props = abstractElement;
     this.ref = document.createTextNode(abstractElement);
+
     this.appendToParent(this.ref, getSuccessor());
   }
 

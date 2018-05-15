@@ -15,7 +15,7 @@ describe('rendering nested components', () => {
     moveSpy = spyOn(HTMLElement.prototype, 'insertBefore').and.callThrough();
   });
 
-  it('does a initial list work, with pushing values', () => {
+  it('does a initial list work, with pushing values with placeholder', () => {
     const Component = component(
       'Component',
       () => ({ local: local() }),
@@ -34,7 +34,7 @@ describe('rendering nested components', () => {
     });
   });
 
-  it('does a initial list work, appended li', () => {
+  it('does a initial list work, appended li with placeholder', () => {
     const list = ['first', 'second', 'third'];
     const Component = component(
       'Component',
@@ -487,7 +487,7 @@ describe('rendering nested components', () => {
     const NestedComponent = component(
       'NestedComponent',
       () => ({ local }),
-      (props: {}, { local }) => <></>,
+      (props: {}, { local }) => false as any,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -555,12 +555,10 @@ describe('rendering nested components', () => {
 
     expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
-    window.foo = true;
     local.dispatch([
       <span key={0} />,
       <NestedComponent key={1} />,
     ]);
-    window.foo = false;
 
     expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
   });
@@ -601,5 +599,252 @@ describe('rendering nested components', () => {
     ]);
 
     expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+  });
+
+
+  it('ordering with empty elements in between with placeholder', () => {
+    const NestedComponent = component(
+      'NestedComponent',
+      () => ({ local }),
+      (props: {}, { local }) => false as any,
+    );
+
+    const list: plusnew.JSX.Element[] = [
+      <span key={0} />,
+      <NestedComponent key={1} />,
+      <div key={2} />,
+    ];
+
+    const local = store(list, (state, action: typeof list) => action);
+
+    const MainComponent = component(
+      'MainComponent',
+      () => ({ local }),
+      (props: {}, { local }) => (
+        <ul>
+          {local.state.map(item => item)}
+        </ul>
+      ),
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    const ul = container.childNodes[0];
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((ul.childNodes[1] as HTMLElement).tagName).toBe('DIV');
+
+    local.dispatch([
+      <div key={2} />,
+      <NestedComponent key={1} />,
+      <span key={0} />,
+    ]);
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((ul.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+  });
+
+  it('ordering with empty elements on end with placeholder', () => {
+    const NestedComponent = component(
+      'NestedComponent',
+      () => ({ local }),
+      (props: {}, { local }) => false as any,
+    );
+
+    const list: plusnew.JSX.Element[] = [
+      <NestedComponent key={1} />,
+      <span key={0} />,
+    ];
+
+    const local = store(list, (state, action: typeof list) => action);
+
+    const MainComponent = component(
+      'MainComponent',
+      () => ({ local }),
+      (props: {}, { local }) => (
+        <ul>
+          {local.state.map(item => item)}
+        </ul>
+      ),
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    const ul = container.childNodes[0];
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    local.dispatch([
+      <span key={0} />,
+      <NestedComponent key={1} />,
+    ]);
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+  });
+
+  it('ordering with empty elements on beginning with placeholder', () => {
+    const NestedComponent = component(
+      'NestedComponent',
+      () => ({ local }),
+      (props: {}, { local }) => false as any,
+    );
+
+    const list: plusnew.JSX.Element[] = [
+      <span key={0} />,
+      <NestedComponent key={1} />,
+    ];
+
+    const local = store(list, (state, action: typeof list) => action);
+
+    const MainComponent = component(
+      'MainComponent',
+      () => ({ local }),
+      (props: {}, { local }) => (
+        <ul>
+          {local.state.map(item => item)}
+        </ul>
+      ),
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    const ul = container.childNodes[0];
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    local.dispatch([
+      <NestedComponent key={1} />,
+      <span key={0} />,
+    ]);
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+  });
+
+  it('ordering with text in between', () => {
+    const NestedComponent = component(
+      'NestedComponent',
+      () => ({ local }),
+      (props: {}, { local }) => 'foo' as any,
+    );
+
+    const list: plusnew.JSX.Element[] = [
+      <span key={0} />,
+      <NestedComponent key={1} />,
+      <div key={2} />,
+    ];
+
+    const local = store(list, (state, action: typeof list) => action);
+
+    const MainComponent = component(
+      'MainComponent',
+      () => ({ local }),
+      (props: {}, { local }) => (
+        <ul>
+          {local.state.map(item => item)}
+        </ul>
+      ),
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    const ul = container.childNodes[0];
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((ul.childNodes[1] as Text).textContent).toBe('foo');
+    expect((ul.childNodes[2] as HTMLElement).tagName).toBe('DIV');
+
+    window.foo = true;
+
+    local.dispatch([
+      <div key={2} />,
+      <NestedComponent key={1} />,
+      <span key={0} />,
+    ]);
+
+    window.foo = false;
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((ul.childNodes[1] as Text).textContent).toBe('foo');
+    expect((ul.childNodes[2] as HTMLElement).tagName).toBe('SPAN');
+  });
+
+  it('ordering with text on end', () => {
+    const NestedComponent = component(
+      'NestedComponent',
+      () => ({ local }),
+      (props: {}, { local }) => 'foo' as any,
+    );
+
+    const list: plusnew.JSX.Element[] = [
+      <NestedComponent key={1} />,
+      <span key={0} />,
+    ];
+
+    const local = store(list, (state, action: typeof list) => action);
+
+    const MainComponent = component(
+      'MainComponent',
+      () => ({ local }),
+      (props: {}, { local }) => (
+        <ul>
+          {local.state.map(item => item)}
+        </ul>
+      ),
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    const ul = container.childNodes[0];
+
+    expect((ul.childNodes[0] as Text).textContent).toBe('foo');
+    expect((ul.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
+
+    local.dispatch([
+      <span key={0} />,
+      <NestedComponent key={1} />,
+    ]);
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((ul.childNodes[1] as Text).textContent).toBe('foo');
+  });
+
+  it('ordering with text on beginning', () => {
+    const NestedComponent = component(
+      'NestedComponent',
+      () => ({ local }),
+      (props: {}, { local }) => 'foo' as any,
+    );
+
+    const list: plusnew.JSX.Element[] = [
+      <span key={0} />,
+      <NestedComponent key={1} />,
+    ];
+
+    const local = store(list, (state, action: typeof list) => action);
+
+    const MainComponent = component(
+      'MainComponent',
+      () => ({ local }),
+      (props: {}, { local }) => (
+        <ul>
+          {local.state.map(item => item)}
+        </ul>
+      ),
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    const ul = container.childNodes[0];
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((ul.childNodes[1] as Text).textContent).toBe('foo');
+
+    local.dispatch([
+      <NestedComponent key={1} />,
+      <span key={0} />,
+    ]);
+
+    expect((ul.childNodes[0] as Text).textContent).toBe('foo');
+    expect((ul.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
   });
 });

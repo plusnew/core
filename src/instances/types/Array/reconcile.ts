@@ -38,6 +38,7 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
     }
   }
 
+  // @TODO newabstractelements needs to go from last to 0
   for (let i = 0; i < newAbstractElements.length; i += 1) {
     const newAbstractElement = newAbstractElements[i];
 
@@ -62,15 +63,13 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
         const moveInstance = instance.rendered[oldIndex];
         moveInstance.getSuccessor = getSuccessor;
 
-        // first the instance needs to removed, to be moved
-        // if it doesn't get removed, the getSuccessor might run endlessly, if it doesn't have intrinsic elements inside
-        instance.rendered.splice(oldIndex, 1);
+        // instance should move to the new position
+        instance.rendered.splice(i, 0, instance.rendered[oldIndex]);
+        // remove old instance
+        // it needs the +1 offset, because a line before it just got inserted and the oldIndex is one after it was before
+        instance.rendered.splice(oldIndex + 1, 1);
 
         instance.rendered[i].move(getSuccessor());
-
-        // instance should move to the new position
-        // remove old instance
-        instance.rendered.splice(i, 0, moveInstance);
 
         reconciler.update(newAbstractElement, instance.rendered[i]);
       }
