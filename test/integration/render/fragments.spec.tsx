@@ -11,6 +11,7 @@ describe('fragments', () => {
 
   it('rendering basic fragment', () => {
     const MainComponent = component(
+      'Component',
       () => ({}),
       () =>
         <>
@@ -33,6 +34,7 @@ describe('fragments', () => {
     const list = store([{ key: 1, value: 'one' }], (state, action: entity[]) => action);
 
     const PartialComponent = component(
+      'Component',
       () => ({}),
       (props: {value: string}) =>
         <>
@@ -41,6 +43,7 @@ describe('fragments', () => {
         </>,
     );
     const MainComponent = component(
+      'Component',
       () => ({ list }),
       () =>
         <div>
@@ -85,6 +88,7 @@ describe('fragments', () => {
   it('replacing children of fragments', () => {
     const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
+      'Component',
       () => ({  local }),
       () =>
         <>
@@ -108,6 +112,7 @@ describe('fragments', () => {
   it('replacing children of fragments', () => {
     const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
+      'Component',
       () => ({  local }),
       () =>
         local.state ?
@@ -146,6 +151,7 @@ describe('fragments', () => {
     const local = store(0, (state, action: number) => action);
 
     const MainComponent = component(
+      'Component',
       () => ({  local }),
       () => {
         if (local.state === 0) {

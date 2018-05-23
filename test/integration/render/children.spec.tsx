@@ -12,9 +12,9 @@ describe('rendering nested components', () => {
   describe('children in nested component', () => {
     it('static children', () => {
       const local = store('foo', (state, action: string) => action);
-      const NestedComponent = component(() => ({}), (props: { children: any }) => <span>{props.children}</span>);
+      const NestedComponent = component('Component',() => ({}), (props: { children: any }) => <span>{props.children}</span>);
 
-      const MainComponent = component(() => ({ local }), () => <NestedComponent>{local.state}</NestedComponent>);
+      const MainComponent = component('Component',() => ({ local }), () => <NestedComponent>{local.state}</NestedComponent>);
 
       plusnew.render(<MainComponent />, container);
 

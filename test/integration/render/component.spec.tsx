@@ -15,13 +15,14 @@ describe('rendering nested components', () => {
 
   it('checks if nesting the components works', () => {
     const NestedComponent = component(
+      'Component',
       () => ({}),
       (props: { value: string }) => <div className={props.value}>{props.value}</div>,
     );
 
     const local = store('foo', (state: string, newValue: string) => newValue);
 
-    const MainComponent = component(() => ({ local }), (props: {}) => <NestedComponent value={local.state} />);
+    const MainComponent = component('Component',() => ({ local }), (props: {}) => <NestedComponent value={local.state} />);
 
     plusnew.render(<MainComponent />, container);
 
@@ -45,11 +46,12 @@ describe('rendering nested components', () => {
   it('checks if dependencies are transmitted to constructor', () => {
     type props = { value: string };
     const NestedComponent = component(
+      'Component',
       (props: props) => ({ echo: store(props.value, state => state) }),
       (props: props, { echo }) => <div className={echo.state}>{echo.state}</div>,
     );
 
-    const MainComponent = component(() => ({}), (props: {}) => <NestedComponent value="foo" />);
+    const MainComponent = component('Component',() => ({}), (props: {}) => <NestedComponent value="foo" />);
 
     plusnew.render(<MainComponent />, container);
 
@@ -69,6 +71,7 @@ describe('rendering nested components', () => {
     const nestedStore = store('bar-0', (store, action: string) => action);
 
     const NestedComponent = component(
+      'Component',
       () => ({ nestedStore }),
       (props: {value: string}, { nestedStore }) =>
         <>
@@ -77,6 +80,7 @@ describe('rendering nested components', () => {
         </>,
     );
     const MainComponent = component(
+      'Component',
       () => ({ mainStore }),
       (props: {}, { mainStore }) =>
         <NestedComponent value={mainStore.state} />,
@@ -108,12 +112,14 @@ describe('rendering nested components', () => {
     const counterStore = store(0, (store, action: number) => action);
 
     const NestedComponent = component(
+      'Component',
       () => ({ counterStore }),
       (props: {}, { counterStore }) =>
          <span>{counterStore.state}</span>,
     );
 
     const MainComponent = component(
+      'Component',
       () => ({ mainStore, counterStore }),
       (props: {}, { mainStore, counterStore }) =>
         <>
@@ -157,12 +163,14 @@ describe('rendering nested components', () => {
     const counterStore = store(0, (store, action: number) => action);
 
     const NestedComponent = component(
+      'Component',
       () => ({ counterStore }),
       (props: {}, { counterStore }) =>
          <span>{counterStore.state}</span>,
     );
 
     const MainComponent = component(
+      'Component',
       () => ({ mainStore, counterStore }),
       (props: {}, { mainStore, counterStore }) =>
         <>
@@ -208,12 +216,14 @@ describe('rendering nested components', () => {
     const counterStore = store(0, (store, action: number) => action);
 
     const NestedComponent = component(
+      'Component',
       () => ({ counterStore }),
       (props: {}, { counterStore }) =>
          <span>{counterStore.state}</span>,
     );
 
     const MainComponent = component(
+      'Component',
       () => ({ mainStore, counterStore }),
       (props: {}, { mainStore, counterStore }) =>
         <>
@@ -259,12 +269,14 @@ describe('rendering nested components', () => {
     const counterStore = store(0, (store, action: number) => action);
 
     const NestedComponent = component(
+      'Component',
       () => ({ counterStore }),
       (props: {}, { counterStore }) =>
          <span>{counterStore.state}</span>,
     );
 
     const MainComponent = component(
+      'Component',
       () => ({ mainStore, counterStore }),
       (props: {}, { mainStore, counterStore }) =>
         <>
@@ -307,6 +319,7 @@ describe('rendering nested components', () => {
 
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
+      'Component',
       () => ({}),
       (props: {foo: number}) => <div />,
     );
@@ -314,6 +327,7 @@ describe('rendering nested components', () => {
     const local = store(0, (_state, action: number) => action);
 
     const MainComponent = component(
+      'Component',
       () => ({ local }),
       () =>
         <>
@@ -346,6 +360,7 @@ describe('rendering nested components', () => {
 
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
+      'Component',
       () => ({}),
       (props: {foo: number}) => <div />,
     );
@@ -353,6 +368,7 @@ describe('rendering nested components', () => {
     const local = store(0, (_state, action: number) => action);
 
     const MainComponent = component(
+      'Component',
       () => ({ local }),
       () =>
         <>
@@ -388,6 +404,7 @@ describe('rendering nested components', () => {
 
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
+      'Component',
       () => ({}),
       (props: {foo: number}) => <div />,
     );
@@ -395,6 +412,7 @@ describe('rendering nested components', () => {
     const local = store(0, (_state, action: number) => action);
 
     const MainComponent = component(
+      'Component',
       () => ({ local }),
       () => {
         return (
@@ -441,11 +459,13 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           <NestedComponent />,
@@ -470,11 +490,13 @@ describe('rendering nested components', () => {
       const foo = {};
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           <NestedComponent foo={foo}/>,
@@ -497,6 +519,7 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
@@ -505,6 +528,7 @@ describe('rendering nested components', () => {
       const bar = {};
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -531,6 +555,7 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
@@ -539,6 +564,7 @@ describe('rendering nested components', () => {
       const bar = {};
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -565,6 +591,7 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
@@ -572,6 +599,7 @@ describe('rendering nested components', () => {
       const foo = {};
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -598,6 +626,7 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
@@ -606,6 +635,7 @@ describe('rendering nested components', () => {
       const bar = {};
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -632,6 +662,7 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
@@ -639,6 +670,7 @@ describe('rendering nested components', () => {
       const foo = {};
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -665,6 +697,7 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
@@ -672,6 +705,7 @@ describe('rendering nested components', () => {
       const foo = {};
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -698,6 +732,7 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
@@ -705,6 +740,7 @@ describe('rendering nested components', () => {
       const foo = {};
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -730,12 +766,14 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
 
       // There was a bug that the first child could be different, but the info isSame got overwritten by the last child-element
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -763,11 +801,13 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -793,11 +833,13 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -823,11 +865,13 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -853,11 +897,13 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -884,11 +930,13 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -914,11 +962,13 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -944,6 +994,7 @@ describe('rendering nested components', () => {
       const local = store(0, (state, action: number) => state + action);
 
       const NestedComponent = component(
+        'Component',
         () => ({}),
         renderSpy,
       );
@@ -951,6 +1002,7 @@ describe('rendering nested components', () => {
       const foo = [<div />];
 
       const MainComponent = component(
+        'Component',
         () => ({ local }),
         () =>
           local.state === 0 ?
@@ -982,6 +1034,7 @@ describe('rendering nested components', () => {
     };
 
     const NestedComponent = component(
+      'Component',
       (props: {}, config: componentOptions<{}, {}>) => {
         config.componentWillUnmount = componentWillUnmountSpy;
         return dependencies;
@@ -991,6 +1044,7 @@ describe('rendering nested components', () => {
 
 
     const MainComponent = component(
+      'Component',
       () => ({ local }),
       () =>
         local.state === true ?
@@ -1023,6 +1077,7 @@ describe('rendering nested components', () => {
 
     type props = { foo: string };
     const NestedComponent = component(
+      'Component',
       (props: props, options: componentOptions<props, {}>) => {
         options.componentWillUnmount = componentWillUnmountSpy;
         return dependencies;
@@ -1031,6 +1086,7 @@ describe('rendering nested components', () => {
     );
 
     const MainComponent = component(
+      'Component',
       () => ({ local }),
       () =>
         local.state === true ?
@@ -1056,6 +1112,7 @@ describe('rendering nested components', () => {
     const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
 
     const MainComponent = component(
+      'Component',
       (props: {}, options: componentOptions<any, any>) => {
         options.foo = 'bar';
         return {};
@@ -1069,5 +1126,21 @@ describe('rendering nested components', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
 
     expect(renderSpy).toHaveBeenCalledWith({ children: [] }, {}, { instance, foo: 'bar' });
+  });
+
+  it('config object is shared by constructor and render function', () => {
+
+    const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
+
+    const MainComponent = component(
+      'Component',
+      (props: {}, options: componentOptions<any, any>) => {
+        options.foo = 'bar';
+        return {};
+      },
+      renderSpy,
+    );
+
+    expect(MainComponent.displayName).toBe('Component');
   });
 });

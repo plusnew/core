@@ -10,6 +10,7 @@ describe('dom handling', () => {
 
   it('correct handling of acceptCharset', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) =>
         <form acceptCharset="UTF-8" />,
@@ -23,6 +24,7 @@ describe('dom handling', () => {
 
   it('correct handling of class', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) =>
         <div className="foo" />,
@@ -36,6 +38,7 @@ describe('dom handling', () => {
 
   it('correct handling of htmlFor', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) =>
         <label htmlFor="foo" />,
@@ -49,6 +52,7 @@ describe('dom handling', () => {
 
   it('correct handling of httpEquiv', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) =>
         <meta httpEquiv="refresh" />,
@@ -64,6 +68,7 @@ describe('dom handling', () => {
     const clickHandler = () => {};
 
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) =>
         <span onclick={clickHandler} />,
@@ -77,6 +82,7 @@ describe('dom handling', () => {
 
   it('correct handling of viewBox', () => {
     const Component = component(
+      'Component',
       () => ({}),
       (props: {}) =>
         <svg viewBox="0 0 100 100" />,
@@ -91,6 +97,7 @@ describe('dom handling', () => {
   it('replacing children of dom', () => {
     const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
+      'Component',
       () => ({  local }),
       () =>
         local.state ?
@@ -131,6 +138,7 @@ describe('dom handling', () => {
     const local = store(true, (state, action: boolean) => action);
 
     const Component = component(
+      'Component',
       () => ({ local }),
       () => <input disabled={local.state} />,
     );
@@ -153,6 +161,7 @@ describe('dom handling', () => {
     const local = store(true, (state, action: boolean) => action);
 
     const Component = component(
+      'Component',
       () => ({ local }),
       () => <div key="foo" />,
     );
@@ -168,6 +177,7 @@ describe('dom handling', () => {
     const local = store('foo', (state, action: string) => action);
 
     const Component = component(
+      'Component',
       () => ({ local }),
       () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
     );
@@ -200,6 +210,7 @@ describe('dom handling', () => {
     const local = store('foo', (state, action: string) => action + 'suffix');
 
     const Component = component(
+      'Component',
       () => ({ local }),
       () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
     );
@@ -221,6 +232,7 @@ describe('dom handling', () => {
     const local = store('foo', (state, action: string) => 'blarg');
 
     const Component = component(
+      'Component',
       () => ({ local }),
       () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
     );
@@ -247,6 +259,7 @@ describe('dom handling', () => {
     const local = store(0, (state, action: number) => action);
 
     const MainComponent = component(
+      'Component',
       () => ({  local }),
       () => {
         if (local.state === 0) {
@@ -309,6 +322,7 @@ describe('dom handling', () => {
 
   it('adding input without focus ', () => {
     const MainComponent = component(
+      'Component',
       () => ({}),
       () =>
         <input autofocus={false} />,
@@ -321,6 +335,7 @@ describe('dom handling', () => {
 
   it('adding input with focus ', () => {
     const MainComponent = component(
+      'Component',
       () => ({}),
       () =>
         <input value="djfngjnfdg" autofocus={true} />,
@@ -333,6 +348,7 @@ describe('dom handling', () => {
 
   it('adding nested input with focus ', () => {
     const MainComponent = component(
+      'Component',
       () => ({}),
       () =>
         <div><input value="djfngjnfdg" autofocus={true} /></div>,

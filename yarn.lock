@@ -4328,9 +4328,9 @@ plusnew-karma-config@0.5.69:
     karma-remap-istanbul "0.6.0"
     karma-sourcemap-loader "0.3.7"
 
-plusnew-webpack-config@0.5.93:
-  version "0.5.93"
-  resolved "https://registry.yarnpkg.com/plusnew-webpack-config/-/plusnew-webpack-config-0.5.93.tgz#e8f782a239171efa2f4cb8f159660accb2e8ded3"
+plusnew-webpack-config@0.5.94:
+  version "0.5.94"
+  resolved "https://registry.yarnpkg.com/plusnew-webpack-config/-/plusnew-webpack-config-0.5.94.tgz#74329e8a96b7de58a481e30f024d20a9ea846637"
   dependencies:
     awesome-typescript-loader "5.0.0-1"
     clean-webpack-plugin "0.1.19"
