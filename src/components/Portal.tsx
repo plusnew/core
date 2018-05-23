@@ -1,12 +1,13 @@
 import Instance from '../instances/types/Component/Instance';
-import factory from './factory';
+import factory, { Component } from './factory';
 
 type props = {
   target: HTMLElement;
   children: any,
 };
 
-const Portal = factory(
+const Portal: Component<props> = factory(
+  'Portal',
   (props: props, config) => {
     config.instance.appendChild = (element: Node, index: number) => {
       props.target.insertBefore(element, props.target.childNodes[index]);
@@ -22,4 +23,4 @@ const Portal = factory(
 
 export default Portal;
 
-export { Instance };
+export { Instance, props };

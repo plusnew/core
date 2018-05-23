@@ -15,6 +15,7 @@ describe('firing input events', () => {
     const outside = document.createElement('div');
     
     const Component = component(
+      'Component',
       () => ({ local }),
       (props: {}, { local }) => 
         <span>
