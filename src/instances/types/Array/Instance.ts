@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance, { getSuccessor } from '../Instance';
+import Instance, { getPredeccessor } from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import reconcile from './reconcile';
@@ -12,9 +12,9 @@ export default class ArrayInstance extends ChildrenInstance {
   constructor(
     abstractElements: (PlusnewAbstractElement)[],
     parentInstance: Instance,
-    getSuccessor: getSuccessor,
+    getPredecessor: getPredeccessor,
   ) {
-    super(abstractElements, parentInstance, getSuccessor);
+    super(abstractElements, parentInstance, getPredecessor);
     this.props = abstractElements;
     this.addChildren(abstractElements);
   }
@@ -24,7 +24,7 @@ export default class ArrayInstance extends ChildrenInstance {
     return this;
   }
 
-  public getChildrenSuccessor() {
-    return this.getSuccessor();
+  public getChildrenPredeccessor() {
+    return this.getPredecessor();
   }
 }

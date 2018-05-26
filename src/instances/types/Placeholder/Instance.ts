@@ -6,7 +6,7 @@ export default class PlaceHolderInstance extends Instance {
   public type = types.Fragment;
 
 
-  public getFirstIntrinsicElement() {
+  public getLastIntrinsicElement() {
     return null;
   }
 

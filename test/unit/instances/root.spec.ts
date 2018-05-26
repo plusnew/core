@@ -16,6 +16,6 @@ describe('root', () => {
   it('getFirstIntrinsicElement', () => {
     const instance = new Instance(true, undefined, () => null, {});
     instance.ref = document.createElement('div');
-    expect(instance.getFirstIntrinsicElement()).toBe(instance.ref);
+    expect(instance.getLastIntrinsicElement()).toBe(instance.ref);
   });
 });

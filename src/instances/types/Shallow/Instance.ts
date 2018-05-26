@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance, { getSuccessor } from '../Instance';
+import Instance, { getPredeccessor } from '../Instance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 
 export default class ShallowInstance extends Instance {
@@ -8,15 +8,15 @@ export default class ShallowInstance extends Instance {
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
-    getSucceessor: getSuccessor,
+    getPredecessor: getPredeccessor,
   ) {
-    super(abstractElement, parentInstance, getSucceessor);
+    super(abstractElement, parentInstance, getPredecessor);
 
     this.type = abstractElement.type;
     this.props = abstractElement.props;
   }
 
-  public getFirstIntrinsicElement() {
+  public getLastIntrinsicElement() {
     return null;
   }
 

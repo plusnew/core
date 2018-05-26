@@ -29,6 +29,6 @@
     "plusnew-webpack-config": "0.5.94",
     "tslint": "5.8.0",
     "tslint-config-airbnb": "5.4.2",
-    "typescript": "2.8.1"
+    "typescript": "2.8.3"
   }
 }

@@ -82,6 +82,7 @@ describe('rendering nested components', () => {
     expect(ul.childNodes.length).toBe(0);
 
     dependencies.local.dispatch(list);
+
     expect(ul.childNodes.length).toBe(list.length);
 
     ul.childNodes.forEach((li: Node, index) => {
@@ -233,7 +234,9 @@ describe('rendering nested components', () => {
       { key: 4, value: 'zero' },
     ];
 
+    window.foo = true;
     dependencies.local.dispatch(newList);
+    window.foo = true;
 
     expect(span.childNodes.length).toBe(newList.length * 2);
 
@@ -753,15 +756,11 @@ describe('rendering nested components', () => {
     expect((ul.childNodes[1] as Text).textContent).toBe('foo');
     expect((ul.childNodes[2] as HTMLElement).tagName).toBe('DIV');
 
-    window.foo = true;
-
     local.dispatch([
       <div key={2} />,
       <NestedComponent key={1} />,
       <span key={0} />,
     ]);
-
-    window.foo = false;
 
     expect((ul.childNodes[0] as HTMLElement).tagName).toBe('DIV');
     expect((ul.childNodes[1] as Text).textContent).toBe('foo');

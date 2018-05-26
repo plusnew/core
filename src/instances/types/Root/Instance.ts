@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance, { getSuccessor } from '../Instance';
+import Instance, { getPredeccessor } from '../Instance';
 import { ApplicationElement } from '../../../interfaces/component';
 
 type renderOptions = {
@@ -15,10 +15,10 @@ export default class RootInstance extends Instance {
   constructor(
     abstractElement: ApplicationElement,
     parentInstance: Instance | undefined,
-    getSuccessor: getSuccessor,
+    getPredecessor: getPredeccessor,
     options?: renderOptions,
   ) {
-    super(abstractElement, parentInstance, getSuccessor);
+    super(abstractElement, parentInstance, getPredecessor);
 
     if (options) {
       if (options.namespace !== undefined) {
@@ -39,7 +39,7 @@ export default class RootInstance extends Instance {
     return this;
   }
 
-  public getFirstIntrinsicElement() {
+  public getLastIntrinsicElement() {
     return this.ref;
   }
 

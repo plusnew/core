@@ -1,5 +1,5 @@
 import { ApplicationElement } from '../../interfaces/component';
-import Instance, { getSuccessor, successor } from './Instance';
+import Instance, { getPredeccessor, predecessor } from './Instance';
 import factory from '../factory';
 
 export default abstract class ChildrenInstance extends Instance {
@@ -8,43 +8,43 @@ export default abstract class ChildrenInstance extends Instance {
   constructor(
     abstractElement: ApplicationElement,
     parentInstance: Instance,
-    getSuccessor: getSuccessor,
+    getPredecessor: getPredeccessor,
   ) {
-    super(abstractElement, parentInstance, getSuccessor);
+    super(abstractElement, parentInstance, getPredecessor);
 
     this.rendered = [];
   }
 
-  abstract getChildrenSuccessor(): successor;
+  abstract getChildrenPredeccessor(): predecessor;
 
   public addChildren(children: ApplicationElement[]) {
     for (let i = 0; i < children.length; i += 1) {
-      this.rendered.push(factory(children[i], this, this.getFirstIntrinsicElementOf.bind(this, i + 1)));
+      this.rendered.push(factory(children[i], this, this.getLastIntrinsicElementOf.bind(this, i - 1)));
     }
 
     return this;
   }
 
-  public getFirstIntrinsicElement() {
-    return this.getFirstIntrinsicElementOf(0);
+  public getLastIntrinsicElement() {
+    return this.getLastIntrinsicElementOf(this.rendered.length - 1);
   }
 
-  public getFirstIntrinsicElementOf(index: number) {
-    for (let i = index; i < this.rendered.length; i += 1) {
-      const successorElement =  this.rendered[i].getFirstIntrinsicElement();
-      if (successorElement !== null) {
-        return successorElement;
+  public getLastIntrinsicElementOf(index: number) {
+    for (let i = index; i >= 0 && i < this.rendered.length; i -= 1) {
+      const predeccessorElement =  this.rendered[i].getLastIntrinsicElement();
+      if (predeccessorElement !== null) {
+        return predeccessorElement;
       }
     }
-    return this.getChildrenSuccessor();
+    return this.getChildrenPredeccessor();
   }
 
   /**
    * moves the children to another dom position
    */
-  public move(successor: successor) {
+  public move(predecessor: predecessor) {
     for (let i = 0; i < this.rendered.length; i += 1) {
-      this.rendered[i].move(successor);
+      this.rendered[i].move(predecessor);
     }
 
     return this;

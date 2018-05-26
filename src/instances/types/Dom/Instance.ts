@@ -1,6 +1,6 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import types from '../types';
-import Instance, { getSuccessor, successor } from '../Instance';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import { getSpecialNamespace } from '../../../util/namespace';
 import { hasOnchangeEvent, hasInputEvent } from '../../../util/dom';
@@ -22,9 +22,9 @@ export default class DomInstance extends ChildrenInstance {
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
-    successor: getSuccessor,
+    predecessor: getPredeccessor,
   ) {
-    super(abstractElement, parentInstance, successor);
+    super(abstractElement, parentInstance, predecessor);
     this.type = abstractElement.type;
     this.props = abstractElement.props;
     this.setNamespace();
@@ -35,19 +35,19 @@ export default class DomInstance extends ChildrenInstance {
       this.ref = document.createElement(abstractElement.type as string);
     }
 
-    this.setProps()
-        .addChildren(abstractElement.props.children)
-        .setAutofocusIfNeeded()
-        .appendToParent(this.ref, successor())
-        .setOnChangeEvent();
+    this.setProps();
+    this.addChildren(abstractElement.props.children);
+    this.setAutofocusIfNeeded();
+    this.appendToParent(this.ref, predecessor());
+    this.setOnChangeEvent();
   }
 
 
-  public getFirstIntrinsicElement() {
+  public getLastIntrinsicElement() {
     return this.ref;
   }
 
-  public getChildrenSuccessor() {
+  public getChildrenPredeccessor() {
     return null;
   }
 
@@ -197,19 +197,26 @@ export default class DomInstance extends ChildrenInstance {
   /**
    * by the children should add themselfs to our element
    */
-  public appendChild(element: Node, successor: Node | null) {
-    this.ref.insertBefore(element, successor);
-
+  public appendChild(element: Node, predecessor: Node | null) {
+    const parentNode = this.ref as Node;
+    if (predecessor === null) {
+      this.ref.insertBefore(element, parentNode.firstChild);
+    } else {
+      this.ref.insertBefore(element, predecessor.nextSibling);
+    }
     return this;
   }
 
   /**
    * moves the domnode from the parent
    */
-  public move(successor: successor) {
+  public move(predecessor: predecessor) {
     const parentNode = this.ref.parentNode as Node;
-    parentNode.insertBefore(this.ref, successor);
-
+    if (predecessor === null) {
+      parentNode.insertBefore(this.ref, parentNode.firstChild);
+    } else {
+      parentNode.insertBefore(this.ref, predecessor.nextSibling);
+    }
     return this;
   }
 

@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance, { getSuccessor } from '../Instance';
+import Instance, { getPredeccessor } from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import { props } from '../../../interfaces/component';
@@ -13,9 +13,9 @@ export default class FragmentInstance extends ChildrenInstance {
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
-    getSuccessor: getSuccessor,
+    getPredecessor: getPredeccessor,
   ) {
-    super(abstractElement, parentInstance, getSuccessor);
+    super(abstractElement, parentInstance, getPredecessor);
     this.props = abstractElement.props;
     this.addChildren(abstractElement.props.children);
   }
@@ -25,7 +25,7 @@ export default class FragmentInstance extends ChildrenInstance {
     return this;
   }
 
-  public getChildrenSuccessor() {
-    return this.getSuccessor();
+  public getChildrenPredeccessor() {
+    return this.getPredecessor();
   }
 }

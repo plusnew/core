@@ -6,7 +6,7 @@ describe('Does the root-instance behave correctly', () => {
 
   beforeEach(() => {
     class TestInstance extends Abstract {
-      getFirstIntrinsicElement() {
+      getLastIntrinsicElement() {
         return null;
       }
       move() {

@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance, { getSuccessor, successor } from '../Instance';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
 import factory from '../../factory';
 import reconcile, { shouldUpdate } from './reconcile';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
@@ -20,9 +20,9 @@ export default class ComponentInstance extends Instance {
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
-    getSuccessor: getSuccessor,
+    getPredecessor: getPredeccessor,
   ) {
-    super(abstractElement, parentInstance, getSuccessor);
+    super(abstractElement, parentInstance, getPredecessor);
 
     this.type = abstractElement.type;
     this.props = abstractElement.props;
@@ -65,13 +65,13 @@ export default class ComponentInstance extends Instance {
         .registerDependencies(constructor(this.props, this.options));
 
     const abstractChildren = this.render(this.props, this.dependencies, this.options);
-    this.rendered = factory(abstractChildren, this, () => this.getSuccessor());
+    this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
 
     return this;
   }
 
-  public getFirstIntrinsicElement() {
-    return this.rendered.getFirstIntrinsicElement();
+  public getLastIntrinsicElement() {
+    return this.rendered.getLastIntrinsicElement();
   }
 
   /**
@@ -93,8 +93,8 @@ export default class ComponentInstance extends Instance {
   /**
    * moves the children to another dom position
    */
-  public move(successor: successor) {
-    this.rendered.move(successor);
+  public move(predecessor: predecessor) {
+    this.rendered.move(predecessor);
 
     return this;
   }

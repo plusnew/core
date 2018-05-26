@@ -13,7 +13,7 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: F
       }
     } else {
       instance.rendered.push(
-        factory(newAbstractElement.props.children[i], instance, instance.getFirstIntrinsicElementOf.bind(instance, i + 1)),
+        factory(newAbstractElement.props.children[i], instance, instance.getLastIntrinsicElementOf.bind(instance, i - 1)),
       );
     }
   }
