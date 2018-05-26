@@ -198,12 +198,7 @@ export default class DomInstance extends ChildrenInstance {
    * by the children should add themselfs to our element
    */
   public appendChild(element: Node, predecessor: Node | null) {
-    const parentNode = this.ref as Node;
-    if (predecessor === null) {
-      this.ref.insertBefore(element, parentNode.firstChild);
-    } else {
-      this.ref.insertBefore(element, predecessor.nextSibling);
-    }
+    this.insertBefore(this.ref, element, predecessor);
     return this;
   }
 
@@ -211,12 +206,7 @@ export default class DomInstance extends ChildrenInstance {
    * moves the domnode from the parent
    */
   public move(predecessor: predecessor) {
-    const parentNode = this.ref.parentNode as Node;
-    if (predecessor === null) {
-      parentNode.insertBefore(this.ref, parentNode.firstChild);
-    } else {
-      parentNode.insertBefore(this.ref, predecessor.nextSibling);
-    }
+    this.insertBefore(this.ref.parentNode as Node, this.ref, predecessor);
     return this;
   }
 

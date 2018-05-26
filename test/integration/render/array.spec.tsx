@@ -234,9 +234,7 @@ describe('rendering nested components', () => {
       { key: 4, value: 'zero' },
     ];
 
-    window.foo = true;
     dependencies.local.dispatch(newList);
-    window.foo = true;
 
     expect(span.childNodes.length).toBe(newList.length * 2);
 

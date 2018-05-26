@@ -39,7 +39,6 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
   }
 
   for (let i = 0; i < newAbstractElements.length; i += 1) {
-    if(window.foo) debugger;
     const newAbstractElement = newAbstractElements[i];
 
     const getPredecessor = instance.getLastIntrinsicElementOf.bind(instance, i - 1);

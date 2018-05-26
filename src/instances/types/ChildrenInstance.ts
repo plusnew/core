@@ -43,8 +43,8 @@ export default abstract class ChildrenInstance extends Instance {
    * moves the children to another dom position
    */
   public move(predecessor: predecessor) {
-    for (let i = 0; i < this.rendered.length; i += 1) {
-      this.rendered[i].move(predecessor);
+    for (let i = this.rendered.length; i > 0; i -= 1) {
+      this.rendered[i - 1].move(predecessor);
     }
 
     return this;

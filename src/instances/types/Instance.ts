@@ -53,6 +53,14 @@ export default abstract class Instance {
     return this;
   }
 
+  public insertBefore(parentNode: Node, target: Node, predecessor: predecessor) {
+    if (predecessor === null) {
+      parentNode.insertBefore(target, parentNode.firstChild);
+    } else {
+      parentNode.insertBefore(target, predecessor.nextSibling);
+    }
+  }
+
   public abstract getLastIntrinsicElement(): Node | null;
 
   /**
