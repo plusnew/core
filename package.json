@@ -1,7 +1,7 @@
 {
   "name": "plusnew",
-  "version": "0.5.97",
-  "description": "ts framework with an typesecure and functional approach",
+  "version": "0.5.101",
+  "description": "ts component framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
