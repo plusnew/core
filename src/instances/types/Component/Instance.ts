@@ -12,7 +12,7 @@ nothing;
 export default class ComponentInstance extends Instance {
   public nodeType = types.Component;
   public rendered: Instance;
-  public options: options<any, any> = {};
+  public options: options<any, any>;
   public render: render<any>;
   public dependencies: deps;
   public props: props;
@@ -28,6 +28,7 @@ export default class ComponentInstance extends Instance {
     this.props = abstractElement.props;
     // Each instance needs its own update method - to have a unique method to be removed from the dependency-listeners
     this.update = this.update.bind(this);
+    this.setOptions();
     this.initialiseComponent();
   }
 
@@ -56,6 +57,16 @@ export default class ComponentInstance extends Instance {
 
     return this;
   }
+
+  /**
+   * sets the initial options object
+   */
+  private setOptions() {
+    this.options = {
+      instance: this,
+    };
+  }
+
   /**
    * asks the component what should be changed and puts it to the factory
    */

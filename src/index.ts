@@ -7,6 +7,7 @@ import { options } from './interfaces/component';
 import Instance from './instances/types/Instance';
 import { Fragment } from './util/symbols';
 import elementTypeChecker from './util/elementTypeChecker';
+import Portal from './components/Portal';
 import store from 'redchain';
 import './interfaces/jsx';
 
@@ -53,6 +54,7 @@ export {
   PlusnewAbstractElement,
   elementTypeChecker,
   options as componentOptions,
+  Portal,
 };
 
 export default new Plusnew();

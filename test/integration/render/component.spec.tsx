@@ -1120,12 +1120,12 @@ describe('rendering nested components', () => {
       renderSpy,
     );
 
-    plusnew.render(<MainComponent />, container);
+    const instance = plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
 
-    expect(renderSpy).toHaveBeenCalledWith({ children: [] }, {}, { foo: 'bar' });
+    expect(renderSpy).toHaveBeenCalledWith({ children: [] }, {}, { instance, foo: 'bar' });
   });
 
   it('config object is shared by constructor and render function', () => {
