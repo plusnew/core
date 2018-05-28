@@ -39,9 +39,27 @@ export default class DomInstance extends ChildrenInstance {
     this.addChildren(abstractElement.props.children);
     this.setAutofocusIfNeeded();
     this.appendToParent(this.ref, predecessor());
+    this.elementDidMountToParent(this.ref);
     this.setOnChangeEvent();
   }
 
+  public elementDidMount() {}
+
+  public elementDidMountToParent(element: Element) {
+    if (this.parentInstance) {
+      this.parentInstance.elementDidMount(element);
+    }
+  }
+
+  /**
+   * gets called with newly created elements by the children
+   */
+  public elementWillUnmountToParent(element: Element) {
+    if (this.parentInstance) {
+      return this.parentInstance.elementDidMount(element);
+    }
+    return null;
+  }
 
   public getLastIntrinsicElement() {
     return this.ref;
@@ -207,7 +225,36 @@ export default class DomInstance extends ChildrenInstance {
    * removes the domnode from the parent
    */
   public remove() {
-    this.rendered.forEach(child => child.remove());
+    const result = this.rendered.map(child => child.remove()).filter(result => result !== null);
+
+    if (result.length === 0) {
+      const result =  this.elementWillUnmountToParent(this.ref);
+      if (result) {
+        return result.then(this.removeElement);
+      }
+
+      this.removeElement();
+      return null;
+    }
+
+    return new Promise((resolve) => {
+      Promise.all(result).finally(() => {
+        const result = this.elementWillUnmountToParent(this.ref);
+
+        if (result) {
+          result.finally(() => {
+            this.removeElement();
+            resolve();
+          });
+        } else {
+          this.removeElement();
+          resolve();
+        }
+      });
+    });
+  }
+
+  private removeElement() {
     (this.ref.parentNode as Node).removeChild(this.ref);
   }
 

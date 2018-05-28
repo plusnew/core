@@ -51,5 +51,6 @@ export default abstract class ChildrenInstance extends Instance {
    */
   public remove() {
     this.rendered.forEach(child => child.remove());
+    return null;
   }
 }

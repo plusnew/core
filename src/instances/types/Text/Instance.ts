@@ -37,6 +37,7 @@ export default class TextInstance extends Instance {
    */
   public remove() {
     this.ref.remove();
+    return null;
   }
 
   public reconcile(newAbstractElement: string) {

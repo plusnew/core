@@ -105,12 +105,12 @@ describe('<Animate />', () => {
     describe('flat', () => {
       it('elementWillUnmount gets called with node', async () => {
         const local = store(true, (state, action: boolean) => action);
-        let promiseResolve: () => void;
+        let promiseResolve = () => {};
         const unmountPromise = new Promise((resolve) => {promiseResolve = resolve;});
         const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise);
         const Component = component(
           'Component',
-          () => ({}),
+          () => ({ local }),
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
@@ -126,10 +126,9 @@ describe('<Animate />', () => {
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
         expect(willUnmountSpy.calls.count()).toBe(0);
 
-
         local.dispatch(false);
 
-        expect(willUnmountSpy.calls.count()).toBe(2);
+        expect(willUnmountSpy.calls.count()).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
         expect(willUnmountSpy).toHaveBeenCalledWith(container.childNodes[0]);
         expect(willUnmountSpy).toHaveBeenCalledWith(container.childNodes[0]);
@@ -143,12 +142,12 @@ describe('<Animate />', () => {
   
       it('elementWillUnmount gets called with nodes', async () => {
         const local = store(true, (state, action: boolean) => action);
-        let promiseResolve: () => void;
+        let promiseResolve = () => {};
         const unmountPromise = new Promise((resolve) => {promiseResolve = resolve;});
         const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise);
         const Component = component(
           'Component',
-          () => ({}),
+          () => ({ local }),
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
@@ -187,12 +186,12 @@ describe('<Animate />', () => {
     describe('nested', () => {
       it('elementWillUnmount gets called with node', async () => {
         const local = store(true, (state, action: boolean) => action);
-        let promiseResolve: () => void;
+        let promiseResolve = () => {};
         const unmountPromise = new Promise((resolve) => {promiseResolve = resolve;});
         const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise);
         const Component = component(
           'Component',
-          () => ({}),
+          () => ({ local }),
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
@@ -223,12 +222,12 @@ describe('<Animate />', () => {
   
       it('elementWillUnmount gets called with nodes', async () => {
         const local = store(true, (state, action: boolean) => action);
-        let promiseResolve: () => void;
+        let promiseResolve = () => {};
         const unmountPromise = new Promise((resolve) => {promiseResolve = resolve;});
         const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise);
         const Component = component(
           'Component',
-          () => ({}),
+          () => ({ local }),
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >

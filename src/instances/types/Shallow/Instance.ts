@@ -30,7 +30,9 @@ export default class ShallowInstance extends Instance {
   /**
    * shallowcomponent has no object, which needs removing
    */
-  public remove() {}
+  public remove() {
+    return null;
+  }
 
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     this.props = newAbstractElement.props;

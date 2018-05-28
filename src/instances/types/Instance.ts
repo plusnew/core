@@ -68,17 +68,26 @@ export default abstract class Instance {
   /**
    * orders to remove itself from the dom
    */
-  public abstract remove(): void;
+  public abstract remove(): Promise<any> | null;
 
   /**
    * gets called with newly created elements by the children
    */
-  public abstract elementDidMount(element: Element): void;
+  public elementDidMount(element: Element) {
+    if (this.parentInstance) {
+      this.parentInstance.elementDidMount(element);
+    }
+  }
 
   /**
    * gets called with deleted elements from the children
    */
-  public abstract elementWillUnmount(element: Element): void | Promise<any>;
+  public elementWillUnmount(element: Element): null | Promise<any> {
+    if (this.parentInstance) {
+      return this.parentInstance.elementWillUnmount(element);
+    }
+    return null;
+  }
 
   /**
    * orders to remove itself from the dom
