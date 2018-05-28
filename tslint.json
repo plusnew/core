@@ -9,6 +9,7 @@
       false
     ],
     "variable-name": false,
-    "align": false
+    "align": false,
+    "cyclomatic-complexity": [true]
   }
 }

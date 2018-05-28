@@ -1,7 +1,7 @@
 {
   "name": "plusnew",
-  "version": "0.5.98",
-  "description": "ts framework with an typesecure and functional approach",
+  "version": "0.5.101",
+  "description": "ts component framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {
-    "redchain": "0.5.73"
+    "redchain": "0.5.101"
   },
   "devDependencies": {
     "concurrently": "3.5.1",
@@ -29,6 +29,6 @@
     "plusnew-webpack-config": "0.5.94",
     "tslint": "5.8.0",
     "tslint-config-airbnb": "5.4.2",
-    "typescript": "2.8.1"
+    "typescript": "2.8.3"
   }
 }

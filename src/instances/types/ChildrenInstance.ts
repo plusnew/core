@@ -1,5 +1,5 @@
 import { ApplicationElement } from '../../interfaces/component';
-import Instance from './Instance';
+import Instance, { getPredeccessor, predecessor } from './Instance';
 import factory from '../factory';
 
 export default abstract class ChildrenInstance extends Instance {
@@ -8,52 +8,43 @@ export default abstract class ChildrenInstance extends Instance {
   constructor(
     abstractElement: ApplicationElement,
     parentInstance: Instance,
-    previousAbstractSiblingCount: () => number,
+    getPredecessor: getPredeccessor,
   ) {
-    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+    super(abstractElement, parentInstance, getPredecessor);
 
     this.rendered = [];
   }
 
-  abstract getPreviousSiblingsForChildren(): number;
-
-  /**
-   * calculates the previous siblinglength
-   */
-  public getPreviousLength(instanceIndex: number) {
-    let previousCount = this.getPreviousSiblingsForChildren();
-
-    for (let i = 0; i < instanceIndex; i += 1) {
-      previousCount += this.rendered[i].getLength();
-    }
-    return previousCount;
-  }
+  abstract getChildrenPredeccessor(): predecessor;
 
   public addChildren(children: ApplicationElement[]) {
     for (let i = 0; i < children.length; i += 1) {
-      this.rendered.push(factory(children[i], this, this.getPreviousLength.bind(this, i)));
+      this.rendered.push(factory(children[i], this, this.getLastIntrinsicElementOf.bind(this, i - 1)));
     }
 
     return this;
   }
 
-  /**
-   * the length is dependent on the amount of array entities
-   */
-  public getLength() {
-    let length = 0;
-    for (let i = 0; i < this.rendered.length; i += 1) {
-      length += this.rendered[i].getLength();
+  public getLastIntrinsicElement() {
+    return this.getLastIntrinsicElementOf(this.rendered.length - 1);
+  }
+
+  public getLastIntrinsicElementOf(index: number) {
+    for (let i = index; i >= 0 && i < this.rendered.length; i -= 1) {
+      const predeccessorElement =  this.rendered[i].getLastIntrinsicElement();
+      if (predeccessorElement !== null) {
+        return predeccessorElement;
+      }
     }
-    return length;
+    return this.getChildrenPredeccessor();
   }
 
   /**
    * moves the children to another dom position
    */
-  public move(position: number) {
-    for (let i = this.getLength(); i > 0; i -= 1) {
-      this.rendered[i - 1].move(position);
+  public move(predecessor: predecessor) {
+    for (let i = this.rendered.length; i > 0; i -= 1) {
+      this.rendered[i - 1].move(predecessor);
     }
 
     return this;

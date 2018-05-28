@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance from '../Instance';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
 import reconcile from './reconcile';
 
 export default class TextInstance extends Instance {
@@ -8,18 +8,17 @@ export default class TextInstance extends Instance {
   public props: string;
   public ref: Text;
 
-  constructor(abstractElement: string, parentInstance: Instance, previousAbstractSiblingCount: () => number) {
-    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+  constructor(abstractElement: string, parentInstance: Instance, getPredecessor: getPredeccessor) {
+    super(abstractElement, parentInstance, getPredecessor);
 
     this.props = abstractElement;
     this.ref = document.createTextNode(abstractElement);
-    this.appendToParent(this.ref, previousAbstractSiblingCount());
+
+    this.appendToParent(this.ref, getPredecessor());
   }
-  /**
-   * textnode is always a length of one
-   */
-  public getLength() {
-    return 1;
+
+  public getLastIntrinsicElement() {
+    return this.ref;
   }
 
   public setText(abstractElement: string) {
@@ -31,10 +30,8 @@ export default class TextInstance extends Instance {
   /**
    * moves this textnode inside the dom
    */
-  public move(position: number) {
-    const parentNode = this.ref.parentNode as Node;
-    parentNode.insertBefore(this.ref, parentNode.childNodes[position]);
-
+  public move(predecessor: predecessor) {
+    this.insertBefore(this.ref.parentNode as Node, this.ref, predecessor);
     return this;
   }
 

@@ -9,12 +9,12 @@ type props = {
 const Portal: Component<props> = factory(
   'Portal',
   (props: props, config) => {
-    config.instance.appendChild = (element: Node, index: number) => {
-      props.target.insertBefore(element, props.target.childNodes[index]);
+    config.instance.appendChild = (element: Node, predecessor: Node | null) => {
+      props.target.insertBefore(element, predecessor);
       return config.instance;
     };
 
-    config.instance.previousAbstractSiblingCount = () => 0;
+    config.instance.getPredecessor = () => null;
 
     return {};
   },

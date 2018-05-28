@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance from '../Instance';
+import Instance, { getPredeccessor } from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import { props } from '../../../interfaces/component';
@@ -13,22 +13,19 @@ export default class FragmentInstance extends ChildrenInstance {
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
-    previousAbstractSiblingCount: () => number,
+    getPredecessor: getPredeccessor,
   ) {
-    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+    super(abstractElement, parentInstance, getPredecessor);
     this.props = abstractElement.props;
     this.addChildren(abstractElement.props.children);
-  }
-
-  /**
-   * calculates the previous siblinglength, array is not its own parent, children are dependent of previousAbstractSiblingCount
-   */
-  public getPreviousSiblingsForChildren() {
-    return this.previousAbstractSiblingCount();
   }
 
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     reconcile(newAbstractElement, this);
     return this;
+  }
+
+  public getChildrenPredeccessor() {
+    return this.getPredecessor();
   }
 }

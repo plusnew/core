@@ -7,10 +7,10 @@ import elementTypeChecker from 'util/elementTypeChecker';
 import { ApplicationElement } from 'interfaces/component';
 
 function createInstance(applicationElement: ApplicationElement) {
-  const wrapper = new RootInstance(true, undefined, () => 0, {});
+  const wrapper = new RootInstance(true, undefined, () => null, {});
   wrapper.ref = document.createElement('div');
 
-  return factory(applicationElement, wrapper, () => 0);
+  return factory(applicationElement, wrapper, () => null);
 }
 describe('checking if reconciler works as expected', () => {
   describe('isSameAbstractElement()', () => {

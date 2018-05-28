@@ -7,9 +7,15 @@ describe('root', () => {
     }).toThrow(new Error('The root element can\'t move itself'));
   });
 
-  it('move', () => {
+  it('reconcile', () => {
     expect(() => {
       Instance.prototype.reconcile(false);
     }).toThrow(new Error('The root element can\'t reconcile itself'));
+  });
+
+  it('getFirstIntrinsicElement', () => {
+    const instance = new Instance(true, undefined, () => null, {});
+    instance.ref = document.createElement('div');
+    expect(instance.getLastIntrinsicElement()).toBe(instance.ref);
   });
 });
