@@ -15,7 +15,7 @@ export default function (props: props, instance: DomInstance) {
           }
         } else {
           instance.rendered.push(
-            factory(props.children[i], instance, instance.getPreviousLength.bind(instance, i)),
+            factory(props.children[i], instance, instance.getLastIntrinsicElementOf.bind(instance, i - 1)),
           );
         }
       }

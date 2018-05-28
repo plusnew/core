@@ -5,11 +5,7 @@ describe('Does the root-instance behave correctly', () => {
   let root: Root;
 
   beforeEach(() => {
-    root = new Root(<div />, undefined, () => 0);
-  });
-
-  it('getLength should throw exception', () => {
-    expect(() => root.getLength()).toThrow(new Error('getLength of RootElement is irrelevant'));
+    root = new Root(<div />, undefined, () => null);
   });
 
   it('remove should throw exception', () => {

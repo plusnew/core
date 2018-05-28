@@ -9,7 +9,7 @@ describe('<Portal />', () => {
     document.body.appendChild(container);
   });
 
-  it('portal should show otuside of the tree', () => {
+  it('portal should show outside of the tree', () => {
     const local = store(0, (store, action: number) => action);
 
     const outside = document.createElement('div');

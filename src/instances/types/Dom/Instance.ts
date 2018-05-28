@@ -1,6 +1,6 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import types from '../types';
-import Instance from '../Instance';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
 import ChildrenInstance from '../ChildrenInstance';
 import { getSpecialNamespace } from '../../../util/namespace';
 import { hasOnchangeEvent, hasInputEvent } from '../../../util/dom';
@@ -22,9 +22,9 @@ export default class DomInstance extends ChildrenInstance {
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
-    previousAbstractSiblingCount: () => number,
+    predecessor: getPredeccessor,
   ) {
-    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+    super(abstractElement, parentInstance, predecessor);
     this.type = abstractElement.type;
     this.props = abstractElement.props;
     this.setNamespace();
@@ -38,19 +38,21 @@ export default class DomInstance extends ChildrenInstance {
     this.setProps();
     this.addChildren(abstractElement.props.children);
     this.setAutofocusIfNeeded();
-    this.appendToParent(this.ref, previousAbstractSiblingCount());
+    this.appendToParent(this.ref, predecessor());
     this.setOnChangeEvent();
+  }
+
+
+  public getLastIntrinsicElement() {
+    return this.ref;
+  }
+
+  public getChildrenPredeccessor() {
+    return null;
   }
 
   private setNamespace() {
     this.namespace = getSpecialNamespace(this.type as string) || this.namespace;
-  }
-
-  /**
-   * Dom is its own element, children siblingcount start by 0
-   */
-  public getPreviousSiblingsForChildren() {
-    return 0;
   }
 
   private setAutofocusIfNeeded() {
@@ -186,25 +188,19 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   /**
-   * domnode is always a length of one
-   */
-  public getLength() {
-    return 1;
-  }
-
-  /**
    * by the children should add themselfs to our element
    */
-  public appendChild(element: Node, index: number) {
-    this.ref.insertBefore(element, this.ref.childNodes[index]);
+
+  public appendChild(element: Node, predecessor: Node | null) {
+    this.insertBefore(this.ref, element, predecessor);
   }
 
   /**
    * moves the domnode from the parent
    */
-  public move(position: number) {
-    const parentNode = this.ref.parentNode as Node;
-    parentNode.insertBefore(this.ref, parentNode.childNodes[position]);
+
+  public move(predecessor: predecessor) {
+    this.insertBefore(this.ref.parentNode as Node, this.ref, predecessor);
   }
 
   /**

@@ -6,24 +6,24 @@ describe('Does the root-instance behave correctly', () => {
 
   beforeEach(() => {
     class TestInstance extends Abstract {
-      getLength() {
-        return 0;
+      getLastIntrinsicElement() {
+        return null;
       }
       move() {}
       remove() {}
       reconcile() {}
     }
 
-    abstract = new TestInstance(<div />, undefined, () => 0);
+    abstract = new TestInstance(<div />, undefined, () => null);
   });
 
   it('appendToParent should throw exception', () => {
     const element = document.createElement('div');
-    expect(() => abstract.appendToParent(element, 0)).toThrow(new Error('Cant append element to not existing parent'));
+    expect(() => abstract.appendToParent(element, null)).toThrow(new Error('Cant append element to not existing parent'));
   });
 
   it('appendChild should throw exception', () => {
     const element = document.createElement('div');
-    expect(() => abstract.appendChild(element, 0)).toThrow(new Error('Couldn\'t add child to parent'));
+    expect(() => abstract.appendChild(element, null)).toThrow(new Error('Couldn\'t add child to parent'));
   });
 });

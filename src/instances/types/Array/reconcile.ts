@@ -16,7 +16,6 @@ function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractEle
 
 export default function (newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance) {
 
-
   // Removal of old-elements just works if key-property is existent
   if (instance.props.length && instance.props[0].props && instance.props[0].props.key !== undefined) {
     // Checks old abstract elements, if they should get removed
@@ -41,28 +40,33 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
 
   for (let i = 0; i < newAbstractElements.length; i += 1) {
     const newAbstractElement = newAbstractElements[i];
-    const previousLength = instance.getPreviousLength.bind(instance, i);
+
+    const getPredecessor = instance.getLastIntrinsicElementOf.bind(instance, i - 1);
 
     if (
       i < instance.rendered.length &&
       reconciler.isSameAbstractElement(newAbstractElement, instance.rendered[i])
     ) {
-      instance.rendered[i].previousAbstractSiblingCount = previousLength;
+      instance.rendered[i].getPredecessor = getPredecessor;
+
       reconciler.update(newAbstractElement, instance.rendered[i]);
     } else {
       const oldIndex = indexOf(instance, newAbstractElement, i);
       if (oldIndex === NOT_FOUND) {
-        instance.rendered.splice(i, 0, factory(newAbstractElement, instance, previousLength));
+        const newInstance = factory(newAbstractElement, instance, getPredecessor);
+        instance.rendered.splice(i, 0, newInstance);
       } else {
-        instance.rendered[oldIndex].previousAbstractSiblingCount = previousLength;
+        const moveInstance = instance.rendered[oldIndex];
+        moveInstance.getPredecessor = getPredecessor;
+
         // instance should move to the new position
         instance.rendered.splice(i, 0, instance.rendered[oldIndex]);
-
         // remove old instance
         // it needs the +1 offset, because a line before it just got inserted and the oldIndex is one after it was before
         instance.rendered.splice(oldIndex + 1, 1);
 
-        instance.rendered[i].move(previousLength());
+        instance.rendered[i].move(getPredecessor());
+
         reconciler.update(newAbstractElement, instance.rendered[i]);
       }
     }

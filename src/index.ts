@@ -25,7 +25,7 @@ class Plusnew {
    */
   public render(element: PlusnewAbstractElement, containerElement: HTMLElement, options?: renderOptions) {
     // Fake RootInstance
-    const wrapper = new RootInstance(true, undefined, () => 0, options);
+    const wrapper = new RootInstance(true, undefined, () => null, options);
 
     wrapper.ref = containerElement;
 
@@ -33,7 +33,7 @@ class Plusnew {
       containerElement.removeChild(containerElement.childNodes[0]);
     }
 
-    return factory(element, wrapper, () => 0);
+    return factory(element, wrapper, () => null);
   }
 
   Fragment = Fragment;

@@ -1,5 +1,5 @@
 import types from '../types';
-import Instance from '../Instance';
+import Instance, { getPredeccessor } from '../Instance';
 import { ApplicationElement } from '../../../interfaces/component';
 
 type renderOptions = {
@@ -15,10 +15,10 @@ export default class RootInstance extends Instance {
   constructor(
     abstractElement: ApplicationElement,
     parentInstance: Instance | undefined,
-    previousAbstractSiblingCount: () => number,
+    getPredecessor: getPredeccessor,
     options?: renderOptions,
   ) {
-    super(abstractElement, parentInstance, previousAbstractSiblingCount);
+    super(abstractElement, parentInstance, getPredecessor);
 
     if (options) {
       if (options.namespace !== undefined) {
@@ -37,11 +37,8 @@ export default class RootInstance extends Instance {
     this.ref.appendChild(element);
   }
 
-  /**
-   * Root is no child of nobody, because of that nobody should care how long it is
-   */
-  public getLength(): number {
-    throw new Error('getLength of RootElement is irrelevant');
+  public getLastIntrinsicElement() {
+    return this.ref;
   }
 
   /**
