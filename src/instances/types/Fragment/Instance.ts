@@ -29,6 +29,5 @@ export default class FragmentInstance extends ChildrenInstance {
 
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     reconcile(newAbstractElement, this);
-    return this;
   }
 }

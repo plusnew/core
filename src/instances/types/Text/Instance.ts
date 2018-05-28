@@ -24,8 +24,6 @@ export default class TextInstance extends Instance {
 
   public setText(abstractElement: string) {
     this.ref.textContent = abstractElement;
-
-    return this;
   }
 
   /**
@@ -34,8 +32,6 @@ export default class TextInstance extends Instance {
   public move(position: number) {
     const parentNode = this.ref.parentNode as Node;
     parentNode.insertBefore(this.ref, parentNode.childNodes[position]);
-
-    return this;
   }
 
   /**
@@ -43,12 +39,9 @@ export default class TextInstance extends Instance {
    */
   public remove() {
     this.ref.remove();
-
-    return this;
   }
 
   public reconcile(newAbstractElement: string) {
     reconcile(newAbstractElement, this);
-    return this;
   }
 }

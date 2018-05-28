@@ -17,17 +17,12 @@ export default class PlaceHolderInstance extends Instance {
    */
   public move() {
     // Because placeholders are not really inserted in the dom, no actual action is needed
-    return this;
   }
 
   /**
    * placeholder has no object, which needs removing
    */
-  public remove() {
-    return this;
-  }
+  public remove() {}
 
-  public reconcile(newAbstractElement: false) {
-    return this;
-  }
+  public reconcile(newAbstractElement: false) {}
 }

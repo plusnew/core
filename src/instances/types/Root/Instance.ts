@@ -35,8 +35,6 @@ export default class RootInstance extends Instance {
    */
   public appendChild(element: Element) {
     this.ref.appendChild(element);
-
-    return this;
   }
 
   /**

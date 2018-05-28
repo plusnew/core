@@ -33,8 +33,6 @@ export default abstract class Instance {
     } else {
       this.parentInstance.appendChild(element, index);
     }
-
-    return this;
   }
 
   /**
@@ -46,8 +44,6 @@ export default abstract class Instance {
     } else {
       this.parentInstance.appendChild(element, index);
     }
-
-    return this;
   }
 
   /**
@@ -58,15 +54,25 @@ export default abstract class Instance {
   /**
    * orders to move itself to another place
    */
-  public abstract move(position: number): Instance;
+  public abstract move(position: number): void;
 
   /**
    * orders to remove itself from the dom
    */
-  public abstract remove(): Instance;
+  public abstract remove(): void;
+
+  /**
+   * gets called with newly created elements by the children
+   */
+  public abstract elementDidMount(element: Element): void;
+
+  /**
+   * gets called with deleted elements from the children
+   */
+  public abstract elementWillUnmount(element: Element): void | Promise<any>;
 
   /**
    * orders to remove itself from the dom
    */
-  public abstract reconcile(newAbstractElement: ApplicationElement): Instance;
+  public abstract reconcile(newAbstractElement: ApplicationElement): void;
 }

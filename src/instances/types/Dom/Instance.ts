@@ -35,11 +35,11 @@ export default class DomInstance extends ChildrenInstance {
       this.ref = document.createElement(abstractElement.type as string);
     }
 
-    this.setProps()
-        .addChildren(abstractElement.props.children)
-        .setAutofocusIfNeeded()
-        .appendToParent(this.ref, previousAbstractSiblingCount())
-        .setOnChangeEvent();
+    this.setProps();
+    this.addChildren(abstractElement.props.children);
+    this.setAutofocusIfNeeded();
+    this.appendToParent(this.ref, previousAbstractSiblingCount());
+    this.setOnChangeEvent();
   }
 
   private setNamespace() {
@@ -64,8 +64,6 @@ export default class DomInstance extends ChildrenInstance {
       // Focus can only be set from the browser, when the dom got inserted to the dom
       (this.ref as HTMLElement).addEventListener('DOMNodeInsertedIntoDocument', addFocus);
     }
-
-    return this;
   }
 
   /**
@@ -75,8 +73,6 @@ export default class DomInstance extends ChildrenInstance {
     for (const index in this.props) {
       this.setProp(index, this.props[index]);
     }
-
-    return this;
   }
 
   /**
@@ -111,8 +107,6 @@ export default class DomInstance extends ChildrenInstance {
         }
       }
     }
-
-    return this;
   }
 
   private setOnChangeEvent() {
@@ -128,7 +122,7 @@ export default class DomInstance extends ChildrenInstance {
             preventDefault = true;
           }
 
-          return this;
+          return;
         };
 
         this.props.onchange(evt);
@@ -145,7 +139,7 @@ export default class DomInstance extends ChildrenInstance {
       (this.ref as HTMLElement).onchange = onchangeWrapper;
     }
 
-    return this;
+    return;
   }
 
   private ignoreProperty(key: string) {
@@ -172,7 +166,6 @@ export default class DomInstance extends ChildrenInstance {
     } else {
       this.ref.removeAttribute(this.getAttributeNameFromProp(key));
     }
-    return this;
   }
 
   /**
@@ -204,8 +197,6 @@ export default class DomInstance extends ChildrenInstance {
    */
   public appendChild(element: Node, index: number) {
     this.ref.insertBefore(element, this.ref.childNodes[index]);
-
-    return this;
   }
 
   /**
@@ -214,8 +205,6 @@ export default class DomInstance extends ChildrenInstance {
   public move(position: number) {
     const parentNode = this.ref.parentNode as Node;
     parentNode.insertBefore(this.ref, parentNode.childNodes[position]);
-
-    return this;
   }
 
   /**
@@ -224,12 +213,9 @@ export default class DomInstance extends ChildrenInstance {
   public remove() {
     this.rendered.forEach(child => child.remove());
     (this.ref.parentNode as Node).removeChild(this.ref);
-
-    return this;
   }
 
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     reconcile(newAbstractElement.props, this);
-    return this;
   }
 }

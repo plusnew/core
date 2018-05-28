@@ -38,14 +38,10 @@ export default class ComponentInstance extends Instance {
   private initialiseComponent() {
     const props = this.props;
     (this.type as component<any>)(props, this);
-
-    return this;
   }
 
   private registerRender(render: render<any>) {
     this.render = render;
-
-    return this;
   }
 
   private registerDependencies(dependencies: deps) {
@@ -54,8 +50,6 @@ export default class ComponentInstance extends Instance {
       dependency.addOnChange(this.update);
     }
     this.dependencies = dependencies;
-
-    return this;
   }
 
   /**
@@ -71,14 +65,11 @@ export default class ComponentInstance extends Instance {
    * asks the component what should be changed and puts it to the factory
    */
   public setComponentParts(constructor: constructor<any, any>, render: render<any>) {
-    this
-        .registerRender(render)
-        .registerDependencies(constructor(this.props, this.options));
+    this.registerRender(render);
+    this.registerDependencies(constructor(this.props, this.options));
 
     const abstractChildren = this.render(this.props, this.dependencies, this.options);
     this.rendered = factory(abstractChildren, this, () => this.previousAbstractSiblingCount());
-
-    return this;
   }
 
   /**
@@ -86,15 +77,12 @@ export default class ComponentInstance extends Instance {
    */
   private update() {
     reconcile(this.props, this);
-
-    return this;
   }
 
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     if (shouldUpdate((newAbstractElement as PlusnewAbstractElement).props, this)) {
       reconcile(newAbstractElement.props, this);
     }
-    return this;
   }
 
   /**
@@ -102,8 +90,6 @@ export default class ComponentInstance extends Instance {
    */
   public move(position: number) {
     this.rendered.move(position);
-
-    return this;
   }
 
   public getLength() {
@@ -119,8 +105,6 @@ export default class ComponentInstance extends Instance {
       this.options.componentWillUnmount(this.props, this.dependencies);
     }
     this.rendered.remove();
-
-    return this;
   }
 
   /**

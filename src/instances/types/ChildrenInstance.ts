@@ -33,8 +33,6 @@ export default abstract class ChildrenInstance extends Instance {
     for (let i = 0; i < children.length; i += 1) {
       this.rendered.push(factory(children[i], this, this.getPreviousLength.bind(this, i)));
     }
-
-    return this;
   }
 
   /**
@@ -55,8 +53,6 @@ export default abstract class ChildrenInstance extends Instance {
     for (let i = this.getLength(); i > 0; i -= 1) {
       this.rendered[i - 1].move(position);
     }
-
-    return this;
   }
 
   /**
@@ -64,7 +60,5 @@ export default abstract class ChildrenInstance extends Instance {
    */
   public remove() {
     this.rendered.forEach(child => child.remove());
-
-    return this;
   }
 }

@@ -9,15 +9,9 @@ describe('Does the root-instance behave correctly', () => {
       getLength() {
         return 0;
       }
-      move() {
-        return this;
-      }
-      remove() {
-        return this;
-      }
-      reconcile() {
-        return this;
-      }
+      move() {}
+      remove() {}
+      reconcile() {}
     }
 
     abstract = new TestInstance(<div />, undefined, () => 0);

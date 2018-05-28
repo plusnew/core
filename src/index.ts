@@ -8,9 +8,9 @@ import Instance from './instances/types/Instance';
 import { Fragment } from './util/symbols';
 import elementTypeChecker from './util/elementTypeChecker';
 import Portal from './components/Portal';
+import Animate from './components/Animate';
 import store from 'redchain';
 import './interfaces/jsx';
-
 
 class Plusnew {
   /**
@@ -55,6 +55,7 @@ export {
   elementTypeChecker,
   options as componentOptions,
   Portal,
+  Animate,
 };
 
 export default new Plusnew();

@@ -28,6 +28,5 @@ export default class ArrayInstance extends ChildrenInstance {
 
   public reconcile(newAbstractElements: PlusnewAbstractElement[]) {
     reconcile(newAbstractElements, this);
-    return this;
   }
 }
