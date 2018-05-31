@@ -50,7 +50,6 @@ export default abstract class ChildrenInstance extends Instance {
    * removes the domnode from the parent
    */
   public remove() {
-    if (window.foo) debugger;
     const result = this.prepareRemoveSelf();
     if (result) {
       return result.then(() => this.removeChildren());

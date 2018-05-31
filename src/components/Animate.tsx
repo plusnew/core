@@ -7,7 +7,7 @@ type props = {
   children: any,
 };
 
-const Portal: Component<props> = factory(
+const Animate: Component<props> = factory(
   'Animate',
   () => ({}),
   (props: props, dependencies, config) => {
@@ -50,6 +50,6 @@ const Portal: Component<props> = factory(
   },
 );
 
-export default Portal;
+export default Animate;
 
 export { Instance, props };
