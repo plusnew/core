@@ -65,15 +65,12 @@ export default abstract class Instance {
 
   public abstract move(predecessor: predecessor): void;
 
-  /**
-   * orders to remove itself from the dom
-   */
-  public abstract remove(): Promise<any> | null;
+  public abstract remove(): Promise<any> | void;
 
   /**
    * gets called with newly created elements by the children
    */
-  public elementDidMount(element: Element) {
+  public elementDidMount(element: Element): Promise<any> | void {
     if (this.parentInstance) {
       this.parentInstance.elementDidMount(element);
     }
@@ -82,11 +79,10 @@ export default abstract class Instance {
   /**
    * gets called with deleted elements from the children
    */
-  public elementWillUnmount(element: Element): null | Promise<any> {
+  public elementWillUnmount(element: Element): Promise<any> | void {
     if (this.parentInstance) {
       return this.parentInstance.elementWillUnmount(element);
     }
-    return null;
   }
 
   /**

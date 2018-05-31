@@ -105,8 +105,6 @@ export default class ComponentInstance extends Instance {
       this.options.componentWillUnmount(this.props, this.dependencies);
     }
     this.rendered.remove();
-
-    return null;
   }
 
   /**

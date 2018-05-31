@@ -20,8 +20,8 @@ const Portal: Component<props> = factory(
       }
     };
 
-    config.instance.elementWillUnmount = (element: Element) => {
-      let parentWait: null | Promise<any> = null;
+    config.instance.elementWillUnmount = (element: Element): Promise<any> | void => {
+      let parentWait: void | Promise<any> = undefined;
       if (config.instance.parentInstance) {
         parentWait = config.instance.parentInstance.elementWillUnmount(element);
       }
@@ -29,9 +29,9 @@ const Portal: Component<props> = factory(
       if (parentWait) {
         if (props.elementWillUnmount) {
           return new Promise((resolve) => {
-            (parentWait as Promise<any>).finally(() => {
+            (parentWait as Promise<any>).then(() => {
               if (props.elementWillUnmount) {
-                props.elementWillUnmount(element).finally(() => resolve());
+                props.elementWillUnmount(element).then(() => resolve());
               } else {
                 resolve();
               }
@@ -44,7 +44,6 @@ const Portal: Component<props> = factory(
       if (props.elementWillUnmount) {
         return props.elementWillUnmount(element);
       }
-      return null;
     };
 
     return props.children as any;

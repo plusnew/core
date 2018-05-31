@@ -20,9 +20,7 @@ export default class PlaceHolderInstance extends Instance {
   /**
    * placeholder has no object, which needs removing
    */
-  public remove() {
-    return null;
-  }
+  public remove() {}
 
   public reconcile(newAbstractElement: false) {}
 }

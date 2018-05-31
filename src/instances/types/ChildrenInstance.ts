@@ -47,10 +47,43 @@ export default abstract class ChildrenInstance extends Instance {
   }
 
   /**
-   * removes the children from the dom
+   * removes the domnode from the parent
    */
   public remove() {
-    this.rendered.forEach(child => child.remove());
-    return null;
+    if (window.foo) debugger;
+    const result = this.prepareRemoveSelf();
+    if (result) {
+      return result.then(() => this.removeChildren());
+    }
+    return this.removeChildren();
   }
+
+  private removeChildren() {
+    const result = this.rendered.map(child => child.remove()).filter(result => result !== undefined);
+
+    if (result.length === 0) {
+      return this.removeSelf();
+    }
+
+    return new Promise((resolve) => {
+      Promise.all(result).then(() => {
+        const result = this.removeSelf();
+        if (result) {
+          result.then(resolve);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  /**
+   * checks if there is a a hook going on
+   */
+  public prepareRemoveSelf(): Promise<any> | void {}
+
+  /**
+   * removes the children from the dom
+   */
+  public removeSelf(): Promise<any> | void {}
 }
