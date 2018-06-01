@@ -267,6 +267,62 @@ describe('<Animate />', () => {
 
         expect(container.childNodes.length).toBe(0);
       });
+
+      it('elementWillUnmount gets called with node', async () => {
+        const local = store(true, (state, action: boolean) => action);
+        let promiseResolveParent = () => {};
+        const unmountPromiseParent = new Promise((resolve) => {promiseResolveParent = resolve;});
+        let promiseResolveChild = () => {};
+        const unmountPromiseChild = new Promise((resolve) => {promiseResolveChild = resolve;});
+        const willUnmountSpyParent = jasmine.createSpy('willUnmountParent', () => unmountPromiseParent).and.callThrough();
+        const willUnmountSpyChild = jasmine.createSpy('willUnmount', () => unmountPromiseChild).and.callThrough();
+
+        const Component = component(
+          'Component',
+          () => ({ local }),
+          () =>
+                <Animate
+                  elementWillUnmount={willUnmountSpyParent}
+                >
+                  <Animate
+                    elementWillUnmount={willUnmountSpyChild}
+                  >
+                    {local.state &&
+                      <div><div /></div>
+                    }
+                  </Animate>
+                </Animate>,
+        );
+
+        plusnew.render(<Component />, container);
+
+        expect(container.childNodes.length).toBe(1);
+        expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+        expect(willUnmountSpyParent.calls.count()).toBe(0);
+        expect(willUnmountSpyChild.calls.count()).toBe(0);
+
+        local.dispatch(false);
+
+        expect(willUnmountSpyParent.calls.count()).toBe(1);
+        expect(willUnmountSpyChild.calls.count()).toBe(0);
+        expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+        expect(willUnmountSpyParent).toHaveBeenCalledWith(container.childNodes[0]);
+
+        await tick(1);
+        promiseResolveParent();
+        await tick(1);
+
+        expect(willUnmountSpyParent.calls.count()).toBe(1);
+        expect(willUnmountSpyChild.calls.count()).toBe(1);
+        expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+        expect(willUnmountSpyChild).toHaveBeenCalledWith(container.childNodes[0]);
+
+        await tick(1);
+        promiseResolveChild();
+        await tick(1);
+
+        expect(container.childNodes.length).toBe(0);
+      });
     });
   });
 });

@@ -1,5 +1,5 @@
-import types from '../types';
 import Instance from '../Instance';
+import types from '../types';
 
 export default class PlaceHolderInstance extends Instance {
   public nodeType = types.Placeholder;

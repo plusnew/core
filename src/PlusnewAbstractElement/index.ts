@@ -17,7 +17,7 @@ export default class PlusnewAbstractElement {
    * Lightweight representation of a DOM or Component Node, this component is immutable and is used for comparison
    */
   constructor(type: PlusnewElement, props: {} | null, children: PlusnewAbstractElement[]) {
-    this.setType(type)
+    this.setType(type);
     this.setProps(props, children);
   }
 
@@ -41,3 +41,4 @@ export default class PlusnewAbstractElement {
 }
 
 export { PlusnewElement };
+

@@ -1,16 +1,16 @@
-import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
-import factory from './instances/factory';
-import componentFactory, { componentResult } from './components/factory';
-import RootInstance, { renderOptions } from './instances/types/Root/Instance';
-import InputEvent, { nothing } from './interfaces/InputEvent';
-import { options } from './interfaces/component';
-import Instance from './instances/types/Instance';
-import { Fragment } from './util/symbols';
-import elementTypeChecker from './util/elementTypeChecker';
-import Portal from './components/Portal';
-import Animate from './components/Animate';
 import store from 'redchain';
+import Animate from './components/Animate';
+import componentFactory, { componentResult } from './components/factory';
+import Portal from './components/Portal';
+import factory from './instances/factory';
+import Instance from './instances/types/Instance';
+import RootInstance, { renderOptions } from './instances/types/Root/Instance';
+import { options } from './interfaces/component';
+import InputEvent, { nothing } from './interfaces/InputEvent';
 import './interfaces/jsx';
+import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
+import elementTypeChecker from './util/elementTypeChecker';
+import { Fragment } from './util/symbols';
 
 class Plusnew {
   /**

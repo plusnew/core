@@ -1,6 +1,6 @@
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import reconciler from '../../reconciler';
 import factory from '../../factory';
+import reconciler from '../../reconciler';
 import ArrayInstance from './Instance';
 
 const NOT_FOUND = -1;

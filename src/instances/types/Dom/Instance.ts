@@ -1,10 +1,10 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import types from '../types';
-import Instance, { getPredeccessor, predecessor } from '../Instance';
-import ChildrenInstance from '../ChildrenInstance';
-import { getSpecialNamespace } from '../../../util/namespace';
-import { hasOnchangeEvent, hasInputEvent } from '../../../util/dom';
 import { props } from '../../../interfaces/component';
+import { hasInputEvent, hasOnchangeEvent } from '../../../util/dom';
+import { getSpecialNamespace } from '../../../util/namespace';
+import ChildrenInstance from '../ChildrenInstance';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
+import types from '../types';
 import reconcile from './reconcile';
 
 const PropToAttribbuteMapping = {

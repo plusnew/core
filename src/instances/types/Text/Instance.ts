@@ -1,5 +1,5 @@
-import types from '../types';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
+import types from '../types';
 import reconcile from './reconcile';
 
 export default class TextInstance extends Instance {

@@ -1,6 +1,6 @@
-import types from '../types';
-import Instance, { getPredeccessor } from '../Instance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import Instance, { getPredeccessor } from '../Instance';
+import types from '../types';
 
 export default class ShallowInstance extends Instance {
   public nodeType = types.Component;

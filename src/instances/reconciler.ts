@@ -1,10 +1,9 @@
-import PlusnewAbstractElement  from '../PlusnewAbstractElement';
 import { ApplicationElement, props } from '../interfaces/component';
-
+import PlusnewAbstractElement from '../PlusnewAbstractElement';
+import elementTypeChecker from '../util/elementTypeChecker';
 import factory from './factory';
 import Instance from './types/Instance';
 import types from './types/types';
-import elementTypeChecker from '../util/elementTypeChecker';
 
 export class Reconciler {
   /**

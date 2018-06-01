@@ -1,5 +1,5 @@
-import { PlusnewElement } from '../PlusnewAbstractElement';
 import { props } from '../interfaces/component';
+import { PlusnewElement } from '../PlusnewAbstractElement';
 
 export function isInputElement(type: PlusnewElement, props: props) {
   return type === 'input';

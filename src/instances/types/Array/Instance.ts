@@ -1,7 +1,7 @@
-import types from '../types';
-import Instance, { getPredeccessor } from '../Instance';
-import ChildrenInstance from '../ChildrenInstance';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import ChildrenInstance from '../ChildrenInstance';
+import Instance, { getPredeccessor } from '../Instance';
+import types from '../types';
 import reconcile from './reconcile';
 
 export default class ArrayInstance extends ChildrenInstance {

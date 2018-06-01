@@ -1,6 +1,6 @@
 import { ApplicationElement } from '../../interfaces/component';
-import Instance, { getPredeccessor, predecessor } from './Instance';
 import factory from '../factory';
+import Instance, { getPredeccessor, predecessor } from './Instance';
 
 export default abstract class ChildrenInstance extends Instance {
   public rendered: Instance[];

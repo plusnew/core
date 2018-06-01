@@ -1,9 +1,9 @@
-import types from '../types';
-import Instance, { getPredeccessor, predecessor } from '../Instance';
-import factory from '../../factory';
-import reconcile, { shouldUpdate } from './reconcile';
+import component, { constructor, deps, nothing, options, props, render } from '../../../interfaces/component';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import component, { constructor, render, deps, options, nothing, props } from '../../../interfaces/component';
+import factory from '../../factory';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
+import types from '../types';
+import reconcile, { shouldUpdate } from './reconcile';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
 // if a file doesn't export anything other than types, it won't generate the .d.ts file

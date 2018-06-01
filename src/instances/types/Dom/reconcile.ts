@@ -1,7 +1,7 @@
-import DomInstance from './Instance';
 import { props } from '../../../interfaces/component';
-import reconciler from '../../reconciler';
 import factory from '../../factory';
+import reconciler from '../../reconciler';
+import DomInstance from './Instance';
 
 export default function (props: props, instance: DomInstance) {
   for (const propIndex in props) {
