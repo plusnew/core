@@ -8,6 +8,7 @@ export default class ArrayInstance extends ChildrenInstance {
   public nodeType = types.Array;
   public type = types.Array;
   public props: (PlusnewAbstractElement)[];
+  public executeChildrenElementWillUnmount = true;
 
   constructor(
     abstractElements: (PlusnewAbstractElement)[],

@@ -30,7 +30,7 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
       }
 
       if (!found) {
-        instance.rendered[oldIndex].remove();
+        instance.rendered[oldIndex].remove(instance.executeChildrenElementWillUnmount);
         instance.rendered.splice(oldIndex, 1);
         instance.props.splice(oldIndex, 1);
         oldIndex -= 1;
@@ -75,7 +75,7 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
   instance.rendered.splice(
     newAbstractElements.length,
     instance.rendered.length - newAbstractElements.length,
-  ).forEach(childInstance => childInstance.remove());
+  ).forEach(childInstance => childInstance.remove(true));
 
   instance.props = newAbstractElements;
 }

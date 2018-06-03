@@ -99,12 +99,12 @@ export default class ComponentInstance extends Instance {
   /**
    * removes the children from the dom
    */
-  public remove() {
+  public remove(prepareRemoveSelf: boolean) {
     this.removeDependencyListeners();
     if (this.options.componentWillUnmount) {
       this.options.componentWillUnmount(this.props, this.dependencies);
     }
-    return this.rendered.remove();
+    return this.rendered.remove(prepareRemoveSelf);
   }
 
   /**

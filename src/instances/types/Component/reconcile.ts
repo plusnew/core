@@ -56,7 +56,7 @@ export default function (props: props, instance: ComponentInstance) {
 
   const newChildrenInstance = reconciler.update(newAbstractChildren, instance.rendered);
   if (newChildrenInstance !== instance.rendered) {
-    instance.rendered.remove();
+    instance.rendered.remove(true);
     instance.rendered = newChildrenInstance;
   }
 

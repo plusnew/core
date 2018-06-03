@@ -65,7 +65,7 @@ export default abstract class Instance {
 
   public abstract move(predecessor: predecessor): void;
 
-  public abstract remove(): Promise<any> | void;
+  public abstract remove(prepareRemoveSelf: boolean): Promise<any> | void;
 
   /**
    * gets called with newly created elements by the children

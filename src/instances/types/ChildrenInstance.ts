@@ -4,6 +4,8 @@ import Instance, { getPredeccessor, predecessor } from './Instance';
 
 export default abstract class ChildrenInstance extends Instance {
   public rendered: Instance[];
+  // Decides if the children will call elementWillUnmount
+  public abstract executeChildrenElementWillUnmount: boolean;
 
   constructor(
     abstractElement: ApplicationElement,
@@ -49,16 +51,22 @@ export default abstract class ChildrenInstance extends Instance {
   /**
    * removes the domnode from the parent
    */
-  public remove() {
-    const result = this.prepareRemoveSelf();
-    if (result) {
-      return result.then(() => this.removeChildren());
+  public remove(prepareRemoveSelf: boolean) {
+    let result: Promise<any> | void;
+
+    if (prepareRemoveSelf) {
+      result = this.prepareRemoveSelf();
     }
-    return this.removeChildren();
+
+    if (result) {
+      return result.then(() => this.removeChildren(prepareRemoveSelf));
+    }
+    return this.removeChildren(prepareRemoveSelf);
   }
 
-  private removeChildren() {
-    const result = this.rendered.map(child => child.remove()).filter(result => result !== undefined);
+  private removeChildren(prepareRemoveSelf: boolean) {
+    const executeChildrenElementWillUnmount = prepareRemoveSelf === false ? false : this.executeChildrenElementWillUnmount;
+    const result = this.rendered.map(child => child.remove(executeChildrenElementWillUnmount)).filter(result => result !== undefined);
 
     if (result.length === 0) {
       return this.removeSelf();

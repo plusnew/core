@@ -18,6 +18,7 @@ export default class DomInstance extends ChildrenInstance {
   public nodeType = types.Dom;
   public ref: Element;
   public props: props;
+  public executeChildrenElementWillUnmount = false;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -209,18 +210,14 @@ export default class DomInstance extends ChildrenInstance {
 
 
   public elementDidMountToParent() {
-    if (this.parentInstance) {
-      this.parentInstance.elementDidMount(this.ref);
-    }
+    (this.parentInstance as Instance).elementDidMount(this.ref);
   }
 
   /**
    * gets called with newly created elements by the children
    */
   public elementWillUnmountToParent() {
-    if (this.parentInstance) {
-      return this.parentInstance.elementWillUnmount(this.ref);
-    }
+    return (this.parentInstance as Instance).elementWillUnmount(this.ref);
   }
 
   public prepareRemoveSelf() {

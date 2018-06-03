@@ -22,9 +22,7 @@ const Animate: Component<props> = factory(
 
     config.instance.elementWillUnmount = (element: Element): Promise<any> | void => {
       let parentWait: void | Promise<any> = undefined;
-      if (config.instance.parentInstance) {
-        parentWait = config.instance.parentInstance.elementWillUnmount(element);
-      }
+      parentWait = (config.instance.parentInstance as Instance).elementWillUnmount(element);
 
       if (parentWait) {
         if (props.elementWillUnmount) {

@@ -9,6 +9,8 @@ export default class FragmentInstance extends ChildrenInstance {
   public nodeType = types.Fragment;
   public type = types.Fragment;
   public props: props;
+  public executeChildrenElementWillUnmount = true;
+
 
   constructor(
     abstractElement: PlusnewAbstractElement,
