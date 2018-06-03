@@ -24,4 +24,3 @@ const Portal: Component<props> = factory(
 export default Portal;
 
 export { Instance, props };
-
