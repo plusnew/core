@@ -433,8 +433,7 @@ describe('<Animate />', () => {
         );
   
         plusnew.render(<Component />, container);
-  
-        debugger;
+
         expect(container.childNodes.length).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
         expect(willUnmountSpy.calls.count()).toBe(0);
