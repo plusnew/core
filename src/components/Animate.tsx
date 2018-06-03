@@ -10,11 +10,9 @@ type props = {
 const Animate: Component<props> = factory(
   'Animate',
   () => ({}),
-  (props: props, dependencies, config) => {
+  (props: props, _dependencies, config) => {
     config.instance.elementDidMount = (element: Element) => {
-      if (config.instance.parentInstance) {
-        config.instance.parentInstance.elementDidMount(element);
-      }
+      (config.instance.parentInstance as Instance).elementDidMount(element);
       if (props.elementDidMount) {
         props.elementDidMount(element);
       }
@@ -25,18 +23,15 @@ const Animate: Component<props> = factory(
       parentWait = (config.instance.parentInstance as Instance).elementWillUnmount(element);
 
       if (parentWait) {
-        if (props.elementWillUnmount) {
-          return new Promise((resolve) => {
-            (parentWait as Promise<any>).then(() => {
-              if (props.elementWillUnmount) {
-                props.elementWillUnmount(element).then(() => resolve());
-              } else {
-                resolve();
-              }
-            });
+        return new Promise((resolve) => {
+          (parentWait as Promise<any>).then(() => {
+            if (config.instance.props.elementWillUnmount) {
+              config.instance.props.elementWillUnmount(element).then(() => resolve());
+            } else {
+              resolve();
+            }
           });
-        }
-        return parentWait;
+        });
       }
 
       if (props.elementWillUnmount) {

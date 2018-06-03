@@ -74,12 +74,8 @@ export default abstract class ChildrenInstance extends Instance {
 
     return new Promise((resolve) => {
       Promise.all(result).then(() => {
-        const result = this.removeSelf();
-        if (result) {
-          result.then(resolve);
-        } else {
-          resolve();
-        }
+        this.removeSelf();
+        resolve();
       });
     });
   }

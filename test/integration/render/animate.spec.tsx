@@ -369,6 +369,47 @@ describe('<Animate />', () => {
         expect(container.childNodes.length).toBe(0);
       });
 
+
+      it('elementWillUnmounts gets called even with nested Animate', async () => {
+        const local = store(true, (state, action: boolean) => action);
+        let promiseResolveChild = () => {};
+        const unmountPromiseChild = new Promise((resolve) => {promiseResolveChild = resolve;});
+        const willUnmountSpyChild = jasmine.createSpy('willUnmount', () => unmountPromiseChild).and.callThrough();
+
+        const Component = component(
+          'Component',
+          () => ({ local }),
+          () =>
+                <Animate
+                >
+                  <Animate
+                    elementWillUnmount={willUnmountSpyChild}
+                  >
+                    {local.state &&
+                      <div><div /></div>
+                    }
+                  </Animate>
+                </Animate>,
+        );
+
+        plusnew.render(<Component />, container);
+
+        expect(container.childNodes.length).toBe(1);
+        expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+        expect(willUnmountSpyChild.calls.count()).toBe(0);
+
+        local.dispatch(false);
+
+        expect(willUnmountSpyChild.calls.count()).toBe(1);
+        expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+
+        await tick(1);
+        promiseResolveChild();
+        await tick(1);
+
+        expect(container.childNodes.length).toBe(0);
+      });
+
       it('elementWillUnmount gets called with node, when parent-fragment gets removed', async () => {
         const local = store(true, (_state, action: boolean) => action);
         let promiseResolve = () => {};
@@ -493,6 +534,32 @@ describe('<Animate />', () => {
       local.dispatch(false);
 
       expect(willUnmountSpy.calls.count()).toBe(0);
+      expect(container.childNodes.length).toBe(0);
+    });
+
+    it('removal works, without error', async () => {
+      const local = store(true, (_state, action: boolean) => action);
+      const Component = component(
+        'Component',
+        () => ({ local }),
+        () => <Animate elementWillUnmount={() => Promise.resolve()}>
+                <Animate>
+                  {local.state &&
+                    <div />
+                  }
+                </Animate>
+              </Animate>,
+      );
+
+      plusnew.render(<Component />, container);
+
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+
+      local.dispatch(false);
+
+      await tick(1);
+
       expect(container.childNodes.length).toBe(0);
     });
   });
