@@ -3,7 +3,7 @@ import factory, { Component } from './factory';
 
 type props = {
   elementDidMount?: (element: Element) => void;
-  elementWillUnmount?: (element: Element) => Promise<any>;
+  elementWillUnmount?: (element: Element) => Promise<any> | void;
   children: any,
 };
 
@@ -34,8 +34,8 @@ const Animate: Component<props> = factory(
         });
       }
 
-      if (props.elementWillUnmount) {
-        return props.elementWillUnmount(element);
+      if (config.instance.props.elementWillUnmount) {
+        return config.instance.props.elementWillUnmount(element);
       }
     };
 
