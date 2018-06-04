@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {
-    "redchain": "0.5.101"
+    "redchain": "0.5.102"
   },
   "devDependencies": {
     "concurrently": "3.5.1",
