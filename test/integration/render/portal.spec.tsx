@@ -1,6 +1,6 @@
 import plusnew, { component, store, Portal } from 'index';
 
-describe('firing input events', () => {
+describe('<Portal />', () => {
   let container: HTMLElement;
 
   beforeEach(() => {

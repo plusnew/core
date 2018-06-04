@@ -1,10 +1,10 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
-import types from '../types';
-import Instance, { getPredeccessor, predecessor } from '../Instance';
-import ChildrenInstance from '../ChildrenInstance';
-import { getSpecialNamespace } from '../../../util/namespace';
-import { hasOnchangeEvent, hasInputEvent } from '../../../util/dom';
 import { props } from '../../../interfaces/component';
+import { hasInputEvent, hasOnchangeEvent } from '../../../util/dom';
+import { getSpecialNamespace } from '../../../util/namespace';
+import ChildrenInstance from '../ChildrenInstance';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
+import types from '../types';
 import reconcile from './reconcile';
 
 const PropToAttribbuteMapping = {
@@ -18,6 +18,7 @@ export default class DomInstance extends ChildrenInstance {
   public nodeType = types.Dom;
   public ref: Element;
   public props: props;
+  public executeChildrenElementWillUnmount = false;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -39,9 +40,13 @@ export default class DomInstance extends ChildrenInstance {
     this.addChildren(abstractElement.props.children);
     this.setAutofocusIfNeeded();
     this.appendToParent(this.ref, predecessor());
+    this.elementDidMountToParent();
     this.setOnChangeEvent();
   }
 
+  public elementDidMount() {}
+
+  public elementWillUnmount() {}
 
   public getLastIntrinsicElement() {
     return this.ref;
@@ -66,8 +71,6 @@ export default class DomInstance extends ChildrenInstance {
       // Focus can only be set from the browser, when the dom got inserted to the dom
       (this.ref as HTMLElement).addEventListener('DOMNodeInsertedIntoDocument', addFocus);
     }
-
-    return this;
   }
 
   /**
@@ -77,8 +80,6 @@ export default class DomInstance extends ChildrenInstance {
     for (const index in this.props) {
       this.setProp(index, this.props[index]);
     }
-
-    return this;
   }
 
   /**
@@ -113,8 +114,6 @@ export default class DomInstance extends ChildrenInstance {
         }
       }
     }
-
-    return this;
   }
 
   private setOnChangeEvent() {
@@ -130,7 +129,7 @@ export default class DomInstance extends ChildrenInstance {
             preventDefault = true;
           }
 
-          return this;
+          return;
         };
 
         this.props.onchange(evt);
@@ -147,7 +146,7 @@ export default class DomInstance extends ChildrenInstance {
       (this.ref as HTMLElement).onchange = onchangeWrapper;
     }
 
-    return this;
+    return;
   }
 
   private ignoreProperty(key: string) {
@@ -174,7 +173,6 @@ export default class DomInstance extends ChildrenInstance {
     } else {
       this.ref.removeAttribute(this.getAttributeNameFromProp(key));
     }
-    return this;
   }
 
   /**
@@ -197,31 +195,40 @@ export default class DomInstance extends ChildrenInstance {
   /**
    * by the children should add themselfs to our element
    */
+
   public appendChild(element: Node, predecessor: Node | null) {
     this.insertBefore(this.ref, element, predecessor);
-    return this;
   }
 
   /**
    * moves the domnode from the parent
    */
+
   public move(predecessor: predecessor) {
     this.insertBefore(this.ref.parentNode as Node, this.ref, predecessor);
-    return this;
+  }
+
+
+  public elementDidMountToParent() {
+    (this.parentInstance as Instance).elementDidMount(this.ref);
   }
 
   /**
-   * removes the domnode from the parent
+   * gets called with newly created elements by the children
    */
-  public remove() {
-    this.rendered.forEach(child => child.remove());
-    (this.ref.parentNode as Node).removeChild(this.ref);
+  public elementWillUnmountToParent() {
+    return (this.parentInstance as Instance).elementWillUnmount(this.ref);
+  }
 
-    return this;
+  public prepareRemoveSelf() {
+    return this.elementWillUnmountToParent();
+  }
+
+  public removeSelf() {
+    (this.ref.parentNode as Node).removeChild(this.ref);
   }
 
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     reconcile(newAbstractElement.props, this);
-    return this;
   }
 }

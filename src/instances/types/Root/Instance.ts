@@ -1,6 +1,6 @@
-import types from '../types';
-import Instance, { getPredeccessor } from '../Instance';
 import { ApplicationElement } from '../../../interfaces/component';
+import Instance, { getPredeccessor } from '../Instance';
+import types from '../types';
 
 type renderOptions = {
   createChildrenComponents?: boolean;
@@ -35,8 +35,6 @@ export default class RootInstance extends Instance {
    */
   public appendChild(element: Element) {
     this.ref.appendChild(element);
-
-    return this;
   }
 
   public getLastIntrinsicElement() {

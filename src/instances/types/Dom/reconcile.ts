@@ -1,7 +1,7 @@
-import DomInstance from './Instance';
 import { props } from '../../../interfaces/component';
-import reconciler from '../../reconciler';
 import factory from '../../factory';
+import reconciler from '../../reconciler';
+import DomInstance from './Instance';
 
 export default function (props: props, instance: DomInstance) {
   for (const propIndex in props) {
@@ -10,7 +10,7 @@ export default function (props: props, instance: DomInstance) {
         if (i < instance.rendered.length) {
           const newInstance = reconciler.update(props.children[i], instance.rendered[i]);
           if (newInstance !== instance.rendered[i]) {
-            instance.rendered[i].remove();
+            instance.rendered[i].remove(true);
             instance.rendered[i] = newInstance;
           }
         } else {
@@ -27,7 +27,7 @@ export default function (props: props, instance: DomInstance) {
   }
 
   while (instance.rendered.length > props.children.length) {
-    instance.rendered[props.children.length].remove();
+    instance.rendered[props.children.length].remove(true);
     instance.rendered.splice(props.children.length, 1);
   }
 

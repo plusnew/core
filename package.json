@@ -1,6 +1,6 @@
 {
   "name": "plusnew",
-  "version": "0.5.102",
+  "version": "0.5.104",
   "description": "ts component framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,6 +29,6 @@
     "plusnew-webpack-config": "0.5.94",
     "tslint": "5.8.0",
     "tslint-config-airbnb": "5.4.2",
-    "typescript": "2.8.3"
+    "typescript": "2.9.1"
   }
 }

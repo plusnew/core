@@ -36,8 +36,6 @@ export default abstract class Instance {
     } else {
       this.parentInstance.appendChild(element, predecessor);
     }
-
-    return this;
   }
 
   /**
@@ -49,8 +47,6 @@ export default abstract class Instance {
     } else {
       this.parentInstance.appendChild(element, predecessor);
     }
-
-    return this;
   }
 
   public insertBefore(parentNode: Node, target: Node, predecessor: predecessor) {
@@ -66,15 +62,31 @@ export default abstract class Instance {
   /**
    * orders to move itself to another place
    */
-  public abstract move(predecessor: predecessor): Instance;
+
+  public abstract move(predecessor: predecessor): void;
+
+  public abstract remove(prepareRemoveSelf: boolean): Promise<any> | void;
+
+  /**
+   * gets called with newly created elements by the children
+   */
+  public elementDidMount(element: Element): Promise<any> | void {
+    if (this.parentInstance) {
+      this.parentInstance.elementDidMount(element);
+    }
+  }
+
+  /**
+   * gets called with deleted elements from the children
+   */
+  public elementWillUnmount(element: Element): Promise<any> | void {
+    if (this.parentInstance) {
+      return this.parentInstance.elementWillUnmount(element);
+    }
+  }
 
   /**
    * orders to remove itself from the dom
    */
-  public abstract remove(): Instance;
-
-  /**
-   * orders to remove itself from the dom
-   */
-  public abstract reconcile(newAbstractElement: ApplicationElement): Instance;
+  public abstract reconcile(newAbstractElement: ApplicationElement): void;
 }

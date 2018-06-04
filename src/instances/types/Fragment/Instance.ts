@@ -1,14 +1,16 @@
-import types from '../types';
-import Instance, { getPredeccessor } from '../Instance';
-import ChildrenInstance from '../ChildrenInstance';
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import { props } from '../../../interfaces/component';
+import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import ChildrenInstance from '../ChildrenInstance';
+import Instance, { getPredeccessor } from '../Instance';
+import types from '../types';
 import reconcile from './reconcile';
 
 export default class FragmentInstance extends ChildrenInstance {
   public nodeType = types.Fragment;
   public type = types.Fragment;
   public props: props;
+  public executeChildrenElementWillUnmount = true;
+
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -22,7 +24,6 @@ export default class FragmentInstance extends ChildrenInstance {
 
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     reconcile(newAbstractElement, this);
-    return this;
   }
 
   public getChildrenPredeccessor() {

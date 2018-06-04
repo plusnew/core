@@ -1,5 +1,5 @@
-import types from '../types';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
+import types from '../types';
 import reconcile from './reconcile';
 
 export default class TextInstance extends Instance {
@@ -23,8 +23,6 @@ export default class TextInstance extends Instance {
 
   public setText(abstractElement: string) {
     this.ref.textContent = abstractElement;
-
-    return this;
   }
 
   /**
@@ -32,7 +30,6 @@ export default class TextInstance extends Instance {
    */
   public move(predecessor: predecessor) {
     this.insertBefore(this.ref.parentNode as Node, this.ref, predecessor);
-    return this;
   }
 
   /**
@@ -40,12 +37,9 @@ export default class TextInstance extends Instance {
    */
   public remove() {
     this.ref.remove();
-
-    return this;
   }
 
   public reconcile(newAbstractElement: string) {
     reconcile(newAbstractElement, this);
-    return this;
   }
 }

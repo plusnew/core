@@ -9,15 +9,9 @@ describe('Does the root-instance behave correctly', () => {
       getLastIntrinsicElement() {
         return null;
       }
-      move() {
-        return this;
-      }
-      remove() {
-        return this;
-      }
-      reconcile() {
-        return this;
-      }
+      move() {}
+      remove() {}
+      reconcile() {}
     }
 
     abstract = new TestInstance(<div />, undefined, () => null);

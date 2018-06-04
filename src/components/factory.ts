@@ -1,6 +1,6 @@
-import ComponentInstance from '../instances/types/Component/Instance';
-import { props, options } from '../interfaces/component';
 import { store } from 'redchain';
+import ComponentInstance from '../instances/types/Component/Instance';
+import { options, props } from '../interfaces/component';
 
 export type result = plusnew.JSX.Element | null;
 export interface componentResult<componentProps extends Partial<props>> {

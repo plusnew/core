@@ -1,5 +1,5 @@
 import Instance from '../instances/types/Component/Instance';
-import factory, { Component } from './factory';
+import factory, { Component } from './factory';
 
 type props = {
   target: HTMLElement;

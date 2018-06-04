@@ -1,16 +1,16 @@
-import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
-import factory from './instances/factory';
-import componentFactory, { componentResult } from './components/factory';
-import RootInstance, { renderOptions } from './instances/types/Root/Instance';
-import InputEvent, { nothing } from './interfaces/InputEvent';
-import { options } from './interfaces/component';
-import Instance from './instances/types/Instance';
-import { Fragment } from './util/symbols';
-import elementTypeChecker from './util/elementTypeChecker';
-import Portal from './components/Portal';
 import store from 'redchain';
+import Animate from './components/Animate';
+import componentFactory, { componentResult } from './components/factory';
+import Portal from './components/Portal';
+import factory from './instances/factory';
+import Instance from './instances/types/Instance';
+import RootInstance, { renderOptions } from './instances/types/Root/Instance';
+import { options } from './interfaces/component';
+import InputEvent, { nothing } from './interfaces/InputEvent';
 import './interfaces/jsx';
-
+import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
+import elementTypeChecker from './util/elementTypeChecker';
+import { Fragment } from './util/symbols';
 
 class Plusnew {
   /**
@@ -25,7 +25,8 @@ class Plusnew {
    */
   public render(element: PlusnewAbstractElement, containerElement: HTMLElement, options?: renderOptions) {
     // Fake RootInstance
-    const wrapper = new RootInstance(true, undefined, () => null, options);
+    const predecessor = () => null;
+    const wrapper = new RootInstance(true, undefined, predecessor, options);
 
     wrapper.ref = containerElement;
 
@@ -33,7 +34,7 @@ class Plusnew {
       containerElement.removeChild(containerElement.childNodes[0]);
     }
 
-    return factory(element, wrapper, () => null);
+    return factory(element, wrapper, predecessor);
   }
 
   Fragment = Fragment;
@@ -55,6 +56,7 @@ export {
   elementTypeChecker,
   options as componentOptions,
   Portal,
+  Animate,
 };
 
 export default new Plusnew();

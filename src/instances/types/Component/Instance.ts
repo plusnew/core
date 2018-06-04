@@ -1,9 +1,9 @@
-import types from '../types';
-import Instance, { getPredeccessor, predecessor } from '../Instance';
-import factory from '../../factory';
-import reconcile, { shouldUpdate } from './reconcile';
+import component, { constructor, deps, nothing, options, props, render } from '../../../interfaces/component';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import component, { constructor, render, deps, options, nothing, props } from '../../../interfaces/component';
+import factory from '../../factory';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
+import types from '../types';
+import reconcile, { shouldUpdate } from './reconcile';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
@@ -38,14 +38,10 @@ export default class ComponentInstance extends Instance {
   private initialiseComponent() {
     const props = this.props;
     (this.type as component<any>)(props, this);
-
-    return this;
   }
 
   private registerRender(render: render<any>) {
     this.render = render;
-
-    return this;
   }
 
   private registerDependencies(dependencies: deps) {
@@ -54,8 +50,6 @@ export default class ComponentInstance extends Instance {
       dependency.addOnChange(this.update);
     }
     this.dependencies = dependencies;
-
-    return this;
   }
 
   /**
@@ -71,14 +65,11 @@ export default class ComponentInstance extends Instance {
    * asks the component what should be changed and puts it to the factory
    */
   public setComponentParts(constructor: constructor<any, any>, render: render<any>) {
-    this
-        .registerRender(render)
-        .registerDependencies(constructor(this.props, this.options));
+    this.registerRender(render);
+    this.registerDependencies(constructor(this.props, this.options));
 
     const abstractChildren = this.render(this.props, this.dependencies, this.options);
     this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
-
-    return this;
   }
 
   public getLastIntrinsicElement() {
@@ -90,15 +81,12 @@ export default class ComponentInstance extends Instance {
    */
   private update() {
     reconcile(this.props, this);
-
-    return this;
   }
 
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     if (shouldUpdate((newAbstractElement as PlusnewAbstractElement).props, this)) {
       reconcile(newAbstractElement.props, this);
     }
-    return this;
   }
 
   /**
@@ -106,21 +94,17 @@ export default class ComponentInstance extends Instance {
    */
   public move(predecessor: predecessor) {
     this.rendered.move(predecessor);
-
-    return this;
   }
 
   /**
    * removes the children from the dom
    */
-  public remove() {
+  public remove(prepareRemoveSelf: boolean) {
     this.removeDependencyListeners();
     if (this.options.componentWillUnmount) {
       this.options.componentWillUnmount(this.props, this.dependencies);
     }
-    this.rendered.remove();
-
-    return this;
+    return this.rendered.remove(prepareRemoveSelf);
   }
 
   /**
