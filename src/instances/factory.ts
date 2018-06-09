@@ -6,7 +6,7 @@ import ComponentInstance from './types/Component/Instance';
 import DomInstance from './types/Dom/Instance';
 import FragmentInstance from './types/Fragment/Instance';
 import Instance, { getPredeccessor } from './types/Instance';
-import PlaceHolderInstance from './types/Placeholder/Instance';
+import PlaceholderInstance from './types/Placeholder/Instance';
 import ShallowInstance from './types/Shallow/Instance';
 import TextInstance from './types/Text/Instance';
 import types from './types/types';
@@ -21,7 +21,7 @@ export default function (
 ): Instance {
   // @TODO add something for invalid functions
   if (elementTypeChecker.isPlaceholderElement(abstractElement) === true) {
-    return new PlaceHolderInstance(abstractElement as false, parentInstance, getPredecessor);
+    return new PlaceholderInstance(abstractElement as false, parentInstance, getPredecessor);
   }
   if (elementTypeChecker.isTextElement(abstractElement) === true) {
     return new TextInstance(abstractElement as string, parentInstance, getPredecessor);

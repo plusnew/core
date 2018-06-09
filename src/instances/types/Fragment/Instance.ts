@@ -5,6 +5,12 @@ import Instance, { getPredeccessor } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
 
+/**
+ * FragmentInstances are representations of <>
+ * or when plusnew.createElement gets called with plusnew.Fragment
+ * 
+ * it is used as a container for the given children, and doesn't do much else
+ */
 export default class FragmentInstance extends ChildrenInstance {
   public nodeType = types.Fragment;
   public type = types.Fragment;
@@ -22,10 +28,17 @@ export default class FragmentInstance extends ChildrenInstance {
     this.addChildren(abstractElement.props.children);
   }
 
+  /**
+   * updates the shadowdom and dom
+   */
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     reconcile(newAbstractElement, this);
   }
 
+  /**
+   * gets dom element predecessing the fragment for the children instances
+   * and returns the predeccessor of this fragment
+   */
   public getChildrenPredeccessor() {
     return this.getPredecessor();
   }

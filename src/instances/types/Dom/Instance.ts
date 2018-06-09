@@ -14,6 +14,15 @@ const PropToAttribbuteMapping = {
   httpEquiv: 'http-equiv',
 };
 
+/**
+ * DomInstances are representations of <div />
+ * or when plusnew.createElement gets called with a string
+ * these can be html-elements but also svg elements
+ * the DomInstance sets the attributes and properties in the dom
+ * and takes care of EventHandlers
+ *
+ * it also fires events like elementDidMount and elementWillUnmount
+ */
 export default class DomInstance extends ChildrenInstance {
   public nodeType = types.Dom;
   public ref: Element;
@@ -44,22 +53,44 @@ export default class DomInstance extends ChildrenInstance {
     this.setOnChangeEvent();
   }
 
+  /**
+   * this function gets called from the children, when a intrinsic-element gets created
+   * this will not get proxied above, dom-instances stops the bubbling of such an event
+   */
   public elementDidMount() {}
 
+  /**
+   * this function gets called from the children, when a intrinsic-element gets deleted
+   * this will not get proxied above, dom-instances stops the bubbling of such an event
+   */
   public elementWillUnmount() {}
 
+  /**
+   * this function gets called, to determine predecessors from siblings, since this is an actualdom element
+   * the reference to self should be returned
+   */
   public getLastIntrinsicElement() {
     return this.ref;
   }
 
+  /**
+   * for the children of this dom instance, there is no predecessor, because dom-instance is an actual element
+   */
   public getChildrenPredeccessor() {
     return null;
   }
 
+  /**
+   * sets a special namespace, in case self is an svg, so that children will created with correct namespace
+   */
   private setNamespace() {
     this.namespace = getSpecialNamespace(this.type as string) || this.namespace;
   }
 
+  /**
+   * safari is the only browser creating a focus on elements created after time
+   * all the other browsers don't do that, that's why this functions sets it manually, after the element is inserted in the dom
+   */
   private setAutofocusIfNeeded() {
     if (this.props.autofocus === true) {
       const addFocus = () => {
@@ -149,6 +180,9 @@ export default class DomInstance extends ChildrenInstance {
     return;
   }
 
+  /**
+   * some properties are plusnew-internally, these should not be set on the actual intrinsic-element
+   */
   private ignoreProperty(key: string) {
     return (
       key === 'key' ||
@@ -157,6 +191,12 @@ export default class DomInstance extends ChildrenInstance {
     );
   }
 
+  /**
+   * determines if the property should be set as property, or as attribute
+   * value properties can't be set as attribute, when updating because then the browser mostly ignores it
+   * for all the other attributes its better to set them as an attribute, e.g. style is better debuggable as a attribute
+   * browsers tend to ignore invalid setted values, and don't show it in the inspectors
+   */
   private setAttributeAsProperty(keyName: string) {
     return this.type === 'input' && keyName === 'value';
   }
@@ -201,33 +241,43 @@ export default class DomInstance extends ChildrenInstance {
   }
 
   /**
-   * moves the domnode from the parent
+   * moves the domnode to another place
    */
-
   public move(predecessor: predecessor) {
     this.insertBefore(this.ref.parentNode as Node, this.ref, predecessor);
   }
 
-
+  /**
+   * calls the parentInstance that this module got created
+   */
   public elementDidMountToParent() {
     (this.parentInstance as Instance).elementDidMount(this.ref);
   }
 
   /**
-   * gets called with newly created elements by the children
+   * calls the parentInstance that this module got deleted
    */
   public elementWillUnmountToParent() {
     return (this.parentInstance as Instance).elementWillUnmount(this.ref);
   }
 
+  /**
+   * checks if parents want to do stuff with unmounting element, e.g. animate it
+   */
   public prepareRemoveSelf() {
     return this.elementWillUnmountToParent();
   }
 
+  /**
+   * actually removes this element
+   */
   public removeSelf() {
     (this.ref.parentNode as Node).removeChild(this.ref);
   }
 
+  /**
+   * updates the shadowdom and dom
+   */
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     reconcile(newAbstractElement.props, this);
   }

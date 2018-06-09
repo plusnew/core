@@ -9,6 +9,14 @@ import reconcile, { shouldUpdate } from './reconcile';
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
 nothing;
 
+/**
+ * ComponentInstances are used representing the <Component /> in the shadowdom
+ * or when plusnew.createElement gets called with a function
+ * it calls the constructure function and keeps the informations what dependencies the component has
+ * the render-function of the component gets called immediately after the render function
+ * the render-function gets called again when a parent component rerenders
+ * or when the dependencie-stores fire the change event
+ */
 export default class ComponentInstance extends Instance {
   public nodeType = types.Component;
   public rendered: Instance;
@@ -83,6 +91,9 @@ export default class ComponentInstance extends Instance {
     reconcile(this.props, this);
   }
 
+  /**
+   * updates the shadowdom and dom
+   */
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     if (shouldUpdate((newAbstractElement as PlusnewAbstractElement).props, this)) {
       reconcile(newAbstractElement.props, this);
