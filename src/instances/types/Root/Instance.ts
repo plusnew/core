@@ -55,6 +55,9 @@ export default class RootInstance extends Instance {
     throw new Error('The root element can\'t remove itself');
   }
 
+  /**
+   * a root instance isn't anything updatable
+   */
   public reconcile(newAbstractElement: false): never {
     throw new Error('The root element can\'t reconcile itself');
   }

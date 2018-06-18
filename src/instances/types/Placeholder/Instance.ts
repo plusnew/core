@@ -1,7 +1,11 @@
 import Instance from '../Instance';
 import types from '../types';
 
-export default class PlaceHolderInstance extends Instance {
+/**
+ * PlaceholderInstance is a representation of {false}
+ * it is used for conditions which don't want to show something
+ */
+export default class PlaceholderInstance extends Instance {
   public nodeType = types.Placeholder;
   public type = types.Fragment;
 
@@ -22,5 +26,9 @@ export default class PlaceHolderInstance extends Instance {
    */
   public remove() {}
 
+  /**
+   * a placeholder is just a element waiting to be exchanged with something else
+   * but it itself doesn't need to be updated
+   */
   public reconcile(newAbstractElement: false) {}
 }

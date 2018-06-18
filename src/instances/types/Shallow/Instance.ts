@@ -32,6 +32,10 @@ export default class ShallowInstance extends Instance {
    */
   public remove() {}
 
+  /**
+   * a shallow instance is nothing actually present in the dom
+   * it just needs to hold all the currently interesting informations
+   */
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
     this.props = newAbstractElement.props;
   }

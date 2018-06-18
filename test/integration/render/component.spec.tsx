@@ -2,7 +2,7 @@ import plusnew, { store, component, componentOptions } from 'index';
 import ComponentInstance from 'instances/types/Component/Instance';
 import FragmentInstance from 'instances/types/Fragment/Instance';
 import types from 'instances/types/types';
-import PlaceHolderInstance from 'instances/types/Placeholder/Instance';
+import PlaceholderInstance from 'instances/types/Placeholder/Instance';
 
 describe('rendering nested components', () => {
   let container: HTMLElement;
@@ -398,7 +398,7 @@ describe('rendering nested components', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
     expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
-    expect((mainComponent.rendered as FragmentInstance).rendered[0] instanceof PlaceHolderInstance).toBe(true);
+    expect((mainComponent.rendered as FragmentInstance).rendered[0] instanceof PlaceholderInstance).toBe(true);
     expect((mainComponent.rendered as FragmentInstance).rendered[0]).not.toBe(nestedComponent);
   });
 
