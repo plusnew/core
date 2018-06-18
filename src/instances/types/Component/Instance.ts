@@ -13,7 +13,7 @@ nothing;
  * ComponentInstances are used representing the <Component /> in the shadowdom
  * or when plusnew.createElement gets called with a function
  * it calls the constructure function and keeps the informations what dependencies the component has
- * the render-function of the component gets called immediately after the render function
+ * the render-function of the component gets called immediately after the constructor-function
  * the render-function gets called again when a parent component rerenders
  * or when the dependencie-stores fire the change event
  */
