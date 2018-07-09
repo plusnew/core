@@ -13,6 +13,10 @@ export function isTextArea(type: PlusnewElement, props: props) {
   return type === 'textarea';
 }
 
+export function isCheckbox(type: PlusnewElement, props: props) {
+  return isInputElement(type, props) && props.type === 'checkbox';
+}
+
 export function hasInputEvent(type: PlusnewElement, props: props) {
   return isTextInput(type, props) || isTextArea(type, props);
 }

@@ -1,6 +1,6 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import { props } from '../../../interfaces/component';
-import { hasInputEvent, hasOnchangeEvent } from '../../../util/dom';
+import { hasInputEvent, hasOnchangeEvent, isCheckbox } from '../../../util/dom';
 import { getSpecialNamespace } from '../../../util/namespace';
 import ChildrenInstance from '../ChildrenInstance';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
@@ -152,9 +152,13 @@ export default class DomInstance extends ChildrenInstance {
       const onchangeWrapper = (evt: Event) => {
         let preventDefault = true;
         this.setProp = (key, value) => {
-          if ((evt.target as HTMLInputElement).value === value) {
-            preventDefault = false;
+          const elementIsCheckbox = isCheckbox(this.type, this.props);
 
+          if (elementIsCheckbox === true && (evt.target as HTMLInputElement).checked === value) {
+            preventDefault = false;
+          } else 
+          if (elementIsCheckbox === false && (evt.target as HTMLInputElement).value === value) {
+            preventDefault = false;
           } else {
             DomInstance.prototype.setProp.call(this, key, value);
             preventDefault = true;
@@ -163,11 +167,18 @@ export default class DomInstance extends ChildrenInstance {
           return;
         };
 
-        this.props.onchange(evt);
+        if (this.props.onchange) {
+          this.props.onchange(evt);
+        }
 
         if (preventDefault === true) {
-          (this.ref as HTMLInputElement).value = this.props.value;
+          if (isCheckbox(this.type, this.props)) {
+            (this.ref as HTMLInputElement).checked = this.props.checked;
+          } else {
+            (this.ref as HTMLInputElement).value = this.props.value;
+          }
         }
+
         delete this.setProp;
       };
 
