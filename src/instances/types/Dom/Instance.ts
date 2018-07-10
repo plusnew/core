@@ -151,13 +151,13 @@ export default class DomInstance extends ChildrenInstance {
     if (hasOnchangeEvent(this.type, this.props)) {
       const onchangeWrapper = (evt: Event) => {
         let preventDefault = true;
-        this.setProp = (key, value) => {
-          const elementIsCheckbox = isCheckbox(this.type, this.props);
+        let changeKey: 'value' | 'checked' = 'value';
+        if (isCheckbox(this.type, this.props)) {
+          changeKey = 'checked';
+        }
 
-          if (elementIsCheckbox === true && (evt.target as HTMLInputElement).checked === value) {
-            preventDefault = false;
-          } else 
-          if (elementIsCheckbox === false && (evt.target as HTMLInputElement).value === value) {
+        this.setProp = (key, value) => {
+          if (key === changeKey && (evt.target as HTMLInputElement)[changeKey] === value) {
             preventDefault = false;
           } else {
             DomInstance.prototype.setProp.call(this, key, value);
@@ -172,11 +172,7 @@ export default class DomInstance extends ChildrenInstance {
         }
 
         if (preventDefault === true) {
-          if (isCheckbox(this.type, this.props)) {
-            (this.ref as HTMLInputElement).checked = this.props.checked;
-          } else {
-            (this.ref as HTMLInputElement).value = this.props.value;
-          }
+          (this.ref as HTMLInputElement)[changeKey] = this.props[changeKey];
         }
 
         delete this.setProp;

@@ -109,6 +109,7 @@ describe('firing input events', () => {
     plusnew.render(<Component />, container);
 
     const input = container.childNodes[0] as HTMLInputElement;
+    input.checked = true;
     const event = new Event('change');
     input.dispatchEvent(event);
 
