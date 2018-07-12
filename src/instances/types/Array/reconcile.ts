@@ -17,7 +17,7 @@ function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractEle
 export default function (newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance) {
 
   // Removal of old-elements just works if key-property is existent
-  if (instance.props.length && instance.props[0].props && instance.props[0].props.key !== undefined) {
+  if (instance.props.length && instance.props[0] && instance.props[0].props && instance.props[0].props.key !== undefined) {
     // Checks old abstract elements, if they should get removed
     // reason for that is, that we dont want to move new elements, because of old elements which get deleted
     // moving causes animations to trigger, and that would be wrong in that case
