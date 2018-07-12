@@ -844,4 +844,31 @@ describe('rendering nested components', () => {
     expect((ul.childNodes[0] as Text).textContent).toBe('foo');
     expect((ul.childNodes[1] as HTMLElement).tagName).toBe('SPAN');
   });
+
+  it('ordering with text on beginning', () => {
+    const list = [null, <div key={1} />] as plusnew.JSX.Element[];
+    const local = store(list, (state, action: typeof list) => action);
+
+    const MainComponent = component(
+      'MainComponent',
+      () => ({ local }),
+      (props: {}, { local }) => (
+        <ul>
+          {local.state.map(item => item)}
+        </ul>
+      ),
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    const ul = container.childNodes[0];
+
+    const div = (ul.childNodes[0] as HTMLElement);
+    expect(div.tagName).toBe('DIV');
+
+    local.dispatch([<div key={1} />, null] as typeof list);
+
+    expect((ul.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect(ul.childNodes[0]).toBe(div);
+  });
 });
