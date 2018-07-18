@@ -4,7 +4,7 @@ import factory from '../../factory';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
 import reconcile, { shouldUpdate } from './reconcile';
-import Component from 'components/AbstractClass';
+import Component from '../../../components/AbstractClass';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
