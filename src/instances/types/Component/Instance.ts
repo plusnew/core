@@ -1,9 +1,10 @@
-import component, { constructor, deps, nothing, options, props, render } from '../../../interfaces/component';
+import { nothing, options, props } from '../../../interfaces/component';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import factory from '../../factory';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
 import reconcile, { shouldUpdate } from './reconcile';
+import Component from '../../../components/AbstractClass';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
@@ -21,8 +22,7 @@ export default class ComponentInstance extends Instance {
   public nodeType = types.Component;
   public rendered: Instance;
   public options: options<any, any>;
-  public render: render<any>;
-  public dependencies: deps;
+  public instance: Component<any>;
   public props: props;
 
   constructor(
@@ -45,19 +45,12 @@ export default class ComponentInstance extends Instance {
    */
   private initialiseComponent() {
     const props = this.props;
-    (this.type as component<any>)(props, this);
-  }
-
-  private registerRender(render: render<any>) {
-    this.render = render;
-  }
-
-  private registerDependencies(dependencies: deps) {
-    for (const dependencyIndex in dependencies) {
-      const dependency = dependencies[dependencyIndex];
+    this.instance = new (this.type as any)(props, this.options);
+    for (const dependencyIndex in this.instance.dependencies) {
+      const dependency = this.instance.dependencies[dependencyIndex];
       dependency.addOnChange(this.update);
     }
-    this.dependencies = dependencies;
+    this.render();
   }
 
   /**
@@ -72,11 +65,8 @@ export default class ComponentInstance extends Instance {
   /**
    * asks the component what should be changed and puts it to the factory
    */
-  public setComponentParts(constructor: constructor<any, any>, render: render<any>) {
-    this.registerRender(render);
-    this.registerDependencies(constructor(this.props, this.options));
-
-    const abstractChildren = this.render(this.props, this.dependencies, this.options);
+  public render() {
+    const abstractChildren = this.instance.render(this.props, this.options);
     this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
   }
 
@@ -113,7 +103,7 @@ export default class ComponentInstance extends Instance {
   public remove(prepareRemoveSelf: boolean) {
     this.removeDependencyListeners();
     if (this.options.componentWillUnmount) {
-      this.options.componentWillUnmount(this.props, this.dependencies);
+      this.options.componentWillUnmount(this.props, this.instance.dependencies);
     }
     return this.rendered.remove(prepareRemoveSelf);
   }
@@ -123,8 +113,8 @@ export default class ComponentInstance extends Instance {
    * without this there would be memoryleaks and unecessary reconsiling without any visible effect
   */
   private removeDependencyListeners() {
-    for (const index in this.dependencies) {
-      this.dependencies[index].removeOnChange(this.update);
+    for (const index in this.instance.dependencies) {
+      this.instance.dependencies[index].removeOnChange(this.update);
     }
   }
 }
