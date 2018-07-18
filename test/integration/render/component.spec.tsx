@@ -1128,7 +1128,7 @@ describe('rendering nested components', () => {
     expect(renderSpy).toHaveBeenCalledWith({ children: [] }, {}, { instance, foo: 'bar' });
   });
 
-  it('config object is shared by constructor and render function', () => {
+  it('displayName is set', () => {
 
     const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
 
@@ -1141,6 +1141,6 @@ describe('rendering nested components', () => {
       renderSpy,
     );
 
-    expect(MainComponent.displayName).toBe('Component');
+    expect(MainComponent.prototype.displayName).toBe('Component');
   });
 });

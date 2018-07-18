@@ -1,6 +1,7 @@
-import component, { props } from '../interfaces/component';
+import { props } from '../interfaces/component';
+import { Component } from '../components/factory';
 
-type PlusnewElement = string | number | component<any> | Symbol;
+type PlusnewElement = string | number | Component<any> | Symbol;
 
 export default class PlusnewAbstractElement {
   /**

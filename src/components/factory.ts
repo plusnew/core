@@ -1,6 +1,7 @@
 import { store } from 'redchain';
 import ComponentInstance from '../instances/types/Component/Instance';
 import { options, props } from '../interfaces/component';
+import AbstractClass from '../components/AbstractClass';
 
 export type result = plusnew.JSX.Element | null;
 export interface componentResult<componentProps extends Partial<props>> {
@@ -12,7 +13,7 @@ export interface stores {
 }
 
 export interface Component<componentProps> {
-  (props: componentProps, instance: ComponentInstance): result;
+  new (props: componentProps): Component<componentProps>;
   displayName: string;
 }
 
@@ -28,19 +29,25 @@ const factory: factory = <componentProps extends Partial<props>, dependencies ex
   displayName: string,
   constructor: (props: componentProps, options: options<componentProps, dependencies>) => dependencies,
   render: (props: componentProps, dependencies: dependencies, options: options<componentProps, dependencies>) => result,
-): Component<componentProps> => {
-  const Component: Component<componentProps> = ((props: componentProps, instance: ComponentInstance) => {
-    instance.setComponentParts(constructor, render as any);
+) => {
+  class Component extends AbstractClass<componentProps> {
+    dependencies = {};
+    config: any;
 
-    return {
-      type: instance.type,
-      props: instance.props,
-    } as plusnew.JSX.Element;
-  }) as any;
+    constructor(props: componentProps, config: any) {
+      super(props);
+      this.dependencies = constructor(props, config);
+      this.config = config;
+    }
 
-  Component.displayName = displayName;
+    render(props: componentProps) {
+      return render(props, this.dependencies as any, this.config) as any;
+    }
+  }
 
-  return Component;
+  Component.prototype.displayName = displayName;
+
+  return Component as any;
 };
 
 export default factory;

@@ -1,5 +1,6 @@
 import store from 'redchain';
 import Animate from './components/Animate';
+import AbstractClass from './components/AbstractClass';
 import componentFactory, { componentResult } from './components/factory';
 import Portal from './components/Portal';
 import factory from './instances/factory';
@@ -57,6 +58,7 @@ export {
   options as componentOptions,
   Portal,
   Animate,
+  AbstractClass as Component,
 };
 
 export default new Plusnew();
