@@ -13,8 +13,7 @@ export interface stores {
 }
 
 export interface Component<componentProps> {
-  new (props: componentProps): Component<componentProps>;
-  displayName: string;
+  new (props: componentProps): AbstractClass<componentProps>;
 }
 
 export interface factory {

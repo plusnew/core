@@ -4,6 +4,7 @@ import { stores } from './factory';
 
 export default abstract class Component<props> {
   abstract dependencies: stores;
+  displayName = '';
 
   constructor(props: props) {
   }
