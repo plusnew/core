@@ -8,7 +8,7 @@ E.G. when you write a line of code which changes the state, the dom will change 
 
 ```ts
 import plusnew, { component, store } from 'plusnew';
-import Counter from './Counter';
+import Panel from './Panel';
 
 const INITIAL_COUNTER_VALUE = 0;
 
@@ -29,7 +29,7 @@ export default component(
       <button
         onclick={(evt: MouseEvent) => counter.dispatch(2)}
       />
-      <Counter value={counter.state} />
+      <Panel value={counter.state} />
     </div>,
 );
 
