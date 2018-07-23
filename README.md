@@ -8,29 +8,31 @@ E.G. when you write a line of code which changes the state, the dom will change 
 
 ```ts
 import plusnew, { component, store } from 'plusnew';
-import Counter from './Counter';
+import Panel from './Panel';
 
 const INITIAL_COUNTER_VALUE = 0;
 
 export default component(
   // ComponentName for debuggability enhancements
   'ComponentName',
-  // Function who returns all dependencies, when the component should rerender
-  () => ({
-    counter:  store(INITIAL_COUNTER_VALUE, (state, action: number) => state + action)
-  }),
-
   // The actual stateless renderfunction
-  (props: {}, { counter }) =>
-    <div>
-      <button
-        onclick={(evt: MouseEvent) => counter.dispatch(1)}
-      />
-      <button
-        onclick={(evt: MouseEvent) => counter.dispatch(2)}
-      />
-      <Counter value={counter.state} />
-    </div>,
+  (props: {}) => {
+    const counter = store(INITIAL_COUNTER_VALUE, (state, action: number) => state + action);
+
+    return (
+      <div>
+        <button
+          onclick={(evt: MouseEvent) => counter.dispatch(1)}
+        />
+        <button
+          onclick={(evt: MouseEvent) => counter.dispatch(2)}
+        />
+        <counter.Provider getState={state => {
+          <Panel value={counter.state} />
+        }} />
+      </div>,
+    );
+  },
 );
 
 ```
