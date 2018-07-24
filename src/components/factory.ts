@@ -19,15 +19,13 @@ export interface Component<componentProps> {
 export interface factory {
   <dependencies extends stores, componentProps extends Partial<props>>(
     displayName: string,
-    constructor: (props: componentProps, options: options<componentProps, dependencies>) => dependencies,
-    render: (props: componentProps, dependencies: dependencies, options: options<componentProps, dependencies>) => result,
+    render: (props: componentProps, options: options<componentProps, dependencies>) => result,
   ): Component<componentProps>;
 }
 
 const factory: factory = <componentProps extends Partial<props>, dependencies extends stores>(
   displayName: string,
-  constructor: (props: componentProps, options: options<componentProps, dependencies>) => dependencies,
-  render: (props: componentProps, dependencies: dependencies, options: options<componentProps, dependencies>) => result,
+  render: (props: componentProps, options: options<componentProps, dependencies>) => result,
 ) => {
   class Component extends AbstractClass<componentProps> {
     dependencies = {};
@@ -35,12 +33,11 @@ const factory: factory = <componentProps extends Partial<props>, dependencies ex
 
     constructor(props: componentProps, config: any) {
       super(props);
-      this.dependencies = constructor(props, config);
       this.config = config;
     }
 
     render(props: componentProps) {
-      return render(props, this.dependencies as any, this.config) as any;
+      return render(props, this.config) as any;
     }
   }
 
