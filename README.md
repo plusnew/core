@@ -32,10 +32,9 @@ export default component(
           // This function is the only part which gets executed on a state change
           <Panel value={counter.state} />
         }} />
-        <Props render={(props) => {
-          // This function is the only part which gets executed on a property change
-          props.value
-        } />
+
+        // This render function is the only part which gets executed on a property change
+        <Props render={(props) => props.value} />
       </div>,
     );
   },
