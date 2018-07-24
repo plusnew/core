@@ -34,7 +34,7 @@ export default component(
         }} />
 
         // This render function is the only part which gets executed on a property change
-        <Props render={(props) => props.value} />
+        <Props render={props => props.value} />
       </div>,
     );
   },
