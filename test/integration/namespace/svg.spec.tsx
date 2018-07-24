@@ -1,4 +1,4 @@
-import plusnew, { Consumer, component } from 'index';
+import plusnew, { component } from 'index';
 
 const htmlNamespace = 'http://www.w3.org/1999/xhtml';
 const svgNamespace = 'http://www.w3.org/2000/svg';

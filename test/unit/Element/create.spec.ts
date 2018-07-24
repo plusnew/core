@@ -1,4 +1,4 @@
-import plusnew, { Consumer, component } from 'index';
+import plusnew, { component } from 'index';
 
 describe('checking if createElement works as expected', () => {
   it('Is div element created', () => {

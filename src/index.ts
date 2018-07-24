@@ -1,4 +1,4 @@
-import store, { Consumer } from './util/store';
+import store, { Consumer, store as storeType } from './util/store';
 import Animate from './components/Animate';
 import AbstractClass from './components/AbstractClass';
 import componentFactory, { ComponentContainer } from './components/factory';
@@ -58,6 +58,7 @@ export {
   Animate,
   AbstractClass as Component,
   Consumer,
+  storeType,
 };
 
 export default new Plusnew();

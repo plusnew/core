@@ -37,17 +37,19 @@ describe('fragments', () => {
       
       (Props: Consumer<{value: string}>) =>
         <>
-          <span>{props.value}-foo</span>
-          <div>{props.value}-bar</div>
+          <span><Props render={props => props.value + '-foo'} /></span>
+          <div><Props render={props => props.value + '-bar'} /></div>
         </>,
     );
     const MainComponent = component(
       'MainComponent',
       () =>
         <div>
-          {list.state.map(entity => 
-            <PartialComponent key={entity.key} value={entity.value} />,
-          )}
+          <list.Consumer render={state =>
+            state.map(entity => 
+              <PartialComponent key={entity.key} value={entity.value} />,
+            )
+          } />
         </div>,
     );
 
@@ -89,7 +91,9 @@ describe('fragments', () => {
       'Component',
       () =>
         <>
-          {local.state ? <span>foo</span> : <div>bar</div>}
+          <local.Consumer render={state =>
+            state ? <span>foo</span> : <div>bar</div>
+          } />
         </>,
     );
 
@@ -111,15 +115,17 @@ describe('fragments', () => {
     const MainComponent = component(
       'Component',
       () =>
-        local.state ?
-          <>
-            <span>foo</span>
-          </>
-        :
-          <>
-            <span>bar</span>
-            <span>baz</span>
-          </>,
+        <local.Consumer render={state =>
+          state ?
+            <>
+              <span>foo</span>
+            </>
+          :
+            <>
+              <span>bar</span>
+              <span>baz</span>
+            </>
+        } />,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -148,32 +154,33 @@ describe('fragments', () => {
 
     const MainComponent = component(
       'Component',
-      () => {
-        if (local.state === 0) {
-          return (
-            <>
-              <span>foo1</span>
-              <span>foo2</span>
-              <span>foo3</span>
-          </>);
-        }
-        if (local.state === 1) {
-          return (
-            <>
-              <span>foo1</span>
-              <span>foo2</span>
-          </>);
-        }
+      () => 
+        <local.Consumer render={(state) => {
+          if (state === 0) {
+            return (
+              <>
+                <span>foo1</span>
+                <span>foo2</span>
+                <span>foo3</span>
+            </>);
+          }
+          if (state === 1) {
+            return (
+              <>
+                <span>foo1</span>
+                <span>foo2</span>
+            </>);
+          }
 
-        if (local.state === 2) {
-          return (
-            <>
-              <span>foo1</span>
-          </>);
-        }
+          if (state === 2) {
+            return (
+              <>
+                <span>foo1</span>
+            </>);
+          }
 
-        return <></>;
-      },
+          return <></>;
+        }} />,
     );
 
     plusnew.render(<MainComponent />, container);

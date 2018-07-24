@@ -1,4 +1,4 @@
-import plusnew, { Consumer, component } from 'index';
+import plusnew, { component } from 'index';
 import util from 'util/elementTypeChecker';
 
 describe('elementTypeChecker', () => {
