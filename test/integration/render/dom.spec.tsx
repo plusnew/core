@@ -1,4 +1,4 @@
-import plusnew, { component, store, InputEvent } from 'index';
+import plusnew, { Consumer, component, store, InputEvent } from 'index';
 
 describe('dom handling', () => {
   let container: HTMLElement;
@@ -11,8 +11,7 @@ describe('dom handling', () => {
   it('correct handling of acceptCharset', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <form acceptCharset="UTF-8" />,
     );
     plusnew.render(<Component />, container);
@@ -25,8 +24,7 @@ describe('dom handling', () => {
   it('correct handling of class', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <div className="foo" />,
     );
     plusnew.render(<Component />, container);
@@ -39,8 +37,7 @@ describe('dom handling', () => {
   it('correct handling of htmlFor', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <label htmlFor="foo" />,
     );
     plusnew.render(<Component />, container);
@@ -53,8 +50,7 @@ describe('dom handling', () => {
   it('correct handling of httpEquiv', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <meta httpEquiv="refresh" />,
     );
     plusnew.render(<Component />, container);
@@ -69,8 +65,7 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <span onclick={clickHandler} />,
     );
     plusnew.render(<Component />, container);
@@ -83,8 +78,7 @@ describe('dom handling', () => {
   it('correct handling of viewBox', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <svg viewBox="0 0 100 100" />,
     );
     plusnew.render(<Component />, container);
@@ -98,7 +92,6 @@ describe('dom handling', () => {
     const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
       'Component',
-      () => ({  local }),
       () =>
         local.state ?
           <div>
@@ -139,7 +132,6 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
       () => <input disabled={local.state} />,
     );
 
@@ -158,11 +150,8 @@ describe('dom handling', () => {
   });
 
   it('plusnew attributes', () => {
-    const local = store(true, (state, action: boolean) => action);
-
     const Component = component(
       'Component',
-      () => ({ local }),
       () => <div key="foo" />,
     );
 
@@ -178,7 +167,6 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
       () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
     );
 
@@ -211,7 +199,6 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
       () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
     );
 
@@ -233,7 +220,6 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
       () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
     );
 
@@ -260,7 +246,6 @@ describe('dom handling', () => {
 
     const MainComponent = component(
       'Component',
-      () => ({  local }),
       () => {
         if (local.state === 0) {
           return (
@@ -323,7 +308,6 @@ describe('dom handling', () => {
   it('adding input without focus ', () => {
     const MainComponent = component(
       'Component',
-      () => ({}),
       () =>
         <input autofocus={false} />,
     );
@@ -336,7 +320,6 @@ describe('dom handling', () => {
   it('adding input with focus ', () => {
     const MainComponent = component(
       'Component',
-      () => ({}),
       () =>
         <input value="djfngjnfdg" autofocus={true} />,
     );
@@ -349,7 +332,6 @@ describe('dom handling', () => {
   it('adding nested input with focus ', () => {
     const MainComponent = component(
       'Component',
-      () => ({}),
       () =>
         <div><input value="djfngjnfdg" autofocus={true} /></div>,
     );

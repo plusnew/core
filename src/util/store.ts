@@ -24,7 +24,7 @@ export interface store<stateType, actionType> {
   /**
    * this value gets replaced, each time the reducer gets called
    */
-  state: stateType;
+  // state: stateType;
 
   /**
    *  when the state property should change, thats the way to call it

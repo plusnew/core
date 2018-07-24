@@ -1,4 +1,4 @@
-import plusnew, { component, store, InputEvent } from 'index';
+import plusnew, { Consumer, component, store, InputEvent } from 'index';
 
 describe('firing input events', () => {
   let container: HTMLElement;
@@ -18,8 +18,7 @@ describe('firing input events', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => <input onchange={change} value={local.state} />,
+      () => <local.Consumer render={state => <input onchange={change} value={state} /> } />,
     );
 
     plusnew.render(<Component />, container);
@@ -51,8 +50,7 @@ describe('firing input events', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => <input onchange={change} value={local.state}  />,
+      () => <local.Consumer render={state => <input onchange={change} value={local.state}  />} />,
     );
 
     plusnew.render(<Component />, container);
@@ -83,8 +81,7 @@ describe('firing input events', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => <input onchange={change} checked={local.state} type="checkbox" />,
+      () => <local.Consumer render={state => <input onchange={change} checked={state} type="checkbox" />} />,
     );
 
     plusnew.render(<Component />, container);
@@ -102,8 +99,7 @@ describe('firing input events', () => {
   it('checkbox value persists when state isnt changed', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) => <input checked={false} type="checkbox" />,
+      () => <input checked={false} type="checkbox" />,
     );
 
     plusnew.render(<Component />, container);

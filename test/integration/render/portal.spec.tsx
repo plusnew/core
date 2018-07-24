@@ -1,4 +1,4 @@
-import plusnew, { component, store, Portal } from 'index';
+import plusnew, { Consumer, component, store, Portal } from 'index';
 
 describe('<Portal />', () => {
   let container: HTMLElement;
@@ -16,8 +16,8 @@ describe('<Portal />', () => {
     
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => 
+     
+      () => 
         <span>
           {local.state < 2 &&
             <Portal target={outside}>

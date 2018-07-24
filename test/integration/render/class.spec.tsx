@@ -1,4 +1,4 @@
-import plusnew, { Component,  store } from 'index';
+import plusnew, { Consumer, Component,  store } from 'index';
 
 describe('rendering class components', () => {
   let container: HTMLElement;

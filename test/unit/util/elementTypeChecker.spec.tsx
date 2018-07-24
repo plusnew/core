@@ -1,4 +1,4 @@
-import plusnew, { component } from 'index';
+import plusnew, { Consumer, component } from 'index';
 import util from 'util/elementTypeChecker';
 
 describe('elementTypeChecker', () => {
@@ -26,7 +26,7 @@ describe('elementTypeChecker', () => {
     it('is placeholder a fragment', () => {
       const Component = component(
         'Component',
-        () => ({}),
+        
         () => null,
       );
       expect(util.isFragmentElement(<Component />)).toBe(false);

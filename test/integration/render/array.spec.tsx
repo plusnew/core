@@ -1,7 +1,7 @@
-import plusnew, { store, component } from 'index';
+import plusnew, { Consumer, store, component } from 'index';
 
 const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
-const local = () => store(list, (state, newValue: { key: number; value: string }) => [newValue, ...state]);
+const localFactory = () => store(list, (state, newValue: { key: number; value: string }) => [newValue, ...state]);
 
 describe('rendering nested components', () => {
   let container: HTMLElement;
@@ -16,10 +16,10 @@ describe('rendering nested components', () => {
   });
 
   it('does a initial list work, with pushing values with placeholder', () => {
+    const local = localFactory();
     const Component = component(
       'Component',
-      () => ({ local: local() }),
-      (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
+      () => <ul><local.Consumer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} /></ul>,
     );
 
     plusnew.render(<Component />, container);
@@ -35,13 +35,13 @@ describe('rendering nested components', () => {
   });
 
   it('does a initial list work, appended li with placeholder', () => {
+    const local = localFactory();
     const list = ['first', 'second', 'third'];
     const Component = component(
       'Component',
-      () => ({ local: local() }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => <li key={item.key}>{item.value}</li>)}
+          <local.Consumer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} />
           <li>foo</li>
         </ul>
       ),
@@ -64,14 +64,11 @@ describe('rendering nested components', () => {
   });
 
   it('does a initial empty list work, and updating it', () => {
-    const dependencies = {
-      local: store([] as typeof list, (store, action: typeof list) => action),
-    };
+    const local =  store([] as typeof list, (store, action: typeof list) => action);
 
     const Component = component(
       'Component',
-      () => dependencies,
-      (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
+      () => <ul><local.Consumer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} /></ul>,
     );
 
     plusnew.render(<Component />, container);
@@ -81,7 +78,7 @@ describe('rendering nested components', () => {
     expect(ul.tagName).toBe('UL');
     expect(ul.childNodes.length).toBe(0);
 
-    dependencies.local.dispatch(list);
+    local.dispatch(list);
 
     expect(ul.childNodes.length).toBe(list.length);
 
@@ -96,14 +93,11 @@ describe('rendering nested components', () => {
   });
 
   it('rerendering with different order and inserted elements', () => {
-    const dependencies = {
-      local: store(list, (previousStore, action: typeof list) => action),
-    };
+    const local =  store(list, (previousStore, action: typeof list) => action);
 
     const Component = component(
       'Component',
-      () => dependencies,
-      (props: {}, { local }) => <ul>{local.state.map(item => <li key={item.key}>{item.value}</li>)}</ul>,
+      () => <ul><local.Consumer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} /></ul>,
     );
 
     plusnew.render(<Component />, container);
@@ -126,7 +120,7 @@ describe('rendering nested components', () => {
       { key: 0, value: 'previously first' },
     ];
 
-    dependencies.local.dispatch(newList);
+    local.dispatch(newList);
 
     expect(ul.childNodes.length).toBe(newList.length);
 
@@ -142,18 +136,16 @@ describe('rendering nested components', () => {
   });
 
   it('rerendering with different order and inserted elements', () => {
-    const dependencies = {
-      local: store(list, (previousStore, action: typeof list) => action),
-    };
+    const local = store(list, (previousStore, action: typeof list) => action);
 
     const PartialComponent = component(
-      'Component',() => ({}), (props: { value: string }) => <span>{props.value}</span>);
+      'Component',
+      (Props: Consumer<{ value: string }>) => <span><Props render={props => props.value} /></span>);
 
     const MainComponent = component(
       'Component',
-      () => dependencies,
-      (props: {}, { local }) => (
-        <span>{local.state.map(item => <PartialComponent key={item.key} value={item.value} />)}</span>
+      () => (
+        <span><local.Consumer render={local => local.map(item => <PartialComponent key={item.key} value={item.value} />)} /></span>
       ),
     );
 
@@ -175,7 +167,7 @@ describe('rendering nested components', () => {
       { key: 4, value: 'zero' },
     ];
 
-    dependencies.local.dispatch(newList);
+    local.dispatch(newList);
 
     expect(span.childNodes.length).toBe(3);
 
@@ -191,21 +183,17 @@ describe('rendering nested components', () => {
   });
 
   it('rerendering with different order and inserted elements', () => {
-    const dependencies = {
-      local: store(list, (previousStore, action: typeof list) => action),
-    };
+    const local = store(list, (previousStore, action: typeof list) => action);
 
     const PartialComponent = component(
       'Component',
-      () => ({}),
-      (props: { value: string }) => [<span key={0}>{props.value}0</span>, <div key={1}>{props.value}1</div>] as any,
+      (Props: Consumer<{ value: string }>) => [<span key={0}><Props render={props => props.value} />0</span>, <div key={1}><Props render={props => props.value} />1</div>] as any,
     );
 
     const MainComponent = component(
       'Component',
-      () => dependencies,
-      (props, { local }: typeof dependencies) => (
-        <span>{local.state.map(item => <PartialComponent key={item.key} value={item.value} />)}</span>
+      () => (
+        <local.Consumer render={state => <span><local.Consumer render={local => local.map(item => <PartialComponent key={item.key} value={item.value} />)} /></span>} />
       ),
     );
 
@@ -234,7 +222,7 @@ describe('rendering nested components', () => {
       { key: 4, value: 'zero' },
     ];
 
-    dependencies.local.dispatch(newList);
+    local.dispatch(newList);
 
     expect(span.childNodes.length).toBe(newList.length * 2);
 
@@ -256,24 +244,21 @@ describe('rendering nested components', () => {
   });
 
   it('updating should insert correct next to siblings', () => {
-    const dependencies = {
-      local: store([] as typeof list, (previousStore, action: typeof list) => action),
-    };
+    const local = store([] as typeof list, (previousStore, action: typeof list) => action);
 
     const PartialComponent = component(
       'Component',
-      () => ({}),
-      () => <span>some other element</span>,
+       () => <span>some other element</span>,
     );
 
     const MainComponent = component(
       'Component',
-      () => dependencies,
-      (props, { local }) =>
+      () =>
         <div>
           <div />
           <div>
-            {local.state.map(item => <div key={item.key}>{item.value}</div>)}
+            <local.Consumer render={local => local.map(item => <div key={item.key}>{item.value}</div>)
+            } />
             <PartialComponent />
           </div>
         </div>,
@@ -287,7 +272,7 @@ describe('rendering nested components', () => {
     expect(partialElement.tagName).toBe('SPAN');
     expect(partialElement.innerHTML).toBe('some other element');
 
-    dependencies.local.dispatch([{ key: 0, value: 'entity1' }, { key: 1, value: 'entity2' }]);
+    local.dispatch([{ key: 0, value: 'entity1' }, { key: 1, value: 'entity2' }]);
 
     expect(div.childNodes.length).toBe(3);
 
@@ -301,22 +286,19 @@ describe('rendering nested components', () => {
   });
 
   it('updating component with text', () => {
-    const dependencies = {
-      local: store([{ key: 0 }, { key: 1 }], (previousStore, action: {key: number}[]) => action),
-    };
+    const local = store([{ key: 0 }, { key: 1 }], (previousStore, action: {key: number}[]) => action);
 
     const PartialComponent = component(
       'Component',
-      () => ({}),
-      (props: {key: number}) => 'element' + props.key as any,
+      (Props: Consumer<{key: number}>) => <Props render={props => 'element' + props.key} />,
     );
 
     const MainComponent = component(
       'Component',
-      () => dependencies,
-      (props, { local }) =>
+      () =>
         <div>
-          {local.state.map(item => <PartialComponent key={item.key} />)}
+          <local.Consumer render={local => local.map(item => <PartialComponent key={item.key} />)
+          } />
         </div>,
     );
 
@@ -329,7 +311,7 @@ describe('rendering nested components', () => {
     expect(firstText.textContent).toBe('element0');
     expect(secondText.textContent).toBe('element1');
 
-    dependencies.local.dispatch([{ key: 1 }, { key: 0 }]);
+    local.dispatch([{ key: 1 }, { key: 0 }]);
 
     expect(div.childNodes.length).toBe(2);
 
@@ -340,22 +322,19 @@ describe('rendering nested components', () => {
   });
 
   it('moving component with boolean', () => {
-    const dependencies = {
-      local: store([{ key: 0 }, { key: 1 }], (previousStore, action: {key: number}[]) => action),
-    };
+    const local = store([{ key: 0 }, { key: 1 }], (previousStore, action: {key: number}[]) => action);
 
     const PartialComponent = component(
       'Component',
-      () => ({}),
-      (props: {key: number}) => props.key === 0 ? 'foo' : false as any,
+      (Props: Consumer<{key: number}>) => <Props render={props => props.key === 0 ? 'foo' : false} />,
     );
 
     const MainComponent = component(
       'Component',
-      () => dependencies,
-      (props, { local }) =>
+      () =>
         <div>
-          {local.state.map(item => <PartialComponent key={item.key} />)}
+          <local.Consumer render={local => local.map(item => <PartialComponent key={item.key} />)
+          } />
         </div>,
     );
 
@@ -366,7 +345,7 @@ describe('rendering nested components', () => {
     const firstText = div.childNodes[0] as Text;
     expect(firstText.textContent).toBe('foo');
 
-    dependencies.local.dispatch([{ key: 1 }, { key: 0 }]);
+    local.dispatch([{ key: 1 }, { key: 0 }]);
 
     expect(div.childNodes.length).toBe(1);
 
@@ -380,10 +359,10 @@ describe('rendering nested components', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => (
+
+      () => (
         <ul>
-          {local.state.map(item => <li key={item.key}>{item.value}</li>)}
+          <local.Consumer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} />
         </ul>
       ),
     );
@@ -419,10 +398,9 @@ describe('rendering nested components', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => <li key={item.key}>{item.value}</li>)}
+          <local.Consumer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} />
         </ul>
       ),
     );
@@ -455,10 +433,9 @@ describe('rendering nested components', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => <li>{item.value}</li>)}
+          <local.Consumer render={local => local.map(item => <li>{item.value}</li>)} />
         </ul>
       ),
     );
@@ -487,8 +464,7 @@ describe('rendering nested components', () => {
   it('ordering with empty elements in between', () => {
     const NestedComponent = component(
       'NestedComponent',
-      () => ({ local }),
-      (props: {}, { local }) => false as any,
+      () => false as any,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -501,10 +477,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );
@@ -529,8 +504,7 @@ describe('rendering nested components', () => {
   it('ordering with empty elements on end', () => {
     const NestedComponent = component(
       'NestedComponent',
-      () => ({ local }),
-      (props: {}, { local }) => <></>,
+      () => <></>,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -542,10 +516,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );
@@ -567,8 +540,7 @@ describe('rendering nested components', () => {
   it('ordering with empty elements on beginning', () => {
     const NestedComponent = component(
       'NestedComponent',
-      () => ({ local }),
-      (props: {}, { local }) => <></>,
+      () => <></>,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -580,10 +552,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );
@@ -606,8 +577,7 @@ describe('rendering nested components', () => {
   it('ordering with empty elements in between with placeholder', () => {
     const NestedComponent = component(
       'NestedComponent',
-      () => ({ local }),
-      (props: {}, { local }) => false as any,
+      () => false as any,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -620,10 +590,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );
@@ -648,8 +617,7 @@ describe('rendering nested components', () => {
   it('ordering with empty elements on end with placeholder', () => {
     const NestedComponent = component(
       'NestedComponent',
-      () => ({ local }),
-      (props: {}, { local }) => false as any,
+      () => false as any,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -661,10 +629,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );
@@ -686,8 +653,7 @@ describe('rendering nested components', () => {
   it('ordering with empty elements on beginning with placeholder', () => {
     const NestedComponent = component(
       'NestedComponent',
-      () => ({ local }),
-      (props: {}, { local }) => false as any,
+      () => false as any,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -699,10 +665,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );
@@ -724,8 +689,7 @@ describe('rendering nested components', () => {
   it('ordering with text in between', () => {
     const NestedComponent = component(
       'NestedComponent',
-      () => ({ local }),
-      (props: {}, { local }) => 'foo' as any,
+      () => 'foo' as any,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -738,10 +702,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );
@@ -768,8 +731,7 @@ describe('rendering nested components', () => {
   it('ordering with text on end', () => {
     const NestedComponent = component(
       'NestedComponent',
-      () => ({ local }),
-      (props: {}, { local }) => 'foo' as any,
+      () => 'foo' as any,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -781,10 +743,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );
@@ -808,8 +769,7 @@ describe('rendering nested components', () => {
   it('ordering with text on beginning', () => {
     const NestedComponent = component(
       'NestedComponent',
-      () => ({ local }),
-      (props: {}, { local }) => 'foo' as any,
+      () => 'foo' as any,
     );
 
     const list: plusnew.JSX.Element[] = [
@@ -821,10 +781,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );
@@ -851,10 +810,9 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'MainComponent',
-      () => ({ local }),
-      (props: {}, { local }) => (
+      () => (
         <ul>
-          {local.state.map(item => item)}
+          <local.Consumer render={local => local.map(item => item)} />
         </ul>
       ),
     );

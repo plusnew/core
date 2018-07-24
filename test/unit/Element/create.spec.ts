@@ -1,4 +1,4 @@
-import plusnew, { component } from 'index';
+import plusnew, { Consumer, component } from 'index';
 
 describe('checking if createElement works as expected', () => {
   it('Is div element created', () => {
@@ -55,7 +55,7 @@ describe('checking if createElement works as expected', () => {
   });
 
   it('check if component gets safed', () => {
-    const Component = component('Component',() => ({}), () => plusnew.createElement('div', null));
+    const Component = component('Component', () => plusnew.createElement('div', null));
 
     const props = { foo: 'bar' };
     const instance = plusnew.createElement(Component, props);

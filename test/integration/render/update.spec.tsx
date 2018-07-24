@@ -1,5 +1,5 @@
 import { store as storeType } from 'redchain';
-import plusnew, { store, component } from 'index';
+import plusnew, { Consumer, store, component } from 'index';
 import TextInstance from 'instances/types/Text/Instance';
 
 describe('rendering the elements', () => {
@@ -23,8 +23,7 @@ describe('rendering the elements', () => {
   it('does a value change with store', () => {
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
+      () => <div className={local.state}>{local.state}</div>,
     );
 
     plusnew.render(<Component />, container);
@@ -49,8 +48,7 @@ describe('rendering the elements', () => {
   it('with the same values, all objects should be the same', () => {
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => <div className={local.state}>{local.state}</div>,
+      () => <div className={local.state}>{local.state}</div>,
     );
 
     plusnew.render(<Component />, container);
@@ -74,8 +72,7 @@ describe('rendering the elements', () => {
   it('does a value change with store with JSX.Element to string', () => {
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) =>
+      () =>
         local.state === 'foo' ? (
           <div>
             <span>{local.state}</span>
@@ -102,8 +99,8 @@ describe('rendering the elements', () => {
   it('does a value change with store with string to JSX.Element', () => {
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) =>
+     
+      () =>
         local.state === 'foo' ? (
           <div>{local.state}</div>
         ) : (
@@ -128,8 +125,8 @@ describe('rendering the elements', () => {
   it('does a value change with store with string to JSX.Element[]', () => {
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) =>
+     
+      () =>
         local.state === 'foo' ? (
           <span>{local.state}</span>
         ) : (
@@ -159,8 +156,8 @@ describe('rendering the elements', () => {
   it('does a value change with store with JSX.Element[] to string', () => {
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) =>
+     
+      () =>
         local.state === 'foo' ? (
           <span>{[<div>{local.state}</div>, <span>{local.state}</span>]}</span>
         ) : (
@@ -186,8 +183,8 @@ describe('rendering the elements', () => {
   it('does a value change with store with JSX.Element to null', () => {
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) =>
+     
+      () =>
         local.state === 'foo' ? (
           <div>foo</div>
         ) : (
@@ -210,8 +207,8 @@ describe('rendering the elements', () => {
     const local = store(true, (previousState, action: boolean) => action);
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => (local.state === true ? <div /> : <div>foo</div>),
+     
+      () => (local.state === true ? <div /> : <div>foo</div>),
     );
 
     plusnew.render(<Component />, container);
@@ -231,8 +228,8 @@ describe('rendering the elements', () => {
     const local = store(false, (previousState, action: boolean) => action);
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => (
+     
+      () => (
         <div>
           <span />
           {local.state && 'foo'}
@@ -266,8 +263,8 @@ describe('rendering the elements', () => {
     const local = store(0, (previousState, action: null) => previousState + 1);
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => (
+     
+      () => (
         <div>
           {false}
           {local.state}
@@ -288,8 +285,8 @@ describe('rendering the elements', () => {
     const local = store(true, (previousState, action: boolean) => action);
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) =>
+     
+      () =>
         local.state ?
           <div className="foo" />
         :
@@ -310,8 +307,8 @@ describe('rendering the elements', () => {
     const local = store(true, (previousState, action: boolean) => action);
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) =>
+     
+      () =>
         local.state ?
           <div onclick={clickHandler} />
         :
@@ -331,8 +328,8 @@ describe('rendering the elements', () => {
     const local = store(0, (previousState, action: number) => previousState + action);
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) =>
+     
+      () =>
         <div>{local.state}</div>,
     );
     plusnew.render(<Component />, container);
@@ -352,8 +349,8 @@ describe('rendering the elements', () => {
     const local = store(0, (previousState, action: number) => previousState + action);
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) =>
+     
+      () =>
         <div>static text</div>,
     );
     plusnew.render(<Component />, container);

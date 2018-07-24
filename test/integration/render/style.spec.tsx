@@ -1,4 +1,4 @@
-import plusnew, { component, store } from 'index';
+import plusnew, { Consumer, component, store } from 'index';
 
 describe('dom handling', () => {
   let container: HTMLElement;
@@ -13,7 +13,7 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
+     
       () => <div style={{ width: local.state }} />,
     );
 
@@ -32,7 +32,7 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
+     
       () => 
         local.state ?
           <div />
@@ -59,7 +59,7 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
+     
       () => 
         local.state ?
           <div style={{ width: '30px' }}/>
@@ -87,7 +87,7 @@ describe('dom handling', () => {
   it('updating style invalidattributes', () => {
     const Component = component(
       'Component',
-      () => ({}),
+      
       () => <div style={{ width: 'foo' }}/>,
     );
 

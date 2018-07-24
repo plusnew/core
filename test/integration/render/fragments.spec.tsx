@@ -1,4 +1,4 @@
-import plusnew, { store, component } from 'index';
+import plusnew, { Consumer, store, component } from 'index';
 
 describe('fragments', () => {
   let container: HTMLElement;
@@ -12,7 +12,6 @@ describe('fragments', () => {
   it('rendering basic fragment', () => {
     const MainComponent = component(
       'Component',
-      () => ({}),
       () =>
         <>
           <span>foo</span>
@@ -35,8 +34,8 @@ describe('fragments', () => {
 
     const PartialComponent = component(
       'PartialComponent',
-      () => ({}),
-      (props: {value: string}) =>
+      
+      (Props: Consumer<{value: string}>) =>
         <>
           <span>{props.value}-foo</span>
           <div>{props.value}-bar</div>
@@ -44,7 +43,6 @@ describe('fragments', () => {
     );
     const MainComponent = component(
       'MainComponent',
-      () => ({ list }),
       () =>
         <div>
           {list.state.map(entity => 
@@ -89,7 +87,6 @@ describe('fragments', () => {
     const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
       'Component',
-      () => ({  local }),
       () =>
         <>
           {local.state ? <span>foo</span> : <div>bar</div>}
@@ -113,7 +110,6 @@ describe('fragments', () => {
     const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
       'Component',
-      () => ({  local }),
       () =>
         local.state ?
           <>
@@ -152,7 +148,6 @@ describe('fragments', () => {
 
     const MainComponent = component(
       'Component',
-      () => ({  local }),
       () => {
         if (local.state === 0) {
           return (
