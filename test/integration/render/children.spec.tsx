@@ -19,7 +19,7 @@ describe('rendering nested components', () => {
 
       const MainComponent = component(
         'Component',
-        () => <NestedComponent>{local.state}</NestedComponent>);
+        () => <local.Consumer render={local => <NestedComponent>{local}</NestedComponent>} />);
 
       plusnew.render(<MainComponent />, container);
 

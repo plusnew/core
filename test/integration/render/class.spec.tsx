@@ -31,7 +31,7 @@ describe('rendering class components', () => {
       };
 
       render() {
-        return <div>{local.state}</div>;
+        return <div><local.Consumer render={local => local} /></div>;
       }
     }
 
@@ -50,26 +50,16 @@ describe('rendering class components', () => {
     const local = store(0, (_state, action: number) => action);
 
     class MainComponent extends Component<{}> {
-      dependencies = {
-        local,
-      };
-
-      foo() {
-        this.dependencies;
-      }
-
       render() {
-        return <NestedComponent foo={this.dependencies.local.state} />;
+        return <local.Consumer render={local => <NestedComponent foo={local} /> } />;
       }
     }
 
     type props = {foo: number};
 
     class NestedComponent extends Component<props> {
-      dependencies = {};
-
-      render() {
-        return <div>{local.state}</div>;
+      render(Props: Consumer<props>) {
+        return <div><Props render={local => local.foo} /></div>;
       }
     }
 

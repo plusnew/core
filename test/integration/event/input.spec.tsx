@@ -1,4 +1,4 @@
-import plusnew, { Consumer, component, store, InputEvent } from 'index';
+import plusnew, { component, store, InputEvent } from 'index';
 
 describe('firing input events', () => {
   let container: HTMLElement;
@@ -30,7 +30,7 @@ describe('firing input events', () => {
 
     expect(change.calls.count()).toEqual(1);
     expect(change).toHaveBeenCalledWith(event);
-    expect(local.state).toBe('bar');
+    expect((local as any).state).toBe('bar');
 
     input.value = 'barbar';
     const eventTwo = new CustomEvent('change', { detail: { target: input } });
@@ -38,7 +38,7 @@ describe('firing input events', () => {
 
     expect(change.calls.count()).toEqual(2);
     expect(change).toHaveBeenCalledWith(eventTwo);
-    expect(local.state).toBe('barbar');
+    expect((local as any).state).toBe('barbar');
   });
 
   it('is onchange called on explicit text', () => {
@@ -50,7 +50,7 @@ describe('firing input events', () => {
 
     const Component = component(
       'Component',
-      () => <local.Consumer render={state => <input onchange={change} value={local.state}  />} />,
+      () => <local.Consumer render={state => <input onchange={change} value={state}  />} />,
     );
 
     plusnew.render(<Component />, container);
@@ -69,7 +69,7 @@ describe('firing input events', () => {
 
     expect(change.calls.count()).toEqual(2);
     expect(change).toHaveBeenCalledWith(eventTwo);
-    expect(local.state).toBe('barbar');
+    expect((local as any).state).toBe('barbar');
   });
 
   it('is onchange called on checkbox', () => {
@@ -93,7 +93,7 @@ describe('firing input events', () => {
 
     expect(change.calls.count()).toEqual(1);
     expect(change).toHaveBeenCalledWith(event);
-    expect(local.state).toBe(false);
+    expect((local as any).state).toBe(false);
   });
 
   it('checkbox value persists when state isnt changed', () => {
