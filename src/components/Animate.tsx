@@ -1,5 +1,5 @@
 import Instance from '../instances/types/Component/Instance';
-import factory, { Component } from './factory';
+import factory, { ComponentContainer } from './factory';
 
 type props = {
   elementDidMount?: (element: Element) => void;
@@ -7,7 +7,7 @@ type props = {
   children: any,
 };
 
-const Animate: Component<props> = factory(
+const Animate: ComponentContainer<props> = factory(
   'Animate',
   () => ({}),
   (props: props, _dependencies, config) => {

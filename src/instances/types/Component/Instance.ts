@@ -1,4 +1,4 @@
-import { nothing, options, props } from '../../../interfaces/component';
+import { nothing, props } from '../../../interfaces/component';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import factory from '../../factory';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
@@ -21,8 +21,7 @@ nothing;
 export default class ComponentInstance extends Instance {
   public nodeType = types.Component;
   public rendered: Instance;
-  public options: options<any, any>;
-  public instance: Component<any>;
+  public applicationInstance: Component<any>;
   public props: props;
 
   constructor(
@@ -36,7 +35,6 @@ export default class ComponentInstance extends Instance {
     this.props = abstractElement.props;
     // Each instance needs its own update method - to have a unique method to be removed from the dependency-listeners
     this.update = this.update.bind(this);
-    this.setOptions();
     this.initialiseComponent();
   }
 
@@ -45,28 +43,16 @@ export default class ComponentInstance extends Instance {
    */
   private initialiseComponent() {
     const props = this.props;
-    this.instance = new (this.type as any)(props, this.options);
-    for (const dependencyIndex in this.instance.dependencies) {
-      const dependency = this.instance.dependencies[dependencyIndex];
-      dependency.addOnChange(this.update);
-    }
+    this.applicationInstance = new (this.type as any)(props);
     this.render();
-  }
 
-  /**
-   * sets the initial options object
-   */
-  private setOptions() {
-    this.options = {
-      instance: this,
-    };
   }
 
   /**
    * asks the component what should be changed and puts it to the factory
    */
   public render() {
-    const abstractChildren = this.instance.render(this.props, this.options);
+    const abstractChildren = this.applicationInstance.render(this.props, this);
     this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
   }
 
@@ -101,20 +87,9 @@ export default class ComponentInstance extends Instance {
    * removes the children from the dom
    */
   public remove(prepareRemoveSelf: boolean) {
-    this.removeDependencyListeners();
-    if (this.options.componentWillUnmount) {
-      this.options.componentWillUnmount(this.props, this.instance.dependencies);
+    if (this.applicationInstance.componentWillUnmount) {
+      this.applicationInstance.componentWillUnmount(this.props);
     }
     return this.rendered.remove(prepareRemoveSelf);
-  }
-
-  /**
-   * removes the dependencylisteners from the instance
-   * without this there would be memoryleaks and unecessary reconsiling without any visible effect
-  */
-  private removeDependencyListeners() {
-    for (const index in this.instance.dependencies) {
-      this.instance.dependencies[index].removeOnChange(this.update);
-    }
   }
 }

@@ -1,43 +1,36 @@
-import { store } from 'redchain';
 import ComponentInstance from '../instances/types/Component/Instance';
-import { options, props } from '../interfaces/component';
+import { props, ApplicationElement } from '../interfaces/component';
 import AbstractClass from '../components/AbstractClass';
 
-export type result = plusnew.JSX.Element | null;
 export interface componentResult<componentProps extends Partial<props>> {
   (props: componentProps, instance: ComponentInstance): plusnew.JSX.Element | null;
 }
 
-export interface stores {
-  [key: string]: store<any, any>;
-}
-
-export interface Component<componentProps> {
+export interface ComponentContainer<componentProps> {
   new (props: componentProps): AbstractClass<componentProps>;
 }
 
 export interface factory {
-  <dependencies extends stores, componentProps extends Partial<props>>(
+  <componentProps extends Partial<props>>(
     displayName: string,
-    render: (props: componentProps, options: options<componentProps, dependencies>) => result,
-  ): Component<componentProps>;
+    render: (props: componentProps, plusnewComponentInstance: ComponentInstance) => ApplicationElement,
+  ): ComponentContainer<componentProps>;
 }
 
-const factory: factory = <componentProps extends Partial<props>, dependencies extends stores>(
+const factory: factory = <componentProps extends Partial<props>>(
   displayName: string,
-  render: (props: componentProps, options: options<componentProps, dependencies>) => result,
+  render: (props: componentProps, plusnewComponentInstance: ComponentInstance) => ApplicationElement,
 ) => {
   class Component extends AbstractClass<componentProps> {
     dependencies = {};
     config: any;
 
-    constructor(props: componentProps, config: any) {
+    constructor(props: componentProps) {
       super(props);
-      this.config = config;
     }
 
-    render(props: componentProps) {
-      return render(props, this.config) as any;
+    render(props: componentProps, plusnewComponentInstance: ComponentInstance) {
+      return render(props, plusnewComponentInstance);
     }
   }
 

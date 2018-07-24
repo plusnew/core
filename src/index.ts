@@ -1,4 +1,4 @@
-import store from 'redchain';
+import store from './util/store';
 import Animate from './components/Animate';
 import AbstractClass from './components/AbstractClass';
 import componentFactory, { componentResult } from './components/factory';
@@ -6,7 +6,6 @@ import Portal from './components/Portal';
 import factory from './instances/factory';
 import Instance from './instances/types/Instance';
 import RootInstance, { renderOptions } from './instances/types/Root/Instance';
-import { options } from './interfaces/component';
 import InputEvent, { nothing } from './interfaces/InputEvent';
 import './interfaces/jsx';
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
@@ -55,7 +54,6 @@ export {
   renderOptions,
   PlusnewAbstractElement,
   elementTypeChecker,
-  options as componentOptions,
   Portal,
   Animate,
   AbstractClass as Component,
