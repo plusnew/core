@@ -1,7 +1,7 @@
-import store from './util/store';
+import store, { Consumer } from './util/store';
 import Animate from './components/Animate';
 import AbstractClass from './components/AbstractClass';
-import componentFactory, { componentResult } from './components/factory';
+import componentFactory, { ComponentContainer } from './components/factory';
 import Portal from './components/Portal';
 import factory from './instances/factory';
 import Instance from './instances/types/Instance';
@@ -50,13 +50,14 @@ export {
   Instance,
   componentFactory as component,
   InputEvent,
-  componentResult,
+  ComponentContainer,
   renderOptions,
   PlusnewAbstractElement,
   elementTypeChecker,
   Portal,
   Animate,
   AbstractClass as Component,
+  Consumer,
 };
 
 export default new Plusnew();

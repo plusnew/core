@@ -1,3 +1,4 @@
+import plusnew, { Consumer } from 'index';
 import Instance from '../instances/types/Component/Instance';
 import factory, { ComponentContainer } from './factory';
 
@@ -8,14 +9,22 @@ type props = {
 
 const Portal: ComponentContainer<props> = factory(
   'Portal',
-  (props: props, instance) => {
-    instance.appendChild = (element: Node, predecessor: Node | null) => {
-      props.target.insertBefore(element, predecessor);
-    };
+  (Props: Consumer<props>, instance) => {
+    let initialised = false;
 
-    instance.getPredecessor = () => null;
+    return <Props render={(props) => {
+      if (initialised === false) {
+        initialised = true;
+        instance.appendChild = (element: Node, predecessor: Node | null) => {
+          props.target.insertBefore(element, predecessor);
+        };
 
-    return props.children;
+        instance.getPredecessor = () => null;
+
+      }
+
+      return props.children;
+    }} />;
   },
 );
 

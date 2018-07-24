@@ -1,4 +1,3 @@
-import { store } from 'redchain';
 import ComponentInstance from '../instances/types/Component/Instance';
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
 

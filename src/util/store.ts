@@ -1,3 +1,8 @@
+import { ComponentContainer } from '../components/factory';
+import { ApplicationElement } from 'interfaces/component';
+
+export type Consumer<props> = ComponentContainer<{render: (props: props) => ApplicationElement}>;
+
 export type onChangeCallback<actionType> = ((lastAction: actionType) => void);
 
 /**
@@ -15,6 +20,7 @@ export interface redchain {
 }
 
 export interface store<stateType, actionType> {
+  Consumer: Consumer<stateType>;
   /**
    * this value gets replaced, each time the reducer gets called
    */

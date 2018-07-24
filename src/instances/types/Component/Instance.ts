@@ -42,10 +42,8 @@ export default class ComponentInstance extends Instance {
    * calls the renderfunction with the properties and gives lifecyclehooks to the applicationcode
    */
   private initialiseComponent() {
-    const props = this.props;
-    this.applicationInstance = new (this.type as any)(props);
+    this.applicationInstance = new (this.type as any)(this.props);
     this.render();
-
   }
 
   /**
