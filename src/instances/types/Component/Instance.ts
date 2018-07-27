@@ -59,7 +59,7 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
     this.props.dispatch(newAbstractElement.props as componentProps);
   }
 
-    /**
+  /**
    * moves the children to another dom position
    */
   public move(predecessor: predecessor) {
