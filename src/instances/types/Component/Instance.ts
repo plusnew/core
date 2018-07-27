@@ -1,14 +1,10 @@
-import { nothing, props } from '../../../interfaces/component';
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import factory from '../../factory';
-import Instance, { getPredeccessor, predecessor } from '../Instance';
+import Instance, { predecessor, getPredeccessor } from '../Instance';
 import types from '../types';
-import reconcile, { shouldUpdate } from './reconcile';
 import Component from '../../../components/AbstractClass';
-
-// @FIXME this is needed to trick typescript into generating .d.ts file
-// if a file doesn't export anything other than types, it won't generate the .d.ts file
-nothing;
+import { props, ApplicationElement } from  '../../../interfaces/component';
+import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import store, { storeType } from '../../../util/store';
+import factory from '../../factory';
 
 /**
  * ComponentInstances are used representing the <Component /> in the shadowdom
@@ -18,11 +14,11 @@ nothing;
  * the render-function gets called again when a parent component rerenders
  * or when the dependencie-stores fire the change event
  */
-export default class ComponentInstance extends Instance {
+export default class ComponentInstance<componentProps extends Partial<props>> extends Instance {
   public nodeType = types.Component;
   public rendered: Instance;
-  public applicationInstance: Component<any>;
-  public props: props;
+  public applicationInstance: Component<componentProps>;
+  public props: storeType<componentProps, componentProps>;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -32,25 +28,18 @@ export default class ComponentInstance extends Instance {
     super(abstractElement, parentInstance, getPredecessor);
 
     this.type = abstractElement.type;
-    this.props = abstractElement.props;
-    // Each instance needs its own update method - to have a unique method to be removed from the dependency-listeners
-    this.update = this.update.bind(this);
+    this.props = store(abstractElement.props as componentProps, (_state, props: componentProps) => props);
+
     this.initialiseComponent();
   }
 
-  /**
-   * calls the renderfunction with the properties and gives lifecyclehooks to the applicationcode
-   */
-  private initialiseComponent() {
+  public initialiseComponent() {
     this.applicationInstance = new (this.type as any)(this.props);
-    this.render();
+    const abstractChildren = this.applicationInstance.render(this.props.Consumer, this);
+    this.render(abstractChildren);
   }
 
-  /**
-   * asks the component what should be changed and puts it to the factory
-   */
-  public render() {
-    const abstractChildren = this.applicationInstance.render(this.props, this);
+  public render(abstractChildren: ApplicationElement) {
     this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
   }
 
@@ -59,22 +48,13 @@ export default class ComponentInstance extends Instance {
   }
 
   /**
-   * rerenders and informs the domhandler
-   */
-  private update() {
-    reconcile(this.props, this);
-  }
-
-  /**
    * updates the shadowdom and dom
    */
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
-    if (shouldUpdate((newAbstractElement as PlusnewAbstractElement).props, this)) {
-      reconcile(newAbstractElement.props, this);
-    }
+    this.props.dispatch(newAbstractElement.props as componentProps);
   }
 
-  /**
+    /**
    * moves the children to another dom position
    */
   public move(predecessor: predecessor) {
@@ -85,9 +65,6 @@ export default class ComponentInstance extends Instance {
    * removes the children from the dom
    */
   public remove(prepareRemoveSelf: boolean) {
-    if (this.applicationInstance.componentWillUnmount) {
-      this.applicationInstance.componentWillUnmount(this.props);
-    }
     return this.rendered.remove(prepareRemoveSelf);
   }
 }

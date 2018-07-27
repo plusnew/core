@@ -13,7 +13,7 @@ const Animate: ComponentContainer<props> = factory(
   (Props: Consumer<props>, instance) => {
     return <Props render={(props) => {
       instance.elementDidMount = (element: Element) => {
-        (instance.parentInstance as Instance).elementDidMount(element);
+        (instance.parentInstance as Instance<props>).elementDidMount(element);
         if (props.elementDidMount) {
           props.elementDidMount(element);
         }
@@ -21,13 +21,13 @@ const Animate: ComponentContainer<props> = factory(
 
       instance.elementWillUnmount = (element: Element): Promise<any> | void => {
         let parentWait: void | Promise<any> = undefined;
-        parentWait = (instance.parentInstance as Instance).elementWillUnmount(element);
+        parentWait = (instance.parentInstance as Instance<props>).elementWillUnmount(element);
 
         if (parentWait) {
           return new Promise((resolve) => {
             (parentWait as Promise<any>).then(() => {
-              if (instance.props.elementWillUnmount) {
-                instance.props.elementWillUnmount(element).then(() => resolve());
+              if (instance.props.state.elementWillUnmount) {
+                instance.props.state.elementWillUnmount(element).then(() => resolve());
               } else {
                 resolve();
               }
@@ -35,8 +35,8 @@ const Animate: ComponentContainer<props> = factory(
           });
         }
 
-        if (instance.props.elementWillUnmount) {
-          return instance.props.elementWillUnmount(element);
+        if (instance.props.state.elementWillUnmount) {
+          return instance.props.state.elementWillUnmount(element);
         }
       };
 

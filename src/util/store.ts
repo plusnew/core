@@ -1,5 +1,6 @@
 import { ComponentContainer } from '../components/factory';
 import { ApplicationElement } from 'interfaces/component';
+import consumerFactory from 'components/consumerFactory';
 
 export type Consumer<props> = ComponentContainer<{render: (props: props) => ApplicationElement}>;
 
@@ -16,15 +17,15 @@ export interface reducer<stateType, actionType> {
  * thats how a complete store is organized
  */
 export interface redchain {
-  <stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): store<stateType, actionType>;
+  <stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): storeType<stateType, actionType>;
 }
 
-export interface store<stateType, actionType> {
+export interface storeType<stateType, actionType> {
   Consumer: Consumer<stateType>;
   /**
    * this value gets replaced, each time the reducer gets called
    */
-  // state: stateType;
+  state: stateType;
 
   /**
    *  when the state property should change, thats the way to call it
@@ -34,7 +35,7 @@ export interface store<stateType, actionType> {
   /**
    *  eventlisteners when a dispatch caused a change in state
    */
-  addOnChange(onChange: onChangeCallback<actionType>): store<stateType, actionType>;
+  addOnChange(onChange: onChangeCallback<actionType>): storeType<stateType, actionType>;
 
   /**
    * when a eventlistener is not needed, this function should get called
@@ -47,11 +48,11 @@ export interface store<stateType, actionType> {
   flush(): void;
 }
 
-const store: redchain = <stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): store<stateType, actionType> => {
+const store: redchain = <stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): storeType<stateType, actionType> => {
 
   let onChanges: onChangeCallback<actionType>[] = [];
 
-  const result: store<stateType, actionType> = {
+  const result: storeType<stateType, actionType> = {
     /**
      * holds the actual value of the current store
      */
@@ -60,7 +61,7 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
     /**
      * takes listeners, when the reducer returnvalue is triggered they
      */
-    addOnChange(onChange: onChangeCallback<actionType>): store<stateType, actionType> {
+    addOnChange(onChange: onChangeCallback<actionType>): storeType<stateType, actionType> {
       onChanges.push(onChange);
 
       return this;
@@ -89,12 +90,14 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
      * when the returnvalue is unequal to the previous state it will trigger the listeners from addOnChange
      */
     dispatch: null as any,
+
+    Consumer: null as any,
   };
 
   /**
    * dispatch got added after creating the scope for the result object, to bind the function to this scope
    */
-  result.dispatch = function (this: store<stateType, actionType>, action: actionType) {
+  result.dispatch = function (this: storeType<stateType, actionType>, action: actionType) {
     const currentState = reducer(this.state, action);
 
     // @TODO change to Object.is
@@ -125,6 +128,8 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
 
     return false;
   }.bind(result);
+
+  result.Consumer = consumerFactory(result);
 
   return result;
 };

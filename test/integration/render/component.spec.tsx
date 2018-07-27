@@ -310,15 +310,15 @@ describe('rendering nested components', () => {
 
     const MainComponentElement = <MainComponent />;
 
-    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance;
+    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance<any>;
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
-    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance;
+    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance<any>;
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props).toEqual({ foo: 0, children: [] });
+    expect(nestedComponent.props.state).toEqual({ foo: 0, children: [] });
 
     local.dispatch(1);
 
@@ -327,7 +327,7 @@ describe('rendering nested components', () => {
 
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props).toEqual({ foo: 1, children: [] });
+    expect(nestedComponent.props.state).toEqual({ foo: 1, children: [] });
   });
 
   it('nested component should not be created when shallow mode is active', () => {
@@ -353,16 +353,16 @@ describe('rendering nested components', () => {
 
     const MainComponentElement = <MainComponent />;
 
-    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance;
+    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance<any>;
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
-    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance;
+    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance<any>;
     expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props).toEqual({ foo: 0, children: [] });
+    expect(nestedComponent.props.state).toEqual({ foo: 0, children: [] });
 
     local.dispatch(1);
 
@@ -398,27 +398,27 @@ describe('rendering nested components', () => {
 
     const MainComponentElement = <MainComponent />;
 
-    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance;
+    const mainComponent = plusnew.render(MainComponentElement, container, { createChildrenComponents: false }) as ComponentInstance<any>;
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
-    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[1] as ComponentInstance;
+    const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[1] as ComponentInstance<any>;
     expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props).toEqual({ key: 0, foo: 0, children: [] });
+    expect(nestedComponent.props.state).toEqual({ key: 0, foo: 0, children: [] });
 
     local.dispatch(1);
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
-    expect((mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance).toBe(nestedComponent);
+    expect((mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance<any>).toBe(nestedComponent);
     expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props).toEqual({ key: 0, foo: 1, children: [] });
+    expect(nestedComponent.props.state).toEqual({ key: 0, foo: 1, children: [] });
   });
 
   describe('nested render call', () => {

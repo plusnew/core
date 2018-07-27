@@ -1,4 +1,4 @@
-import store, { Consumer, store as storeType } from './util/store';
+import store, { Consumer, storeType } from './util/store';
 import Animate from './components/Animate';
 import AbstractClass from './components/AbstractClass';
 import componentFactory, { ComponentContainer } from './components/factory';

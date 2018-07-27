@@ -30,7 +30,7 @@ describe('firing input events', () => {
 
     expect(change.calls.count()).toEqual(1);
     expect(change).toHaveBeenCalledWith(event);
-    expect((local as any).state).toBe('bar');
+    expect(local.state).toBe('bar');
 
     input.value = 'barbar';
     const eventTwo = new CustomEvent('change', { detail: { target: input } });
@@ -38,7 +38,7 @@ describe('firing input events', () => {
 
     expect(change.calls.count()).toEqual(2);
     expect(change).toHaveBeenCalledWith(eventTwo);
-    expect((local as any).state).toBe('barbar');
+    expect(local.state).toBe('barbar');
   });
 
   it('is onchange called on explicit text', () => {
@@ -69,7 +69,7 @@ describe('firing input events', () => {
 
     expect(change.calls.count()).toEqual(2);
     expect(change).toHaveBeenCalledWith(eventTwo);
-    expect((local as any).state).toBe('barbar');
+    expect(local.state).toBe('barbar');
   });
 
   it('is onchange called on checkbox', () => {
@@ -93,7 +93,7 @@ describe('firing input events', () => {
 
     expect(change.calls.count()).toEqual(1);
     expect(change).toHaveBeenCalledWith(event);
-    expect((local as any).state).toBe(false);
+    expect(local.state).toBe(false);
   });
 
   it('checkbox value persists when state isnt changed', () => {

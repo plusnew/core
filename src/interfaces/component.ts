@@ -24,6 +24,6 @@ export interface props {
 /**
  * thats how a application component should look like
  */
-export default interface component<props = {}> {
-  (props: props, componentInstance: ComponentInstance): ApplicationElement;
+export default interface component<componentProps extends Partial<props> = {} > {
+  (props: componentProps, componentInstance: ComponentInstance<componentProps>): ApplicationElement;
 }

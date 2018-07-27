@@ -1,14 +1,14 @@
 import ComponentInstance from '../instances/types/Component/Instance';
-import { ApplicationElement } from '../interfaces/component';
+import { ApplicationElement, props } from '../interfaces/component';
 import { Consumer } from '../util/store';
 
-export default abstract class Component<props> {
+export default abstract class Component<componentProps extends Partial<props>> {
   displayName = '';
 
-  constructor(props: props) {
+  constructor(props: componentProps) {
   }
 
-  abstract render(props: Consumer<props>, plusnewComponentInstance: ComponentInstance): ApplicationElement;
+  abstract render(props: Consumer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps>): ApplicationElement;
 
-  componentWillUnmount(props: props) {}
+  componentWillUnmount(props: componentProps) {}
 }
