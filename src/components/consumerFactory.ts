@@ -12,7 +12,9 @@ export default function <state>(store: storeType<state, any>) {
   return class Consumer extends AbstractClass<consumerProps<state>> {
     render(_props: any, instance: ComponentInstance<consumerProps<state>>) {
       store.addOnChange((state) => {
-        console.log(instance.props.state.render(store.state));
+        instance.render(
+          instance.props.state.render(store.state),
+        );
       });
 
       return instance.props.state.render(store.state);

@@ -5,6 +5,7 @@ import { props, ApplicationElement } from  '../../../interfaces/component';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import store, { storeType } from '../../../util/store';
 import factory from '../../factory';
+import reconcile from './reconcile';
 
 /**
  * ComponentInstances are used representing the <Component /> in the shadowdom
@@ -16,7 +17,7 @@ import factory from '../../factory';
  */
 export default class ComponentInstance<componentProps extends Partial<props>> extends Instance {
   public nodeType = types.Component;
-  public rendered: Instance;
+  public rendered: Instance; // @FIXME This actually should be Instance or undefined
   public applicationInstance: Component<componentProps>;
   public props: storeType<componentProps, componentProps>;
 
@@ -40,7 +41,11 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
   }
 
   public render(abstractChildren: ApplicationElement) {
-    this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
+    if (this.rendered) {
+      reconcile(abstractChildren, this);
+    } else {
+      this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
+    }
   }
 
   public getLastIntrinsicElement() {
