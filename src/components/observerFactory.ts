@@ -19,5 +19,9 @@ export default function <state>(store: storeType<state, any>) {
 
       return instance.props.getState().render(store.getState());
     }
+
+    static shouldCreateComponent() {
+      return true;
+    }
   };
 }

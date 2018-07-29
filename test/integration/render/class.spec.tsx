@@ -10,7 +10,7 @@ describe('rendering class components', () => {
   });
 
   it('class component gets rendered', () => {
-    class MainComponent {
+    class MainComponent extends Component<any>{
       render() {
         return <div />;
       }

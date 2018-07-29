@@ -2,6 +2,7 @@ import ComponentInstance from '../instances/types/Component/Instance';
 import { props, ApplicationElement } from '../interfaces/component';
 import AbstractClass from '../components/AbstractClass';
 import { Observer } from '../util/store';
+import Instance from '../instances/types/Instance';
 
 export interface componentResult<componentProps extends Partial<props>> {
   (props: componentProps, instance: ComponentInstance<componentProps>): plusnew.JSX.Element | null;
@@ -10,6 +11,7 @@ export interface componentResult<componentProps extends Partial<props>> {
 export interface ComponentContainer<componentProps> {
   new (props: componentProps): AbstractClass<componentProps>;
   prototype: AbstractClass<componentProps>;
+  shouldCreateComponent(instance: Instance): boolean;
 }
 
 export interface factory {

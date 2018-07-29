@@ -9,7 +9,7 @@ import Instance, { getPredeccessor } from './types/Instance';
 import PlaceholderInstance from './types/Placeholder/Instance';
 import ShallowInstance from './types/Shallow/Instance';
 import TextInstance from './types/Text/Instance';
-import types from './types/types';
+import { ComponentContainer } from 'components/factory';
 
 /**
  * because data from jsx can be anything, this factory is needed to decide what type of instance should be created
@@ -40,15 +40,16 @@ export default function (
     return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, getPredecessor);
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
-    if (parentInstance.createChildrenComponents === false && parentInstance.nodeType !== types.Root) {
-      return new ShallowInstance(
+    const componentAbstractElement = abstractElement as PlusnewAbstractElement;
+    if ((componentAbstractElement.type as ComponentContainer<any>).shouldCreateComponent(parentInstance)) {
+      return new ComponentInstance(
         abstractElement as PlusnewAbstractElement,
         parentInstance,
         getPredecessor,
       );
     }
 
-    return new ComponentInstance(
+    return new ShallowInstance(
       abstractElement as PlusnewAbstractElement,
       parentInstance,
       getPredecessor,
