@@ -5,7 +5,7 @@ import { props, ApplicationElement } from  '../../../interfaces/component';
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import store, { storeType } from '../../../util/store';
 import factory from '../../factory';
-import reconcile from './reconcile';
+import reconcile, { shouldUpdate } from './reconcile';
 
 /**
  * ComponentInstances are used representing the <Component /> in the shadowdom
@@ -29,7 +29,12 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
     super(abstractElement, parentInstance, getPredecessor);
 
     this.type = abstractElement.type;
-    this.props = store(abstractElement.props as componentProps, (_state, props: componentProps) => props);
+    this.props = store(abstractElement.props as componentProps, (state, action: componentProps) => {
+      if (shouldUpdate(action, this)) {
+        return action;
+      }
+      return state;
+    });
 
     this.initialiseComponent();
   }
