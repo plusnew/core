@@ -1,4 +1,4 @@
-import store, { Consumer, storeType } from './util/store';
+import store, { Observer, storeType } from './util/store';
 import Animate from './components/Animate';
 import AbstractClass from './components/AbstractClass';
 import componentFactory, { ComponentContainer } from './components/factory';
@@ -57,7 +57,8 @@ export {
   Portal,
   Animate,
   AbstractClass as Component,
-  Consumer,
+  Observer as Props,
+  Observer,
   storeType,
 };
 

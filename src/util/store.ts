@@ -1,8 +1,8 @@
 import { ComponentContainer } from '../components/factory';
 import { ApplicationElement } from 'interfaces/component';
-import consumerFactory from 'components/consumerFactory';
+import observerFactory from 'components/observerFactory';
 
-export type Consumer<props> = ComponentContainer<{render: (props: props) => ApplicationElement}>;
+export type Observer<props> = ComponentContainer<{render: (props: props) => ApplicationElement}>;
 
 export type onChangeCallback<actionType> = ((lastAction: actionType) => void);
 
@@ -21,7 +21,7 @@ export interface redchain {
 }
 
 export interface storeType<stateType, actionType> {
-  Consumer: Consumer<stateType>;
+  Observer: Observer<stateType>;
   /**
    * this value gets replaced, each time the reducer gets called
    */
@@ -91,7 +91,7 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
      */
     dispatch: null as any,
 
-    Consumer: null as any,
+    Observer: null as any,
   };
 
   /**
@@ -129,7 +129,7 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
     return false;
   }.bind(result);
 
-  result.Consumer = consumerFactory(result);
+  result.Observer = observerFactory(result);
 
   return result;
 };

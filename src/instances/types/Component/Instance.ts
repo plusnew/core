@@ -36,7 +36,7 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
 
   public initialiseComponent() {
     this.applicationInstance = new (this.type as any)(this.props);
-    const abstractChildren = this.applicationInstance.render(this.props.Consumer, this);
+    const abstractChildren = this.applicationInstance.render(this.props.Observer, this);
     this.render(abstractChildren);
   }
 

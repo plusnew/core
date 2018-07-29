@@ -1,4 +1,4 @@
-import plusnew, { Consumer } from 'index';
+import plusnew, { Props } from 'index';
 import Instance from '../instances/types/Component/Instance';
 import factory, { ComponentContainer } from './factory';
 
@@ -9,7 +9,7 @@ type props = {
 
 const Portal: ComponentContainer<props> = factory(
   'Portal',
-  (Props: Consumer<props>, instance) => {
+  (Props: Props<props>, instance) => {
     let initialised = false;
 
     return <Props render={(props) => {

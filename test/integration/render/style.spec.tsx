@@ -14,7 +14,7 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           <div style={{ width: state }} />
         } />,
     );
@@ -35,7 +35,7 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           state ?
             <div />
           :
@@ -63,7 +63,7 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           state ?
             <div style={{ width: '30px' }}/>
           :

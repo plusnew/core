@@ -1,4 +1,4 @@
-import plusnew, { Consumer } from 'index';
+import plusnew, { Props } from 'index';
 import Instance from '../instances/types/Component/Instance';
 import factory, { ComponentContainer } from './factory';
 
@@ -10,7 +10,7 @@ type props = {
 
 const Animate: ComponentContainer<props> = factory(
   'Animate',
-  (Props: Consumer<props>, instance) => {
+  (Props: Props<props>, instance) => {
     return <Props render={(props) => {
       instance.elementDidMount = (element: Element) => {
         (instance.parentInstance as Instance<props>).elementDidMount(element);

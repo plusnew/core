@@ -23,7 +23,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           <div className={state}>{state}</div>
         } />,
     );
@@ -51,7 +51,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           <div className={state}>{state}</div>
         } />,
     );
@@ -78,7 +78,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
             state === 'foo' ? (
               <div>
                 <span>{state}</span>
@@ -107,7 +107,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
 
           state === 'foo' ? (
             <div>{state}</div>
@@ -135,7 +135,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           state === 'foo' ? (
             <span>{state}</span>
           ) : (
@@ -167,7 +167,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           state === 'foo' ? (
             <span>{[<div>{state}</div>, <span>{state}</span>]}</span>
           ) : (
@@ -195,7 +195,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           state === 'foo' ? (
             <div>foo</div>
           ) : (
@@ -220,7 +220,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () => 
-      <local.Consumer render={state =>
+      <local.Observer render={state =>
         (state === true ? <div /> : <div>foo</div>)
       } />,
     );
@@ -245,7 +245,7 @@ describe('rendering the elements', () => {
       () => (
         <div>
           <span />
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state && 'foo'
           } />
           <span />
@@ -281,7 +281,7 @@ describe('rendering the elements', () => {
       () => (
         <div>
           {false}
-          <local.Consumer render={state => state} />
+          <local.Observer render={state => state} />
         </div>
       ),
     );
@@ -300,7 +300,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           state ?
             <div className="foo" />
           :
@@ -323,7 +323,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           state ?
             <div onclick={clickHandler} />
           :
@@ -345,7 +345,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           <div>{state}</div>
         } />,
     );

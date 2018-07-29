@@ -93,7 +93,7 @@ describe('dom handling', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           state ?
             <div>
               <span>foo</span>
@@ -135,7 +135,7 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           <input disabled={state} />
         } />,
     );
@@ -173,7 +173,7 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () => 
-      <local.Consumer render={state =>
+      <local.Observer render={state =>
         <input value={state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />
       } />,
     );
@@ -208,7 +208,7 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           <input value={state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />
         } />,
     );
@@ -232,7 +232,7 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           <input value={state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />
         } />,
     );
@@ -261,7 +261,7 @@ describe('dom handling', () => {
     const MainComponent = component(
       'Component',
       () => 
-        <local.Consumer render={(state) => {
+        <local.Observer render={(state) => {
           if (state === 0) {
             return (
               <div>

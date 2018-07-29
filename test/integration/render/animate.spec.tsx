@@ -1,4 +1,4 @@
-import plusnew, { Consumer, component, store, Animate } from 'index';
+import plusnew, { Props, component, store, Animate } from 'index';
 
 async function tick(count: number) {
   for (let i = 0; i < count; i += 1) {
@@ -115,7 +115,7 @@ describe('<Animate />', () => {
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
-                  <local.Consumer render={state =>
+                  <local.Observer render={state =>
                     state && <div />
                   } />
                 </Animate>,
@@ -151,10 +151,10 @@ describe('<Animate />', () => {
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
-                  <local.Consumer render={state =>
+                  <local.Observer render={state =>
                     state && <div />
                   } />
-                  <local.Consumer render={state =>
+                  <local.Observer render={state =>
                     state && <span />
                   } />
                 </Animate>,
@@ -194,7 +194,7 @@ describe('<Animate />', () => {
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
-                  <local.Consumer render={state =>
+                  <local.Observer render={state =>
                     local && <div><div /></div>
                   } />
                 </Animate>,
@@ -229,11 +229,11 @@ describe('<Animate />', () => {
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
-                  <local.Consumer render={state =>
+                  <local.Observer render={state =>
                     state && <div><div /></div>
                   } />
 
-                  <local.Consumer render={state =>
+                  <local.Observer render={state =>
                     state && <span><span /></span>
                   } />
                 </Animate>,
@@ -279,7 +279,7 @@ describe('<Animate />', () => {
                   <Animate
                     elementWillUnmount={willUnmountSpyChild}
                   >
-                    <local.Consumer render={state =>
+                    <local.Observer render={state =>
                       state && <div><div /></div>
                     } />
                   </Animate>
@@ -332,7 +332,7 @@ describe('<Animate />', () => {
                   <Animate
                     elementWillUnmount={willUnmountSpyChild}
                   >
-                    <local.Consumer render={state =>
+                    <local.Observer render={state =>
                       <div><div /></div>
                     } />
                   </Animate>
@@ -375,7 +375,7 @@ describe('<Animate />', () => {
                   <Animate
                     elementWillUnmount={willUnmountSpyChild}
                   >
-                    <local.Consumer render={state =>
+                    <local.Observer render={state =>
                       state && <div><div /></div>
                     } />
                   </Animate>
@@ -409,7 +409,7 @@ describe('<Animate />', () => {
           'Component',
           () =>
             <>
-              <local.Consumer render={state =>
+              <local.Observer render={state =>
                 state &&
                   <>
                     <Animate
@@ -450,7 +450,7 @@ describe('<Animate />', () => {
       const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise).and.callThrough();
       const ProxyComponent = component(
         'ProxyComponent',
-        (Props: Consumer<{ children: any}>) => <Props render={props => props.children} />,
+        (Props: Props<{ children: any}>) => <Props render={props => props.children} />,
       );
       
       const Component = component(
@@ -458,7 +458,7 @@ describe('<Animate />', () => {
 
         () =>
           <>
-            <local.Consumer render={state =>
+            <local.Observer render={state =>
               state &&
                 <ProxyComponent>
                   <Animate
@@ -500,7 +500,7 @@ describe('<Animate />', () => {
         'Component',
         () =>
           <>
-            <local.Consumer render={state =>
+            <local.Observer render={state =>
               state &&
                 <span>
                   <Animate
@@ -532,7 +532,7 @@ describe('<Animate />', () => {
         'Component',
         () => <Animate elementWillUnmount={() => Promise.resolve()}>
                 <Animate>
-                  <local.Consumer render={state =>
+                  <local.Observer render={state =>
                     state && <div />
                   } />
                 </Animate>

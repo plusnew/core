@@ -19,7 +19,7 @@ describe('<Portal />', () => {
      
       () => 
         <span>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state < 2 &&
               <Portal target={outside}>
                 {state}

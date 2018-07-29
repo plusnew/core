@@ -1,4 +1,4 @@
-import plusnew, { Consumer, store, component } from 'index';
+import plusnew, { Props, store, component } from 'index';
 
 describe('fragments', () => {
   let container: HTMLElement;
@@ -35,7 +35,7 @@ describe('fragments', () => {
     const PartialComponent = component(
       'PartialComponent',
       
-      (Props: Consumer<{value: string}>) =>
+      (Props: Props<{value: string}>) =>
         <>
           <span><Props render={props => props.value + '-foo'} /></span>
           <div><Props render={props => props.value + '-bar'} /></div>
@@ -45,7 +45,7 @@ describe('fragments', () => {
       'MainComponent',
       () =>
         <div>
-          <list.Consumer render={state =>
+          <list.Observer render={state =>
             state.map(entity => 
               <PartialComponent key={entity.key} value={entity.value} />,
             )
@@ -91,7 +91,7 @@ describe('fragments', () => {
       'Component',
       () =>
         <>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state ? <span>foo</span> : <div>bar</div>
           } />
         </>,
@@ -115,7 +115,7 @@ describe('fragments', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           state ?
             <>
               <span>foo</span>
@@ -155,7 +155,7 @@ describe('fragments', () => {
     const MainComponent = component(
       'Component',
       () => 
-        <local.Consumer render={(state) => {
+        <local.Observer render={(state) => {
           if (state === 0) {
             return (
               <>

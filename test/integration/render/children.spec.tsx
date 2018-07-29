@@ -1,4 +1,4 @@
-import plusnew, { Consumer, store, component } from 'index';
+import plusnew, { Props, store, component } from 'index';
 
 describe('rendering nested components', () => {
   let container: HTMLElement;
@@ -14,12 +14,12 @@ describe('rendering nested components', () => {
       const local = store('foo', (state, action: string) => action);
       const NestedComponent = component(
         'Component',
-        (Props: Consumer<{ children: any }>) => <span><Props render={props => props.children} /></span>,
+        (Props: Props<{ children: any }>) => <span><Props render={props => props.children} /></span>,
       );
 
       const MainComponent = component(
         'Component',
-        () => <local.Consumer render={local => <NestedComponent>{local}</NestedComponent>} />);
+        () => <local.Observer render={local => <NestedComponent>{local}</NestedComponent>} />);
 
       plusnew.render(<MainComponent />, container);
 

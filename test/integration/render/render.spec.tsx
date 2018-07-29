@@ -1,4 +1,4 @@
-import plusnew, { Consumer, store, component } from 'index';
+import plusnew, { Props, store, component } from 'index';
 
 describe('rendering the elements', () => {
   const local = store(0, (previousState, action: undefined) => previousState + 1);
@@ -17,7 +17,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       
-      (Props: Consumer<{}>) => <div className="foo" />,
+      (Props: Props<{}>) => <div className="foo" />,
     );
     plusnew.render(<Component />, container);
 
@@ -31,7 +31,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       
-      (Props: Consumer<{}>) => (
+      (Props: Props<{}>) => (
         <div>
           <div className="foo" />
           <span className="bar" />
@@ -54,7 +54,7 @@ describe('rendering the elements', () => {
   it('check if nesting works', () => {
     const Component = component(
       'Component',
-      (Props: Consumer<{}>) => (
+      (Props: Props<{}>) => (
         <div className="foo">
           <span className="bar" />
         </div>
@@ -94,7 +94,7 @@ describe('rendering the elements', () => {
   it('check if textnode is created', () => {
     const Component = component(
       'Component',
-      (Props: Consumer<{}>) => <div className="foo">bar</div>,
+      (Props: Props<{}>) => <div className="foo">bar</div>,
     );
     plusnew.render(<Component />, container);
 
@@ -109,7 +109,7 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       
-      (Props: Consumer<{}>) => null,
+      (Props: Props<{}>) => null,
     );
     plusnew.render(<Component />, container);
 

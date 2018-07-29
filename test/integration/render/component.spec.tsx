@@ -1,4 +1,4 @@
-import plusnew, { Consumer, store, component } from 'index';
+import plusnew, { Props, store, component } from 'index';
 import ComponentInstance from 'instances/types/Component/Instance';
 import FragmentInstance from 'instances/types/Fragment/Instance';
 import types from 'instances/types/types';
@@ -17,14 +17,14 @@ describe('rendering nested components', () => {
     const NestedComponent = component(
       'Component',
       
-    (Props: Consumer<{ value: string }>) => <Props render={props => <div className={props.value}>{props.value}</div>} />,
+    (Props: Props<{ value: string }>) => <Props render={props => <div className={props.value}>{props.value}</div>} />,
     );
 
     const local = store('foo', (state: string, newValue: string) => newValue);
 
     const MainComponent = component(
       'Component',
-      () => <local.Consumer render={local => <NestedComponent value={local} /> } />,
+      () => <local.Observer render={local => <NestedComponent value={local} /> } />,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -52,16 +52,16 @@ describe('rendering nested components', () => {
 
     const NestedComponent = component(
       'Component',
-      (Props: Consumer<{value: string}>) =>
+      (Props: Props<{value: string}>) =>
         <>
           <Props render={props => <span>{props.value}</span> } />
-          <nestedStore.Consumer render={state => <span>{state}</span> } />
+          <nestedStore.Observer render={state => <span>{state}</span> } />
         </>,
     );
     const MainComponent = component(
       'Component',
-      (Props: Consumer<{}>) =>
-        <mainStore.Consumer render={state =>
+      (Props: Props<{}>) =>
+        <mainStore.Observer render={state =>
           <NestedComponent value={state} />
         } />,
     );
@@ -292,7 +292,7 @@ describe('rendering nested components', () => {
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
       'Component',
-      (Props: Consumer<{foo: number}>) => <div />,
+      (Props: Props<{foo: number}>) => <div />,
     );
 
     const local = store(0, (_state, action: number) => action);
@@ -300,7 +300,7 @@ describe('rendering nested components', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           <>
             <NestedComponent foo={state }/>
             <span />
@@ -333,7 +333,7 @@ describe('rendering nested components', () => {
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
       'Component',
-      (_Props: Consumer<{foo: number}>) => <div />,
+      (_Props: Props<{foo: number}>) => <div />,
     );
 
     const local = store(0, (_state, action: number) => action);
@@ -341,7 +341,7 @@ describe('rendering nested components', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
             <>
               {state < 1 &&
                 <NestedComponent foo={ state }/>
@@ -377,7 +377,7 @@ describe('rendering nested components', () => {
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
       'Component',
-      (Props: Consumer<{foo: number}>) => <div />,
+      (Props: Props<{foo: number}>) => <div />,
     );
 
     const local = store(0, (_state, action: number) => action);
@@ -385,7 +385,7 @@ describe('rendering nested components', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Consumer render={state =>
+        <local.Observer render={state =>
           (state < 1 ? [
             <span key={1}/>,
             <NestedComponent key={0} foo={ state }/>,
@@ -458,7 +458,7 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{foo: {}}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{foo: {}}>) => plusnew.JSX.Element,
       );
 
       const MainComponent = component(
@@ -485,7 +485,7 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{foo: {}}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{foo: {}}>) => plusnew.JSX.Element,
       );
 
       const foo = {};
@@ -494,7 +494,7 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent foo={foo}/>
             :
@@ -520,7 +520,7 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{foo: {}, bar?: {}}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{foo: {}, bar?: {}}>) => plusnew.JSX.Element,
       );
 
       const foo = {};
@@ -529,7 +529,7 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent foo={foo}/>
             :
@@ -555,7 +555,7 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const foo = {};
@@ -563,7 +563,7 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent><div foo={foo} /></NestedComponent>
             :
@@ -589,7 +589,7 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const foo = {};
@@ -598,7 +598,7 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent><div foo={foo} /></NestedComponent>
             :
@@ -624,7 +624,7 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const foo = {};
@@ -632,7 +632,7 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent><div foo={foo} /><div foo={foo} /></NestedComponent>
             :
@@ -658,7 +658,7 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const foo = {};
@@ -666,7 +666,7 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent><div foo={foo} /></NestedComponent>
             :
@@ -692,7 +692,7 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const foo = {};
@@ -700,7 +700,7 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent><div foo={foo} /></NestedComponent>
             :
@@ -726,14 +726,14 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       // There was a bug that the first child could be different, but the info isSame got overwritten by the last child-element
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent><div foo="foo" /><span /></NestedComponent>
             :
@@ -761,13 +761,13 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent>foo</NestedComponent>
             :
@@ -793,13 +793,13 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent>foo</NestedComponent>
             :
@@ -825,13 +825,13 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent>{'1'}</NestedComponent>
             :
@@ -857,13 +857,13 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent>{null}</NestedComponent>
             :
@@ -890,13 +890,13 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent><div /></NestedComponent>
             :
@@ -922,13 +922,13 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent>{null}</NestedComponent>
             :
@@ -954,7 +954,7 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        renderSpy as (Props: Consumer<{children: any}>) => plusnew.JSX.Element,
+        renderSpy as (Props: Props<{children: any}>) => plusnew.JSX.Element,
       );
 
       const foo = [<div />];
@@ -962,7 +962,7 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Consumer render={state =>
+          <local.Observer render={state =>
             state === 0 ?
               <NestedComponent>{foo}</NestedComponent>
             :

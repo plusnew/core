@@ -18,7 +18,7 @@ describe('firing input events', () => {
 
     const Component = component(
       'Component',
-      () => <local.Consumer render={state => <input onchange={change} value={state} /> } />,
+      () => <local.Observer render={state => <input onchange={change} value={state} /> } />,
     );
 
     plusnew.render(<Component />, container);
@@ -50,7 +50,7 @@ describe('firing input events', () => {
 
     const Component = component(
       'Component',
-      () => <local.Consumer render={state => <input onchange={change} value={state}  />} />,
+      () => <local.Observer render={state => <input onchange={change} value={state}  />} />,
     );
 
     plusnew.render(<Component />, container);
@@ -81,7 +81,7 @@ describe('firing input events', () => {
 
     const Component = component(
       'Component',
-      () => <local.Consumer render={state => <input onchange={change} checked={state} type="checkbox" />} />,
+      () => <local.Observer render={state => <input onchange={change} checked={state} type="checkbox" />} />,
     );
 
     plusnew.render(<Component />, container);
