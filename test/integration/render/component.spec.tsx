@@ -93,16 +93,16 @@ describe('rendering nested components', () => {
 
   //   const NestedComponent = component(
   //     'Component',
-  //     (Props: Consumer<{}>) =>
-  //        <span>{counterStore.state}</span>,
+  //     (Props: Props<{}>) =>
+  //        <span>{counterStore.getState()}</span>,
   //   );
 
   //   const MainComponent = component(
   //     'Component',
-  //     (Props: Consumer<{}>) =>
+  //     (Props: Props<{}>) =>
   //       <>
-  //         <span>{counterStore.state}</span>
-  //         {mainStore.state && <NestedComponent />}
+  //         <span>{counterStore.getState()}</span>
+  //         {mainStore.getState() && <NestedComponent />}
   //       </>,
   //   );
 
@@ -142,16 +142,16 @@ describe('rendering nested components', () => {
 
   //   const NestedComponent = component(
   //     'Component',
-  //     (Props: Consumer<{}>) =>
-  //        <span>{counterStore.state}</span>,
+  //     (Props: Props<{}>) =>
+  //        <span>{counterStore.getState()}</span>,
   //   );
 
   //   const MainComponent = component(
   //     'Component',
-  //     (Props: Consumer<{}>) =>
+  //     (Props: Props<{}>) =>
   //       <>
-  //         <span>{counterStore.state}</span>
-  //         {mainStore.state &&
+  //         <span>{counterStore.getState()}</span>
+  //         {mainStore.getState() &&
   //           <span>
   //             <NestedComponent />
   //           </span>
@@ -193,16 +193,16 @@ describe('rendering nested components', () => {
 
   //   const NestedComponent = component(
   //     'Component',
-  //     (Props: Consumer<{}>) =>
-  //        <span>{counterStore.state}</span>,
+  //     (Props: Props<{}>) =>
+  //        <span>{counterStore.getState()}</span>,
   //   );
 
   //   const MainComponent = component(
   //     'Component',
-  //     (Props: Consumer<{}>) =>
+  //     (Props: Props<{}>) =>
   //       <>
-  //         <span>{counterStore.state}</span>
-  //         {mainStore.state &&
+  //         <span>{counterStore.getState()}</span>
+  //         {mainStore.getState() &&
   //           <>
   //             <NestedComponent />
   //           </>
@@ -244,16 +244,16 @@ describe('rendering nested components', () => {
 
   //   const NestedComponent = component(
   //     'Component',
-  //     (Props: Consumer<{}>) =>
-  //        <span>{counterStore.state}</span>,
+  //     (Props: Props<{}>) =>
+  //        <span>{counterStore.getState()}</span>,
   //   );
 
   //   const MainComponent = component(
   //     'Component',
-  //     (Props: Consumer<{}>) =>
+  //     (Props: Props<{}>) =>
   //       <>
-  //         <span>{counterStore.state}</span>
-  //         {mainStore.state &&
+  //         <span>{counterStore.getState()}</span>
+  //         {mainStore.getState() &&
   //           [
   //             <NestedComponent key="0" />,
   //           ]
@@ -318,7 +318,7 @@ describe('rendering nested components', () => {
     const nestedComponent = (mainComponent.rendered as FragmentInstance).rendered[0] as ComponentInstance<any>;
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props.state).toEqual({ foo: 0, children: [] });
+    expect(nestedComponent.props.getState()).toEqual({ foo: 0, children: [] });
 
     local.dispatch(1);
 
@@ -327,7 +327,7 @@ describe('rendering nested components', () => {
 
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props.state).toEqual({ foo: 1, children: [] });
+    expect(nestedComponent.props.getState()).toEqual({ foo: 1, children: [] });
   });
 
   it('nested component should not be created when shallow mode is active', () => {
@@ -362,7 +362,7 @@ describe('rendering nested components', () => {
     expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props.state).toEqual({ foo: 0, children: [] });
+    expect(nestedComponent.props.getState()).toEqual({ foo: 0, children: [] });
 
     local.dispatch(1);
 
@@ -407,7 +407,7 @@ describe('rendering nested components', () => {
     expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props.state).toEqual({ key: 0, foo: 0, children: [] });
+    expect(nestedComponent.props.getState()).toEqual({ key: 0, foo: 0, children: [] });
 
     local.dispatch(1);
 
@@ -418,7 +418,7 @@ describe('rendering nested components', () => {
     expect((mainComponent.rendered as FragmentInstance).rendered.length).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props.state).toEqual({ key: 0, foo: 1, children: [] });
+    expect(nestedComponent.props.getState()).toEqual({ key: 0, foo: 1, children: [] });
   });
 
   describe('nested render call', () => {
@@ -983,123 +983,84 @@ describe('rendering nested components', () => {
   });
 
 
-  // it('removed nested component gets a componentWillUnmount call', () => {
-  //   const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
+  it('removed nested component gets a componentWillUnmount call', () => {
+    const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
 
-  //   const local = store(true, (state, action: boolean) => action);
+    const local = store(true, (state, action: boolean) => action);
 
-  //   const dependencies = {
-  //     someStore: store(true, (state, action: boolean) => action),
-  //   };
+    const NestedComponent = component(
+      'Component',
+      () => <div />,
+    );
 
-  //   const NestedComponent = component(
-  //     'Component',
-  //     (Props: Consumer<{}>, config: componentOptions<{}, {}>) => {
-  //       config.componentWillUnmount = componentWillUnmountSpy;
-  //       return dependencies;
-  //     },
-  //     () => <div />,
-  //   );
+    NestedComponent.prototype.componentWillUnmount = componentWillUnmountSpy;
+
+    const MainComponent = component(
+      'Component',
+      () =>
+        <local.Observer render={state =>
+          state === true ?
+            <NestedComponent />
+          :
+            null
+        } />,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect(componentWillUnmountSpy.calls.count()).toBe(0);
+
+    local.dispatch(false);
+
+    expect(componentWillUnmountSpy.calls.count()).toBe(1);
+    expect(componentWillUnmountSpy).toHaveBeenCalledWith({ children: [] });
+  });
 
 
-  //   const MainComponent = component(
-  //     'Component',
+  it('removed nested component gets a componentWillUnmount call with props', () => {
+    const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
+
+    const local = store(true, (state, action: boolean) => action);
+
+    const NestedComponent = component(
+      'Component',
+      (Props: Props<{ foo: string }>) => <div />,
+    );
+
+    NestedComponent.prototype.componentWillUnmount = componentWillUnmountSpy;
+
+    const MainComponent = component(
+      'Component',
      
-  //     () =>
-  //       local.state === true ?
-  //         <NestedComponent />
-  //       :
-  //         null,
-  //   );
+      () =>
+        <local.Observer render={state =>
+          state === true ?
+            <NestedComponent foo="bar" />
+          :
+            null
+        } />,
+    );
 
-  //   plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, container);
 
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
-  //   expect(componentWillUnmountSpy.calls.count()).toBe(0);
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect(componentWillUnmountSpy.calls.count()).toBe(0);
 
-  //   local.dispatch(false);
+    local.dispatch(false);
 
-  //   expect(componentWillUnmountSpy.calls.count()).toBe(1);
-  //   expect(componentWillUnmountSpy).toHaveBeenCalledWith({ children: [] }, dependencies);
-  // });
+    expect(componentWillUnmountSpy.calls.count()).toBe(1);
+    expect(componentWillUnmountSpy).toHaveBeenCalledWith({ foo: 'bar', children: [] });
+  });
 
+  it('displayName is set', () => {
+    const MainComponent = component(
+      'Component',
+      () => <div />,
+    );
 
-  // it('removed nested component gets a componentWillUnmount call with dependencies', () => {
-  //   const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
-
-  //   const local = store(true, (state, action: boolean) => action);
-
-  //   const dependencies = {
-  //     someStore: store(true, (state, action: boolean) => action),
-  //   };
-
-  //   type props = { foo: string };
-  //   const NestedComponent = component(
-  //     'Component',
-  //     (props: props, options: componentOptions<props, {}>) => {
-  //       options.componentWillUnmount = componentWillUnmountSpy;
-  //       return dependencies;
-  //     },
-  //     (props: props) => <div />,
-  //   );
-
-  //   const MainComponent = component(
-  //     'Component',
-     
-  //     () =>
-  //       local.state === true ?
-  //         <NestedComponent foo="bar" />
-  //       :
-  //         null,
-  //   );
-
-  //   plusnew.render(<MainComponent />, container);
-
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
-  //   expect(componentWillUnmountSpy.calls.count()).toBe(0);
-
-  //   local.dispatch(false);
-
-  //   expect(componentWillUnmountSpy.calls.count()).toBe(1);
-  //   expect(componentWillUnmountSpy).toHaveBeenCalledWith({ foo: 'bar', children: [] }, dependencies);
-  // });
-
-  // it('config object is shared by constructor and render function', () => {
-
-  //   const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
-
-  //   const MainComponent = component(
-  //     'Component',
-  //     (Props: Consumer<{}>, options: componentOptions<any, any>) => {
-  //       options.foo = 'bar';
-  //       return {};
-  //     },
-  //     renderSpy,
-  //   );
-
-  //   const instance = plusnew.render(<MainComponent />, container);
-
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
-
-  //   expect(renderSpy).toHaveBeenCalledWith({ children: [] }, {}, { instance, foo: 'bar' });
-  // });
-
-  // it('displayName is set', () => {
-
-  //   const renderSpy = jasmine.createSpy('render', () => <div />).and.callThrough();
-
-  //   const MainComponent = component(
-  //     'Component',
-  //     (Props: Consumer<{}>, options: componentOptions<any, any>) => {
-  //       options.foo = 'bar';
-  //       return {};
-  //     },
-  //     renderSpy,
-  //   );
-
-  //   expect(MainComponent.prototype.displayName).toBe('Component');
-  // });
+    expect(MainComponent.prototype.displayName).toBe('Component');
+  });
 });

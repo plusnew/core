@@ -25,7 +25,7 @@ export interface storeType<stateType, actionType> {
   /**
    * this value gets replaced, each time the reducer gets called
    */
-  state: stateType;
+  getState: () => stateType;
 
   /**
    *  when the state property should change, thats the way to call it
@@ -35,7 +35,7 @@ export interface storeType<stateType, actionType> {
   /**
    *  eventlisteners when a dispatch caused a change in state
    */
-  addOnChange(onChange: onChangeCallback<actionType>): storeType<stateType, actionType>;
+  addOnChange(onChange: onChangeCallback<actionType>): void;
 
   /**
    * when a eventlistener is not needed, this function should get called
@@ -51,20 +51,19 @@ export interface storeType<stateType, actionType> {
 const store: redchain = <stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): storeType<stateType, actionType> => {
 
   let onChanges: onChangeCallback<actionType>[] = [];
+  let state = initValue;
 
   const result: storeType<stateType, actionType> = {
     /**
      * holds the actual value of the current store
      */
-    state: initValue,
+    getState: () => state,
 
     /**
      * takes listeners, when the reducer returnvalue is triggered they
      */
-    addOnChange(onChange: onChangeCallback<actionType>): storeType<stateType, actionType> {
+    addOnChange(onChange: onChangeCallback<actionType>) {
       onChanges.push(onChange);
-
-      return this;
     },
 
     /**
@@ -89,45 +88,40 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
      * this function triggers the reducer
      * when the returnvalue is unequal to the previous state it will trigger the listeners from addOnChange
      */
-    dispatch: null as any,
+    dispatch: (action: actionType) => {
+      const currentState = reducer(state, action);
+
+      // @TODO change to Object.is
+      if (state !== currentState) {
+        state = currentState;
+
+        const calledOnChanges: onChangeCallback<actionType>[] = [];
+        for (let i = 0; i < onChanges.length; i += 1) {
+          const onChange = onChanges[i];
+
+          if (calledOnChanges.indexOf(onChange) === -1) {
+            // currently no other listeners will get notified, when the following line will fuck up
+            // try-catch should be avoided, to improve debuggability
+            // setTimeout would break the call-stack
+            // If you have an opinion on this matter, please make a github issue and tell me
+            onChange(action);
+            calledOnChanges.push(onChange);
+
+            if (onChange !== onChanges[i]) {
+              // Reset if onchange removed itself
+              i = -1;
+            }
+          }
+        }
+
+        return true;
+      }
+
+      return false;
+    },
 
     Observer: null as any,
   };
-
-  /**
-   * dispatch got added after creating the scope for the result object, to bind the function to this scope
-   */
-  result.dispatch = function (this: storeType<stateType, actionType>, action: actionType) {
-    const currentState = reducer(this.state, action);
-
-    // @TODO change to Object.is
-    if (this.state !== currentState) {
-      this.state = currentState;
-      
-      const calledOnChanges: onChangeCallback<actionType>[] = [];
-      for (let i = 0; i < onChanges.length; i += 1) {
-        const onChange = onChanges[i];
-
-        if (calledOnChanges.indexOf(onChange) === -1) {
-          // currently no other listeners will get notified, when the following line will fuck up
-          // try-catch should be avoided, to improve debuggability
-          // setTimeout would break the call-stack
-          // If you have an opinion on this matter, please make a github issue and tell me
-          onChange(action);
-          calledOnChanges.push(onChange);
-
-          if (onChange !== onChanges[i]) {
-            // Reset if onchange removed itself
-            i = -1;
-          }
-        }
-      }
-
-      return true;
-    }
-
-    return false;
-  }.bind(result);
 
   result.Observer = observerFactory(result);
 

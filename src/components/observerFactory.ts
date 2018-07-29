@@ -13,11 +13,11 @@ export default function <state>(store: storeType<state, any>) {
     render(_props: any, instance: ComponentInstance<observerProps<state>>) {
       store.addOnChange((state) => {
         instance.render(
-          instance.props.state.render(store.state),
+          instance.props.getState().render(store.getState()),
         );
       });
 
-      return instance.props.state.render(store.state);
+      return instance.props.getState().render(store.getState());
     }
   };
 }

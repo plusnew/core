@@ -10,13 +10,13 @@ describe('reducer', () => {
 
     expect(reducerSpy.calls.count()).toBe(0);
 
-    expect((store as any).state).toBe(1);
+    expect(store.getState()).toBe(1);
 
     store.dispatch(2);
 
     expect(reducerSpy.calls.count()).toBe(1);
     expect(reducerSpy).toHaveBeenCalledWith(1, 2);
-    expect((store as any).state).toBe(3);
+    expect(store.getState()).toBe(3);
   });
 
   it('eventlisteners are called when change happened', () => {
@@ -34,13 +34,13 @@ describe('reducer', () => {
     store.addOnChange(firstEventListenerSpy);
     store.addOnChange(secondEventListenerSpy);
 
-    expect((store as any).state).toBe(null);
+    expect(store.getState()).toBe(null);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect((store as any).state).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(1);
     expect(secondEventListenerSpy.calls.count()).toBe(1);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
@@ -61,13 +61,13 @@ describe('reducer', () => {
     store.addOnChange(firstEventListenerSpy);
     store.addOnChange(secondEventListenerSpy);
 
-    expect((store as any).state).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect((store as any).state).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
   });
@@ -86,14 +86,14 @@ describe('reducer', () => {
     store.addOnChange(firstEventListenerSpy);
     store.addOnChange(secondEventListenerSpy);
 
-    expect((store as any).state).toBe(action);
+    expect(store.getState()).toBe(action);
 
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect((store as any).state).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
   });
@@ -115,13 +115,13 @@ describe('reducer', () => {
     store.addOnChange(firstEventListenerSpy);
     store.addOnChange(secondEventListenerSpy);
 
-    expect((store as any).state).toBe(null);
+    expect(store.getState()).toBe(null);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect((store as any).state).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(1);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
@@ -144,13 +144,13 @@ describe('reducer', () => {
     store.addOnChange(firstEventListenerSpy);
     store.addOnChange(secondEventListenerSpy);
 
-    expect((store as any).state).toBe(null);
+    expect(store.getState()).toBe(null);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect((store as any).state).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(1);
     expect(secondEventListenerSpy.calls.count()).toBe(1);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
@@ -175,14 +175,14 @@ describe('reducer', () => {
     store.addOnChange(firstEventListenerSpy);
     store.addOnChange(secondEventListenerSpy);
 
-    expect((store as any).state).toBe(null);
+    expect(store.getState()).toBe(null);
     expect(zeroEventListenerSpy.calls.count()).toBe(0);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect((store as any).state).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(zeroEventListenerSpy.calls.count()).toBe(1);
     expect(firstEventListenerSpy.calls.count()).toBe(1);
     expect(secondEventListenerSpy.calls.count()).toBe(1);

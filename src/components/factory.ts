@@ -9,6 +9,7 @@ export interface componentResult<componentProps extends Partial<props>> {
 
 export interface ComponentContainer<componentProps> {
   new (props: componentProps): AbstractClass<componentProps>;
+  prototype: AbstractClass<componentProps>;
 }
 
 export interface factory {

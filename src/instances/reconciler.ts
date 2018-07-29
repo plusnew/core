@@ -30,17 +30,17 @@ export class Reconciler {
     if (this.isSameAbstractElementType(newAbstractElement, instance) === true) {
       if (elementTypeChecker.isComponentElement(newAbstractElement) === true) {
         if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
-          if ((instance as ComponentInstance<any>).props.state.hasOwnProperty('key')) {
+          if ((instance as ComponentInstance<any>).props.getState().hasOwnProperty('key')) {
             // newAbstractElement and oldAbstractElement, have a key - is it the same?
             return (
               (newAbstractElement as PlusnewAbstractElement).props.key ===
-              (instance as ComponentInstance<any>).props.state.key
+              (instance as ComponentInstance<any>).props.getState().key
             );
           }
           // newAbstractElement has key, but oldAbstractElement has not
           return false;
         }
-        if ((instance as ComponentInstance<any>).props.state.hasOwnProperty('key')) {
+        if ((instance as ComponentInstance<any>).props.getState().hasOwnProperty('key')) {
           // newAbstractElement has no key, but oldAbstractElement has
           return false;
         }
