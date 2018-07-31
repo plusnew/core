@@ -28,9 +28,9 @@ export default component(
         <button
           onclick={(evt: MouseEvent) => counter.dispatch(2)}
         />
-        <counter.Consumer render={state => {
+        <counter.Observer render={state => {
           // This function is the only part which gets executed on a state change
-          <Panel value={counter.state} />
+          <Panel value={state} />
         }} />
 
         // This render function is the only part which gets executed on a property change
