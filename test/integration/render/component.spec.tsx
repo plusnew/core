@@ -87,207 +87,227 @@ describe('rendering nested components', () => {
     expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('bar-1');
   });
 
-  // it('unregister dependencies', () => {
-  //   const mainStore = store(true, (store, action: boolean) => action);
-  //   const counterStore = store(0, (store, action: number) => action);
+  it('unregister dependencies', () => {
+    const mainStore = store(true, (store, action: boolean) => action);
+    const counterStore = store(0, (store, action: number) => action);
 
-  //   const NestedComponent = component(
-  //     'Component',
-  //     (Props: Props<{}>) =>
-  //        <span>{counterStore.getState()}</span>,
-  //   );
+    const nestedUpdateSpy = jasmine.createSpy('nestedrender', (state: number) => state).and.callThrough();
+    const containerUpdateSpy = jasmine.createSpy('render', (state: number) => state).and.callThrough();
 
-  //   const MainComponent = component(
-  //     'Component',
-  //     (Props: Props<{}>) =>
-  //       <>
-  //         <span>{counterStore.getState()}</span>
-  //         {mainStore.getState() && <NestedComponent />}
-  //       </>,
-  //   );
+    const NestedComponent = component(
+      'Component',
+      (Props: Props<{}>) =>
+         <span><counterStore.Observer render={nestedUpdateSpy} /></span>,
+    );
 
-  //   const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
-  //   plusnew.render(<MainComponent />, container);
+    const MainComponent = component(
+      'Component',
+      (Props: Props<{}>) =>
+        <>
+          <span><counterStore.Observer render={containerUpdateSpy} /></span>
+          <mainStore.Observer render={state => state && <NestedComponent />} />
+        </>,
+    );
 
-  //   expect(container.childNodes.length).toBe(2);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
-  //   const nestedNode = container.childNodes[1] as HTMLElement;
-  //   expect(nestedNode.tagName).toBe('SPAN');
-  //   expect(nestedNode.innerHTML).toBe('0');
+    plusnew.render(<MainComponent />, container);
 
-  //   mainStore.dispatch(false);
+    expect(container.childNodes.length).toBe(2);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+    const nestedNode = container.childNodes[1] as HTMLElement;
+    expect(nestedNode.tagName).toBe('SPAN');
+    expect(nestedNode.innerHTML).toBe('0');
+    expect(containerUpdateSpy.calls.count()).toBe(1);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
 
-  //   expect(updateSpy.calls.count()).toBe(1);
+    mainStore.dispatch(false);
 
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
 
-  //   counterStore.dispatch(1);
+    counterStore.dispatch(1);
 
-  //   expect(updateSpy.calls.count()).toBe(2);
+    expect(containerUpdateSpy.calls.count()).toBe(2);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
 
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
 
-  //   expect(nestedNode.tagName).toBe('SPAN');
-  //   expect(nestedNode.innerHTML).toBe('');
-  // });
+    expect(nestedNode.tagName).toBe('SPAN');
+    expect(nestedNode.innerHTML).toBe('');
+  });
 
-  // it('unregister dependencies recusively when nested in dom element', () => {
-  //   const mainStore = store(true, (store, action: boolean) => action);
-  //   const counterStore = store(0, (store, action: number) => action);
+  it('unregister dependencies recusively when nested in dom element', () => {
+    const mainStore = store(true, (store, action: boolean) => action);
+    const counterStore = store(0, (store, action: number) => action);
 
-  //   const NestedComponent = component(
-  //     'Component',
-  //     (Props: Props<{}>) =>
-  //        <span>{counterStore.getState()}</span>,
-  //   );
+    const nestedUpdateSpy = jasmine.createSpy('nestedrender', (state: number) => state).and.callThrough();
+    const containerUpdateSpy = jasmine.createSpy('render', (state: number) => state).and.callThrough();
 
-  //   const MainComponent = component(
-  //     'Component',
-  //     (Props: Props<{}>) =>
-  //       <>
-  //         <span>{counterStore.getState()}</span>
-  //         {mainStore.getState() &&
-  //           <span>
-  //             <NestedComponent />
-  //           </span>
-  //         }
-  //       </>,
-  //   );
+    const NestedComponent = component(
+      'Component',
+      (Props: Props<{}>) =>
+         <span><counterStore.Observer render={nestedUpdateSpy} /></span>,
+    );
 
-  //   const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
-  //   plusnew.render(<MainComponent />, container);
+    const MainComponent = component(
+      'Component',
+      (Props: Props<{}>) =>
+        <>
+          <span><counterStore.Observer render={containerUpdateSpy} /></span>
+          <mainStore.Observer render={state => state &&
+            <span>
+              <NestedComponent />
+            </span>
+          } />
+        </>,
+    );
 
-  //   expect(container.childNodes.length).toBe(2);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
-  //   const nestedNode = container.childNodes[1].childNodes[0] as HTMLElement;
-  //   expect(nestedNode.tagName).toBe('SPAN');
-  //   expect(nestedNode.innerHTML).toBe('0');
+    plusnew.render(<MainComponent />, container);
 
-  //   mainStore.dispatch(false);
+    expect(container.childNodes.length).toBe(2);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+    const nestedNode = container.childNodes[1].childNodes[0] as HTMLElement;
+    expect(nestedNode.tagName).toBe('SPAN');
+    expect(nestedNode.innerHTML).toBe('0');
+    expect(containerUpdateSpy.calls.count()).toBe(1);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
 
-  //   expect(updateSpy.calls.count()).toBe(1);
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+    mainStore.dispatch(false);
 
-  //   counterStore.dispatch(1);
+    expect(containerUpdateSpy.calls.count()).toBe(1);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
 
-  //   expect(updateSpy.calls.count()).toBe(2);
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
+    counterStore.dispatch(1);
 
-  //   expect(nestedNode.tagName).toBe('SPAN');
-  //   expect(nestedNode.innerHTML).toBe('');
-  // });
+    expect(containerUpdateSpy.calls.count()).toBe(2);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
 
-  // it('unregister dependencies recusively when nested in fragment element', () => {
-  //   const mainStore = store(true, (store, action: boolean) => action);
-  //   const counterStore = store(0, (store, action: number) => action);
+    expect(nestedNode.tagName).toBe('SPAN');
+    expect(nestedNode.innerHTML).toBe('');
+  });
 
-  //   const NestedComponent = component(
-  //     'Component',
-  //     (Props: Props<{}>) =>
-  //        <span>{counterStore.getState()}</span>,
-  //   );
+  it('unregister dependencies recusively when nested in fragment element', () => {
+    const mainStore = store(true, (store, action: boolean) => action);
+    const counterStore = store(0, (store, action: number) => action);
 
-  //   const MainComponent = component(
-  //     'Component',
-  //     (Props: Props<{}>) =>
-  //       <>
-  //         <span>{counterStore.getState()}</span>
-  //         {mainStore.getState() &&
-  //           <>
-  //             <NestedComponent />
-  //           </>
-  //         }
-  //       </>,
-  //   );
+    const nestedUpdateSpy = jasmine.createSpy('nestedrender', (state: number) => state).and.callThrough();
+    const containerUpdateSpy = jasmine.createSpy('render', (state: number) => state).and.callThrough();
 
-  //   const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
-  //   plusnew.render(<MainComponent />, container);
+    const NestedComponent = component(
+      'Component',
+      (Props: Props<{}>) =>
+         <span><counterStore.Observer render={nestedUpdateSpy} /></span>,
+    );
 
-  //   expect(container.childNodes.length).toBe(2);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
-  //   const nestedNode = container.childNodes[1] as HTMLElement;
-  //   expect(nestedNode.tagName).toBe('SPAN');
-  //   expect(nestedNode.innerHTML).toBe('0');
+    const MainComponent = component(
+      'Component',
+      (Props: Props<{}>) =>
+        <>
+          <span><counterStore.Observer render={containerUpdateSpy} /></span>
+          <mainStore.Observer render={state => state &&
+            <>
+              <NestedComponent />
+            </>
+          } />
+        </>,
+    );
 
-  //   mainStore.dispatch(false);
+    plusnew.render(<MainComponent />, container);
 
-  //   expect(updateSpy.calls.count()).toBe(1);
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+    expect(container.childNodes.length).toBe(2);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+    const nestedNode = container.childNodes[1] as HTMLElement;
+    expect(nestedNode.tagName).toBe('SPAN');
+    expect(nestedNode.innerHTML).toBe('0');
+    expect(containerUpdateSpy.calls.count()).toBe(1);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
 
-  //   counterStore.dispatch(1);
+    mainStore.dispatch(false);
 
-  //   expect(updateSpy.calls.count()).toBe(2);
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
+    expect(containerUpdateSpy.calls.count()).toBe(1);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
 
-  //   expect(nestedNode.tagName).toBe('SPAN');
-  //   expect(nestedNode.innerHTML).toBe('');
-  // });
+    counterStore.dispatch(1);
 
-  // it('unregister dependencies recusively when nested in array', () => {
-  //   const mainStore = store(true, (store, action: boolean) => action);
-  //   const counterStore = store(0, (store, action: number) => action);
+    expect(containerUpdateSpy.calls.count()).toBe(2);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
 
-  //   const NestedComponent = component(
-  //     'Component',
-  //     (Props: Props<{}>) =>
-  //        <span>{counterStore.getState()}</span>,
-  //   );
+    expect(nestedNode.tagName).toBe('SPAN');
+    expect(nestedNode.innerHTML).toBe('');
+  });
 
-  //   const MainComponent = component(
-  //     'Component',
-  //     (Props: Props<{}>) =>
-  //       <>
-  //         <span>{counterStore.getState()}</span>
-  //         {mainStore.getState() &&
-  //           [
-  //             <NestedComponent key="0" />,
-  //           ]
-  //         }
-  //       </>,
-  //   );
+  it('unregister dependencies recusively when nested in array', () => {
+    const mainStore = store(true, (store, action: boolean) => action);
+    const counterStore = store(0, (store, action: number) => action);
 
-  //   const updateSpy = spyOn(ComponentInstance.prototype, 'update' as any).and.callThrough();
-  //   plusnew.render(<MainComponent />, container);
+    const nestedUpdateSpy = jasmine.createSpy('nestedrender', (state: number) => state).and.callThrough();
+    const containerUpdateSpy = jasmine.createSpy('render', (state: number) => state).and.callThrough();
 
-  //   expect(container.childNodes.length).toBe(2);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
-  //   const nestedNode = container.childNodes[1] as HTMLElement;
-  //   expect(nestedNode.tagName).toBe('SPAN');
-  //   expect(nestedNode.innerHTML).toBe('0');
+    const NestedComponent = component(
+      'Component',
+      (Props: Props<{}>) =>
+         <span><counterStore.Observer render={nestedUpdateSpy} /></span>,
+    );
 
-  //   mainStore.dispatch(false);
+    const MainComponent = component(
+      'Component',
+      (Props: Props<{}>) =>
+        <>
+          <span><counterStore.Observer render={containerUpdateSpy} /></span>
+          <mainStore.Observer render={state => state &&
+            [
+              <NestedComponent key="0" />,
+            ]
+          } />
+        </>,
+    );
 
-  //   expect(updateSpy.calls.count()).toBe(1);
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+    plusnew.render(<MainComponent />, container);
 
-  //   counterStore.dispatch(1);
+    expect(container.childNodes.length).toBe(2);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+    const nestedNode = container.childNodes[1] as HTMLElement;
+    expect(nestedNode.tagName).toBe('SPAN');
+    expect(nestedNode.innerHTML).toBe('0');
+    expect(containerUpdateSpy.calls.count()).toBe(1);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
 
-  //   expect(updateSpy.calls.count()).toBe(2);
-  //   expect(container.childNodes.length).toBe(1);
-  //   expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-  //   expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
+    mainStore.dispatch(false);
 
-  //   expect(nestedNode.tagName).toBe('SPAN');
-  //   expect(nestedNode.innerHTML).toBe('');
-  // });
+    expect(containerUpdateSpy.calls.count()).toBe(1);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+
+    counterStore.dispatch(1);
+
+    expect(containerUpdateSpy.calls.count()).toBe(2);
+    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
+
+    expect(nestedNode.tagName).toBe('SPAN');
+    expect(nestedNode.innerHTML).toBe('');
+  });
 
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(

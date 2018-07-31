@@ -1,7 +1,7 @@
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import Instance, { getPredeccessor } from '../Instance';
 import types from '../types';
-import store, { storeType} from '../../../util/store';
+import store, { storeType } from '../../../util/store';
 import { props } from  '../../../interfaces/component';
 
 export default class ShallowInstance<componentProps extends Partial<props>>  extends Instance {
