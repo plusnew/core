@@ -195,7 +195,7 @@ describe('<Animate />', () => {
                   elementWillUnmount={willUnmountSpy}
                 >
                   <local.Observer render={state =>
-                    local && <div><div /></div>
+                    state && <div><div /></div>
                   } />
                 </Animate>,
         );
@@ -333,7 +333,7 @@ describe('<Animate />', () => {
                     elementWillUnmount={willUnmountSpyChild}
                   >
                     <local.Observer render={state =>
-                      <div><div /></div>
+                      state && <div><div /></div>
                     } />
                   </Animate>
                 </Animate>,
