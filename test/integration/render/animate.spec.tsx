@@ -1,4 +1,4 @@
-import plusnew, { component, store, Animate } from 'index';
+import plusnew, { Props, component, store, Animate } from 'index';
 
 async function tick(count: number) {
   for (let i = 0; i < count; i += 1) {
@@ -21,7 +21,6 @@ describe('<Animate />', () => {
         const didMountSpy = jasmine.createSpy('didMount', () => null);
         const Component = component(
           'Component',
-          () => ({}),
           () => <Animate
                   elementDidMount={didMountSpy}
                 >
@@ -41,7 +40,6 @@ describe('<Animate />', () => {
         const didMountSpy = jasmine.createSpy('didMount', () => null);
         const Component = component(
           'Component',
-          () => ({}),
           () => <Animate
                   elementDidMount={didMountSpy}
                 >
@@ -66,7 +64,6 @@ describe('<Animate />', () => {
         const didMountSpy = jasmine.createSpy('didMount', () => null);
         const Component = component(
           'Component',
-          () => ({}),
           () => <Animate
                   elementDidMount={didMountSpy}
                 >
@@ -86,7 +83,6 @@ describe('<Animate />', () => {
         const didMountSpy = jasmine.createSpy('didMount', () => null);
         const Component = component(
           'Component',
-          () => ({}),
           () => <Animate
                   elementDidMount={didMountSpy}
                 >
@@ -116,13 +112,12 @@ describe('<Animate />', () => {
         const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise).and.callThrough();
         const Component = component(
           'Component',
-          () => ({ local }),
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
-                  {local.state &&
-                    <div />
-                  }
+                  <local.Observer render={state =>
+                    state && <div />
+                  } />
                 </Animate>,
         );
   
@@ -153,16 +148,15 @@ describe('<Animate />', () => {
         const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise).and.callThrough();
         const Component = component(
           'Component',
-          () => ({ local }),
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
-                  {local.state &&
-                    <div />
-                  }
-                  {local.state &&
-                    <span />
-                  }
+                  <local.Observer render={state =>
+                    state && <div />
+                  } />
+                  <local.Observer render={state =>
+                    state && <span />
+                  } />
                 </Animate>,
         );
   
@@ -197,13 +191,12 @@ describe('<Animate />', () => {
         const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise).and.callThrough();
         const Component = component(
           'Component',
-          () => ({ local }),
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
-                  {local.state &&
-                    <div><div /></div>
-                  }
+                  <local.Observer render={state =>
+                    state && <div><div /></div>
+                  } />
                 </Animate>,
         );
   
@@ -233,16 +226,16 @@ describe('<Animate />', () => {
         const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise).and.callThrough();
         const Component = component(
           'Component',
-          () => ({ local }),
           () => <Animate
                   elementWillUnmount={willUnmountSpy}
                 >
-                  {local.state &&
-                    <div><div /></div>
-                  }
-                  {local.state &&
-                    <span><span /></span>
-                  }
+                  <local.Observer render={state =>
+                    state && <div><div /></div>
+                  } />
+
+                  <local.Observer render={state =>
+                    state && <span><span /></span>
+                  } />
                 </Animate>,
         );
   
@@ -279,7 +272,6 @@ describe('<Animate />', () => {
 
         const Component = component(
           'Component',
-          () => ({ local }),
           () =>
                 <Animate
                   elementWillUnmount={willUnmountSpyParent}
@@ -287,9 +279,9 @@ describe('<Animate />', () => {
                   <Animate
                     elementWillUnmount={willUnmountSpyChild}
                   >
-                    {local.state &&
-                      <div><div /></div>
-                    }
+                    <local.Observer render={state =>
+                      state && <div><div /></div>
+                    } />
                   </Animate>
                 </Animate>,
         );
@@ -333,7 +325,6 @@ describe('<Animate />', () => {
 
         const Component = component(
           'Component',
-          () => ({ local }),
           () =>
                 <Animate
                   elementWillUnmount={willUnmountSpyParent}
@@ -341,9 +332,9 @@ describe('<Animate />', () => {
                   <Animate
                     elementWillUnmount={willUnmountSpyChild}
                   >
-                    {local.state &&
-                      <div><div /></div>
-                    }
+                    <local.Observer render={state =>
+                      state && <div><div /></div>
+                    } />
                   </Animate>
                 </Animate>,
         );
@@ -378,16 +369,15 @@ describe('<Animate />', () => {
 
         const Component = component(
           'Component',
-          () => ({ local }),
           () =>
                 <Animate
                 >
                   <Animate
                     elementWillUnmount={willUnmountSpyChild}
                   >
-                    {local.state &&
-                      <div><div /></div>
-                    }
+                    <local.Observer render={state =>
+                      state && <div><div /></div>
+                    } />
                   </Animate>
                 </Animate>,
         );
@@ -417,18 +407,18 @@ describe('<Animate />', () => {
         const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise).and.callThrough();
         const Component = component(
           'Component',
-          () => ({ local }),
           () =>
             <>
-              {local.state &&
-                <>
-                  <Animate
-                    elementWillUnmount={willUnmountSpy}
-                  >
-                    <div />
-                  </Animate>
-                </>
-              }
+              <local.Observer render={state =>
+                state &&
+                  <>
+                    <Animate
+                      elementWillUnmount={willUnmountSpy}
+                    >
+                      <div />
+                    </Animate>
+                  </>
+              } />
             </>,
         );
   
@@ -460,24 +450,24 @@ describe('<Animate />', () => {
       const willUnmountSpy = jasmine.createSpy('willUnmount', () => unmountPromise).and.callThrough();
       const ProxyComponent = component(
         'ProxyComponent',
-        () => ({}),
-        (props: { children: any}) => props.children,
+        (Props: Props<{ children: any}>) => <Props render={props => props.children} />,
       );
       
       const Component = component(
         'Component',
-        () => ({ local }),
+
         () =>
           <>
-            {local.state &&
-              <ProxyComponent>
-                <Animate
-                  elementWillUnmount={willUnmountSpy}
-                >
-                  <div />
-                </Animate>
-              </ProxyComponent>
-            }
+            <local.Observer render={state =>
+              state &&
+                <ProxyComponent>
+                  <Animate
+                    elementWillUnmount={willUnmountSpy}
+                  >
+                    <div />
+                  </Animate>
+                </ProxyComponent>
+            } />
           </>,
       );
 
@@ -508,18 +498,18 @@ describe('<Animate />', () => {
       
       const Component = component(
         'Component',
-        () => ({ local }),
         () =>
           <>
-            {local.state &&
-              <span>
-                <Animate
-                  elementWillUnmount={willUnmountSpy}
-                >
-                  <div />
-                </Animate>
-              </span>
-            }
+            <local.Observer render={state =>
+              state &&
+                <span>
+                  <Animate
+                    elementWillUnmount={willUnmountSpy}
+                  >
+                    <div />
+                  </Animate>
+                </span>
+            } />
           </>,
       );
 
@@ -540,12 +530,11 @@ describe('<Animate />', () => {
       const local = store(true, (_state, action: boolean) => action);
       const Component = component(
         'Component',
-        () => ({ local }),
         () => <Animate elementWillUnmount={() => Promise.resolve()}>
                 <Animate>
-                  {local.state &&
-                    <div />
-                  }
+                  <local.Observer render={state =>
+                    state && <div />
+                  } />
                 </Animate>
               </Animate>,
       );

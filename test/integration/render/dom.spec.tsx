@@ -11,8 +11,7 @@ describe('dom handling', () => {
   it('correct handling of acceptCharset', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <form acceptCharset="UTF-8" />,
     );
     plusnew.render(<Component />, container);
@@ -25,8 +24,7 @@ describe('dom handling', () => {
   it('correct handling of class', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <div className="foo" />,
     );
     plusnew.render(<Component />, container);
@@ -39,8 +37,7 @@ describe('dom handling', () => {
   it('correct handling of htmlFor', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <label htmlFor="foo" />,
     );
     plusnew.render(<Component />, container);
@@ -53,8 +50,7 @@ describe('dom handling', () => {
   it('correct handling of httpEquiv', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <meta httpEquiv="refresh" />,
     );
     plusnew.render(<Component />, container);
@@ -69,8 +65,7 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <span onclick={clickHandler} />,
     );
     plusnew.render(<Component />, container);
@@ -83,8 +78,7 @@ describe('dom handling', () => {
   it('correct handling of viewBox', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}) =>
+      () =>
         <svg viewBox="0 0 100 100" />,
     );
     plusnew.render(<Component />, container);
@@ -98,17 +92,18 @@ describe('dom handling', () => {
     const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
       'Component',
-      () => ({  local }),
       () =>
-        local.state ?
-          <div>
-            <span>foo</span>
-          </div>
-        :
-          <div>
-            <span>bar</span>
-            <span>baz</span>
-          </div>,
+        <local.Observer render={state =>
+          state ?
+            <div>
+              <span>foo</span>
+            </div>
+          :
+            <div>
+              <span>bar</span>
+              <span>baz</span>
+            </div>
+        } />,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -139,30 +134,29 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      () => <input disabled={local.state} />,
+      () =>
+        <local.Observer render={state =>
+          <input disabled={state} />
+        } />,
     );
 
     plusnew.render(<Component />, container);
 
     expect((container.childNodes[0] as HTMLInputElement).tagName).toBe('INPUT');
-    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.state);
+    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getState());
 
     local.dispatch(false);
 
-    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.state);
+    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getState());
 
     local.dispatch(true);
 
-    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.state);
+    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getState());
   });
 
   it('plusnew attributes', () => {
-    const local = store(true, (state, action: boolean) => action);
-
     const Component = component(
       'Component',
-      () => ({ local }),
       () => <div key="foo" />,
     );
 
@@ -178,8 +172,10 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
+      () => 
+      <local.Observer render={state =>
+        <input value={state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />
+      } />,
     );
 
     plusnew.render(<Component />, container);
@@ -193,13 +189,13 @@ describe('dom handling', () => {
 
     target.dispatchEvent(inputEvent);
 
-    expect(local.state).toBe('mep');
+    expect(local.getState()).toBe('mep');
 
     target.value = 'anothermep';
 
     target.dispatchEvent(inputEvent);
 
-    expect(local.state).toBe('anothermep');
+    expect(local.getState()).toBe('anothermep');
 
     local.dispatch('completly other value');
 
@@ -211,8 +207,10 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
+      () =>
+        <local.Observer render={state =>
+          <input value={state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />
+        } />,
     );
 
     plusnew.render(<Component />, container);
@@ -225,7 +223,7 @@ describe('dom handling', () => {
     target.value = 'mep';
     target.dispatchEvent(inputEvent);
 
-    expect(local.state).toBe('mepsuffix');
+    expect(local.getState()).toBe('mepsuffix');
   });
 
   it('input onchange', () => {
@@ -233,8 +231,10 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      () => <input value={local.state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />,
+      () =>
+        <local.Observer render={state =>
+          <input value={state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />
+        } />,
     );
 
     plusnew.render(<Component />, container);
@@ -247,12 +247,12 @@ describe('dom handling', () => {
     target.value = 'mep';
     target.dispatchEvent(inputEvent);
 
-    expect(local.state).toBe('blarg');
+    expect(local.getState()).toBe('blarg');
 
     target.value = 'meps';
     target.dispatchEvent(inputEvent);
 
-    expect(local.state).toBe('blarg');
+    expect(local.getState()).toBe('blarg');
   });
 
   it('removing multiple children one at a time', () => {
@@ -260,33 +260,33 @@ describe('dom handling', () => {
 
     const MainComponent = component(
       'Component',
-      () => ({  local }),
-      () => {
-        if (local.state === 0) {
-          return (
-            <div>
-              <span>foo1</span>
-              <span>foo2</span>
-              <span>foo3</span>
-          </div>);
-        }
-        if (local.state === 1) {
-          return (
-            <div>
-              <span>foo1</span>
-              <span>foo2</span>
-          </div>);
-        }
+      () => 
+        <local.Observer render={(state) => {
+          if (state === 0) {
+            return (
+              <div>
+                <span>foo1</span>
+                <span>foo2</span>
+                <span>foo3</span>
+            </div>);
+          }
+          if (state === 1) {
+            return (
+              <div>
+                <span>foo1</span>
+                <span>foo2</span>
+            </div>);
+          }
 
-        if (local.state === 2) {
-          return (
-            <div>
-              <span>foo1</span>
-          </div>);
-        }
+          if (state === 2) {
+            return (
+              <div>
+                <span>foo1</span>
+            </div>);
+          }
 
-        return <div></div>;
-      },
+          return <div></div>;
+        }} />,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -323,7 +323,6 @@ describe('dom handling', () => {
   it('adding input without focus ', () => {
     const MainComponent = component(
       'Component',
-      () => ({}),
       () =>
         <input autofocus={false} />,
     );
@@ -336,7 +335,6 @@ describe('dom handling', () => {
   it('adding input with focus ', () => {
     const MainComponent = component(
       'Component',
-      () => ({}),
       () =>
         <input value="djfngjnfdg" autofocus={true} />,
     );
@@ -349,7 +347,6 @@ describe('dom handling', () => {
   it('adding nested input with focus ', () => {
     const MainComponent = component(
       'Component',
-      () => ({}),
       () =>
         <div><input value="djfngjnfdg" autofocus={true} /></div>,
     );

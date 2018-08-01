@@ -16,14 +16,15 @@ describe('<Portal />', () => {
     
     const Component = component(
       'Component',
-      () => ({ local }),
-      (props: {}, { local }) => 
+     
+      () => 
         <span>
-          {local.state < 2 &&
-            <Portal target={outside}>
-              {local.state}
-            </Portal>
-          }
+          <local.Observer render={state =>
+            state < 2 &&
+              <Portal target={outside}>
+                {state}
+              </Portal>
+          } />
           foo
         </span>,
     );

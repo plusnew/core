@@ -1,4 +1,3 @@
-import { store } from 'redchain';
 import ComponentInstance from '../instances/types/Component/Instance';
 import PlusnewAbstractElement from '../PlusnewAbstractElement';
 
@@ -22,23 +21,9 @@ export interface props {
   children: ApplicationElement[];
 }
 
-export interface deps {
-  [key: string]: store<any, any>;
-}
-
-export interface options<props, deps> {
-  [key: string]: any;
-  instance: ComponentInstance;
-  componentWillUnmount?: (props: props, deps: deps) => void;
-}
-
-export type constructor<props, componentDependencies extends deps> = (props: props, options: options<props, componentDependencies>) => componentDependencies;
-
-export type render<props> = (props: props, deps: deps, options: options<props, any>) => plusnew.JSX.Element | null;
-
 /**
  * thats how a application component should look like
  */
-export default interface component<props = {}> {
-  (props: props, componentInstance: ComponentInstance): ApplicationElement;
+export default interface component<componentProps extends Partial<props> = {} > {
+  (props: componentProps, componentInstance: ComponentInstance<componentProps>): ApplicationElement;
 }

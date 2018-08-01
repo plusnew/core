@@ -13,8 +13,10 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      () => <div style={{ width: local.state }} />,
+      () =>
+        <local.Observer render={state =>
+          <div style={{ width: state }} />
+        } />,
     );
 
     plusnew.render(<Component />, container);
@@ -32,12 +34,13 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      () => 
-        local.state ?
-          <div />
-        :
-          <div style={{ width: '20px' }} />,
+      () =>
+        <local.Observer render={state =>
+          state ?
+            <div />
+          :
+            <div style={{ width: '20px' }} />
+        } />,
     );
 
     plusnew.render(<Component />, container);
@@ -59,12 +62,13 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => ({ local }),
-      () => 
-        local.state ?
-          <div style={{ width: '30px' }}/>
-        :
-          <div style={{ width: '30px', height: '20px' }} />,
+      () =>
+        <local.Observer render={state =>
+          state ?
+            <div style={{ width: '30px' }}/>
+          :
+            <div style={{ width: '30px', height: '20px' }} />
+        } />,
     );
 
     plusnew.render(<Component />, container);
@@ -87,7 +91,7 @@ describe('dom handling', () => {
   it('updating style invalidattributes', () => {
     const Component = component(
       'Component',
-      () => ({}),
+      
       () => <div style={{ width: 'foo' }}/>,
     );
 

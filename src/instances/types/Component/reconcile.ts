@@ -1,5 +1,5 @@
-import { props } from '../../../interfaces/component';
 import reconciler from '../../reconciler';
+import { ApplicationElement, props } from '../../../interfaces/component';
 import ComponentInstance from './Instance';
 
 /**
@@ -47,20 +47,14 @@ function isEqual(a: {[key: string]: any}, b: {[key: string]: any}): boolean {
 /**
  * checks if a component needs updates, if the props are the same it does not need an update
  */
-function shouldUpdate(props: props, instance: ComponentInstance) {
-  return isEqual(props, instance.props) === false;
+export function shouldUpdate(props: Partial<props>, instance: ComponentInstance<any>) {
+  return isEqual(props, instance.props.getState()) === false;
 }
 
-export default function (props: props, instance: ComponentInstance) {
-  const newAbstractChildren = instance.instance.render(props, instance.options);
-
+export default (newAbstractChildren: ApplicationElement, instance: ComponentInstance<any>) => {
   const newChildrenInstance = reconciler.update(newAbstractChildren, instance.rendered);
   if (newChildrenInstance !== instance.rendered) {
     instance.rendered.remove(true);
     instance.rendered = newChildrenInstance;
   }
-
-  instance.props = props;
-}
-
-export { shouldUpdate };
+};

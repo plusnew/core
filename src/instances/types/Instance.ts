@@ -1,6 +1,7 @@
 import { ApplicationElement, props } from '../../interfaces/component';
 import { PlusnewElement } from '../../PlusnewAbstractElement';
 import types from './types';
+import { storeType } from 'index';
 
 export type predecessor = Node | null;
 export type getPredeccessor = () => predecessor;
@@ -9,7 +10,7 @@ export default abstract class Instance {
   public nodeType: types;
   public parentInstance?: Instance;
   public type: PlusnewElement;
-  public props: ApplicationElement | props;
+  public props: ApplicationElement | props | storeType<Partial<props>, Partial<props>>;
   public getPredecessor: getPredeccessor;
   public namespace?: string;
   public createChildrenComponents = true;

@@ -1,46 +1,40 @@
-import { store } from 'redchain';
 import ComponentInstance from '../instances/types/Component/Instance';
-import { options, props } from '../interfaces/component';
+import { props, ApplicationElement } from '../interfaces/component';
 import AbstractClass from '../components/AbstractClass';
+import { Observer } from '../util/store';
+import Instance from '../instances/types/Instance';
 
-export type result = plusnew.JSX.Element | null;
 export interface componentResult<componentProps extends Partial<props>> {
-  (props: componentProps, instance: ComponentInstance): plusnew.JSX.Element | null;
+  (props: componentProps, instance: ComponentInstance<componentProps>): plusnew.JSX.Element | null;
 }
 
-export interface stores {
-  [key: string]: store<any, any>;
-}
-
-export interface Component<componentProps> {
+export interface ComponentContainer<componentProps> {
   new (props: componentProps): AbstractClass<componentProps>;
+  prototype: AbstractClass<componentProps>;
+  shouldCreateComponent(instance: Instance): boolean;
 }
 
 export interface factory {
-  <dependencies extends stores, componentProps extends Partial<props>>(
+  <componentProps extends Partial<props>>(
     displayName: string,
-    constructor: (props: componentProps, options: options<componentProps, dependencies>) => dependencies,
-    render: (props: componentProps, dependencies: dependencies, options: options<componentProps, dependencies>) => result,
-  ): Component<componentProps>;
+    render: (Props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps>) => ApplicationElement,
+  ): ComponentContainer<componentProps>;
 }
 
-const factory: factory = <componentProps extends Partial<props>, dependencies extends stores>(
+const factory: factory = <componentProps extends Partial<props>>(
   displayName: string,
-  constructor: (props: componentProps, options: options<componentProps, dependencies>) => dependencies,
-  render: (props: componentProps, dependencies: dependencies, options: options<componentProps, dependencies>) => result,
+  render: (Props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps>) => ApplicationElement,
 ) => {
   class Component extends AbstractClass<componentProps> {
     dependencies = {};
     config: any;
 
-    constructor(props: componentProps, config: any) {
+    constructor(props: componentProps) {
       super(props);
-      this.dependencies = constructor(props, config);
-      this.config = config;
     }
 
-    render(props: componentProps) {
-      return render(props, this.dependencies as any, this.config) as any;
+    render(Props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps>) {
+      return render(Props, plusnewComponentInstance);
     }
   }
 

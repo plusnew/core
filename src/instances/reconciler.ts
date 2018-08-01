@@ -4,6 +4,8 @@ import elementTypeChecker from '../util/elementTypeChecker';
 import factory from './factory';
 import Instance from './types/Instance';
 import types from './types/types';
+import DomInstance from './types/Dom/Instance';
+import ComponentInstance from './types/Component/Instance';
 
 export class Reconciler {
   /**
@@ -26,17 +28,31 @@ export class Reconciler {
   public isSameAbstractElement(newAbstractElement: ApplicationElement, instance: Instance) {
     // The following code does the key-property check, not yet stable
     if (this.isSameAbstractElementType(newAbstractElement, instance) === true) {
-      if (
-        elementTypeChecker.isComponentElement(newAbstractElement) === true ||
-        elementTypeChecker.isDomElement(newAbstractElement)
-      ) {
+      if (elementTypeChecker.isComponentElement(newAbstractElement) === true) {
         if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
-          if ((instance.props as props).hasOwnProperty('key')) {
+          if ((instance as ComponentInstance<any>).props.getState().hasOwnProperty('key')) {
             // newAbstractElement and oldAbstractElement, have a key - is it the same?
             return (
               (newAbstractElement as PlusnewAbstractElement).props.key ===
-              (instance.props as props).key
+              (instance as ComponentInstance<any>).props.getState().key
             );
+          }
+          // newAbstractElement has key, but oldAbstractElement has not
+          return false;
+        }
+        if ((instance as ComponentInstance<any>).props.getState().hasOwnProperty('key')) {
+          // newAbstractElement has no key, but oldAbstractElement has
+          return false;
+        }
+        // newAbstractElement and oldAbstractElement dont have a key, because of that its assumed they are the same
+        return true;
+      }
+
+      if (elementTypeChecker.isDomElement(newAbstractElement)) {
+        if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
+          if ((instance as DomInstance).props.hasOwnProperty('key')) {
+            // newAbstractElement and oldAbstractElement, have a key - is it the same?
+            return (newAbstractElement as PlusnewAbstractElement).props.key === (instance as DomInstance).props.key;
           }
           // newAbstractElement has key, but oldAbstractElement has not
           return false;

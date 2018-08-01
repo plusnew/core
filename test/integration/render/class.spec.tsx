@@ -1,4 +1,4 @@
-import plusnew, { Component,  store } from 'index';
+import plusnew, { Props, Component,  store } from 'index';
 
 describe('rendering class components', () => {
   let container: HTMLElement;
@@ -10,7 +10,7 @@ describe('rendering class components', () => {
   });
 
   it('class component gets rendered', () => {
-    class MainComponent {
+    class MainComponent extends Component<any>{
       render() {
         return <div />;
       }
@@ -31,7 +31,7 @@ describe('rendering class components', () => {
       };
 
       render() {
-        return <div>{local.state}</div>;
+        return <div><local.Observer render={local => local} /></div>;
       }
     }
 
@@ -50,26 +50,16 @@ describe('rendering class components', () => {
     const local = store(0, (_state, action: number) => action);
 
     class MainComponent extends Component<{}> {
-      dependencies = {
-        local,
-      };
-
-      foo() {
-        this.dependencies;
-      }
-
       render() {
-        return <NestedComponent foo={this.dependencies.local.state} />;
+        return <local.Observer render={local => <NestedComponent foo={local} /> } />;
       }
     }
 
     type props = {foo: number};
 
     class NestedComponent extends Component<props> {
-      dependencies = {};
-
-      render() {
-        return <div>{local.state}</div>;
+      render(Props: Props<props>) {
+        return <div><Props render={local => local.foo} /></div>;
       }
     }
 

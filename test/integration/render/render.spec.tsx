@@ -1,4 +1,4 @@
-import plusnew, { store, component } from 'index';
+import plusnew, { Props, store, component } from 'index';
 
 describe('rendering the elements', () => {
   const local = store(0, (previousState, action: undefined) => previousState + 1);
@@ -16,8 +16,8 @@ describe('rendering the elements', () => {
   it('check if element is inserted', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}, {}) => <div className="foo" />
+      
+      (Props: Props<{}>) => <div className="foo" />,
     );
     plusnew.render(<Component />, container);
 
@@ -30,8 +30,8 @@ describe('rendering the elements', () => {
   it('check if elements are inserted', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}, {}) => (
+      
+      (Props: Props<{}>) => (
         <div>
           <div className="foo" />
           <span className="bar" />
@@ -54,8 +54,7 @@ describe('rendering the elements', () => {
   it('check if nesting works', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}, {}) => (
+      (Props: Props<{}>) => (
         <div className="foo">
           <span className="bar" />
         </div>
@@ -73,8 +72,7 @@ describe('rendering the elements', () => {
   it('check if textnode is created on root', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      () => 'foo' as any
+      () => 'foo',
     );
 
     plusnew.render(<Component />, container);
@@ -85,8 +83,7 @@ describe('rendering the elements', () => {
   it('check if textnode is created on root, even with number', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      () => 1 as any
+      () => 1,
     );
 
     plusnew.render(<Component />, container);
@@ -97,8 +94,7 @@ describe('rendering the elements', () => {
   it('check if textnode is created', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}, {}) => <div className="foo">bar</div>
+      (Props: Props<{}>) => <div className="foo">bar</div>,
     );
     plusnew.render(<Component />, container);
 
@@ -112,8 +108,8 @@ describe('rendering the elements', () => {
   it('check if null is created on root', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      (props: {}, {}) => null
+      
+      (Props: Props<{}>) => null,
     );
     plusnew.render(<Component />, container);
 
@@ -124,8 +120,7 @@ describe('rendering the elements', () => {
   it('check if undefined is created on root', () => {
     const Component = component(
       'Component',
-      () => ({}),
-      () => undefined as any
+      () => undefined,
     );
 
     plusnew.render(<Component />, container);
@@ -135,8 +130,7 @@ describe('rendering the elements', () => {
   it('check if true is created on root', () => {
     const Component = component(
       'Component',
-      () => ({ local }),
-      () => true as any
+      () => true as any,
     );
 
     plusnew.render(<Component />, container);
@@ -147,8 +141,7 @@ describe('rendering the elements', () => {
   it('check if false is created on root', () => {
     const Component = component(
       'Component',
-      () => ({ local }),
-      () => false as any
+      () => false as any,
     );
 
     plusnew.render(<Component />, container);

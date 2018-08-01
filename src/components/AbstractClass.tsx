@@ -1,13 +1,31 @@
-import PlusnewAbstractElement from '../PlusnewAbstractElement';
-import { options } from '../interfaces/component';
-import { stores } from './factory';
+import ComponentInstance from '../instances/types/Component/Instance';
+import { ApplicationElement, props } from '../interfaces/component';
+import { Observer } from '../util/store';
+import Instance from '../instances/types/Instance';
+import types from '../instances/types/types';
 
-export default abstract class Component<props> {
-  abstract dependencies: stores;
-  displayName = '';
-
-  constructor(props: props) {
+function hasComponent(instance?: Instance): boolean {
+  if (!instance) {
+    return false;
+  }
+  if (instance.nodeType === types.Component) {
+    return true;
   }
 
-  abstract render(props: props, options: options<props, stores>): PlusnewAbstractElement;
+  return hasComponent(instance.parentInstance);
+}
+
+export default abstract class Component<componentProps extends Partial<props>> {
+  displayName = '';
+
+  constructor(props: componentProps) {
+  }
+
+  abstract render(props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps>): ApplicationElement;
+
+  componentWillUnmount(props: componentProps) {}
+
+  static shouldCreateComponent(parentInstance: Instance) {
+    return parentInstance.createChildrenComponents === true || hasComponent(parentInstance) === false;
+  }
 }

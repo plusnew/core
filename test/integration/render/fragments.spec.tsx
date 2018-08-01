@@ -1,4 +1,4 @@
-import plusnew, { store, component } from 'index';
+import plusnew, { Props, store, component } from 'index';
 
 describe('fragments', () => {
   let container: HTMLElement;
@@ -12,7 +12,6 @@ describe('fragments', () => {
   it('rendering basic fragment', () => {
     const MainComponent = component(
       'Component',
-      () => ({}),
       () =>
         <>
           <span>foo</span>
@@ -35,21 +34,22 @@ describe('fragments', () => {
 
     const PartialComponent = component(
       'PartialComponent',
-      () => ({}),
-      (props: {value: string}) =>
+      
+      (Props: Props<{value: string}>) =>
         <>
-          <span>{props.value}-foo</span>
-          <div>{props.value}-bar</div>
+          <span><Props render={props => props.value + '-foo'} /></span>
+          <div><Props render={props => props.value + '-bar'} /></div>
         </>,
     );
     const MainComponent = component(
       'MainComponent',
-      () => ({ list }),
       () =>
         <div>
-          {list.state.map(entity => 
-            <PartialComponent key={entity.key} value={entity.value} />,
-          )}
+          <list.Observer render={state =>
+            state.map(entity => 
+              <PartialComponent key={entity.key} value={entity.value} />,
+            )
+          } />
         </div>,
     );
 
@@ -89,10 +89,11 @@ describe('fragments', () => {
     const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
       'Component',
-      () => ({  local }),
       () =>
         <>
-          {local.state ? <span>foo</span> : <div>bar</div>}
+          <local.Observer render={state =>
+            state ? <span>foo</span> : <div>bar</div>
+          } />
         </>,
     );
 
@@ -113,17 +114,18 @@ describe('fragments', () => {
     const local = store(true, (state, action: boolean) => action);
     const MainComponent = component(
       'Component',
-      () => ({  local }),
       () =>
-        local.state ?
-          <>
-            <span>foo</span>
-          </>
-        :
-          <>
-            <span>bar</span>
-            <span>baz</span>
-          </>,
+        <local.Observer render={state =>
+          state ?
+            <>
+              <span>foo</span>
+            </>
+          :
+            <>
+              <span>bar</span>
+              <span>baz</span>
+            </>
+        } />,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -152,33 +154,33 @@ describe('fragments', () => {
 
     const MainComponent = component(
       'Component',
-      () => ({  local }),
-      () => {
-        if (local.state === 0) {
-          return (
-            <>
-              <span>foo1</span>
-              <span>foo2</span>
-              <span>foo3</span>
-          </>);
-        }
-        if (local.state === 1) {
-          return (
-            <>
-              <span>foo1</span>
-              <span>foo2</span>
-          </>);
-        }
+      () => 
+        <local.Observer render={(state) => {
+          if (state === 0) {
+            return (
+              <>
+                <span>foo1</span>
+                <span>foo2</span>
+                <span>foo3</span>
+            </>);
+          }
+          if (state === 1) {
+            return (
+              <>
+                <span>foo1</span>
+                <span>foo2</span>
+            </>);
+          }
 
-        if (local.state === 2) {
-          return (
-            <>
-              <span>foo1</span>
-          </>);
-        }
+          if (state === 2) {
+            return (
+              <>
+                <span>foo1</span>
+            </>);
+          }
 
-        return <></>;
-      },
+          return <></>;
+        }} />,
     );
 
     plusnew.render(<MainComponent />, container);
