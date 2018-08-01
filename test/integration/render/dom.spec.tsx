@@ -1,4 +1,4 @@
-import plusnew, { component, store, InputEvent } from 'index';
+import plusnew, { component, store, KeyboardEvent } from 'index';
 
 describe('dom handling', () => {
   let container: HTMLElement;
@@ -174,7 +174,7 @@ describe('dom handling', () => {
       'Component',
       () => 
       <local.Observer render={state =>
-        <input value={state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />
+        <input value={state} onchange={(evt: KeyboardEvent<HTMLInputElement>) => local.dispatch(evt.target.value)} />
       } />,
     );
 
@@ -209,7 +209,7 @@ describe('dom handling', () => {
       'Component',
       () =>
         <local.Observer render={state =>
-          <input value={state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />
+          <input value={state} onchange={(evt: KeyboardEvent<HTMLInputElement>) => local.dispatch(evt.target.value)} />
         } />,
     );
 
@@ -233,7 +233,7 @@ describe('dom handling', () => {
       'Component',
       () =>
         <local.Observer render={state =>
-          <input value={state} onchange={(evt: InputEvent) => local.dispatch(evt.target.value)} />
+          <input value={state} onchange={(evt: KeyboardEvent<HTMLInputElement>) => local.dispatch(evt.target.value)} />
         } />,
     );
 

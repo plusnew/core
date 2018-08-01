@@ -1,6 +1,6 @@
 import { ComponentContainer } from '../components/factory';
-import { ApplicationElement } from 'interfaces/component';
-import observerFactory from 'components/observerFactory';
+import { ApplicationElement } from '../interfaces/component';
+import observerFactory from '../components/observerFactory';
 
 export type Observer<props> = ComponentContainer<{render: (props: props) => ApplicationElement}>;
 

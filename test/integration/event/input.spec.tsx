@@ -1,4 +1,4 @@
-import plusnew, { component, store, InputEvent } from 'index';
+import plusnew, { component, store, KeyboardEvent } from 'index';
 
 describe('firing input events', () => {
   let container: HTMLElement;
@@ -12,7 +12,7 @@ describe('firing input events', () => {
   it('is onchange called on text', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
-    const change = jasmine.createSpy('change', (evt: InputEvent) => {
+    const change = jasmine.createSpy('change', (evt: KeyboardEvent<HTMLInputElement>) => {
       local.dispatch(evt.target.value);
     }).and.callThrough();
 
@@ -44,7 +44,7 @@ describe('firing input events', () => {
   it('is onchange called on explicit text', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
-    const change = jasmine.createSpy('changex', (evt: InputEvent) => {
+    const change = jasmine.createSpy('changex', (evt: KeyboardEvent<HTMLInputElement>) => {
       local.dispatch(evt.target.value);
     }).and.callThrough();
 
@@ -75,8 +75,8 @@ describe('firing input events', () => {
   it('is onchange called on checkbox', () => {
     const local = store(true, (state, newValue: boolean) => newValue);
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent) => {
-      local.dispatch((evt.target as HTMLInputElement).checked);
+    const change = jasmine.createSpy('change', (evt: KeyboardEvent<HTMLInputElement>) => {
+      local.dispatch(evt.target.checked);
     }).and.callThrough();
 
     const Component = component(

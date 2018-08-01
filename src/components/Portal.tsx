@@ -1,4 +1,4 @@
-import plusnew, { Props } from 'index';
+import plusnew, { Props } from '../index';
 import Instance from '../instances/types/Component/Instance';
 import factory, { ComponentContainer } from './factory';
 

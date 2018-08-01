@@ -6,7 +6,7 @@ import Portal from './components/Portal';
 import factory from './instances/factory';
 import Instance from './instances/types/Instance';
 import RootInstance, { renderOptions } from './instances/types/Root/Instance';
-import InputEvent, { nothing } from './interfaces/InputEvent';
+import { KeyboardEvent, MouseEvent, TouchEvent, nothing } from './interfaces/Events';
 import './interfaces/jsx';
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
 import elementTypeChecker from './util/elementTypeChecker';
@@ -38,6 +38,7 @@ class Plusnew {
   }
 
   Fragment = Fragment;
+
 }
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
@@ -49,7 +50,9 @@ export {
   Plusnew,
   Instance,
   componentFactory as component,
-  InputEvent,
+  KeyboardEvent,
+  MouseEvent,
+  TouchEvent,
   ComponentContainer,
   renderOptions,
   PlusnewAbstractElement,

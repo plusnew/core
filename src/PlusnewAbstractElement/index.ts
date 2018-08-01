@@ -1,5 +1,9 @@
-import { props } from '../interfaces/component';
+import { props, nothing } from '../interfaces/component';
 import { ComponentContainer } from '../components/factory';
+
+// @FIXME this is needed to trick typescript into generating .d.ts file
+// if a file doesn't export anything other than types, it won't generate the .d.ts file
+nothing;
 
 type PlusnewElement = string | number | ComponentContainer<any> | Symbol;
 
