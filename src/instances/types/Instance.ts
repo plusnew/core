@@ -1,7 +1,7 @@
 import { ApplicationElement, props } from '../../interfaces/component';
 import { PlusnewElement } from '../../PlusnewAbstractElement';
 import types from './types';
-import { storeType } from 'index';
+import { storeType } from '../../util/store';
 
 export type predecessor = Node | null;
 export type getPredeccessor = () => predecessor;
