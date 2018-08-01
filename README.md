@@ -1,6 +1,6 @@
 # plusnew [![Build Status](https://api.travis-ci.org/plusnew/plusnew.svg?branch=master)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/plusnew/plusnew/badge.svg?branch=master)](https://coveralls.io/github/plusnew/plusnew)
 
-This Framework is build, because we believe that having typesecurity and debuggability.
+This Framework is build, because we believe that having typesafety and good debuggability are key.
 Why another framework? Because plusnew puts the Developer-Expierence first, and cares strongly about maintanability.
 
 Plusnew keeps the *magic* as little as possible, and puts explicity first.
