@@ -84,6 +84,14 @@ describe('checking if reconciler works as expected', () => {
         expect(reconciler.isSameAbstractElement(<Component key={1} />, createInstance(<Component key={1} />))).toBe(true);
       });
 
+      it('are components one with key', () => {
+        expect(reconciler.isSameAbstractElement(<Component key={1} />, createInstance(<Component />))).toBe(false);
+      });
+
+      it('are components anotherone with key', () => {
+        expect(reconciler.isSameAbstractElement(<Component />, createInstance(<Component  key={1}/>))).toBe(false);
+      });
+
       it('are components the same with different key', () => {
         expect(reconciler.isSameAbstractElement(<Component key={1} />, createInstance(<Component key={2} />))).toBe(false);
       });
