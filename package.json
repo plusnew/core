@@ -20,9 +20,7 @@
     "url": "https://github.com/plusnew/plusnew/issues"
   },
   "homepage": "https://github.com/plusnew/plusnew#readme",
-  "dependencies": {
-    "redchain": "0.5.102"
-  },
+  "dependencies": {},
   "devDependencies": {
     "concurrently": "3.5.1",
     "plusnew-karma-config": "0.5.69",
