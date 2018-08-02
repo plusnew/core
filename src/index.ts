@@ -11,6 +11,7 @@ import './interfaces/jsx';
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
 import elementTypeChecker from './util/elementTypeChecker';
 import { Fragment } from './util/symbols';
+import { props } from './interfaces/component';
 
 class Plusnew {
   /**
@@ -41,6 +42,9 @@ class Plusnew {
 
 }
 
+// This type adds children and key property to the given props
+type Props<componentProps> = Observer<componentProps & props>;
+
 // @FIXME this is needed to trick typescript into generating .d.ts file
 // if a file doesn't export anything other than types, it won't generate the .d.ts file
 nothing;
@@ -60,7 +64,7 @@ export {
   Portal,
   Animate,
   AbstractClass as Component,
-  Observer as Props,
+  Props,
   Observer,
   storeType,
 };
