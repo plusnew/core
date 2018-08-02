@@ -16,7 +16,7 @@ export type ApplicationElement =
   | (PlusnewAbstractElement | string | number | boolean | null | undefined)[];
 
 export interface props {
-  [key: string]: any;
+  [key: string]: unknown;
   key?: number | string;
   children: ApplicationElement[];
 }

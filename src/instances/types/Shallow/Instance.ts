@@ -1,12 +1,11 @@
 import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import Instance, { getPredeccessor } from '../Instance';
 import types from '../types';
-import store, { storeType } from '../../../util/store';
 import { props } from  '../../../interfaces/component';
 
 export default class ShallowInstance<componentProps extends Partial<props>>  extends Instance {
   public nodeType = types.Component;
-  public props: storeType<componentProps, componentProps>;
+  public props: componentProps;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -16,7 +15,7 @@ export default class ShallowInstance<componentProps extends Partial<props>>  ext
     super(abstractElement, parentInstance, getPredecessor);
 
     this.type = abstractElement.type;
-    this.props = store(abstractElement.props as componentProps, (_state, action: componentProps) => action);
+    this.props = abstractElement.props as componentProps;
   }
 
   public getLastIntrinsicElement() {
@@ -40,6 +39,6 @@ export default class ShallowInstance<componentProps extends Partial<props>>  ext
    * it just needs to hold all the currently interesting informations
    */
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
-    this.props.dispatch(newAbstractElement.props as componentProps);
+    this.props = newAbstractElement.props as componentProps;
   }
 }

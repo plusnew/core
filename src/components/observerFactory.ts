@@ -17,7 +17,7 @@ export default function <state>(store: storeType<state, any>) {
 
       store.addOnChange(this.update);
 
-      return instance.props.getState().render(store.getState());
+      return instance.props.render(store.getState());
     }
 
     /**
@@ -26,7 +26,7 @@ export default function <state>(store: storeType<state, any>) {
      */
     private update = (state: state) => {
       this.instance.render(
-        this.instance.props.getState().render(store.getState()),
+        this.instance.props.render(store.getState()),
       );
     }
 

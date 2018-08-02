@@ -48,7 +48,7 @@ function isEqual(a: {[key: string]: any}, b: {[key: string]: any}): boolean {
  * checks if a component needs updates, if the props are the same it does not need an update
  */
 export function shouldUpdate(props: Partial<props>, instance: ComponentInstance<any>) {
-  return isEqual(props, instance.props.getState()) === false;
+  return isEqual(props, instance.props) === false;
 }
 
 export default (newAbstractChildren: ApplicationElement, instance: ComponentInstance<any>) => {

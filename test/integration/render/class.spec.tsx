@@ -51,7 +51,7 @@ describe('rendering class components', () => {
 
     class MainComponent extends Component<{}> {
       render() {
-        return <local.Observer render={local => <NestedComponent foo={local} /> } />;
+        return <local.Observer render={local => <NestedComponent foo={local}/> } />;
       }
     }
 

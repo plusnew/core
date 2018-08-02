@@ -168,11 +168,11 @@ export default class DomInstance extends ChildrenInstance {
         };
 
         if (this.props.onchange) {
-          this.props.onchange(evt);
+          (this.props.onchange as EventListener)(evt);
         }
 
         if (preventDefault === true) {
-          (this.ref as HTMLInputElement)[changeKey] = this.props[changeKey];
+          (this.ref as HTMLInputElement)[changeKey] = this.props[changeKey] as boolean;
         }
 
         delete this.setProp;

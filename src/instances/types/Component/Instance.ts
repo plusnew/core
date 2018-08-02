@@ -19,7 +19,8 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
   public nodeType = types.Component;
   public rendered: Instance; // @FIXME This actually should be Instance or undefined
   public applicationInstance: Component<componentProps>;
-  public props: storeType<componentProps, componentProps>;
+  public props: componentProps;
+  private storeProps: storeType<componentProps, componentProps>;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -29,8 +30,10 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
     super(abstractElement, parentInstance, getPredecessor);
 
     this.type = abstractElement.type;
-    this.props = store(abstractElement.props as componentProps, (state, action: componentProps) => {
+    this.props = abstractElement.props as componentProps;
+    this.storeProps = store(abstractElement.props as componentProps, (state, action: componentProps) => {
       if (shouldUpdate(action, this)) {
+        this.props = action;
         return action;
       }
       return state;
@@ -41,7 +44,7 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
 
   public initialiseComponent() {
     this.applicationInstance = new (this.type as any)(this.props);
-    const abstractChildren = this.applicationInstance.render(this.props.Observer, this);
+    const abstractChildren = this.applicationInstance.render(this.storeProps.Observer, this);
     this.render(abstractChildren);
   }
 
@@ -61,7 +64,7 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
    * updates the shadowdom and dom
    */
   public reconcile(newAbstractElement: PlusnewAbstractElement) {
-    this.props.dispatch(newAbstractElement.props as componentProps);
+    this.storeProps.dispatch(newAbstractElement.props as componentProps);
   }
 
   /**
@@ -75,7 +78,7 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
    * removes the children from the dom
    */
   public remove(prepareRemoveSelf: boolean) {
-    this.applicationInstance.componentWillUnmount(this.props.getState());
+    this.applicationInstance.componentWillUnmount(this.props);
 
     return this.rendered.remove(prepareRemoveSelf);
   }

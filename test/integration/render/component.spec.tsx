@@ -339,7 +339,7 @@ describe('rendering nested components', () => {
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
 
-    expect(nestedComponent.props.getState()).toEqual({ foo: 0, children: [] });
+    expect(nestedComponent.props).toEqual({ foo: 0, children: [] });
 
     local.dispatch(1);
 
@@ -348,7 +348,7 @@ describe('rendering nested components', () => {
 
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props.getState()).toEqual({ foo: 1, children: [] });
+    expect(nestedComponent.props).toEqual({ foo: 1, children: [] });
   });
 
   it('nested component should not be created when shallow mode is active', () => {
@@ -383,7 +383,7 @@ describe('rendering nested components', () => {
     expect(((mainComponent.rendered as ComponentInstance<any>).rendered as FragmentInstance).rendered.length).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props.getState()).toEqual({ foo: 0, children: [] });
+    expect(nestedComponent.props).toEqual({ foo: 0, children: [] });
 
     local.dispatch(1);
 
@@ -428,7 +428,7 @@ describe('rendering nested components', () => {
     expect(((mainComponent.rendered as ComponentInstance<any>).rendered as FragmentInstance).rendered.length).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props.getState()).toEqual({ key: 0, foo: 0, children: [] });
+    expect(nestedComponent.props).toEqual({ key: 0, foo: 0, children: [] });
 
     local.dispatch(1);
 
@@ -439,7 +439,7 @@ describe('rendering nested components', () => {
     expect(((mainComponent.rendered as ComponentInstance<any>).rendered as FragmentInstance).rendered.length).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
-    expect(nestedComponent.props.getState()).toEqual({ key: 0, foo: 1, children: [] });
+    expect(nestedComponent.props).toEqual({ key: 0, foo: 1, children: [] });
   });
 
   describe('nested render call', () => {

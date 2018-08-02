@@ -26,7 +26,7 @@ const Animate: ComponentContainer<props> = factory(
         if (parentWait) {
           return new Promise((resolve) => {
             (parentWait as Promise<any>).then(() => {
-              const elementWillUnmount = instance.props.getState().elementWillUnmount;
+              const elementWillUnmount = instance.props.elementWillUnmount;
               if (elementWillUnmount) {
                 // @FIXME the as Promise seems to be wrong, a typeguard is probably needed
                 (elementWillUnmount(element) as Promise<any>).then(() => resolve());
@@ -37,7 +37,7 @@ const Animate: ComponentContainer<props> = factory(
           });
         }
 
-        const elementWillUnmount = instance.props.getState().elementWillUnmount;
+        const elementWillUnmount = instance.props.elementWillUnmount;
 
         if (elementWillUnmount) {
           return elementWillUnmount(element);
