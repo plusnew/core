@@ -49,7 +49,6 @@ export class ElementTypeChecker {
     ) {
       return typeof (abstractElement as PlusnewAbstractElement).type === 'function';
     }
-    debugger;
 
     return false;
   }

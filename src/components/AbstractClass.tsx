@@ -16,7 +16,7 @@ function hasComponent(instance?: Instance): boolean {
 }
 
 export default abstract class Component<componentProps extends Partial<props>> {
-  displayName = '';
+  static displayName = '';
 
   constructor(props: componentProps) {
   }

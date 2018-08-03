@@ -1166,6 +1166,6 @@ describe('rendering nested components', () => {
       () => <div />,
     );
 
-    expect(MainComponent.prototype.displayName).toBe('Component');
+    expect(MainComponent.displayName).toBe('Component');
   });
 });

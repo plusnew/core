@@ -11,6 +11,7 @@ export interface componentResult<componentProps extends Partial<props>> {
 export interface ComponentContainer<componentProps> {
   new (props: componentProps): AbstractClass<componentProps>;
   prototype: AbstractClass<componentProps>;
+  displayName: string;
   shouldCreateComponent(instance: Instance): boolean;
 }
 
@@ -38,7 +39,7 @@ const factory: factory = <componentProps extends Partial<props>>(
     }
   }
 
-  Component.prototype.displayName = displayName;
+  Component.displayName = displayName;
 
   return Component as any;
 };
