@@ -144,13 +144,18 @@ export default component(
     return (
       <Animate
         elementDidMount={(element) => {
+          // For example you can call the Element.animate function
+          // https://developer.mozilla.org/en-US/docs/Web/API/Element/animate
           element.animate([{ opacity: '0' }, { opacity: '1' }], { duration: 3000 })
         }}
         elementWillUnmount={(element) => {
+          // either return undefined, to delete the element immediately or a promise
+          // e.g. https://developer.mozilla.org/en-US/docs/Web/API/Animation/finished
           return element.animate([{ opacity: '1' }, { opacity:  '0' }], { duration: 3000 }).finished;
         }}
       >
         <show.Observer render={state =>
+          // When this button gets created it calls the elementDidMount, when it gets deleted the elementWillUnmount gets called beforehand 
           state === true && <button onclick={() => show.dispatch(false)}>Remove me :)</button>
         } />
       </Animate>
