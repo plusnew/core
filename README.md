@@ -9,15 +9,25 @@ E.G. when you write a line of code which changes the state, the dom will change 
 ## Component
 Components in plusnew just need a name and a render-function,
 the renderfunction gets called when a new instance of that component is created.
+<<<<<<< HEAD
 When new props from the parent, or stores are changing, the render function does not get called again. But only the closure that you as a application developer have defined.
+=======
+When new props from the parent, or stores are changing, the render function does not get called again. But only a subset that you can define with a closure.
+>>>>>>> master
 
 ### Component-Types
 #### Function-Factory
 
 ```ts
+<<<<<<< HEAD
 import plusnew, { component, Props } from 'plusnew';
 
 type props = { foo: string };
+=======
+import plusnew, { component } from 'plusnew';
+
+type props = { value: string };
+>>>>>>> master
 
 export default component(
   // ComponentName for debuggability enhancements
@@ -25,18 +35,37 @@ export default component(
   // The renderfunction which gets called at initialisation
   // and gets a Observer-Component which delivers the properties from the parent
   (Props: Props<props>) =>
+<<<<<<< HEAD
     <div>
       <Props render={props => props.foo} />
     </div>,
 );
+=======
+      <>
+        <span>some static content</span>
+        <Props render={props =>
+          // in props.value is the value you got from your parent-component
+          // this render-function gets called each time when the parent gives you new properties
+          <div>{props.value}</div>
+        } />
+      </>
+);
+
+>>>>>>> master
 ```
 
 #### Class
 
 ```ts
+<<<<<<< HEAD
 import plusnew, { Component, Props } from 'plusnew';
 
 type props = { foo: string };
+=======
+import plusnew, { Component } from 'plusnew';
+
+type props = { value: string };
+>>>>>>> master
 
 export default class AppComponent extends Component<props> {
   // ComponentName for debuggability enhancements
@@ -45,6 +74,7 @@ export default class AppComponent extends Component<props> {
   // and gets a Observer-Component which delivers the properties from the parent
   render(Props: Props<props>) {
     return (
+<<<<<<< HEAD
       <div>
         <Props render={props => props.foo} />
       </div>
@@ -55,6 +85,25 @@ export default class AppComponent extends Component<props> {
 
 ### Props
 Props aren't given to you directly, but as a "observer-component".
+=======
+      <>
+        <span>some static content</span>
+        <Props render={props =>
+          // in props.value is the value you got from your parent-component
+          // this render-function gets called each time when the parent gives you new properties
+          <div>{props.value}</div>
+        } />
+      </>
+    );
+  }
+}
+
+
+```
+
+### Props
+The props-values aren't given to you directly, but as a "observer-component".
+>>>>>>> master
 This given component has a render-property which expects a renderfunction. This renderfunction is called each time when the state of your properties are being changed.
 This way you have more control of what will be checked for rerender.
 
