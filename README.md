@@ -9,7 +9,7 @@ E.G. when you write a line of code which changes the state, the dom will change 
 ## Component
 Components in plusnew just need a name and a render-function,
 the renderfunction gets called when a new instance of that component is created.
-When new props from the parent, or stores are changing, the render function does not get called again. But only the closure that you as a application developer have defined.
+When new props from the parent, or stores are changing, the render function does not get called again. But only a subset that you can define with a closure.
 
 ### Component-Types
 #### Function-Factory
