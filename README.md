@@ -6,19 +6,91 @@ Why another framework? Because plusnew puts the Developer-Expierence first, and 
 Plusnew keeps the *magic* as little as possible, and puts explicity first.
 E.G. when you write a line of code which changes the state, the dom will change immediately. This is important for predictability and testability.
 
-```ts
-import plusnew, { component, store, Props } from 'plusnew';
-import Panel from './Panel';
+## Component
+Components in plusnew just need a name and a render-function,
+the renderfunction gets called when a new instance of that component is created.
+When new props from the parent, or stores are changing, the render function does not get called again. But only a subset that you can define with a closure.
 
-const INITIAL_COUNTER_VALUE = 0;
+### Component-Types
+#### Function-Factory
+
+```ts
+import plusnew, { component } from 'plusnew';
+
+type props = { value: string };
 
 export default component(
   // ComponentName for debuggability enhancements
   'ComponentName',
   // The renderfunction which gets called at initialisation
-  // and gets a Consumer-Component which delivers the properties from the parent
-  (Props: Props<{value: string}>) => {
-    const counter = store(INITIAL_COUNTER_VALUE, (state, action: number) => state + action);
+  // and gets a Observer-Component which delivers the properties from the parent
+  (Props: Props<props>) =>
+      <>
+        <span>some static content</span>
+        <Props render={props =>
+          // in props.value is the value you got from your parent-component
+          // this render-function gets called each time when the parent gives you new properties
+          <div>{props.value}</div>
+        } />
+      </>
+);
+
+```
+
+#### Class
+
+```ts
+import plusnew, { Component } from 'plusnew';
+
+type props = { value: string };
+
+export default class AppComponent extends Component<props> {
+  // ComponentName for debuggability enhancements
+  static displayName: 'ComponentName';
+  // The renderfunction which gets called at initialisation
+  // and gets a Observer-Component which delivers the properties from the parent
+  render(Props: Props<props>) {
+    return (
+      <>
+        <span>some static content</span>
+        <Props render={props =>
+          // in props.value is the value you got from your parent-component
+          // this render-function gets called each time when the parent gives you new properties
+          <div>{props.value}</div>
+        } />
+      </>
+    );
+  }
+}
+
+
+```
+
+### Props
+The props-values aren't given to you directly, but as a "observer-component".
+This given component has a render-property which expects a renderfunction. This renderfunction is called each time when the state of your properties are being changed.
+This way you have more control of what will be checked for rerender.
+
+## Stores
+
+Stores are used to persist your state and inform the components when the state changed.
+They consist of the initialStateValue and a reducer function.
+
+The reducer function gets called, when a new action gets dispatched.
+This reducer gets the current state of the store and the action which just got dispatched. The new state will be that, what the reducer returns.
+
+Each store has a Observer-Component, which expects a render function as a property.
+When a store changes it's state, this renderfunction gets called.
+
+```ts
+import plusnew, { component, store } from 'plusnew';
+
+const INITIAL_COUNTER_VALUE = 0;
+
+export default component(
+  'ComponentName',
+  () => {
+    const counter = store(INITIAL_COUNTER_VALUE, (previousStateValue, action: number) => previousStateValue + action);
 
     return (
       <div>
@@ -28,14 +100,11 @@ export default component(
         <button
           onclick={(evt: MouseEvent) => counter.dispatch(2)}
         />
-        <counter.Observer render={state => {
+        <counter.Observer render={state =>
           // This function is the only part which gets executed on a state change
-          <Panel value={state} />
-        }} />
-
-        // This render function is the only part which gets executed on a property change
-        <Props render={props => props.value} />
-      </div>,
+          <div>{state}</div>
+        } />
+      </div>
     );
   },
 );
