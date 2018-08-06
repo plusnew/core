@@ -9,13 +9,14 @@ E.G. when you write a line of code which changes the state, the dom will change 
 ## Component
 Components in plusnew just need a name and a render-function,
 the renderfunction gets called when a new instance of that component is created.
-When new props from the parent, or stores are changing, the render function does not get called again. But only a subset that you can define with a closure.
+
+When props from the parent, or stores are changing, the render function does not get called again. But only a subset that you can define with a closure.
 
 ### Component-Types
 #### Function-Factory
 
 ```ts
-import plusnew, { component } from 'plusnew';
+import plusnew, { component, Props } from 'plusnew';
 
 type props = { value: string };
 
@@ -34,13 +35,12 @@ export default component(
         } />
       </>
 );
-
 ```
 
 #### Class
 
 ```ts
-import plusnew, { Component } from 'plusnew';
+import plusnew, { Component, Props } from 'plusnew';
 
 type props = { value: string };
 
@@ -62,12 +62,11 @@ export default class AppComponent extends Component<props> {
     );
   }
 }
-
-
 ```
 
 ### Props
 The props-values aren't given to you directly, but as a "observer-component".
+
 This given component has a render-property which expects a renderfunction. This renderfunction is called each time when the state of your properties are being changed.
 This way you have more control of what will be checked for rerender.
 
@@ -90,7 +89,7 @@ const INITIAL_COUNTER_VALUE = 0;
 export default component(
   'ComponentName',
   () => {
-    const counter = store(INITIAL_COUNTER_VALUE, (previousStateValue, action: number) => previousStateValue + action);
+    const counter = store(INITIAL_COUNTER_VALUE, (previousState, action: number) => previousState + action);
 
     return (
       <div>
@@ -108,5 +107,60 @@ export default component(
     );
   },
 );
+```
 
+## Helper-Components
+### Portal
+With portals you can render elements outside of your normal tree, but whereever you want.
+
+```ts
+import plusnew, { component, Portal } from 'plusnew';
+
+export default component(
+  'ComponentName',
+  () =>
+    <Portal target={document.getElementById('somewhere') as HTMLElement}>
+      <div>your element is appended inside the #somewhere element</div>
+    </Portal>,
+);
+```
+
+### Animate
+The Animate-Component can take care of dom-elements which were mounted and of dom-elements to be unmounted.
+When a dom-element gets created the according elementDidMount or elementWillUnmount gets called, with the dom-element as a parameter.
+
+Same goes for dom-elements which will get unmounted, simply return a resolved Promise when the animation is done and you want the dom-element to get actually be deleted.
+
+Note: Dom-Elements inside Dom-Elements will not trigger the callbacks, only the most outer dom-elements will trigger the callback.
+
+```ts
+import plusnew, { component, Animate, store } from 'plusnew';
+
+export default component(
+  'ComponentName',
+  () => {
+    const show = store(true, (previousState, action: boolean) => action);
+
+    return (
+      <Animate
+        elementDidMount={(element) => {
+          // For example you can call the Element.animate function
+          // https://developer.mozilla.org/en-US/docs/Web/API/Element/animate
+          element.animate([{ opacity: '0' }, { opacity: '1' }], { duration: 3000 })
+        }}
+        elementWillUnmount={(element) => {
+          // either return undefined, to delete the element immediately or a promise
+          // e.g. https://developer.mozilla.org/en-US/docs/Web/API/Animation/finished
+          return element.animate([{ opacity: '1' }, { opacity:  '0' }], { duration: 3000 }).finished;
+        }}
+      >
+        <show.Observer render={state =>
+          // When this button gets created it calls the elementDidMount
+          // when it gets deleted the elementWillUnmount gets called beforehand 
+          state === true && <button onclick={() => show.dispatch(false)}>Remove me :)</button>
+        } />
+      </Animate>
+    );
+  },
+);
 ```
