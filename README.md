@@ -127,7 +127,7 @@ export default component(
 
 ### Animate
 The Animate-Component can take care of elements which were mounted and of elements to be unmounted.
-When a direct Dom-Element gets created the according callbackfunction gets called, with the Element as a parameter.
+When a direct Dom-Element gets created the according elementDidMount or elementWillUnmount gets called, with the Element as a parameter.
 
 Same goes for Elements which will get unmounted, simply return a resolved Promise when the animation is done and you want the Element to be actually be deleted.
 
