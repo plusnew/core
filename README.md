@@ -67,7 +67,7 @@ export default class AppComponent extends Component<props> {
 ```
 
 ### Props
-Props aren't given to you directly, but as a "observer-component".
+The props-values aren't given to you directly, but as a "observer-component".
 This given component has a render-property which expects a renderfunction. This renderfunction is called each time when the state of your properties are being changed.
 This way you have more control of what will be checked for rerender.
 
