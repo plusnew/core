@@ -29,7 +29,6 @@ export default component(
       <Props render={props => props.foo} />
     </div>,
 );
-
 ```
 
 #### Class
@@ -52,8 +51,6 @@ export default class AppComponent extends Component<props> {
     );
   }
 }
-
-
 ```
 
 ### Props
@@ -98,5 +95,47 @@ export default component(
     );
   },
 );
+```
 
+## Helper-Components
+### Portal
+With portals you can render elements outside of your normal tree, but whereever you want.
+
+```ts
+import plusnew, { component, Portal } from 'plusnew';
+
+export default component(
+  'ComponentName',
+  () =>
+    <Portal target={document.getElementById('somewhere') as HTMLElement}>
+      <div>your element is appended inside the #somewhere element on</div>
+    </Portal>,
+);
+```
+
+### Animate
+The Animate-Component can take care of elements which were mounted and of Elements to be unmounted.
+When a direct Dom-Element gets created the according renderfunction gets called, with the Element as a parameter.
+
+Same goes for Elements which will get unmounted, simply return a resolved Promise when the animation is done and you want the Element to be actually be deleted.
+
+Note: Nested Dom-Elements will not trigger the callbacks, only the dom-elements which are not nested.
+
+```ts
+import plusnew, { component, Animate } from 'plusnew';
+
+export default component(
+  'ComponentName',
+  () =>
+    <Animate
+      elementDidMount={(element) => {
+        element.animate([{ opacity: '0' }, { opacity: '1' }], { duration: 3000 })
+      }}
+      elementWillUnmount={(element) => {
+        return element.animate([{ opacity: '1' }, { opacity:  '0' }], { duration: 3000 }).finished;
+      }}
+    >
+      <div>your element is appended inside the #somewhere element on</div>
+    </Animate>,
+);
 ```
