@@ -17,7 +17,7 @@ When new props from the parent, or stores are changing, the render function does
 ```ts
 import plusnew, { component } from 'plusnew';
 
-type props = { foo: string };
+type props = { value: string };
 
 export default component(
   // ComponentName for debuggability enhancements
@@ -25,9 +25,11 @@ export default component(
   // The renderfunction which gets called at initialisation
   // and gets a Observer-Component which delivers the properties from the parent
   (Props: Props<props>) =>
-    <div>
-      <Props render={props => props.foo} />
-    </div>,
+      <Props render={props =>
+        // in props.value is the value you got from your parent-component
+        // this render-function gets called each time when the parent gives you new properties
+        <div>{props.value}</div>
+      } />
 );
 
 ```
@@ -37,7 +39,7 @@ export default component(
 ```ts
 import plusnew, { Component } from 'plusnew';
 
-type props = { foo: string };
+type props = { value: string };
 
 export default class AppComponent extends Component<props> {
   // ComponentName for debuggability enhancements
@@ -46,9 +48,11 @@ export default class AppComponent extends Component<props> {
   // and gets a Observer-Component which delivers the properties from the parent
   render(Props: Props<props>) {
     return (
-      <div>
-        <Props render={props => props.foo} />
-      </div>
+      <Props render={props =>
+        // in props.value is the value you got from your parent-component
+        // this render-function gets called each time when the parent gives you new properties
+        <div>{props.value}</div>
+      } />
     );
   }
 }
