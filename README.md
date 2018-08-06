@@ -25,11 +25,14 @@ export default component(
   // The renderfunction which gets called at initialisation
   // and gets a Observer-Component which delivers the properties from the parent
   (Props: Props<props>) =>
-      <Props render={props =>
-        // in props.value is the value you got from your parent-component
-        // this render-function gets called each time when the parent gives you new properties
-        <div>{props.value}</div>
-      } />
+      <>
+        <span>some static content</span>
+        <Props render={props =>
+          // in props.value is the value you got from your parent-component
+          // this render-function gets called each time when the parent gives you new properties
+          <div>{props.value}</div>
+        } />
+      </>
 );
 
 ```
@@ -48,11 +51,14 @@ export default class AppComponent extends Component<props> {
   // and gets a Observer-Component which delivers the properties from the parent
   render(Props: Props<props>) {
     return (
-      <Props render={props =>
-        // in props.value is the value you got from your parent-component
-        // this render-function gets called each time when the parent gives you new properties
-        <div>{props.value}</div>
-      } />
+      <>
+        <span>some static content</span>
+        <Props render={props =>
+          // in props.value is the value you got from your parent-component
+          // this render-function gets called each time when the parent gives you new properties
+          <div>{props.value}</div>
+        } />
+      </>
     );
   }
 }
