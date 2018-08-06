@@ -35,7 +35,6 @@ export default component(
         } />
       </>
 );
-
 ```
 
 #### Class
@@ -63,8 +62,6 @@ export default class AppComponent extends Component<props> {
     );
   }
 }
-
-
 ```
 
 ### Props
