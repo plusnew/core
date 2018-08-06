@@ -15,7 +15,7 @@ When new props from the parent, or stores are changing, the render function does
 #### Function-Factory
 
 ```ts
-import plusnew, { component } from 'plusnew';
+import plusnew, { component, Props } from 'plusnew';
 
 type props = { foo: string };
 
@@ -34,7 +34,7 @@ export default component(
 #### Class
 
 ```ts
-import plusnew, { Component } from 'plusnew';
+import plusnew, { Component, Props } from 'plusnew';
 
 type props = { foo: string };
 
@@ -108,7 +108,7 @@ export default component(
   'ComponentName',
   () =>
     <Portal target={document.getElementById('somewhere') as HTMLElement}>
-      <div>your element is appended inside the #somewhere element on</div>
+      <div>your element is appended inside the #somewhere element</div>
     </Portal>,
 );
 ```
@@ -122,20 +122,27 @@ Same goes for Elements which will get unmounted, simply return a resolved Promis
 Note: Nested Dom-Elements will not trigger the callbacks, only the dom-elements which are not nested.
 
 ```ts
-import plusnew, { component, Animate } from 'plusnew';
+import plusnew, { component, Animate, store } from 'plusnew';
 
 export default component(
   'ComponentName',
-  () =>
-    <Animate
-      elementDidMount={(element) => {
-        element.animate([{ opacity: '0' }, { opacity: '1' }], { duration: 3000 })
-      }}
-      elementWillUnmount={(element) => {
-        return element.animate([{ opacity: '1' }, { opacity:  '0' }], { duration: 3000 }).finished;
-      }}
-    >
-      <div>your element is appended inside the #somewhere element on</div>
-    </Animate>,
+  () => {
+    const show = store(true, (previousState, action: boolean) => action);
+
+    return (
+      <Animate
+        elementDidMount={(element) => {
+          element.animate([{ opacity: '0' }, { opacity: '1' }], { duration: 3000 })
+        }}
+        elementWillUnmount={(element) => {
+          return element.animate([{ opacity: '1' }, { opacity:  '0' }], { duration: 3000 }).finished;
+        }}
+      >
+        <show.Observer render={state =>
+          state === true && <button onclick={() => show.dispatch(false)}>Remove me :)</button>
+        } />
+      </Animate>
+    );
+  },
 );
 ```
