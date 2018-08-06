@@ -89,7 +89,7 @@ const INITIAL_COUNTER_VALUE = 0;
 export default component(
   'ComponentName',
   () => {
-    const counter = store(INITIAL_COUNTER_VALUE, (previousStateValue, action: number) => previousStateValue + action);
+    const counter = store(INITIAL_COUNTER_VALUE, (previousState, action: number) => previousState + action);
 
     return (
       <div>
@@ -155,7 +155,8 @@ export default component(
         }}
       >
         <show.Observer render={state =>
-          // When this button gets created it calls the elementDidMount, when it gets deleted the elementWillUnmount gets called beforehand 
+          // When this button gets created it calls the elementDidMount
+          // when it gets deleted the elementWillUnmount gets called beforehand 
           state === true && <button onclick={() => show.dispatch(false)}>Remove me :)</button>
         } />
       </Animate>
