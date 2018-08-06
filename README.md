@@ -126,12 +126,12 @@ export default component(
 ```
 
 ### Animate
-The Animate-Component can take care of elements which were mounted and of Elements to be unmounted.
-When a direct Dom-Element gets created the according renderfunction gets called, with the Element as a parameter.
+The Animate-Component can take care of elements which were mounted and of elements to be unmounted.
+When a direct Dom-Element gets created the according callbackfunction gets called, with the Element as a parameter.
 
 Same goes for Elements which will get unmounted, simply return a resolved Promise when the animation is done and you want the Element to be actually be deleted.
 
-Note: Nested Dom-Elements will not trigger the callbacks, only the dom-elements which are not nested.
+Note: Dom-Elements inside Dom-Elements will not trigger the callbacks, only the most outer dom-elements will trigger the callback.
 
 ```ts
 import plusnew, { component, Animate, store } from 'plusnew';
