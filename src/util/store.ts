@@ -2,7 +2,7 @@ import { ComponentContainer } from '../components/factory';
 import { ApplicationElement } from '../interfaces/component';
 import observerFactory from '../components/observerFactory';
 
-export type Observer<props> = ComponentContainer<{render: (props: props) => ApplicationElement}>;
+export type Observer<state> = ComponentContainer<{render: (state: state) => ApplicationElement}> & { getCurrentState(): state };
 
 export type onChangeCallback<actionType> = ((lastAction: actionType) => void);
 
@@ -25,7 +25,7 @@ export interface storeType<stateType, actionType> {
   /**
    * this value gets replaced, each time the reducer gets called
    */
-  getState: () => stateType;
+  getCurrentState: () => stateType;
 
   /**
    *  when the state property should change, thats the way to call it
@@ -57,7 +57,7 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
     /**
      * holds the actual value of the current store
      */
-    getState: () => state,
+    getCurrentState: () => state,
 
     /**
      * takes listeners, when the reducer returnvalue is triggered they
