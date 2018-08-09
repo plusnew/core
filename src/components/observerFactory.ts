@@ -17,7 +17,7 @@ export default function <state>(store: storeType<state, any>) {
 
       store.addOnChange(this.update);
 
-      return instance.props.render(store.getState());
+      return instance.props.render(store.getCurrentState());
     }
 
     /**
@@ -26,7 +26,7 @@ export default function <state>(store: storeType<state, any>) {
      */
     private update = (state: state) => {
       this.instance.render(
-        this.instance.props.render(store.getState()),
+        this.instance.props.render(store.getCurrentState()),
       );
     }
 
@@ -36,6 +36,10 @@ export default function <state>(store: storeType<state, any>) {
 
     static shouldCreateComponent() {
       return true;
+    }
+
+    static getCurrentState() {
+      return store.getCurrentState();
     }
   };
 }
