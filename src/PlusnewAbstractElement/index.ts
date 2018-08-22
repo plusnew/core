@@ -1,4 +1,4 @@
-import { props, nothing } from '../interfaces/component';
+import { props, nothing, ApplicationElement } from '../interfaces/component';
 import { ComponentContainer } from '../components/factory';
 
 // @FIXME this is needed to trick typescript into generating .d.ts file
@@ -21,7 +21,7 @@ export default class PlusnewAbstractElement {
   /**
    * Lightweight representation of a DOM or Component Node, this component is immutable and is used for comparison
    */
-  constructor(type: PlusnewElement, props: {} | null, children: PlusnewAbstractElement[]) {
+  constructor(type: PlusnewElement, props: {} | null, children: ApplicationElement[]) {
     this.setType(type);
     this.setProps(props, children);
   }
@@ -36,7 +36,7 @@ export default class PlusnewAbstractElement {
   /**
    * sets the props given from the parent
    */
-  private setProps(props: any, children: PlusnewAbstractElement[]) {
+  private setProps(props: any, children: ApplicationElement[]) {
     if (props) {
       this.props = { ...props, children }; // Spread is used to remove reference
     } else {
