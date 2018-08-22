@@ -11,12 +11,13 @@ import './interfaces/jsx';
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
 import elementTypeChecker from './util/elementTypeChecker';
 import { Fragment } from './util/symbols';
+import { ApplicationElement } from './interfaces/component';
 
 class Plusnew {
   /**
    * creates lightweight representation of DOM or ComponentNodes
    */
-  public createElement(type: PlusnewElement, props: any, ...children: PlusnewAbstractElement[]) {
+  public createElement(type: PlusnewElement, props: any, ...children: ApplicationElement[]) {
     return new PlusnewAbstractElement(type, props, children);
   }
 

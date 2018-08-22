@@ -20,7 +20,7 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
   public rendered: Instance; // @FIXME This actually should be Instance or undefined
   public applicationInstance: Component<componentProps>;
   public props: componentProps;
-  private storeProps: storeType<componentProps, componentProps>;
+  public storeProps: storeType<componentProps, componentProps>;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
