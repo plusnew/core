@@ -12,11 +12,11 @@ export default function <state>(store: storeType<state, any>) {
   return class Observer extends AbstractClass<observerProps<state>> {
     instance: ComponentInstance<observerProps<state>>;
 
-    public render(props: any, instance: ComponentInstance<observerProps<state>>) {
+    public render(_props: any, instance: ComponentInstance<observerProps<state>>) {
       this.instance = instance;
 
       store.addOnChange(this.update);
-      props.getStore().addOnChange(this.update);
+      instance.storeProps.addOnChange(this.update);
 
       return instance.props.render(store.getCurrentState());
     }
@@ -36,6 +36,7 @@ export default function <state>(store: storeType<state, any>) {
      */
     public componentWillUnmount() {
       store.removeOnChange(this.update);
+      this.instance.storeProps.removeOnChange(this.update);
     }
 
     /**
@@ -53,11 +54,5 @@ export default function <state>(store: storeType<state, any>) {
       return store.getCurrentState();
     }
 
-    /**
-     * gives the corresponding store to this observer
-     */
-    static getStore() {
-      return store;
-    }
   };
 }
