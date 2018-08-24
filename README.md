@@ -186,7 +186,7 @@ export default component(
               .then(module => <module.default />)
               .catch(() => <span>Could not load the module</span>)
           }
-          loading={<span>Loading asynchronously a module</span>}
+          pendingIndicator={<span>Loading asynchronously a module</span>}
         />,
 );
 ```

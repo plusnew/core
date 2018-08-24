@@ -5,7 +5,7 @@ import { ApplicationElement } from '../interfaces/component';
 
 type props = {
   promise: Promise<ApplicationElement>;
-  loading: ApplicationElement;
+  pendingIndicator: ApplicationElement;
 };
 
 class Async extends AbstractClass<props> {
@@ -15,7 +15,7 @@ class Async extends AbstractClass<props> {
     this.instance.storeProps.addOnChange(this.update);
 
     this.update();
-    return this.instance.props.loading;
+    return this.instance.props.pendingIndicator;
   }
 
 
@@ -24,7 +24,7 @@ class Async extends AbstractClass<props> {
       this.instance.render(content);
     });
 
-    this.instance.render(this.instance.props.loading);
+    this.instance.render(this.instance.props.pendingIndicator);
   }
 
   /**

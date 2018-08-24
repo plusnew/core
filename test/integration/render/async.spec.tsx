@@ -18,7 +18,7 @@ describe('<Animate />', () => {
   it('show loading when promise is not resolved yet and then show resolved promise', async () => {
     const Component = component(
       'Component',
-      () => <Async promise={new Promise(resolve => resolve(<div />))} loading={<span />}/>,
+      () => <Async promise={new Promise(resolve => resolve(<div />))} pendingIndicator={<span />}/>,
     );
 
     plusnew.render(<Component />, container);
@@ -34,7 +34,7 @@ describe('<Animate />', () => {
   it('show resolved promise', async () => {
     const Component = component(
       'Component',
-      () => <Async promise={Promise.resolve(<div />)} loading={<span />}/>,
+      () => <Async promise={Promise.resolve(<div />)} pendingIndicator={<span />}/>,
     );
 
     plusnew.render(<Component />, container);
@@ -52,7 +52,7 @@ describe('<Animate />', () => {
 
     const Component = component(
       'Component',
-      () => <local.Observer render={state => state === true && <Async promise={Promise.resolve(<div />)} loading={<span />}/>} />,
+      () => <local.Observer render={state => state === true && <Async promise={Promise.resolve(<div />)} pendingIndicator={<span />}/>} />,
     );
 
     plusnew.render(<Component />, container);
