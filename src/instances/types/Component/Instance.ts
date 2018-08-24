@@ -21,6 +21,7 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
   public applicationInstance: Component<componentProps>;
   public props: componentProps;
   public storeProps: storeType<componentProps, componentProps>;
+  public mounted = true; // Has the information that the component is inside the active shadowdom
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -49,10 +50,14 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
   }
 
   public render(abstractChildren: ApplicationElement) {
-    if (this.rendered) {
-      reconcile(abstractChildren, this);
+    if (this.mounted) {
+      if (this.rendered) {
+        reconcile(abstractChildren, this);
+      } else {
+        this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
+      }
     } else {
-      this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
+      throw new Error('Can\'t render new content, the component got unmounted');
     }
   }
 
@@ -79,6 +84,7 @@ export default class ComponentInstance<componentProps extends Partial<props>> ex
    */
   public remove(prepareRemoveSelf: boolean) {
     this.applicationInstance.componentWillUnmount(this.props);
+    this.mounted = false;
 
     return this.rendered.remove(prepareRemoveSelf);
   }

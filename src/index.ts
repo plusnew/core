@@ -1,8 +1,9 @@
 import store, { Observer, storeType } from './util/store';
-import Animate from './components/Animate';
 import AbstractClass from './components/AbstractClass';
 import componentFactory, { ComponentContainer } from './components/factory';
+import Animate from './components/Animate';
 import Portal from './components/Portal';
+import Async from './components/Async';
 import factory from './instances/factory';
 import Instance from './instances/types/Instance';
 import RootInstance, { renderOptions } from './instances/types/Root/Instance';
@@ -60,6 +61,7 @@ export {
   elementTypeChecker,
   Portal,
   Animate,
+  Async,
   AbstractClass as Component,
   Observer as Props,
   Observer,
