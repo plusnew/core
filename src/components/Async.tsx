@@ -1,4 +1,4 @@
-import { Props } from 'index';
+import { Props } from '../index';
 import ComponentInstance from '../instances/types/Component/Instance';
 import AbstractClass from './AbstractClass';
 import { ApplicationElement } from '../interfaces/component';
