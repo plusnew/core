@@ -58,6 +58,7 @@ export {
   ComponentContainer,
   renderOptions,
   PlusnewAbstractElement,
+  ApplicationElement,
   elementTypeChecker,
   Portal,
   Animate,
