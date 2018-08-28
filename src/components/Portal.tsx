@@ -3,7 +3,7 @@ import Instance from '../instances/types/Component/Instance';
 import factory, { ComponentContainer } from './factory';
 
 type props = {
-  target: HTMLElement;
+  target: Element;
   children: any,
 };
 
@@ -11,6 +11,9 @@ const Portal: ComponentContainer<props> = factory(
   'Portal',
   (Props: Props<props>, instance) => {
     let initialised = false;
+
+    // The instance should get the namespace of the target, not the namespace from the parent-instance
+    instance.namespace = Props.getCurrentState().target.namespaceURI as string;
 
     return <Props render={(props) => {
       if (initialised === false) {
@@ -20,7 +23,6 @@ const Portal: ComponentContainer<props> = factory(
         };
 
         instance.getPredecessor = () => null;
-
       }
 
       return props.children;
