@@ -11,11 +11,11 @@ export default abstract class Instance {
   public type: PlusnewElement;
   public props: ApplicationElement | Partial<props>;
   public getPredecessor: getPredeccessor;
-  public namespace?: string;
+  public namespace: string | null = null;
   public createChildrenComponents = true;
 
   constructor(
-    abstractElement: ApplicationElement,
+    _abstractElement: ApplicationElement,
     parentInstance: Instance | undefined,
     getPredecessor: getPredeccessor,
   ) {
