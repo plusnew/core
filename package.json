@@ -1,14 +1,14 @@
 {
   "name": "plusnew",
-  "version": "0.6.12",
+  "version": "0.6.14",
   "description": "ts component framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "prepublishOnly": "yarn run test && yarn run build",
     "build": "webpack --config configs/webpack.prod.conf.js",
-    "test": "webpack --config configs/webpack.test.conf.js && karma start configs/karma.conf.js --no-auto-watch --single-run",
-    "test:watch": "concurrently  \"webpack --config configs/webpack.test.conf.js --watch\" \"karma start configs/karma.conf.js\""
+    "test": "karma start configs/karma.conf.js --no-auto-watch --single-run",
+    "test:watch": "karma start configs/karma.conf.js"
   },
   "repository": {
     "type": "git",
@@ -22,9 +22,8 @@
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {},
   "devDependencies": {
-    "concurrently": "3.5.1",
-    "plusnew-karma-config": "0.5.69",
-    "plusnew-webpack-config": "0.5.94",
+    "plusnew-karma-config": "0.6.14",
+    "plusnew-webpack-config": "0.6.14",
     "tslint": "5.8.0",
     "tslint-config-airbnb": "5.4.2",
     "typescript": "3.0.1"
