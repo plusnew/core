@@ -180,13 +180,31 @@ import plusnew, { component, Async } from 'plusnew';
 export default component(
   'ComponentName',
   () =>
-        <Async
-          render={() =>
-            import('path/to/lazy/module')
-              .then(module => <module.default />)
-              .catch(() => <span>Could not load the module</span>)
-          }
-          pendingIndicator={<span>Loading asynchronously a module</span>}
-        />,
+    <Async
+      render={() =>
+        import('path/to/lazy/module')
+          .then(module => <module.default />)
+          .catch(() => <span>Could not load the module</span>)
+      }
+      pendingIndicator={<span>Loading asynchronously a module</span>}
+    />,
+);
+```
+
+### Idle
+This component is for displaying expensive but lowpriority content.
+The children of this component will be displayed, when until the browser is saying that it is in idle.
+Or until the application is telling, that it is urgent now.
+
+```ts
+import plusnew, { component, Idle } from 'plusnew';
+import ExpensiveComponent from './ExpensiveComponent';
+
+export default component(
+  'ComponentName',
+  () =>
+    <Idle urgent={false}>
+      <ExpensiveComponent /> {/* component will not be displayed immediately */}
+    </Idle>,
 );
 ```
