@@ -4,7 +4,7 @@ import AbstractClass from './AbstractClass';
 import { ApplicationElement } from '../interfaces/component';
 
 type props = {
-  promise: Promise<ApplicationElement>;
+  render: () => Promise<ApplicationElement>;
   pendingIndicator: ApplicationElement;
 };
 
@@ -12,7 +12,7 @@ class Async extends AbstractClass<props> {
   instance: ComponentInstance<props>;
   render(_Props: Props<props>, instance: ComponentInstance<props>) {
     this.instance = instance;
-    this.instance.storeProps.addOnChange(this.update);
+    this.instance.storeProps.subscribe(this.update);
 
     this.update();
     return this.instance.props.pendingIndicator;
@@ -20,7 +20,7 @@ class Async extends AbstractClass<props> {
 
 
   private update = () => {
-    this.instance.props.promise.then((content) => {
+    this.instance.props.render().then((content) => {
       this.instance.render(content);
     });
 
@@ -31,7 +31,7 @@ class Async extends AbstractClass<props> {
    * unregisters the event
    */
   public componentWillUnmount() {
-    this.instance.storeProps.removeOnChange(this.update);
+    this.instance.storeProps.unsubscribe(this.update);
   }
 
 }

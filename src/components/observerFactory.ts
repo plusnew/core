@@ -15,8 +15,8 @@ export default function <state>(store: storeType<state, any>) {
     public render(_props: any, instance: ComponentInstance<observerProps<state>>) {
       this.instance = instance;
 
-      store.addOnChange(this.update);
-      instance.storeProps.addOnChange(this.update);
+      store.subscribe(this.update);
+      instance.storeProps.subscribe(this.update);
 
       return instance.props.render(store.getCurrentState());
     }
@@ -35,8 +35,8 @@ export default function <state>(store: storeType<state, any>) {
      * unregisters the event
      */
     public componentWillUnmount() {
-      store.removeOnChange(this.update);
-      this.instance.storeProps.removeOnChange(this.update);
+      store.unsubscribe(this.update);
+      this.instance.storeProps.unsubscribe(this.update);
     }
 
     /**
