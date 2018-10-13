@@ -1,9 +1,9 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 import { enctype } from './types/enctype';
 import { method } from './types/method';
 import { target } from './types/target';
 
-type formElement =  globalAttributesElement<HTMLFormElement> & {
+type formElement =  htmlGlobalAttributesElement<HTMLFormElement> & {
   acceptCharset?: string;
   action?: string;
   autocomplete?: "on" | "off";

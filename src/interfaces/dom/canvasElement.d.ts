@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type canvasElement =  globalAttributesElement<HTMLCanvasElement> & {
+type canvasElement =  htmlGlobalAttributesElement<HTMLCanvasElement> & {
   height?: number;
   width?: number;
 };

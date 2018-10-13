@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type fieldsetElement =  globalAttributesElement<HTMLFieldSetElement> & {
+type fieldsetElement =  htmlGlobalAttributesElement<HTMLFieldSetElement> & {
   disabled?: boolean;
   form?: string;
   name?: string;

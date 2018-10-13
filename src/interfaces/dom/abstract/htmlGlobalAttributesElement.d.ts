@@ -2,7 +2,7 @@
 import { truefalse } from './../types/truefalse';
 import { ApplicationElement } from '../../component';
 
-type globalAttributesElement<currentElement> = {
+type htmlGlobalAttributesElement<currentElement> = {
   key?: number | string;
   children?: ApplicationElement | ApplicationElement[];
   onabort?: (event: Event & { currentTarget: currentElement }) => void;
@@ -92,4 +92,4 @@ type globalAttributesElement<currentElement> = {
   translate?: "yes" | "no" | "";
 };
 
-export { globalAttributesElement };
+export { htmlGlobalAttributesElement };

@@ -1,8 +1,8 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 import { referrerpolicy } from './types/referrerpolicy';
 import { target } from './types/target';
 
-type aElement =  globalAttributesElement<HTMLAnchorElement> & {
+type aElement =  htmlGlobalAttributesElement<HTMLAnchorElement> & {
   download?: string;
   href?: string;
   hreflang?: string;

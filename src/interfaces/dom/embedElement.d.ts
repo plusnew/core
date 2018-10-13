@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type embedElement =  globalAttributesElement<HTMLEmbedElement> & {
+type embedElement =  htmlGlobalAttributesElement<HTMLEmbedElement> & {
   height?: number;
   src?: string;
   type?: string;

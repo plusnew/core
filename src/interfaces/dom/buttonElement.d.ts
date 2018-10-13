@@ -1,8 +1,8 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 import { enctype } from './types/enctype';
 import { target } from './types/target';
 
-type buttonElement =  globalAttributesElement<HTMLButtonElement> & {
+type buttonElement =  htmlGlobalAttributesElement<HTMLButtonElement> & {
   autofocus?: boolean;
   disabled?: boolean;
   form?: string;

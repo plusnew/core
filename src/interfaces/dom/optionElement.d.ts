@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type optionElement =  globalAttributesElement<HTMLOptionElement> & {
+type optionElement =  htmlGlobalAttributesElement<HTMLOptionElement> & {
   disabled?: boolean;
   label?: string;
   selected?: boolean;

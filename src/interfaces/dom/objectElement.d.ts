@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type objectElement =  globalAttributesElement<HTMLObjectElement> & {
+type objectElement =  htmlGlobalAttributesElement<HTMLObjectElement> & {
   data?: string;
   form?: string;
   height?: number;

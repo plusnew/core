@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 import { referrerpolicy } from './types/referrerpolicy';
 
-type areaElement =  globalAttributesElement<HTMLAreaElement> & {
+type areaElement =  htmlGlobalAttributesElement<HTMLAreaElement> & {
   alt: string;
   coords?: string;
   download?: string;

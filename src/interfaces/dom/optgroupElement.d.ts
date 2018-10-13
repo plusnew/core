@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type optgroupElement =  globalAttributesElement<HTMLOptGroupElement> & {
+type optgroupElement =  htmlGlobalAttributesElement<HTMLOptGroupElement> & {
   disabled?: boolean;
   label?: string;
 };

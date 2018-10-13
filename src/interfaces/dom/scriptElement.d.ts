@@ -1,8 +1,8 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 import { crossorigin } from './types/crossorigin';
 import { importance } from './types/importance';
 
-type scriptElement =  globalAttributesElement<HTMLScriptElement> & {
+type scriptElement =  htmlGlobalAttributesElement<HTMLScriptElement> & {
   async?: boolean;
   crossorigin?: crossorigin;
   defer?: boolean;

@@ -1,9 +1,9 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 import { crossorigin } from './types/crossorigin';
 import { importance } from './types/importance';
 import { referrerpolicy } from './types/referrerpolicy';
 
-type imgElement =  globalAttributesElement<HTMLImageElement> & {
+type imgElement =  htmlGlobalAttributesElement<HTMLImageElement> & {
   alt?: string;
   crossorigin?: crossorigin;
   decoding?: "sync" | "async" | "auto";

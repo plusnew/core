@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type blockquoteElement =  globalAttributesElement<HTMLQuoteElement> & {
+type blockquoteElement =  htmlGlobalAttributesElement<HTMLQuoteElement> & {
   cite?: string;
 };
 

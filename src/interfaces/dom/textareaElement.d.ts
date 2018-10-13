@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type textareaElement =  globalAttributesElement<HTMLTextAreaElement> & {
+type textareaElement =  htmlGlobalAttributesElement<HTMLTextAreaElement> & {
   autocomplete?: "on" | "off";
   autofocus?: boolean;
   cols?: number;

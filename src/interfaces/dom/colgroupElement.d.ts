@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type colgroupElement =  globalAttributesElement<HTMLTableColElement> & {
+type colgroupElement =  htmlGlobalAttributesElement<HTMLTableColElement> & {
   span?: number;
 };
 

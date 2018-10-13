@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type labelElement =  globalAttributesElement<HTMLLabelElement> & {
+type labelElement =  htmlGlobalAttributesElement<HTMLLabelElement> & {
   htmlFor?: string;
   form?: string;
 };

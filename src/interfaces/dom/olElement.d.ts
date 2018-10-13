@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type olElement =  globalAttributesElement<HTMLOListElement> & {
+type olElement =  htmlGlobalAttributesElement<HTMLOListElement> & {
   reversed?: boolean;
   start?: number;
   type?: "a" | "A" | "i" | "I" | "1";

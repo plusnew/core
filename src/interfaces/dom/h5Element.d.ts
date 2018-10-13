@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type h5Element =  globalAttributesElement<HTMLHeadingElement> & {
+type h5Element =  htmlGlobalAttributesElement<HTMLHeadingElement> & {
   
 };
 

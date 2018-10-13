@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type meterElement =  globalAttributesElement<HTMLMeterElement> & {
+type meterElement =  htmlGlobalAttributesElement<HTMLMeterElement> & {
   value?: number;
   min?: number;
   max?: number;

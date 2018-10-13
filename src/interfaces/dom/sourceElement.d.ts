@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type sourceElement =  globalAttributesElement<HTMLSourceElement> & {
+type sourceElement =  htmlGlobalAttributesElement<HTMLSourceElement> & {
   sizes?: string;
   src?: string;
   srcset?: string;

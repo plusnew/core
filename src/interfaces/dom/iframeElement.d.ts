@@ -1,8 +1,8 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 import { importance } from './types/importance';
 import { referrerpolicy } from './types/referrerpolicy';
 
-type iframeElement =  globalAttributesElement<HTMLIFrameElement> & {
+type iframeElement =  htmlGlobalAttributesElement<HTMLIFrameElement> & {
   allow?: string;
   height?: number;
   importance?: importance;

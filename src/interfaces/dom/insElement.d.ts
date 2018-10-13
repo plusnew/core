@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type insElement =  globalAttributesElement<HTMLModElement> & {
+type insElement =  htmlGlobalAttributesElement<HTMLModElement> & {
   cite?: string;
   datetime?: string;
 };

@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type timeElement =  globalAttributesElement<HTMLTimeElement> & {
+type timeElement =  htmlGlobalAttributesElement<HTMLTimeElement> & {
   datetime?: string;
 };
 

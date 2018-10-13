@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type mapElement =  globalAttributesElement<HTMLMapElement> & {
+type mapElement =  htmlGlobalAttributesElement<HTMLMapElement> & {
   name?: string;
 };
 

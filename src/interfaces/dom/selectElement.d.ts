@@ -1,7 +1,7 @@
-import { globalAttributesElement } from './abstract/globalAttributesElement';
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 import { autocomplete } from './types/autocomplete';
 
-type selectElement =  globalAttributesElement<HTMLSelectElement> & {
+type selectElement =  htmlGlobalAttributesElement<HTMLSelectElement> & {
   autocomplete?: autocomplete;
   autofocus?: boolean;
   disabled?: boolean;
