@@ -22,7 +22,6 @@
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {},
   "devDependencies": {
-    "awesome-typescript-loader": "^5.2.1",
     "copy-webpack-plugin": "^4.5.3",
     "plusnew-karma-config": "0.6.14",
     "plusnew-webpack-config": "0.6.14",
