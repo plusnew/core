@@ -1,4 +1,4 @@
-import plusnew, { component, store, KeyboardEvent } from 'index';
+import plusnew, { component, store } from 'index';
 
 describe('dom handling', () => {
   let container: HTMLElement;
@@ -136,7 +136,7 @@ describe('dom handling', () => {
       'Component',
       () =>
         <local.Observer render={state =>
-          <input disabled={state} />
+          <input type="text" disabled={state} />
         } />,
     );
 
@@ -172,9 +172,9 @@ describe('dom handling', () => {
 
     const Component = component(
       'Component',
-      () => 
+      () =>
       <local.Observer render={state =>
-        <input value={state} onchange={(evt: KeyboardEvent<HTMLInputElement>) => local.dispatch(evt.target.value)} />
+        <input type="text" value={state} onchange={evt => local.dispatch(evt.currentTarget.value)} />
       } />,
     );
 
@@ -203,13 +203,13 @@ describe('dom handling', () => {
   });
 
   it('input onchange', () => {
-    const local = store('foo', (state, action: string) => action + 'suffix');
+    const local = store('foo', (state, action: string) => `${action}suffix`);
 
     const Component = component(
       'Component',
       () =>
         <local.Observer render={state =>
-          <input value={state} onchange={(evt: KeyboardEvent<HTMLInputElement>) => local.dispatch(evt.target.value)} />
+          <input type="text" value={state} onchange={evt => local.dispatch(evt.currentTarget.value)} />
         } />,
     );
 
@@ -233,7 +233,7 @@ describe('dom handling', () => {
       'Component',
       () =>
         <local.Observer render={state =>
-          <input value={state} onchange={(evt: KeyboardEvent<HTMLInputElement>) => local.dispatch(evt.target.value)} />
+          <input type="text" value={state} onchange={evt => local.dispatch(evt.currentTarget.value)} />
         } />,
     );
 
@@ -260,7 +260,7 @@ describe('dom handling', () => {
 
     const MainComponent = component(
       'Component',
-      () => 
+      () =>
         <local.Observer render={(state) => {
           if (state === 0) {
             return (
@@ -324,7 +324,7 @@ describe('dom handling', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <input autofocus={false} />,
+        <input type="text" autofocus={false} />,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -336,7 +336,7 @@ describe('dom handling', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <input value="djfngjnfdg" autofocus={true} />,
+        <input type="text" value="djfngjnfdg" autofocus={true} />,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -348,7 +348,7 @@ describe('dom handling', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <div><input value="djfngjnfdg" autofocus={true} /></div>,
+        <div><input type="text" value="djfngjnfdg" autofocus={true} /></div>,
     );
 
     plusnew.render(<MainComponent />, container);

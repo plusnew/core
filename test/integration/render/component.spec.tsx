@@ -608,9 +608,9 @@ describe('rendering nested components', () => {
         () =>
           <local.Observer render={state =>
             state === 0 ?
-              <NestedComponent><div foo={foo} /></NestedComponent>
+              <NestedComponent><div style={foo} /></NestedComponent>
             :
-              <NestedComponent><div foo={foo} /></NestedComponent>
+              <NestedComponent><div style={foo} /></NestedComponent>
           } />,
       );
 
@@ -648,9 +648,9 @@ describe('rendering nested components', () => {
         () =>
           <local.Observer render={state =>
             state === 0 ?
-              <NestedComponent><div foo={foo} /></NestedComponent>
+              <NestedComponent><div style={foo} /></NestedComponent>
             :
-              <NestedComponent><div foo={bar} /></NestedComponent>
+              <NestedComponent><div style={bar} /></NestedComponent>
           } />,
       );
 
@@ -687,9 +687,9 @@ describe('rendering nested components', () => {
         () =>
           <local.Observer render={state =>
             state === 0 ?
-              <NestedComponent><div foo={foo} /><div foo={foo} /></NestedComponent>
+              <NestedComponent><div style={foo} /><div style={foo} /></NestedComponent>
             :
-              <NestedComponent><div foo={foo} /></NestedComponent>
+              <NestedComponent><div style={foo} /></NestedComponent>
           } />,
       );
 
@@ -726,9 +726,9 @@ describe('rendering nested components', () => {
         () =>
           <local.Observer render={state =>
             state === 0 ?
-              <NestedComponent><div foo={foo} /></NestedComponent>
+              <NestedComponent><div style={foo} /></NestedComponent>
             :
-              <NestedComponent><div foo={foo} /><div foo={foo} /></NestedComponent>
+              <NestedComponent><div style={foo} /><div style={foo} /></NestedComponent>
           } />,
       );
 
@@ -765,9 +765,9 @@ describe('rendering nested components', () => {
         () =>
           <local.Observer render={state =>
             state === 0 ?
-              <NestedComponent><div foo={foo} /></NestedComponent>
+              <NestedComponent><div style={foo} /></NestedComponent>
             :
-              <NestedComponent><span foo={foo} /></NestedComponent>
+              <NestedComponent><span style={foo} /></NestedComponent>
           } />,
         );
 
@@ -803,9 +803,9 @@ describe('rendering nested components', () => {
         () =>
           <local.Observer render={state =>
             state === 0 ?
-              <NestedComponent><div foo="foo" /><span /></NestedComponent>
+              <NestedComponent><div style="foo" /><span /></NestedComponent>
             :
-              <NestedComponent><div foo="bar" /><span /></NestedComponent>
+              <NestedComponent><div style="bar" /><span /></NestedComponent>
           } />,
       );
 

@@ -7,7 +7,6 @@ import Async from './components/Async';
 import factory from './instances/factory';
 import Instance from './instances/types/Instance';
 import RootInstance, { renderOptions } from './instances/types/Root/Instance';
-import { KeyboardEvent, MouseEvent, TouchEvent, nothing } from './interfaces/Events';
 import './interfaces/jsx';
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
 import elementTypeChecker from './util/elementTypeChecker';
@@ -43,18 +42,11 @@ class Plusnew {
 
 }
 
-// @FIXME this is needed to trick typescript into generating .d.ts file
-// if a file doesn't export anything other than types, it won't generate the .d.ts file
-nothing;
-
 export {
   store,
   Plusnew,
   Instance,
   componentFactory as component,
-  KeyboardEvent,
-  MouseEvent,
-  TouchEvent,
   ComponentContainer,
   renderOptions,
   PlusnewAbstractElement,
