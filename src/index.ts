@@ -17,6 +17,11 @@ class Plusnew {
   /**
    * creates lightweight representation of DOM or ComponentNodes
    */
+  public createElement<element extends keyof plusnew.JSX.IntrinsicElements>(type: element, props: plusnew.JSX.IntrinsicElements[element], ...children: ApplicationElement[]):
+    PlusnewAbstractElement;
+  public createElement<props>(type: number, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
+  public createElement<props>(type: Symbol, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
+  public createElement<props>(type: ComponentContainer<props>, props: props, ...children: ApplicationElement[]): PlusnewAbstractElement;
   public createElement(type: PlusnewElement, props: any, ...children: ApplicationElement[]) {
     return new PlusnewAbstractElement(type, props, children);
   }
