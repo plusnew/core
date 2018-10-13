@@ -79,7 +79,8 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <svg viewBox="0 0 100 100" />,
+        // <svg viewBox="0 0 100 100" />,
+        plusnew.createElement('svg', { viewBox: '0 0 100 100' }),
     );
     plusnew.render(<Component />, container);
 
