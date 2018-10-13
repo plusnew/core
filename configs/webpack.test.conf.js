@@ -6,15 +6,15 @@ module.exports = {
   ...defaultWebpack,
   module: {
     ...defaultWebpack.module,
-    rules: efaultWebpack.module.rules.map((rule) => {
+    rules: defaultWebpack.module.rules.map((rule) => {
       const interfaceDirectory = /src\/interfaces/;
       if (rule.loader === 'istanbul-instrumenter-loader') {
         return {
           ...rule,
-          exclude: {
+          exclude: [
             ...rule.exclude,
             interfaceDirectory
-          }
+          ],
         }
       }
       return rule;
