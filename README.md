@@ -193,7 +193,7 @@ export default component(
 
 ### Idle
 This component is for displaying expensive but lowpriority content.
-The children of this component will be displayed, when until the browser is saying that it is in idle.
+The children of this component will be displayed, when the browser is saying that it is in idle.
 Or until the application is telling, that it is urgent now.
 
 ```ts
