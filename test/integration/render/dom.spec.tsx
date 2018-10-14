@@ -143,15 +143,15 @@ describe('dom handling', () => {
     plusnew.render(<Component />, container);
 
     expect((container.childNodes[0] as HTMLInputElement).tagName).toBe('INPUT');
-    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getCurrentState());
+    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getState());
 
     local.dispatch(false);
 
-    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getCurrentState());
+    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getState());
 
     local.dispatch(true);
 
-    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getCurrentState());
+    expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getState());
   });
 
   it('plusnew attributes', () => {
@@ -189,13 +189,13 @@ describe('dom handling', () => {
 
     target.dispatchEvent(inputEvent);
 
-    expect(local.getCurrentState()).toBe('mep');
+    expect(local.getState()).toBe('mep');
 
     target.value = 'anothermep';
 
     target.dispatchEvent(inputEvent);
 
-    expect(local.getCurrentState()).toBe('anothermep');
+    expect(local.getState()).toBe('anothermep');
 
     local.dispatch('completly other value');
 
@@ -223,7 +223,7 @@ describe('dom handling', () => {
     target.value = 'mep';
     target.dispatchEvent(inputEvent);
 
-    expect(local.getCurrentState()).toBe('mepsuffix');
+    expect(local.getState()).toBe('mepsuffix');
   });
 
   it('input onchange', () => {
@@ -247,12 +247,12 @@ describe('dom handling', () => {
     target.value = 'mep';
     target.dispatchEvent(inputEvent);
 
-    expect(local.getCurrentState()).toBe('blarg');
+    expect(local.getState()).toBe('blarg');
 
     target.value = 'meps';
     target.dispatchEvent(inputEvent);
 
-    expect(local.getCurrentState()).toBe('blarg');
+    expect(local.getState()).toBe('blarg');
   });
 
   it('removing multiple children one at a time', () => {

@@ -18,7 +18,7 @@ export default function <state>(store: storeType<state, any>) {
       store.subscribe(this.update);
       instance.storeProps.subscribe(this.update);
 
-      return instance.props.render(store.getCurrentState());
+      return instance.props.render(store.getState());
     }
 
     /**
@@ -27,7 +27,7 @@ export default function <state>(store: storeType<state, any>) {
      */
     private update = () => {
       this.instance.render(
-        this.instance.props.render(store.getCurrentState()),
+        this.instance.props.render(store.getState()),
       );
     }
 
@@ -50,8 +50,8 @@ export default function <state>(store: storeType<state, any>) {
      * returns the current state of the store
      * if you want to have the state when it changes, better observe the store
      */
-    static getCurrentState() {
-      return store.getCurrentState();
+    static getState() {
+      return store.getState();
     }
 
   };

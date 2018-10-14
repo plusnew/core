@@ -8,7 +8,7 @@ import reconcile from './reconcile';
 /**
  * FragmentInstances are representations of <>
  * or when plusnew.createElement gets called with plusnew.Fragment
- * 
+ *
  * it is used as a container for the given children, and doesn't do much else
  */
 export default class FragmentInstance extends ChildrenInstance {
@@ -16,7 +16,6 @@ export default class FragmentInstance extends ChildrenInstance {
   public type = types.Fragment;
   public props: props;
   public executeChildrenElementWillUnmount = true;
-
 
   constructor(
     abstractElement: PlusnewAbstractElement,

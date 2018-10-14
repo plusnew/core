@@ -20,4 +20,3 @@ export {
   PlusnewMouseEvent as MouseEvent,
   PlusnewTouchEvent as TouchEvent,
 };
-

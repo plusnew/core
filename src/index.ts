@@ -3,6 +3,7 @@ import AbstractClass from './components/AbstractClass';
 import componentFactory, { ComponentContainer } from './components/factory';
 import Animate from './components/Animate';
 import Portal from './components/Portal';
+import Idle from './components/Idle';
 import Async from './components/Async';
 import factory from './instances/factory';
 import Instance from './instances/types/Instance';
@@ -61,6 +62,7 @@ export {
   ApplicationElement,
   elementTypeChecker,
   Portal,
+  Idle,
   Animate,
   Async,
   AbstractClass as Component,

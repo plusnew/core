@@ -138,7 +138,7 @@ export default class DomInstance extends ChildrenInstance {
         this.ref.setAttribute(keyName, this.getStylePropsAsAttribute(value));
       } else {
         // All the other attributes are strings
-        this.ref.setAttribute(keyName, value + '');
+        this.ref.setAttribute(keyName, `${value}`);
         if (this.setAttributeAsProperty(keyName)) {
           // input-values need to be set directly as property, for overwriting purpose of browser behaviour
           (this.ref as any)[keyName] = value;
@@ -207,7 +207,6 @@ export default class DomInstance extends ChildrenInstance {
   private setAttributeAsProperty(keyName: string) {
     return this.type === 'input' && keyName === 'value';
   }
-
 
   /**
    * deletes a property from dom element

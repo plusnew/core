@@ -18,7 +18,6 @@ class Async extends AbstractClass<props> {
     return this.instance.props.pendingIndicator;
   }
 
-
   private update = () => {
     this.instance.props.render().then((content) => {
       this.instance.render(content);
