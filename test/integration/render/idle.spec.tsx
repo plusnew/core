@@ -53,7 +53,7 @@ describe('<Idle />', () => {
       expect((container.childNodes[0] as HTMLSpanElement).tagName).toBe('SPAN');
       expect(requestIdleCallbackSpy.calls.count()).toBe(1);
       expect(cancelIdleCallbackSpy.calls.count()).toBe(1);
-      expect(cancelAnimationFrame).toHaveBeenCalledWith('foo');
+      expect(cancelIdleCallbackSpy).toHaveBeenCalledWith('foo');
     });
 
     it('idleCallback is called and executed, does not get canceled when urgent switches to true', () => {
