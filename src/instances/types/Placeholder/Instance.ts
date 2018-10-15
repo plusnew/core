@@ -9,7 +9,6 @@ export default class PlaceholderInstance extends Instance {
   public nodeType = types.Placeholder;
   public type = types.Fragment;
 
-
   public getLastIntrinsicElement() {
     return null;
   }

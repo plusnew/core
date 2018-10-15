@@ -2,30 +2,30 @@ import { ComponentContainer } from '../components/factory';
 import { ApplicationElement } from '../interfaces/component';
 import observerFactory from '../components/observerFactory';
 
-export type Observer<state> = ComponentContainer<{render: (state: state) => ApplicationElement}> & { getCurrentState(): state };
+export type Observer<state> = ComponentContainer<{render: (state: state) => ApplicationElement}> & { getState(): state };
 
 export type onChangeCallback<actionType> = ((lastAction: actionType) => void);
 
 /**
  * gets called when a dispatch with an action is triggered
  */
-export interface reducer<stateType, actionType> {
+export type reducer<stateType, actionType> = {
   (previousState: stateType, action: actionType): stateType;
-}
+};
 
 /**
  * thats how a complete store is organized
  */
-export interface redchain {
+export type redchain = {
   <stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): storeType<stateType, actionType>;
-}
+};
 
-export interface storeType<stateType, actionType> {
+export type storeType<stateType, actionType> = {
   Observer: Observer<stateType>;
   /**
    * this value gets replaced, each time the reducer gets called
    */
-  getCurrentState: () => stateType;
+  getState: () => stateType;
 
   /**
    *  when the state property should change, thats the way to call it
@@ -35,53 +35,53 @@ export interface storeType<stateType, actionType> {
   /**
    *  eventlisteners when a dispatch caused a change in state
    */
-  addOnChange(onChange: onChangeCallback<actionType>): void;
+  subscribe(onChange: onChangeCallback<actionType>): void;
 
   /**
    * when a eventlistener is not needed, this function should get called
    */
-  removeOnChange(removeOnChange: onChangeCallback<actionType>): boolean;
+  unsubscribe(removeOnChange: onChangeCallback<actionType>): boolean;
 
   /**
    * flushes all existing eventlisteners
    */
   flush(): void;
-}
+};
 
 const store: redchain = <stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): storeType<stateType, actionType> => {
 
-  let onChanges: onChangeCallback<actionType>[] = [];
+  let subscribes: onChangeCallback<actionType>[] = [];
   let state = initValue;
 
   const result: storeType<stateType, actionType> = {
     /**
      * holds the actual value of the current store
      */
-    getCurrentState: () => state,
+    getState: () => state,
 
     /**
      * takes listeners, when the reducer returnvalue is triggered they
      */
-    addOnChange(onChange: onChangeCallback<actionType>) {
-      onChanges.push(onChange);
+    subscribe(onChange: onChangeCallback<actionType>) {
+      subscribes.push(onChange);
     },
 
     /**
      * takes listeners, when the reducer returnvalue is triggered they
      * and returns true, when something changed
      */
-    removeOnChange(removeOnChange: onChangeCallback<actionType>) {
-      const previousLength = onChanges.length;
-      onChanges = onChanges.filter((currentOnChange: onChangeCallback<actionType>) => currentOnChange !== removeOnChange);
+    unsubscribe(removeOnChange: onChangeCallback<actionType>) {
+      const previousLength = subscribes.length;
+      subscribes = subscribes.filter((currentOnChange: onChangeCallback<actionType>) => currentOnChange !== removeOnChange);
 
-      return previousLength !== onChanges.length;
+      return previousLength !== subscribes.length;
     },
 
     /**
      * flushes all existing eventlisteners
      */
     flush() {
-      onChanges = [];
+      subscribes = [];
     },
 
     /**
@@ -96,8 +96,8 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
         state = currentState;
 
         const calledOnChanges: onChangeCallback<actionType>[] = [];
-        for (let i = 0; i < onChanges.length; i += 1) {
-          const onChange = onChanges[i];
+        for (let i = 0; i < subscribes.length; i += 1) {
+          const onChange = subscribes[i];
 
           if (calledOnChanges.indexOf(onChange) === -1) {
             // currently no other listeners will get notified, when the following line will fuck up
@@ -107,7 +107,7 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
             onChange(action);
             calledOnChanges.push(onChange);
 
-            if (onChange !== onChanges[i]) {
+            if (onChange !== subscribes[i]) {
               // Reset if onchange removed itself
               i = -1;
             }

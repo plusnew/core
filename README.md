@@ -167,7 +167,7 @@ export default component(
 
 ### Async
 The Async-Component is used for displaying asynchronous content.
-Give it a promise, and it will show the loading content, until the promise got resolved.
+Return as a promise, and it will show the loading content, until the promise got resolved.
 
 For example you can implement that a dom element gets created after a period of time, or you can lazyload another module and display it when it got loaded.
 The given Promise should get resolved with an JSX-Element you want to show.
@@ -180,13 +180,31 @@ import plusnew, { component, Async } from 'plusnew';
 export default component(
   'ComponentName',
   () =>
-        <Async
-          promise={
-            import('path/to/lazy/module')
-              .then(module => <module.default />)
-              .catch(() => <span>Could not load the module</span>)
-          }
-          pendingIndicator={<span>Loading asynchronously a module</span>}
-        />,
+    <Async
+      render={() =>
+        import('path/to/lazy/module')
+          .then(module => <module.default />)
+          .catch(() => <span>Could not load the module</span>)
+      }
+      pendingIndicator={<span>Loading asynchronously a module</span>}
+    />,
+);
+```
+
+### Idle
+This component is for displaying expensive but lowpriority content.
+The children of this component will be displayed, when the browser is saying that it is in idle.
+Or until the application is telling, that it is urgent now.
+
+```ts
+import plusnew, { component, Idle } from 'plusnew';
+import ExpensiveComponent from './ExpensiveComponent';
+
+export default component(
+  'ComponentName',
+  () =>
+    <Idle urgent={false}>
+      <ExpensiveComponent /> {/* component will not be displayed immediately */}
+    </Idle>,
 );
 ```

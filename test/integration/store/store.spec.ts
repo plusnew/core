@@ -10,13 +10,13 @@ describe('reducer', () => {
 
     expect(reducerSpy.calls.count()).toBe(0);
 
-    expect(store.getCurrentState()).toBe(1);
+    expect(store.getState()).toBe(1);
 
     store.dispatch(2);
 
     expect(reducerSpy.calls.count()).toBe(1);
     expect(reducerSpy).toHaveBeenCalledWith(1, 2);
-    expect(store.getCurrentState()).toBe(3);
+    expect(store.getState()).toBe(3);
   });
 
   it('eventlisteners are called when change happened', () => {
@@ -28,16 +28,16 @@ describe('reducer', () => {
     const action = {};
 
     const store = redchain(null, reducerSpy);
-    store.addOnChange(firstEventListenerSpy);
-    store.addOnChange(secondEventListenerSpy);
+    store.subscribe(firstEventListenerSpy);
+    store.subscribe(secondEventListenerSpy);
 
-    expect(store.getCurrentState()).toBe(null);
+    expect(store.getState()).toBe(null);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect(store.getCurrentState()).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(1);
     expect(secondEventListenerSpy.calls.count()).toBe(1);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
@@ -52,16 +52,16 @@ describe('reducer', () => {
 
     const action = {};
     const store = redchain(action, reducerSpy);
-    store.addOnChange(firstEventListenerSpy);
-    store.addOnChange(secondEventListenerSpy);
+    store.subscribe(firstEventListenerSpy);
+    store.subscribe(secondEventListenerSpy);
 
-    expect(store.getCurrentState()).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect(store.getCurrentState()).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
   });
@@ -74,17 +74,17 @@ describe('reducer', () => {
 
     const action = {};
     const store = redchain(action, reducerSpy);
-    store.addOnChange(firstEventListenerSpy);
-    store.addOnChange(secondEventListenerSpy);
+    store.subscribe(firstEventListenerSpy);
+    store.subscribe(secondEventListenerSpy);
 
-    expect(store.getCurrentState()).toBe(action);
+    expect(store.getState()).toBe(action);
 
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect(store.getCurrentState()).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
   });
@@ -93,23 +93,23 @@ describe('reducer', () => {
     const reducerSpy = jasmine.createSpy('reducer', (_originalState: number, action: number) => action).and.callThrough();
 
     const firstEventListenerSpy = jasmine.createSpy('eventlistener', () => {
-      store.removeOnChange(secondEventListenerSpy);
+      store.unsubscribe(secondEventListenerSpy);
     }).and.callThrough();
     const secondEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
 
     const action = {};
 
     const store = redchain(null, reducerSpy);
-    store.addOnChange(firstEventListenerSpy);
-    store.addOnChange(secondEventListenerSpy);
+    store.subscribe(firstEventListenerSpy);
+    store.subscribe(secondEventListenerSpy);
 
-    expect(store.getCurrentState()).toBe(null);
+    expect(store.getState()).toBe(null);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect(store.getCurrentState()).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(1);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
@@ -119,23 +119,23 @@ describe('reducer', () => {
     const reducerSpy = jasmine.createSpy('reducer', (_originalState: number, action: number) => action).and.callThrough();
 
     const firstEventListenerSpy = jasmine.createSpy('eventlistener', () => {
-      store.removeOnChange(firstEventListenerSpy);
+      store.unsubscribe(firstEventListenerSpy);
     }).and.callThrough();
     const secondEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
 
     const action = {};
 
     const store = redchain(null, reducerSpy);
-    store.addOnChange(firstEventListenerSpy);
-    store.addOnChange(secondEventListenerSpy);
+    store.subscribe(firstEventListenerSpy);
+    store.subscribe(secondEventListenerSpy);
 
-    expect(store.getCurrentState()).toBe(null);
+    expect(store.getState()).toBe(null);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect(store.getCurrentState()).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(firstEventListenerSpy.calls.count()).toBe(1);
     expect(secondEventListenerSpy.calls.count()).toBe(1);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
@@ -146,25 +146,25 @@ describe('reducer', () => {
 
     const zeroEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
     const firstEventListenerSpy = jasmine.createSpy('eventlistener', () => {
-      store.removeOnChange(firstEventListenerSpy);
+      store.unsubscribe(firstEventListenerSpy);
     }).and.callThrough();
     const secondEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
 
     const action = {};
 
     const store = redchain(null, reducerSpy);
-    store.addOnChange(zeroEventListenerSpy);
-    store.addOnChange(firstEventListenerSpy);
-    store.addOnChange(secondEventListenerSpy);
+    store.subscribe(zeroEventListenerSpy);
+    store.subscribe(firstEventListenerSpy);
+    store.subscribe(secondEventListenerSpy);
 
-    expect(store.getCurrentState()).toBe(null);
+    expect(store.getState()).toBe(null);
     expect(zeroEventListenerSpy.calls.count()).toBe(0);
     expect(firstEventListenerSpy.calls.count()).toBe(0);
     expect(secondEventListenerSpy.calls.count()).toBe(0);
 
     store.dispatch(action);
 
-    expect(store.getCurrentState()).toBe(action);
+    expect(store.getState()).toBe(action);
     expect(zeroEventListenerSpy.calls.count()).toBe(1);
     expect(firstEventListenerSpy.calls.count()).toBe(1);
     expect(secondEventListenerSpy.calls.count()).toBe(1);
@@ -176,7 +176,7 @@ describe('reducer', () => {
 
     const listenerSpy = jasmine.createSpy('listener', () => null);
 
-    store.addOnChange(listenerSpy);
+    store.subscribe(listenerSpy);
 
     store.flush();
 
@@ -188,10 +188,10 @@ describe('reducer', () => {
   it('get state from observer', () => {
     const store = redchain(0, (_state, action: number) => action);
 
-    expect(store.Observer.getCurrentState()).toBe(0);
+    expect(store.Observer.getState()).toBe(0);
 
     store.dispatch(1);
 
-    expect(store.Observer.getCurrentState()).toBe(1);
+    expect(store.Observer.getState()).toBe(1);
   });
 });

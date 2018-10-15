@@ -15,15 +15,15 @@ export type ApplicationElement =
   | undefined
   | (PlusnewAbstractElement | string | number | boolean | null | undefined)[];
 
-export interface props {
+export type props = {
   [key: string]: unknown;
   key?: number | string;
   children: ApplicationElement[];
-}
+};
 
 /**
  * thats how a application component should look like
  */
-export default interface component<componentProps extends Partial<props> = {} > {
+export default interface Component<componentProps extends Partial<props> = {} > {
   (props: componentProps, componentInstance: ComponentInstance<componentProps>): ApplicationElement;
 }
