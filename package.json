@@ -1,6 +1,6 @@
 {
   "name": "plusnew",
-  "version": "0.6.14",
+  "version": "0.6.15",
   "description": "ts component framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,10 +22,11 @@
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {},
   "devDependencies": {
+    "copy-webpack-plugin": "^4.5.3",
     "plusnew-karma-config": "0.6.14",
     "plusnew-webpack-config": "0.6.14",
-    "tslint": "5.8.0",
-    "tslint-config-airbnb": "5.4.2",
-    "typescript": "3.0.1"
+    "tslint": "5.11.0",
+    "tslint-config-airbnb": "5.11.0",
+    "typescript": "3.1.3"
   }
 }

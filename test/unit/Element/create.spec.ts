@@ -1,8 +1,8 @@
-import plusnew, { component } from 'index';
+import plusnew, { component, Props } from 'index';
 
 describe('checking if createElement works as expected', () => {
   it('Is div element created', () => {
-    const instance = plusnew.createElement('div', null);
+    const instance = plusnew.createElement('div', {});
     expect(instance.type).toBe('div');
   });
 
@@ -23,19 +23,19 @@ describe('checking if createElement works as expected', () => {
   });
 
   it('Is div props correct created when null', () => {
-    const instance = plusnew.createElement('div', null);
+    const instance = plusnew.createElement('div', {});
     expect(instance.props).toEqual({ children: [] });
   });
 
   it('Is div props correct created when adding children', () => {
-    const child = plusnew.createElement('span', null);
-    const instance = plusnew.createElement('div', null, child);
+    const child = plusnew.createElement('span', {});
+    const instance = plusnew.createElement('div', {}, child);
     expect(instance.props.children.length).toBe(1);
     expect(instance.props.children[0]).toBe(child);
   });
 
   it('Is div props correct created when adding children without reference', () => {
-    const child = plusnew.createElement('span', null);
+    const child = plusnew.createElement('span', {});
     const props = {
       className: 'foo',
     };
@@ -47,15 +47,20 @@ describe('checking if createElement works as expected', () => {
   });
 
   it('Is div props correct created when creating multiple children', () => {
-    const firstChild = plusnew.createElement('span', null);
-    const secondChild = plusnew.createElement('ul', null);
-    const instance = plusnew.createElement('div', null, firstChild, secondChild);
+    const firstChild = plusnew.createElement('span', {});
+    const secondChild = plusnew.createElement('ul', {
+      className: '3',
+    });
+    const instance = plusnew.createElement('div', {}, firstChild, secondChild);
     expect(instance.props.children[0]).toBe(firstChild);
     expect(instance.props.children[1]).toBe(secondChild);
   });
 
   it('check if component gets safed', () => {
-    const Component = component('Component', () => plusnew.createElement('div', null));
+    const Component = component(
+      'Component',
+      (Props: Props<{foo: string}>) => plusnew.createElement('div', {}),
+    );
 
     const props = { foo: 'bar' };
     const instance = plusnew.createElement(Component, props);

@@ -8,7 +8,6 @@ import Async from './components/Async';
 import factory from './instances/factory';
 import Instance from './instances/types/Instance';
 import RootInstance, { renderOptions } from './instances/types/Root/Instance';
-import { KeyboardEvent, MouseEvent, TouchEvent, nothing } from './interfaces/Events';
 import './interfaces/jsx';
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
 import elementTypeChecker from './util/elementTypeChecker';
@@ -19,6 +18,11 @@ class Plusnew {
   /**
    * creates lightweight representation of DOM or ComponentNodes
    */
+  public createElement<element extends keyof plusnew.JSX.IntrinsicElements>(type: element, props: plusnew.JSX.IntrinsicElements[element], ...children: ApplicationElement[]):
+    PlusnewAbstractElement;
+  public createElement<props>(type: number, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
+  public createElement<props>(type: Symbol, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
+  public createElement<props>(type: ComponentContainer<props>, props: props, ...children: ApplicationElement[]): PlusnewAbstractElement;
   public createElement(type: PlusnewElement, props: any, ...children: ApplicationElement[]) {
     return new PlusnewAbstractElement(type, props, children);
   }
@@ -44,18 +48,11 @@ class Plusnew {
 
 }
 
-// @FIXME this is needed to trick typescript into generating .d.ts file
-// if a file doesn't export anything other than types, it won't generate the .d.ts file
-nothing;
-
 export {
   store,
   Plusnew,
   Instance,
   componentFactory as component,
-  KeyboardEvent,
-  MouseEvent,
-  TouchEvent,
   ComponentContainer,
   renderOptions,
   PlusnewAbstractElement,

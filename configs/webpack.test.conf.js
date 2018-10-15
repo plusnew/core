@@ -1,10 +1,27 @@
 const constants = require('./constants');
-const testConfig =  require('plusnew-webpack-config').test('plusnew', constants.baseDirectory);
+const webpackBase = require('./webpack.base.conf');
+const defaultWebpack = require('plusnew-webpack-config').test('plusnew', constants.baseDirectory);
 
-testConfig.module.rules.forEach((rule) => {
-  if (rule.loader === 'istanbul-instrumenter-loader') {
-    rule.exclude.push(/src\/interfaces/);
-  }
-});
-
-module.exports = testConfig;
+module.exports = {
+  ...defaultWebpack,
+  module: {
+    ...defaultWebpack.module,
+    rules: defaultWebpack.module.rules.map((rule) => {
+      const interfaceDirectory = /src\/interfaces/;
+      if (rule.loader === 'istanbul-instrumenter-loader') {
+        return {
+          ...rule,
+          exclude: [
+            ...rule.exclude,
+            interfaceDirectory
+          ],
+        }
+      }
+      return rule;
+    })
+  },
+  plugins: [
+    ...defaultWebpack.plugins,
+    ...webpackBase.plugins
+  ],
+};

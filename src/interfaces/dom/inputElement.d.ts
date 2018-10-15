@@ -1,0 +1,42 @@
+import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
+import { autocomplete } from './types/autocomplete';
+import { enctype } from './types/enctype';
+import { target } from './types/target';
+import { truefalse } from './types/truefalse';
+
+type inputElement =  htmlGlobalAttributesElement<HTMLInputElement> & {
+  type: "button" | "checkbox" | "color" | "date" | "datetime-local" | "email" | "file" | "hidden" | "image" | "month" | "number" | "password" | "radio" | "range" | "reset" | "search" | "submit" | "tel" | "text" | "time" | "url" | "week";
+  accept?: string;
+  autocomplete?: autocomplete;
+  autofocus?: boolean;
+  capture?: boolean;
+  checked?: boolean;
+  disabled?: boolean;
+  form?: string;
+  formaction?: string;
+  formenctype?: enctype;
+  formtarget?: target;
+  height?: number;
+  inputmode?: "none" | "text" | "tel" | "url" | "email" | "numeric" | "decimal" | "search";
+  list?: string;
+  max?: number | string;
+  maxlength?: number;
+  min?: number | string;
+  minlength?: number;
+  multiple?: boolean;
+  name?: string;
+  pattern?: RegExp;
+  placeholder?: string;
+  readonly?: boolean;
+  required?: boolean;
+  size?: number;
+  spellcheck?: truefalse;
+  src?: string;
+  step?: number;
+  value?: string;
+  valueAsNumber?: number;
+  valueAsDate?: number;
+  width?: number;
+};
+
+export { inputElement };
