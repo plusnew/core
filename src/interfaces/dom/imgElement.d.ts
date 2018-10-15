@@ -3,7 +3,7 @@ import { crossorigin } from './types/crossorigin';
 import { importance } from './types/importance';
 import { referrerpolicy } from './types/referrerpolicy';
 
-type imgElement =  htmlGlobalAttributesElement<HTMLImageElement> & {
+type imgElement = htmlGlobalAttributesElement<HTMLImageElement> & {
   alt?: string;
   crossorigin?: crossorigin;
   decoding?: "sync" | "async" | "auto";

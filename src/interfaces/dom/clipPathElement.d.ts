@@ -1,7 +1,7 @@
 import { svgCoreAttributesElement } from './abstract/svgCoreAttributesElement';
 
 
-type clipPathElement =  svgCoreAttributesElement<SVGElement> & {
+type clipPathElement = svgCoreAttributesElement<SVGElement> & {
   
 };
 

@@ -1,7 +1,7 @@
 import { svgCoreAttributesElement } from './abstract/svgCoreAttributesElement';
 
 
-type fontfaceNameElement =  svgCoreAttributesElement<SVGElement> & {
+type fontfaceNameElement = svgCoreAttributesElement<SVGElement> & {
   
 };
 

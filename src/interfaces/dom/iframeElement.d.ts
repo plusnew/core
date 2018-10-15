@@ -2,7 +2,7 @@ import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElem
 import { importance } from './types/importance';
 import { referrerpolicy } from './types/referrerpolicy';
 
-type iframeElement =  htmlGlobalAttributesElement<HTMLIFrameElement> & {
+type iframeElement = htmlGlobalAttributesElement<HTMLIFrameElement> & {
   allow?: string;
   height?: number;
   importance?: importance;

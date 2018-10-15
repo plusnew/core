@@ -1,7 +1,7 @@
 import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type theadElement =  htmlGlobalAttributesElement<HTMLTableSectionElement> & {
+type theadElement = htmlGlobalAttributesElement<HTMLTableSectionElement> & {
   
 };
 

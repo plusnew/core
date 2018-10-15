@@ -3,7 +3,7 @@ import { enctype } from './types/enctype';
 import { method } from './types/method';
 import { target } from './types/target';
 
-type formElement =  htmlGlobalAttributesElement<HTMLFormElement> & {
+type formElement = htmlGlobalAttributesElement<HTMLFormElement> & {
   acceptCharset?: string;
   action?: string;
   autocomplete?: "on" | "off";

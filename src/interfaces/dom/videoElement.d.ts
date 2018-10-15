@@ -2,7 +2,7 @@ import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElem
 import { crossorigin } from './types/crossorigin';
 import { preload } from './types/preload';
 
-type videoElement =  htmlGlobalAttributesElement<HTMLVideoElement> & {
+type videoElement = htmlGlobalAttributesElement<HTMLVideoElement> & {
   autoplay?: boolean;
   buffered?: string;
   controls?: boolean;

@@ -1,7 +1,7 @@
 import { svgCoreAttributesElement } from './abstract/svgCoreAttributesElement';
 
 
-type ellipseElement =  svgCoreAttributesElement<SVGElement> & {
+type ellipseElement = svgCoreAttributesElement<SVGElement> & {
   
 };
 

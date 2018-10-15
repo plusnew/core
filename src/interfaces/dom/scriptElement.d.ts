@@ -2,7 +2,7 @@ import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElem
 import { crossorigin } from './types/crossorigin';
 import { importance } from './types/importance';
 
-type scriptElement =  htmlGlobalAttributesElement<HTMLScriptElement> & {
+type scriptElement = htmlGlobalAttributesElement<HTMLScriptElement> & {
   async?: boolean;
   crossorigin?: crossorigin;
   defer?: boolean;

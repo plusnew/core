@@ -1,7 +1,7 @@
 import { svgCoreAttributesElement } from './abstract/svgCoreAttributesElement';
 
 
-type linearGradientElement =  svgCoreAttributesElement<SVGElement> & {
+type linearGradientElement = svgCoreAttributesElement<SVGElement> & {
   
 };
 

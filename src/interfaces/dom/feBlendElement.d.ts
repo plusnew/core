@@ -1,7 +1,7 @@
 import { svgCoreAttributesElement } from './abstract/svgCoreAttributesElement';
 
 
-type feBlendElement =  svgCoreAttributesElement<SVGElement> & {
+type feBlendElement = svgCoreAttributesElement<SVGElement> & {
   
 };
 

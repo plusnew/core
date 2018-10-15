@@ -1,7 +1,7 @@
 import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type detailsElement =  htmlGlobalAttributesElement<HTMLDetailsElement> & {
+type detailsElement = htmlGlobalAttributesElement<HTMLDetailsElement> & {
   open?: boolean;
 };
 

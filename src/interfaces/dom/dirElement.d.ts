@@ -1,7 +1,7 @@
 import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type dirElement =  htmlGlobalAttributesElement<HTMLDirectoryElement> & {
+type dirElement = htmlGlobalAttributesElement<HTMLDirectoryElement> & {
   
 };
 

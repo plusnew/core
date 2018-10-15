@@ -1,7 +1,7 @@
 import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type legendElement =  htmlGlobalAttributesElement<HTMLLegendElement> & {
+type legendElement = htmlGlobalAttributesElement<HTMLLegendElement> & {
   
 };
 

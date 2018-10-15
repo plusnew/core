@@ -1,7 +1,7 @@
 import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type paramElement =  htmlGlobalAttributesElement<HTMLParamElement> & {
+type paramElement = htmlGlobalAttributesElement<HTMLParamElement> & {
   name?: string;
   value?: string;
 };

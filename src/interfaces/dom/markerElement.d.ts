@@ -1,7 +1,7 @@
 import { svgCoreAttributesElement } from './abstract/svgCoreAttributesElement';
 
 
-type markerElement =  svgCoreAttributesElement<SVGElement> & {
+type markerElement = svgCoreAttributesElement<SVGElement> & {
   
 };
 

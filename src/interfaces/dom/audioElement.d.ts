@@ -2,7 +2,7 @@ import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElem
 import { crossorigin } from './types/crossorigin';
 import { preload } from './types/preload';
 
-type audioElement =  htmlGlobalAttributesElement<HTMLAudioElement> & {
+type audioElement = htmlGlobalAttributesElement<HTMLAudioElement> & {
   autoplay?: boolean;
   crossorigin?: crossorigin;
   loop?: boolean;

@@ -1,7 +1,7 @@
 import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type slotElement =  htmlGlobalAttributesElement<HTMLElement> & {
+type slotElement = htmlGlobalAttributesElement<HTMLElement> & {
   name?: string;
 };
 

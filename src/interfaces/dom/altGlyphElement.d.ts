@@ -1,7 +1,7 @@
 import { svgCoreAttributesElement } from './abstract/svgCoreAttributesElement';
 
 
-type altGlyphElement =  svgCoreAttributesElement<SVGElement> & {
+type altGlyphElement = svgCoreAttributesElement<SVGElement> & {
   
 };
 

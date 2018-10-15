@@ -1,7 +1,7 @@
 import { svgCoreAttributesElement } from './abstract/svgCoreAttributesElement';
 
 
-type feFuncGElement =  svgCoreAttributesElement<SVGElement> & {
+type feFuncGElement = svgCoreAttributesElement<SVGElement> & {
   
 };
 

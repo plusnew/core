@@ -1,7 +1,7 @@
 import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type templateElement =  htmlGlobalAttributesElement<HTMLTemplateElement> & {
+type templateElement = htmlGlobalAttributesElement<HTMLTemplateElement> & {
   
 };
 

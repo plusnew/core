@@ -1,7 +1,7 @@
 import { svgCoreAttributesElement } from './abstract/svgCoreAttributesElement';
 
 
-type animateColorElement =  svgCoreAttributesElement<SVGElement> & {
+type animateColorElement = svgCoreAttributesElement<SVGElement> & {
   
 };
 

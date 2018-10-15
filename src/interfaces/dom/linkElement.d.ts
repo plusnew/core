@@ -3,7 +3,7 @@ import { crossorigin } from './types/crossorigin';
 import { importance } from './types/importance';
 import { referrerpolicy } from './types/referrerpolicy';
 
-type linkElement =  htmlGlobalAttributesElement<HTMLLinkElement> & {
+type linkElement = htmlGlobalAttributesElement<HTMLLinkElement> & {
   as?: string;
   crossorigin?: crossorigin;
   href?: string;

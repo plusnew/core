@@ -1,7 +1,7 @@
 import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElement';
 
 
-type kbdElement =  htmlGlobalAttributesElement<HTMLElement> & {
+type kbdElement = htmlGlobalAttributesElement<HTMLElement> & {
   
 };
 

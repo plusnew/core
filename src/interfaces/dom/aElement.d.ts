@@ -2,7 +2,7 @@ import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElem
 import { referrerpolicy } from './types/referrerpolicy';
 import { target } from './types/target';
 
-type aElement =  htmlGlobalAttributesElement<HTMLAnchorElement> & {
+type aElement = htmlGlobalAttributesElement<HTMLAnchorElement> & {
   download?: string;
   href?: string;
   hreflang?: string;
