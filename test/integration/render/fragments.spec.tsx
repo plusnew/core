@@ -34,11 +34,10 @@ describe('fragments', () => {
 
     const PartialComponent = component(
       'PartialComponent',
-      
       (Props: Props<{value: string}>) =>
         <>
-          <span><Props render={props => props.value + '-foo'} /></span>
-          <div><Props render={props => props.value + '-bar'} /></div>
+          <span><Props render={props => `${props.value}-foo`} /></span>
+          <div><Props render={props => `${props.value}-ba`} /></div>
         </>,
     );
     const MainComponent = component(
@@ -46,7 +45,7 @@ describe('fragments', () => {
       () =>
         <div>
           <list.Observer render={state =>
-            state.map(entity => 
+            state.map(entity =>
               <PartialComponent key={entity.key} value={entity.value} />,
             )
           } />
@@ -154,7 +153,7 @@ describe('fragments', () => {
 
     const MainComponent = component(
       'Component',
-      () => 
+      () =>
         <local.Observer render={(state) => {
           if (state === 0) {
             return (

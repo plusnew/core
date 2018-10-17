@@ -91,7 +91,6 @@ describe('dom handling', () => {
   it('updating style invalidattributes', () => {
     const Component = component(
       'Component',
-      
       () => <div style={{ width: 'foo' }}/>,
     );
 

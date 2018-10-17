@@ -46,7 +46,7 @@ describe('<Observer />', () => {
     const Component = component(
       'Component',
       () =>
-            <localContainer.Observer render={state => 
+            <localContainer.Observer render={state =>
               <local.Observer render={state} />
             } />,
     );

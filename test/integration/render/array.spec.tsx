@@ -290,7 +290,7 @@ describe('rendering nested components', () => {
 
     const PartialComponent = component(
       'Component',
-      (Props: Props<{key: number}>) => <Props render={props => 'element' + props.key} />,
+      (Props: Props<{key: number}>) => <Props render={props => `element${props.key}`} />,
     );
 
     const MainComponent = component(
@@ -425,7 +425,6 @@ describe('rendering nested components', () => {
     expect((ul.childNodes[1] as HTMLElement).tagName).toBe('LI');
     expect((ul.childNodes[1] as HTMLElement).innerHTML).toBe('second');
   });
-
 
   it('removed without key property', () => {
     const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
@@ -572,7 +571,6 @@ describe('rendering nested components', () => {
 
     expect((ul.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
   });
-
 
   it('ordering with empty elements in between with placeholder', () => {
     const NestedComponent = component(

@@ -219,10 +219,10 @@ describe('rendering the elements', () => {
     const local = store(true, (previousState, action: boolean) => action);
     const Component = component(
       'Component',
-      () => 
-      <local.Observer render={state =>
-        (state === true ? <div /> : <div>foo</div>)
-      } />,
+      () =>
+        <local.Observer render={state =>
+          (state === true ? <div /> : <div>foo</div>)
+        } />,
     );
 
     plusnew.render(<Component />, container);
@@ -366,7 +366,6 @@ describe('rendering the elements', () => {
     const local = store(0, (previousState, action: number) => previousState + action);
     const Component = component(
       'Component',
-     
       () =>
         <div>static text</div>,
     );

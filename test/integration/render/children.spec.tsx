@@ -11,7 +11,7 @@ describe('rendering nested components', () => {
 
   describe('children in nested component', () => {
     it('static children', () => {
-      const local = store('foo', (state, action: string) => action);
+      const local = store('foo', (_state, action: string) => action);
       const NestedComponent = component(
         'Component',
         (Props: Props<{ children: any }>) => <span><Props render={props => props.children} /></span>,

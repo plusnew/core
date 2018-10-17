@@ -11,41 +11,39 @@ describe('rendering svg components', () => {
     container.innerHTML = 'lots of stuff';
     document.body.appendChild(container);
   });
-  
+
   it('check if div element has correct namespace', () => {
     const Component = component(
       'Component',
       () => <div />,
     );
 
-    plusnew.render(<Component />, container);  
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
   });
 
-  
   it('check if nested div element has correct namespace', () => {
     const Component = component(
       'Component',
       () => <span><div /></span>,
     );
 
-    plusnew.render(<Component />, container);  
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(htmlNamespace);
 
   });
 
-  
   it('check if svg element has correct namespace', () => {
     const Component = component(
       'Component',
       () => <svg />,
     );
 
-    plusnew.render(<Component />, container);  
-  
+    plusnew.render(<Component />, container);
+
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
   });
 
@@ -55,7 +53,7 @@ describe('rendering svg components', () => {
       () => <span><svg /></span>,
     );
 
-    plusnew.render(<Component />, container);  
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
@@ -67,7 +65,7 @@ describe('rendering svg components', () => {
       () => <svg><g /></svg>,
     );
 
-    plusnew.render(<Component />, container);  
+    plusnew.render(<Component />, container);
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
@@ -79,7 +77,7 @@ describe('rendering svg components', () => {
       () => <g />,
     );
 
-    plusnew.render(<Component />, container, { namespace: svgNamespace });  
+    plusnew.render(<Component />, container, { namespace: svgNamespace });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
   });

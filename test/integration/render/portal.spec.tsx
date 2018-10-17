@@ -13,11 +13,10 @@ describe('<Portal />', () => {
     const local = store(0, (store, action: number) => action);
 
     const outside = document.createElement('div');
-    
+
     const Component = component(
       'Component',
-     
-      () => 
+      () =>
         <span>
           <local.Observer render={state =>
             state < 2 &&

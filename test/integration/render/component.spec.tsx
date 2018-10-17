@@ -822,8 +822,6 @@ describe('rendering nested components', () => {
       expect(nestedRenderSpy.calls.count()).toBe(2);
     });
 
-
-
     it('nested component should not rerender with same content', () => {
       type props = { children: any};
 
@@ -972,7 +970,6 @@ describe('rendering nested components', () => {
       expect(nestedRenderSpy.calls.count()).toBe(1);
     });
 
-
     it('nested component should rerender with null types', () => {
       type props = { children: any};
 
@@ -1087,7 +1084,6 @@ describe('rendering nested components', () => {
     });
   });
 
-
   it('removed nested component gets a componentWillUnmount call', () => {
     const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
 
@@ -1123,7 +1119,6 @@ describe('rendering nested components', () => {
     expect(componentWillUnmountSpy).toHaveBeenCalledWith({ children: [] });
   });
 
-
   it('removed nested component gets a componentWillUnmount call with props', () => {
     const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
 
@@ -1138,7 +1133,6 @@ describe('rendering nested components', () => {
 
     const MainComponent = component(
       'Component',
-     
       () =>
         <local.Observer render={state =>
           state === true ?

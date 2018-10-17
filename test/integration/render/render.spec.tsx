@@ -16,7 +16,6 @@ describe('rendering the elements', () => {
   it('check if element is inserted', () => {
     const Component = component(
       'Component',
-      
       (Props: Props<{}>) => <div className="foo" />,
     );
     plusnew.render(<Component />, container);
@@ -30,8 +29,7 @@ describe('rendering the elements', () => {
   it('check if elements are inserted', () => {
     const Component = component(
       'Component',
-      
-      (Props: Props<{}>) => (
+      () => (
         <div>
           <div className="foo" />
           <span className="bar" />
@@ -54,7 +52,7 @@ describe('rendering the elements', () => {
   it('check if nesting works', () => {
     const Component = component(
       'Component',
-      (Props: Props<{}>) => (
+      () => (
         <div className="foo">
           <span className="bar" />
         </div>
@@ -108,8 +106,7 @@ describe('rendering the elements', () => {
   it('check if null is created on root', () => {
     const Component = component(
       'Component',
-      
-      (Props: Props<{}>) => null,
+      () => null,
     );
     plusnew.render(<Component />, container);
 
