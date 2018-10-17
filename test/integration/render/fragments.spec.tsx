@@ -37,7 +37,7 @@ describe('fragments', () => {
       (Props: Props<{value: string}>) =>
         <>
           <span><Props render={props => `${props.value}-foo`} /></span>
-          <div><Props render={props => `${props.value}-ba`} /></div>
+          <div><Props render={props => `${props.value}-bar`} /></div>
         </>,
     );
     const MainComponent = component(
