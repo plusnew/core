@@ -2,7 +2,7 @@ import { svgStyleAttributesElement } from './../abstract/svgStyleAttributesEleme
 
 
 type svgCoreAttributesElement<currentElement> = svgStyleAttributesElement<SVGElement> & {
-  
+  [key: string]: any;
 };
 
 export { svgCoreAttributesElement };
