@@ -94,10 +94,13 @@ export default component(
     return (
       <div>
         <button
-          onclick={(evt: MouseEvent) => counter.dispatch(1)}
+          onclick={(evt) => {
+            evt.currentTarget; // Typescript knows that this element is a HTMLButtonElement, because of context
+            counter.dispatch(1)
+           }}
         />
         <button
-          onclick={(evt: MouseEvent) => counter.dispatch(2)}
+          onclick={(evt) => counter.dispatch(2)}
         />
         <counter.Observer render={state =>
           // This function is the only part which gets executed on a state change
