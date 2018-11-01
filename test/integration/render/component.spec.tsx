@@ -16,14 +16,14 @@ describe('rendering nested components', () => {
   it('checks if nesting the components works', () => {
     const NestedComponent = component(
       'Component',
-      (Props: Props<{ value: string }>) => <Props render={props => <div className={props.value}>{props.value}</div>} />,
+      (Props: Props<{ value: string }>) => <Props>{props => <div className={props.value}>{props.value}</div>}</Props>,
     );
 
     const local = store('foo', (state: string, newValue: string) => newValue);
 
     const MainComponent = component(
       'Component',
-      () => <local.Observer render={local => <NestedComponent value={local} /> } />,
+      () => <local.Observer>{local => <NestedComponent value={local} /> }</local.Observer>,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -53,16 +53,16 @@ describe('rendering nested components', () => {
       'Component',
       (Props: Props<{value: string}>) =>
         <>
-          <Props render={props => <span>{props.value}</span> } />
-          <nestedStore.Observer render={state => <span>{state}</span> } />
+          <Props>{props => <span>{props.value}</span> }</Props>
+          <nestedStore.Observer>{state => <span>{state}</span> }</nestedStore.Observer>
         </>,
     );
     const MainComponent = component(
       'Component',
       (Props: Props<{}>) =>
-        <mainStore.Observer render={state =>
+        <mainStore.Observer>{state =>
           <NestedComponent value={state} />
-        } />,
+        }</mainStore.Observer>,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -96,15 +96,15 @@ describe('rendering nested components', () => {
     const NestedComponent = component(
       'Component',
       (Props: Props<{}>) =>
-         <span><counterStore.Observer render={nestedUpdateSpy} /></span>,
+         <span><counterStore.Observer>{nestedUpdateSpy}</counterStore.Observer></span>,
     );
 
     const MainComponent = component(
       'Component',
       (Props: Props<{}>) =>
         <>
-          <span><counterStore.Observer render={containerUpdateSpy} /></span>
-          <mainStore.Observer render={state => state && <NestedComponent />} />
+          <span><counterStore.Observer>{containerUpdateSpy}</counterStore.Observer></span>
+          <mainStore.Observer>{state => state && <NestedComponent />}</mainStore.Observer>
         </>,
     );
 
@@ -148,19 +148,21 @@ describe('rendering nested components', () => {
     const NestedComponent = component(
       'Component',
       (Props: Props<{}>) =>
-         <span><counterStore.Observer render={nestedUpdateSpy} /></span>,
+         <span><counterStore.Observer>{nestedUpdateSpy}</counterStore.Observer></span>,
     );
 
     const MainComponent = component(
       'Component',
       (Props: Props<{}>) =>
         <>
-          <span><counterStore.Observer render={containerUpdateSpy} /></span>
-          <mainStore.Observer render={state => state &&
-            <span>
-              <NestedComponent />
-            </span>
-          } />
+          <span><counterStore.Observer>{containerUpdateSpy}</counterStore.Observer></span>
+          <mainStore.Observer>
+            {state => state &&
+              <span>
+                <NestedComponent />
+              </span>
+            }
+          </mainStore.Observer>
         </>,
     );
 
@@ -205,19 +207,19 @@ describe('rendering nested components', () => {
     const NestedComponent = component(
       'Component',
       (Props: Props<{}>) =>
-         <span><counterStore.Observer render={nestedUpdateSpy} /></span>,
+         <span><counterStore.Observer>{nestedUpdateSpy}</counterStore.Observer></span>,
     );
 
     const MainComponent = component(
       'Component',
       (Props: Props<{}>) =>
         <>
-          <span><counterStore.Observer render={containerUpdateSpy} /></span>
-          <mainStore.Observer render={state => state &&
+          <span><counterStore.Observer>{containerUpdateSpy}</counterStore.Observer></span>
+          <mainStore.Observer>{state => state &&
             <>
               <NestedComponent />
             </>
-          } />
+          }</mainStore.Observer>
         </>,
     );
 
@@ -261,19 +263,19 @@ describe('rendering nested components', () => {
     const NestedComponent = component(
       'Component',
       (Props: Props<{}>) =>
-         <span><counterStore.Observer render={nestedUpdateSpy} /></span>,
+         <span><counterStore.Observer>{nestedUpdateSpy}</counterStore.Observer></span>,
     );
 
     const MainComponent = component(
       'Component',
       (Props: Props<{}>) =>
         <>
-          <span><counterStore.Observer render={containerUpdateSpy} /></span>
-          <mainStore.Observer render={state => state &&
+          <span><counterStore.Observer>{containerUpdateSpy}</counterStore.Observer></span>
+          <mainStore.Observer>{state => state &&
             [
               <NestedComponent key="0" />,
             ]
-          } />
+          }</mainStore.Observer>
         </>,
     );
 
@@ -319,12 +321,12 @@ describe('rendering nested components', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           <>
             <NestedComponent foo={state }/>
             <span />
           </>
-        } />,
+        }</local.Observer>,
     );
 
     const MainComponentElement = <MainComponent />;
@@ -361,14 +363,14 @@ describe('rendering nested components', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
             <>
               {state < 1 &&
                 <NestedComponent foo={ state }/>
               }
               <span />
             </>
-        } />,
+        }</local.Observer>,
     );
 
     const MainComponentElement = <MainComponent />;
@@ -405,7 +407,7 @@ describe('rendering nested components', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           (state < 1 ? [
             <span key={1}/>,
             <NestedComponent key={0} foo={ state }/>,
@@ -413,7 +415,7 @@ describe('rendering nested components', () => {
             <NestedComponent key={0} foo={ state }/>,
             <span key={1}/>,
           ])
-        } />,
+        }</local.Observer>,
     );
 
     const MainComponentElement = <MainComponent />;
@@ -445,7 +447,7 @@ describe('rendering nested components', () => {
     it('nested component should not rerender without properties', () => {
       type props = {};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -477,7 +479,7 @@ describe('rendering nested components', () => {
     it('nested component should not rerender with properties', () => {
       type props = {foo: {}};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -511,7 +513,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender on propertychange', () => {
       type props = {foo: {}};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -527,12 +529,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent foo={foo}/>
             :
               <NestedComponent foo={bar}/>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -551,7 +553,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender on more propertychange', () => {
       type props = {foo: {}, bar?: {}};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -567,12 +569,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent foo={foo}/>
             :
               <NestedComponent foo={foo} bar={bar}/>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -591,7 +593,7 @@ describe('rendering nested components', () => {
     it('nested component should not rerender with same children', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -606,12 +608,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent><div style={foo} /></NestedComponent>
             :
               <NestedComponent><div style={foo} /></NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -630,7 +632,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with changed children', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -646,12 +648,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent><div style={foo} /></NestedComponent>
             :
               <NestedComponent><div style={bar} /></NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -670,7 +672,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with different amount children', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -685,12 +687,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent><div style={foo} /><div style={foo} /></NestedComponent>
             :
               <NestedComponent><div style={foo} /></NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -709,7 +711,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with different amount children', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -724,12 +726,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent><div style={foo} /></NestedComponent>
             :
               <NestedComponent><div style={foo} /><div style={foo} /></NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -748,7 +750,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with different types of children', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -763,12 +765,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent><div style={foo} /></NestedComponent>
             :
               <NestedComponent><span style={foo} /></NestedComponent>
-          } />,
+          }</local.Observer>,
         );
 
       plusnew.render(<MainComponent />, container);
@@ -787,7 +789,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with different types of multiple children', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -801,12 +803,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent><div style="foo" /><span /></NestedComponent>
             :
               <NestedComponent><div style="bar" /><span /></NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -825,7 +827,7 @@ describe('rendering nested components', () => {
     it('nested component should not rerender with same content', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -838,12 +840,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent>foo</NestedComponent>
             :
               <NestedComponent>foo</NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -862,7 +864,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with different content', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -875,12 +877,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent>foo</NestedComponent>
             :
               <NestedComponent>bar</NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -899,7 +901,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with different content types', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -912,12 +914,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent>{'1'}</NestedComponent>
             :
               <NestedComponent>{1}</NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -936,7 +938,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with null types', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -949,12 +951,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent>{null}</NestedComponent>
             :
               <NestedComponent>{null}</NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -973,7 +975,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with null types', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -986,12 +988,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent><div /></NestedComponent>
             :
               <NestedComponent>{null}</NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -1010,7 +1012,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender with null types', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -1023,12 +1025,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent>{null}</NestedComponent>
             :
               <NestedComponent><div /></NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -1047,7 +1049,7 @@ describe('rendering nested components', () => {
     it('nested component should rerender when an new array occured', () => {
       type props = { children: any};
 
-      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props render={nestedRenderSpy} />).and.callThrough();
+      const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
       const nestedRenderSpy = jasmine.createSpy('nestedrender', () => <div />).and.callThrough();
 
       const local = store(0, (state, action: number) => state + action);
@@ -1062,12 +1064,12 @@ describe('rendering nested components', () => {
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state === 0 ?
               <NestedComponent>{foo}</NestedComponent>
             :
               <NestedComponent>{foo}</NestedComponent>
-          } />,
+          }</local.Observer>,
       );
 
       plusnew.render(<MainComponent />, container);
@@ -1099,12 +1101,12 @@ describe('rendering nested components', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           state === true ?
             <NestedComponent />
           :
             null
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -1134,12 +1136,12 @@ describe('rendering nested components', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           state === true ?
             <NestedComponent foo="bar" />
           :
             null
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<MainComponent />, container);

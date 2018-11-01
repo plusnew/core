@@ -31,7 +31,7 @@ describe('rendering class components', () => {
       };
 
       render() {
-        return <div><local.Observer render={local => local} /></div>;
+        return <div><local.Observer>{local => local}</local.Observer></div>;
       }
     }
 
@@ -51,7 +51,7 @@ describe('rendering class components', () => {
 
     class MainComponent extends Component<{}> {
       render() {
-        return <local.Observer render={local => <NestedComponent foo={local}/> } />;
+        return <local.Observer>{local => <NestedComponent foo={local}/> }</local.Observer>;
       }
     }
 
@@ -59,7 +59,7 @@ describe('rendering class components', () => {
 
     class NestedComponent extends Component<props> {
       render(Props: Props<props>) {
-        return <div><Props render={local => local.foo} /></div>;
+        return <div><Props>{local => local.foo}</Props></div>;
       }
     }
 

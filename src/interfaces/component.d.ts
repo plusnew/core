@@ -13,7 +13,7 @@ export type ApplicationElement =
 export type props = {
   [key: string]: unknown;
   key?: number | string;
-  children: ApplicationElement[];
+  children: any[];
 };
 
 /**

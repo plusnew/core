@@ -18,7 +18,7 @@ describe('<Animate />', () => {
   it('show loading when promise is not resolved yet and then show resolved promise', async () => {
     const Component = component(
       'Component',
-      () => <Async render={() => new Promise(resolve => resolve(<div />))} pendingIndicator={<span />}/>,
+      () => <Async pendingIndicator={<span />}>{() => new Promise(resolve => resolve(<div />))}</Async>,
     );
 
     plusnew.render(<Component />, container);
@@ -34,7 +34,7 @@ describe('<Animate />', () => {
   it('show resolved promise', async () => {
     const Component = component(
       'Component',
-      () => <Async render={() => Promise.resolve(<div />)} pendingIndicator={<span />}/>,
+      () => <Async pendingIndicator={<span />}>{() => Promise.resolve(<div />)}</Async>,
     );
 
     plusnew.render(<Component />, container);
@@ -50,7 +50,7 @@ describe('<Animate />', () => {
   it('show resolved promise', async () => {
     const Component = component(
       'Component',
-      () => <Async render={async () => <div />} pendingIndicator={<span />}/>,
+      () => <Async pendingIndicator={<span />}>{async () => <div />}</Async>,
     );
 
     plusnew.render(<Component />, container);
@@ -68,7 +68,10 @@ describe('<Animate />', () => {
 
     const Component = component(
       'Component',
-      () => <local.Observer render={state => state === true && <Async render={() => Promise.resolve(<div />)} pendingIndicator={<span />}/>} />,
+      () =>
+        <local.Observer>
+          {state => state === true && <Async pendingIndicator={<span />}>{() => Promise.resolve(<div />)}</Async>}
+        </local.Observer>,
     );
 
     plusnew.render(<Component />, container);

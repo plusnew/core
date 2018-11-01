@@ -36,19 +36,19 @@ describe('fragments', () => {
       'PartialComponent',
       (Props: Props<{value: string}>) =>
         <>
-          <span><Props render={props => `${props.value}-foo`} /></span>
-          <div><Props render={props => `${props.value}-bar`} /></div>
+          <span><Props>{props => `${props.value}-foo`}</Props></span>
+          <div><Props>{props => `${props.value}-bar`}</Props></div>
         </>,
     );
     const MainComponent = component(
       'MainComponent',
       () =>
         <div>
-          <list.Observer render={state =>
+          <list.Observer>{state =>
             state.map(entity =>
               <PartialComponent key={entity.key} value={entity.value} />,
             )
-          } />
+          }</list.Observer>
         </div>,
     );
 
@@ -90,9 +90,9 @@ describe('fragments', () => {
       'Component',
       () =>
         <>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state ? <span>foo</span> : <div>bar</div>
-          } />
+          }</local.Observer>
         </>,
     );
 
@@ -114,7 +114,7 @@ describe('fragments', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           state ?
             <>
               <span>foo</span>
@@ -124,7 +124,7 @@ describe('fragments', () => {
               <span>bar</span>
               <span>baz</span>
             </>
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -154,7 +154,7 @@ describe('fragments', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Observer render={(state) => {
+        <local.Observer>{(state) => {
           if (state === 0) {
             return (
               <>
@@ -179,7 +179,7 @@ describe('fragments', () => {
           }
 
           return <></>;
-        }} />,
+        }}</local.Observer>,
     );
 
     plusnew.render(<MainComponent />, container);

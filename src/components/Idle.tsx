@@ -20,18 +20,24 @@ export default class Idle extends Component<props> {
       showContentStore.dispatch(true);
     }
 
-    return <showContentStore.Observer render={showContentState =>
-      <Props render={(props) => {
-        const showContent = props.urgent || showContentState;
-        if (props.urgent && idleHandle !== null) {
-          (window as any).cancelIdleCallback(idleHandle);
-        }
+    return (
+      <showContentStore.Observer>
+        {showContentState =>
+          <Props>
+            {(props) => {
+              const showContent = props.urgent || showContentState;
+              if (props.urgent && idleHandle !== null) {
+                (window as any).cancelIdleCallback(idleHandle);
+              }
 
-        if (showContent) {
-          return props.children;
+              if (showContent) {
+                return props.children;
+              }
+              return null;
+            }}
+          </Props>
         }
-        return null;
-      }} />
-    } />;
+      </showContentStore.Observer>
+    );
   }
 }

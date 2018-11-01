@@ -94,7 +94,7 @@ describe('dom handling', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           state ?
             <div>
               <span>foo</span>
@@ -104,7 +104,7 @@ describe('dom handling', () => {
               <span>bar</span>
               <span>baz</span>
             </div>
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -136,9 +136,9 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           <input type="text" disabled={state} />
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<Component />, container);
@@ -174,9 +174,9 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-      <local.Observer render={state =>
+      <local.Observer>{state =>
         <input type="text" value={state} onchange={evt => local.dispatch(evt.currentTarget.value)} />
-      } />,
+      }</local.Observer>,
     );
 
     plusnew.render(<Component />, container);
@@ -209,9 +209,9 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           <input type="text" value={state} onchange={evt => local.dispatch(evt.currentTarget.value)} />
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<Component />, container);
@@ -233,9 +233,9 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           <input type="text" value={state} onchange={evt => local.dispatch(evt.currentTarget.value)} />
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<Component />, container);
@@ -262,7 +262,7 @@ describe('dom handling', () => {
     const MainComponent = component(
       'Component',
       () =>
-        <local.Observer render={(state) => {
+        <local.Observer>{(state) => {
           if (state === 0) {
             return (
               <div>
@@ -287,7 +287,7 @@ describe('dom handling', () => {
           }
 
           return <div></div>;
-        }} />,
+        }}</local.Observer>,
     );
 
     plusnew.render(<MainComponent />, container);

@@ -14,9 +14,9 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           <div style={{ width: state }} />
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<Component />, container);
@@ -35,12 +35,12 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           state ?
             <div />
           :
             <div style={{ width: '20px' }} />
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<Component />, container);
@@ -63,12 +63,12 @@ describe('dom handling', () => {
     const Component = component(
       'Component',
       () =>
-        <local.Observer render={state =>
+        <local.Observer>{state =>
           state ?
             <div style={{ width: '30px' }}/>
           :
             <div style={{ width: '30px', height: '20px' }} />
-        } />,
+        }</local.Observer>,
     );
 
     plusnew.render(<Component />, container);

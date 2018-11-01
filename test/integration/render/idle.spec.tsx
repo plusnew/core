@@ -38,7 +38,7 @@ describe('<Idle />', () => {
     it('idleCallback is called and canceled when it went to <Idle urgent={true} />', () => {
       const Component = component(
         'Component',
-        () => <urgentStore.Observer render={urgentState => <Idle urgent={urgentState}><span /></Idle>} />,
+        () => <urgentStore.Observer>{urgentState => <Idle urgent={urgentState}><span /></Idle>}</urgentStore.Observer>,
       );
 
       plusnew.render(<Component />, container);
@@ -59,7 +59,7 @@ describe('<Idle />', () => {
     it('idleCallback is called and executed, does not get canceled when urgent switches to true', () => {
       const Component = component(
         'Component',
-        () => <urgentStore.Observer render={urgentState => <Idle urgent={urgentState}><span /></Idle>} />,
+        () => <urgentStore.Observer>{urgentState => <Idle urgent={urgentState}><span /></Idle>}</urgentStore.Observer>,
       );
 
       plusnew.render(<Component />, container);

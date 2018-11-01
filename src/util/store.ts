@@ -2,7 +2,7 @@ import { ComponentContainer } from '../components/factory';
 import { ApplicationElement } from '../interfaces/component';
 import observerFactory from '../components/observerFactory';
 
-export type Observer<state> = ComponentContainer<{render: (state: state) => ApplicationElement}> & { getState(): state };
+export type Observer<state> = ComponentContainer<{children: (state: state) => ApplicationElement}> & { getState(): state };
 
 export type onChangeCallback<actionType> = ((lastAction: actionType) => void);
 

@@ -1,4 +1,4 @@
-import plusnew, { component, Props } from 'index';
+import plusnew, { component, Props, ApplicationElement } from 'index';
 
 describe('checking if createElement works as expected', () => {
   it('Is div element created', () => {
@@ -30,8 +30,8 @@ describe('checking if createElement works as expected', () => {
   it('Is div props correct created when adding children', () => {
     const child = plusnew.createElement('span', {});
     const instance = plusnew.createElement('div', {}, child);
-    expect(instance.props.children.length).toBe(1);
-    expect(instance.props.children[0]).toBe(child);
+    expect((instance.props.children as ApplicationElement[]).length).toBe(1);
+    expect((instance.props.children as ApplicationElement[])[0]).toBe(child);
   });
 
   it('Is div props correct created when adding children without reference', () => {
@@ -41,8 +41,8 @@ describe('checking if createElement works as expected', () => {
     };
 
     const instance = plusnew.createElement('div', props, child);
-    expect(instance.props.children.length).toBe(1);
-    expect(instance.props.children[0]).toBe(child);
+    expect((instance.props.children as ApplicationElement[]).length).toBe(1);
+    expect((instance.props.children as ApplicationElement[])[0]).toBe(child);
     expect(props).not.toContain('children');
   });
 
@@ -52,8 +52,8 @@ describe('checking if createElement works as expected', () => {
       className: '3',
     });
     const instance = plusnew.createElement('div', {}, firstChild, secondChild);
-    expect(instance.props.children[0]).toBe(firstChild);
-    expect(instance.props.children[1]).toBe(secondChild);
+    expect((instance.props.children as ApplicationElement[])[0]).toBe(firstChild);
+    expect((instance.props.children as ApplicationElement[])[1]).toBe(secondChild);
   });
 
   it('check if component gets safed', () => {

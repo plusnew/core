@@ -11,7 +11,7 @@ type props = {
 const Animate: ComponentContainer<props> = factory(
   'Animate',
   (Props: Props<props>, instance) => {
-    return <Props render={(props) => {
+    return <Props>{(props) => {
       instance.elementDidMount = (element: Element) => {
         (instance.parentInstance as Instance<props>).elementDidMount(element);
         if (props.elementDidMount) {
@@ -45,7 +45,7 @@ const Animate: ComponentContainer<props> = factory(
       };
 
       return props.children;
-    }} />;
+    }}</Props>;
   },
 );
 

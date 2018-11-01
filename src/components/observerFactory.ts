@@ -3,8 +3,10 @@ import AbstractClass from './AbstractClass';
 import ComponentInstance from '../instances/types/Component/Instance';
 import { ApplicationElement } from '../interfaces/component';
 
+type renderFunction<state> = (state: state) => ApplicationElement;
+
 export type observerProps<state> = {
-  render: (state: state) => ApplicationElement;
+  children: renderFunction<state>;
 };
 
 export default function <state>(store: storeType<state, any>) {
@@ -18,7 +20,7 @@ export default function <state>(store: storeType<state, any>) {
       store.subscribe(this.update);
       instance.storeProps.subscribe(this.update);
 
-      return instance.props.render(store.getState());
+      return ((instance.props.children as any)[0] as renderFunction<state>)(store.getState());
     }
 
     /**
@@ -27,7 +29,7 @@ export default function <state>(store: storeType<state, any>) {
      */
     private update = () => {
       this.instance.render(
-        this.instance.props.render(store.getState()),
+        ((this.instance.props.children as any)[0] as renderFunction<state>)(store.getState()),
       );
     }
 

@@ -3,8 +3,9 @@ import ComponentInstance from '../instances/types/Component/Instance';
 import AbstractClass from './AbstractClass';
 import { ApplicationElement } from '../interfaces/component';
 
+type promiseGenerator = () => Promise<ApplicationElement>;
 type props = {
-  render: () => Promise<ApplicationElement>;
+  children: promiseGenerator;
   pendingIndicator: ApplicationElement;
 };
 
@@ -19,7 +20,7 @@ class Async extends AbstractClass<props> {
   }
 
   private update = () => {
-    this.instance.props.render().then((content) => {
+    ((this.instance.props.children as any)[0] as promiseGenerator)().then((content) => {
       this.instance.render(content);
     });
 
