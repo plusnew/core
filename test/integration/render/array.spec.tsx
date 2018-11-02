@@ -19,7 +19,7 @@ describe('rendering nested components', () => {
     const local = localFactory();
     const Component = component(
       'Component',
-      () => <ul><local.Observer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} /></ul>,
+      () => <ul><local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer></ul>,
     );
 
     plusnew.render(<Component />, container);
@@ -41,7 +41,7 @@ describe('rendering nested components', () => {
       'Component',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} />
+          <local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer>
           <li>foo</li>
         </ul>
       ),
@@ -68,7 +68,7 @@ describe('rendering nested components', () => {
 
     const Component = component(
       'Component',
-      () => <ul><local.Observer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} /></ul>,
+      () => <ul><local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer></ul>,
     );
 
     plusnew.render(<Component />, container);
@@ -97,7 +97,7 @@ describe('rendering nested components', () => {
 
     const Component = component(
       'Component',
-      () => <ul><local.Observer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} /></ul>,
+      () => <ul><local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer></ul>,
     );
 
     plusnew.render(<Component />, container);
@@ -140,12 +140,12 @@ describe('rendering nested components', () => {
 
     const PartialComponent = component(
       'Component',
-      (Props: Props<{ value: string }>) => <span><Props render={props => props.value} /></span>);
+      (Props: Props<{ value: string }>) => <span><Props>{props => props.value}</Props></span>);
 
     const MainComponent = component(
       'Component',
       () => (
-        <span><local.Observer render={local => local.map(item => <PartialComponent key={item.key} value={item.value} />)} /></span>
+        <span><local.Observer>{local => local.map(item => <PartialComponent key={item.key} value={item.value} />)}</local.Observer></span>
       ),
     );
 
@@ -187,13 +187,17 @@ describe('rendering nested components', () => {
 
     const PartialComponent = component(
       'Component',
-      (Props: Props<{ value: string }>) => [<span key={0}><Props render={props => props.value} />0</span>, <div key={1}><Props render={props => props.value} />1</div>] as any,
+      (Props: Props<{ value: string }>) => [<span key={0}><Props>{props => props.value}</Props>0</span>, <div key={1}><Props>{props => props.value}</Props>1</div>] as any,
     );
 
     const MainComponent = component(
       'Component',
       () => (
-        <local.Observer render={state => <span><local.Observer render={local => local.map(item => <PartialComponent key={item.key} value={item.value} />)} /></span>} />
+        <span>
+          <local.Observer>
+            {local => local.map(item => <PartialComponent key={item.key} value={item.value} />)}
+          </local.Observer>
+        </span>
       ),
     );
 
@@ -257,8 +261,9 @@ describe('rendering nested components', () => {
         <div>
           <div />
           <div>
-            <local.Observer render={local => local.map(item => <div key={item.key}>{item.value}</div>)
-            } />
+            <local.Observer>
+              {local => local.map(item => <div key={item.key}>{item.value}</div>)}
+            </local.Observer>
             <PartialComponent />
           </div>
         </div>,
@@ -290,15 +295,14 @@ describe('rendering nested components', () => {
 
     const PartialComponent = component(
       'Component',
-      (Props: Props<{key: number}>) => <Props render={props => `element${props.key}`} />,
+      (Props: Props<{key: number}>) => <Props>{props => `element${props.key}`}</Props>,
     );
 
     const MainComponent = component(
       'Component',
       () =>
         <div>
-          <local.Observer render={local => local.map(item => <PartialComponent key={item.key} />)
-          } />
+          <local.Observer>{local => local.map(item => <PartialComponent key={item.key} />)}</local.Observer>
         </div>,
     );
 
@@ -326,15 +330,14 @@ describe('rendering nested components', () => {
 
     const PartialComponent = component(
       'Component',
-      (Props: Props<{key: number}>) => <Props render={props => props.key === 0 ? 'foo' : false} />,
+      (Props: Props<{key: number}>) => <Props>{props => props.key === 0 ? 'foo' : false}</Props>,
     );
 
     const MainComponent = component(
       'Component',
       () =>
         <div>
-          <local.Observer render={local => local.map(item => <PartialComponent key={item.key} />)
-          } />
+          <local.Observer>{local => local.map(item => <PartialComponent key={item.key} />)}</local.Observer>
         </div>,
     );
 
@@ -362,7 +365,7 @@ describe('rendering nested components', () => {
 
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} />
+          <local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer>
         </ul>
       ),
     );
@@ -400,7 +403,7 @@ describe('rendering nested components', () => {
       'Component',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => <li key={item.key}>{item.value}</li>)} />
+          <local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer>
         </ul>
       ),
     );
@@ -434,7 +437,7 @@ describe('rendering nested components', () => {
       'Component',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => <li>{item.value}</li>)} />
+          <local.Observer>{local => local.map(item => <li>{item.value}</li>)}</local.Observer>
         </ul>
       ),
     );
@@ -478,7 +481,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );
@@ -517,7 +520,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );
@@ -553,7 +556,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );
@@ -590,7 +593,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );
@@ -629,7 +632,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );
@@ -665,7 +668,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );
@@ -702,7 +705,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );
@@ -743,7 +746,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );
@@ -781,7 +784,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );
@@ -810,7 +813,7 @@ describe('rendering nested components', () => {
       'MainComponent',
       () => (
         <ul>
-          <local.Observer render={local => local.map(item => item)} />
+          <local.Observer>{local => local.map(item => item)}</local.Observer>
         </ul>
       ),
     );

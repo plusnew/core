@@ -14,12 +14,13 @@ describe('rendering nested components', () => {
       const local = store('foo', (_state, action: string) => action);
       const NestedComponent = component(
         'Component',
-        (Props: Props<{ children: any }>) => <span><Props render={props => props.children} /></span>,
+        (Props: Props<{ children: any }>) => <span><Props>{props => props.children}</Props></span>,
       );
 
       const MainComponent = component(
         'Component',
-        () => <local.Observer render={local => <NestedComponent>{local}</NestedComponent>} />);
+        () => <local.Observer>{local => <NestedComponent>{local}</NestedComponent>}</local.Observer>,
+      );
 
       plusnew.render(<MainComponent />, container);
 
@@ -38,12 +39,12 @@ describe('rendering nested components', () => {
 
       const NestedComponent = component(
         'Component',
-        (Props: Props<{ children: any }>) => <span><Props render={props => props.children} /></span>,
+        (Props: Props<{ children: any }>) => <span><Props>{props => props.children}</Props></span>,
       );
 
       const MainComponent = component(
         'Component',
-        () => <NestedComponent><local.Observer render={local => local} /></NestedComponent>,
+        () => <NestedComponent><local.Observer>{local => local}</local.Observer></NestedComponent>,
       );
 
       plusnew.render(<MainComponent />, container);

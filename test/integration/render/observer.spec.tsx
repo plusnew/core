@@ -16,7 +16,7 @@ describe('<Observer />', () => {
     const Component = component(
       'Component',
       () =>
-            <local.Observer render={renderSpy} />,
+            <local.Observer>{renderSpy}</local.Observer>,
     );
 
     plusnew.render(<Component />, container);
@@ -46,9 +46,9 @@ describe('<Observer />', () => {
     const Component = component(
       'Component',
       () =>
-            <localContainer.Observer render={state =>
-              <local.Observer render={state} />
-            } />,
+            <localContainer.Observer>{state =>
+              <local.Observer>{state}</local.Observer>
+            }</localContainer.Observer>,
     );
 
     plusnew.render(<Component />, container);

@@ -15,7 +15,7 @@ import reconcile, { shouldUpdate } from './reconcile';
  * the render-function gets called again when a parent component rerenders
  * or when the dependencie-stores fire the change event
  */
-export default class ComponentInstance<componentProps extends Partial<props>> extends Instance {
+export default class ComponentInstance<componentProps extends Partial<props & { children: any }>> extends Instance {
   public nodeType = types.Component;
   public rendered: Instance; // @FIXME This actually should be Instance or undefined
   public applicationInstance: Component<componentProps>;

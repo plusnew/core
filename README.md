@@ -8,9 +8,9 @@ E.G. when you write a line of code which changes the state, the dom will change 
 
 ## Component
 Components in plusnew just need a name and a render-function,
-the renderfunction gets called when a new instance of that component is created.
+the render-function gets called when a new instance of that component is created.
 
-When props from the parent, or stores are changing, the render function does not get called again. But only a subset that you can define with a closure.
+When props from the parent, or stores are changing, the render-function does not get called again. But only a subset that you can define with a closure.
 
 ### Component-Types
 #### Function-Factory
@@ -23,16 +23,18 @@ type props = { value: string };
 export default component(
   // ComponentName for debuggability enhancements
   'ComponentName',
-  // The renderfunction which gets called at initialisation
+  // The render-function which gets called at initialisation
   // and gets a Observer-Component which delivers the properties from the parent
   (Props: Props<props>) =>
       <>
         <span>some static content</span>
-        <Props render={props =>
-          // in props.value is the value you got from your parent-component
-          // this render-function gets called each time when the parent gives you new properties
-          <div>{props.value}</div>
-        } />
+        <Props>
+          {props =>
+            // in props.value is the value you got from your parent-component
+            // this render-function gets called each time when the parent gives you new properties
+            <div>{props.value}</div>
+          }
+        </Props>
       </>
 );
 ```
@@ -47,17 +49,19 @@ type props = { value: string };
 export default class AppComponent extends Component<props> {
   // ComponentName for debuggability enhancements
   static displayName: 'ComponentName';
-  // The renderfunction which gets called at initialisation
+  // The render-function which gets called at initialisation
   // and gets a Observer-Component which delivers the properties from the parent
   render(Props: Props<props>) {
     return (
       <>
         <span>some static content</span>
-        <Props render={props =>
-          // in props.value is the value you got from your parent-component
-          // this render-function gets called each time when the parent gives you new properties
-          <div>{props.value}</div>
-        } />
+        <Props>
+          {props =>
+            // in props.value is the value you got from your parent-component
+            // this render-function gets called each time when the parent gives you new properties
+            <div>{props.value}</div>
+          }
+        </Props>
       </>
     );
   }
@@ -67,7 +71,7 @@ export default class AppComponent extends Component<props> {
 ### Props
 The props-values aren't given to you directly, but as a "observer-component".
 
-This given component has a render-property which expects a renderfunction. This renderfunction is called each time when the state of your properties are being changed.
+This given component expects a render-function as a child. This function will be called, each time when props are changing.
 This way you have more control of what will be checked for rerender.
 
 ## Stores
@@ -78,8 +82,8 @@ They consist of the initialStateValue and a reducer function.
 The reducer function gets called, when a new action gets dispatched.
 This reducer gets the current state of the store and the action which just got dispatched. The new state will be that, what the reducer returns.
 
-Each store has a Observer-Component, which expects a render function as a property.
-When a store changes it's state, this renderfunction gets called.
+Each store has a Observer-Component, which expects a render-function as a child.
+When a store changes it's state, this render-function gets called.
 
 ```ts
 import plusnew, { component, store } from 'plusnew';
@@ -102,10 +106,12 @@ export default component(
         <button
           onclick={(evt) => counter.dispatch(2)}
         />
-        <counter.Observer render={state =>
-          // This function is the only part which gets executed on a state change
-          <div>{state}</div>
-        } />
+        <counter.Observer>
+          {state =>
+            // This function is the only part which gets executed on a state change
+            <div>{state}</div>
+          }
+        </counter.Observer>
       </div>
     );
   },
@@ -157,11 +163,13 @@ export default component(
           return element.animate([{ opacity: '1' }, { opacity:  '0' }], { duration: 3000 }).finished;
         }}
       >
-        <show.Observer render={state =>
-          // When this button gets created it calls the elementDidMount
-          // when it gets deleted the elementWillUnmount gets called beforehand 
-          state === true && <button onclick={() => show.dispatch(false)}>Remove me :)</button>
-        } />
+        <show.Observer>
+          {state =>
+            // When this button gets created it calls the elementDidMount
+            // when it gets deleted the elementWillUnmount gets called beforehand 
+            state === true && <button onclick={() => show.dispatch(false)}>Remove me :)</button>
+          }
+        </show.Observer>
       </Animate>
     );
   },
@@ -180,17 +188,18 @@ Note: it is necessary that the promise gets resolved and not rejected, it is rec
 ```ts
 import plusnew, { component, Async } from 'plusnew';
 
+const lazyModule = () => import('path/to/lazy/module')
+                          .then(module => <module.default />)
+                          .catch(() => <span>Could not load the module</span>)
+
 export default component(
   'ComponentName',
   () =>
     <Async
-      render={() =>
-        import('path/to/lazy/module')
-          .then(module => <module.default />)
-          .catch(() => <span>Could not load the module</span>)
-      }
       pendingIndicator={<span>Loading asynchronously a module</span>}
-    />,
+    >
+      {lazyModule}
+    </Async>
 );
 ```
 

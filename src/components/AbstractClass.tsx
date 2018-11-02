@@ -15,7 +15,7 @@ function hasComponent(instance?: Instance): boolean {
   return hasComponent(instance.parentInstance);
 }
 
-export default abstract class Component<componentProps extends Partial<props>> {
+export default abstract class Component<componentProps extends Partial<props & { children: any}>> {
   static displayName = '';
 
   constructor(props: componentProps) {

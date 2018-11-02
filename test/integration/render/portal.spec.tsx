@@ -18,12 +18,12 @@ describe('<Portal />', () => {
       'Component',
       () =>
         <span>
-          <local.Observer render={state =>
+          <local.Observer>{state =>
             state < 2 &&
               <Portal target={outside}>
                 {state}
               </Portal>
-          } />
+          }</local.Observer>
           foo
         </span>,
     );
