@@ -47,6 +47,34 @@ describe('<Animate />', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
   });
 
+  it('change promise with props', async () => {
+    const local = store(0, (_state, action: number) => action);
+    const Component = component(
+      'Component',
+      () => <local.Observer>{state => <Async pendingIndicator={<span />}>{() => Promise.resolve(<div>{state}</div>)}</Async>}</local.Observer>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    await tick(1);
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+
+    local.dispatch(1);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    await tick(1);
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
+  });
+
   it('show resolved promise', async () => {
     const Component = component(
       'Component',
