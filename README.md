@@ -28,13 +28,11 @@ export default component(
   (Props: Props<props>) =>
       <>
         <span>some static content</span>
-        <Props>
-          {props =>
-            // in props.value is the value you got from your parent-component
-            // this render-function gets called each time when the parent gives you new properties
-            <div>{props.value}</div>
-          }
-        </Props>
+        <Props>{props =>
+          // in props.value is the value you got from your parent-component
+          // this render-function gets called each time when the parent gives you new properties
+          <div>{props.value}</div>
+        }</Props>
       </>
 );
 ```
@@ -55,13 +53,11 @@ export default class AppComponent extends Component<props> {
     return (
       <>
         <span>some static content</span>
-        <Props>
-          {props =>
-            // in props.value is the value you got from your parent-component
-            // this render-function gets called each time when the parent gives you new properties
-            <div>{props.value}</div>
-          }
-        </Props>
+        <Props>{props =>
+          // in props.value is the value you got from your parent-component
+          // this render-function gets called each time when the parent gives you new properties
+          <div>{props.value}</div>
+        }</Props>
       </>
     );
   }
@@ -106,12 +102,10 @@ export default component(
         <button
           onclick={(evt) => counter.dispatch(2)}
         />
-        <counter.Observer>
-          {state =>
-            // This function is the only part which gets executed on a state change
-            <div>{state}</div>
-          }
-        </counter.Observer>
+        <counter.Observer>{state =>
+          // This function is the only part which gets executed on a state change
+          <div>{state}</div>
+        }</counter.Observer>
       </div>
     );
   },
@@ -163,13 +157,11 @@ export default component(
           return element.animate([{ opacity: '1' }, { opacity:  '0' }], { duration: 3000 }).finished;
         }}
       >
-        <show.Observer>
-          {state =>
-            // When this button gets created it calls the elementDidMount
-            // when it gets deleted the elementWillUnmount gets called beforehand 
-            state === true && <button onclick={() => show.dispatch(false)}>Remove me :)</button>
-          }
-        </show.Observer>
+        <show.Observer>{state =>
+          // When this button gets created it calls the elementDidMount
+          // when it gets deleted the elementWillUnmount gets called beforehand 
+          state === true && <button onclick={() => show.dispatch(false)}>Remove me :)</button>
+        }</show.Observer>
       </Animate>
     );
   },
