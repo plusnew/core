@@ -3,6 +3,10 @@ import ComponentInstance from '../instances/types/Component/Instance';
 import AbstractClass from './AbstractClass';
 import { ApplicationElement } from '../interfaces/component';
 
+function tick() {
+  return Promise.resolve();
+}
+
 type promiseGenerator = () => Promise<ApplicationElement>;
 type props = {
   children: promiseGenerator;
@@ -11,6 +15,9 @@ type props = {
 
 class Async extends AbstractClass<props> {
   instance: ComponentInstance<props>;
+
+  private increment = 0;
+
   render(_Props: Props<props>, instance: ComponentInstance<props>) {
     this.instance = instance;
     this.instance.storeProps.subscribe(this.update);
@@ -19,12 +26,24 @@ class Async extends AbstractClass<props> {
     return this.instance.props.pendingIndicator;
   }
 
-  private update = () => {
+  private update = async () => {
+    this.increment += 1;
+    const currentIncrement = this.increment;
+
+    let rendered = false;
+
     ((this.instance.props.children as any)[0] as promiseGenerator)().then((content) => {
-      this.instance.render(content);
+      if (currentIncrement === this.increment) {
+        rendered = true;
+        this.instance.render(content);
+      }
     });
 
-    this.instance.render(this.instance.props.pendingIndicator);
+    await tick();
+
+    if (rendered === false && currentIncrement === this.increment) {
+      this.instance.render(this.instance.props.pendingIndicator);
+    }
   }
 
   /**
