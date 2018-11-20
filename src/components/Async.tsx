@@ -35,7 +35,7 @@ class Async extends AbstractClass<props> {
     ((this.instance.props.children as any)[0] as promiseGenerator)().then((content) => {
       // Checks if between promise resolving, not another prop came
       // if inbetween a new render happened, then nothing should happen
-      if (currentIncrement === this.increment) {
+      if (currentIncrement === this.increment && this.instance.mounted === true) {
         rendered = true;
         this.instance.render(content);
       }
@@ -44,7 +44,7 @@ class Async extends AbstractClass<props> {
     await tick();
 
     // if after one tick, it did not get rendered, than show pending indicator
-    if (rendered === false && currentIncrement === this.increment) {
+    if (rendered === false && currentIncrement === this.increment && this.instance.mounted === true) {
       this.instance.render(this.instance.props.pendingIndicator);
     }
   }

@@ -4,6 +4,10 @@ import FragmentInstance from 'instances/types/Fragment/Instance';
 import types from 'instances/types/types';
 import PlaceholderInstance from 'instances/types/Placeholder/Instance';
 
+function tick() {
+  return Promise.resolve();
+}
+
 describe('rendering nested components', () => {
   let container: HTMLElement;
 
@@ -1163,5 +1167,43 @@ describe('rendering nested components', () => {
     );
 
     expect(MainComponent.displayName).toBe('Component');
+  });
+
+  it('throw exception when render() is called, with unmounted component', async () => {
+    const throwNotMountedErrorSpy = spyOn(ComponentInstance.prototype, 'throwNotMountedError' as any).and.callThrough();
+
+    const local = store(true, (state, action: boolean) => action);
+
+    const NestedComponent = component(
+      'Component',
+      (_Props, componentInstance) => {
+        tick().then(() => componentInstance.render(<span />));
+        return <div />;
+      },
+    );
+    const MainComponent = component(
+      'Component',
+      () =>
+        <local.Observer>{state =>
+          state === true ?
+            <NestedComponent />
+          :
+            null
+        }</local.Observer>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+
+    local.dispatch(false);
+
+    expect(container.childNodes.length).toBe(0);
+    expect(throwNotMountedErrorSpy).not.toHaveBeenCalled();
+
+    await tick();
+
+    expect(throwNotMountedErrorSpy).toHaveBeenCalled();
   });
 });

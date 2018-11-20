@@ -1,4 +1,5 @@
 import plusnew, { component, Async, store } from 'index';
+import ComponentInstance from 'instances/types/Component/Instance';
 
 async function tick(count: number) {
   for (let i = 0; i < count; i += 1) {
@@ -167,6 +168,7 @@ describe('<Animate />', () => {
   });
 
   it('remove async component', async () => {
+    const throwNotMountedErrorSpy = spyOn(ComponentInstance.prototype, 'throwNotMountedError' as any).and.callThrough();
     const local = store(true, (_state, action: boolean) => action);
 
     const Component = component(
@@ -187,5 +189,6 @@ describe('<Animate />', () => {
     await tick(1);
 
     expect(container.childNodes.length).toBe(0);
+    expect(throwNotMountedErrorSpy).not.toHaveBeenCalled();
   });
 });

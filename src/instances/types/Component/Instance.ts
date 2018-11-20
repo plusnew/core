@@ -57,8 +57,12 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
         this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
       }
     } else {
-      throw new Error('Can\'t render new content, the component got unmounted');
+      this.throwNotMountedError();
     }
+  }
+
+  private throwNotMountedError(): never {
+    throw new Error('Can\'t render new content, the component got unmounted');
   }
 
   public getLastIntrinsicElement() {
