@@ -78,6 +78,8 @@ They consist of the initialStateValue and a reducer function.
 The reducer function gets called, when a new action gets dispatched.
 This reducer gets the current state of the store and the action which just got dispatched. The new state will be that, what the reducer returns.
 
+The reducer function is optional. When it is not given, the dispatched value is the new state of the store.
+
 Each store has a Observer-Component, which expects a render-function as a child.
 When a store changes it's state, this render-function gets called.
 
@@ -142,7 +144,7 @@ import plusnew, { component, Animate, store } from 'plusnew';
 export default component(
   'ComponentName',
   () => {
-    const show = store(true, (previousState, action: boolean) => action);
+    const show = store(true);
 
     return (
       <Animate

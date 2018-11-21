@@ -13,13 +13,6 @@ export type reducer<stateType, actionType> = {
   (previousState: stateType, action: actionType): stateType;
 };
 
-/**
- * thats how a complete store is organized
- */
-export type redchain = {
-  <stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): storeType<stateType, actionType>;
-};
-
 export type storeType<stateType, actionType> = {
   Observer: Observer<stateType>;
   /**
@@ -48,7 +41,9 @@ export type storeType<stateType, actionType> = {
   flush(): void;
 };
 
-const store: redchain = <stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): storeType<stateType, actionType> => {
+function store<stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): storeType<stateType, actionType>;
+function store<stateType>(initValue: stateType): storeType<stateType, stateType>;
+function store<stateType, actionType>(initValue: stateType, reducer?: reducer<stateType, actionType>): storeType<stateType, actionType>  {
 
   let subscribes: onChangeCallback<actionType>[] = [];
   let state = initValue;
@@ -89,7 +84,13 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
      * when the returnvalue is unequal to the previous state it will trigger the listeners from addOnChange
      */
     dispatch: (action: actionType) => {
-      const currentState = reducer(state, action);
+      let currentState: stateType;
+      if (reducer) {
+        currentState = reducer(state, action);
+      } else {
+        // in case the reducer isn't existent, the action is the new value
+        currentState = action as any;
+      }
 
       // @TODO change to Object.is
       if (state !== currentState) {
@@ -126,6 +127,6 @@ const store: redchain = <stateType, actionType>(initValue: stateType, reducer: r
   result.Observer = observerFactory(result);
 
   return result;
-};
+}
 
 export default store;
