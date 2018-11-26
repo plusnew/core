@@ -183,8 +183,8 @@ Note: it is necessary that the promise gets resolved and not rejected, it is rec
 import plusnew, { component, Async } from 'plusnew';
 
 const lazyModule = () => import('path/to/lazy/module')
-                          .then(module => <module.default />)
-                          .catch(() => <span>Could not load the module</span>)
+                           .then(module => <module.default />)
+                           .catch(() => <span>Could not load the module</span>)
 
 export default component(
   'ComponentName',
