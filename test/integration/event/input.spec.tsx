@@ -111,4 +111,26 @@ describe('firing input events', () => {
 
     expect((container.childNodes[0] as HTMLInputElement).checked).toBe(false);
   });
+
+  it('checkbox updates after changing store', () => {
+    const local = store(false);
+    const Component = component(
+      'Component',
+      () => <local.Observer>{localState => <input checked={localState} type="checkbox" onchange={evt => local.dispatch(evt.currentTarget.checked)} />}</local.Observer>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const input = container.childNodes[0] as HTMLInputElement;
+    input.checked = true;
+    const event = new Event('change');
+    input.dispatchEvent(event);
+
+    expect((container.childNodes[0] as HTMLInputElement).checked).toBe(true);
+    expect(local.getState()).toBe(true);
+
+    local.dispatch(false);
+
+    expect((container.childNodes[0] as HTMLInputElement).checked).toBe(false);
+  });
 });

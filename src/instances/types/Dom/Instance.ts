@@ -123,26 +123,29 @@ export default class DomInstance extends ChildrenInstance {
     } else if (typeof value === 'function') {
       (this.ref as any)[keyName] = value;
     } else if (typeof(value) === 'boolean') {
-      if (value === true) {
-        // The standard says, that boolean attributes should have the keyname as the value
-        this.ref.setAttribute(keyName, keyName);
+      if (this.setAttributeAsProperty(keyName)) {
+        // input-values need to be set directly as property, for overwriting purpose of browser behaviour
+        (this.ref as any)[keyName] = value;
       } else {
-        // boolean attributes have to be removed, to be invalidated
-        this.ref.removeAttribute(keyName);
-      }
-    } else {
-      if (key === 'style') {
-        // style gets set as a attribute, not by property
-        // because of better debuggability when set by this way
-        // When an invalid property gets set, the browser just sucks it up and ignores it without errors
-        this.ref.setAttribute(keyName, this.getStylePropsAsAttribute(value));
-      } else {
-        // All the other attributes are strings
-        this.ref.setAttribute(keyName, `${value}`);
-        if (this.setAttributeAsProperty(keyName)) {
-          // input-values need to be set directly as property, for overwriting purpose of browser behaviour
-          (this.ref as any)[keyName] = value;
+        if (value === true) {
+          // The standard says, that boolean attributes should have the keyname as the value
+          this.ref.setAttribute(keyName, keyName);
+        } else {
+          // boolean attributes have to be removed, to be invalidated
+          this.ref.removeAttribute(keyName);
         }
+      }
+    } else if (key === 'style') {
+      // style gets set as a attribute, not by property
+      // because of better debuggability when set by this way
+      // When an invalid property gets set, the browser just sucks it up and ignores it without errors
+      this.ref.setAttribute(keyName, this.getStylePropsAsAttribute(value));
+    } else {
+      // All the other attributes are strings
+      this.ref.setAttribute(keyName, `${value}`);
+      if (this.setAttributeAsProperty(keyName)) {
+        // input-values need to be set directly as property, for overwriting purpose of browser behaviour
+        (this.ref as any)[keyName] = value;
       }
     }
   }
@@ -205,7 +208,7 @@ export default class DomInstance extends ChildrenInstance {
    * browsers tend to ignore invalid setted values, and don't show it in the inspectors
    */
   private setAttributeAsProperty(keyName: string) {
-    return this.type === 'input' && keyName === 'value';
+    return this.type === 'input' && (keyName === 'value' || keyName === 'checked');
   }
 
   /**
