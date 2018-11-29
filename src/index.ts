@@ -5,6 +5,7 @@ import Animate from './components/Animate';
 import Portal from './components/Portal';
 import Idle from './components/Idle';
 import Async from './components/Async';
+import Try from './components/Try';
 import factory from './instances/factory';
 import Instance from './instances/types/Instance';
 import RootInstance, { renderOptions } from './instances/types/Root/Instance';
@@ -62,6 +63,7 @@ export {
   Idle,
   Animate,
   Async,
+  Try,
   AbstractClass as Component,
   Observer as Props,
   Observer,

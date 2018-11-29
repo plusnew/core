@@ -214,3 +214,20 @@ export default component(
     </Idle>,
 );
 ```
+
+### Try
+The Try-Component is for handling errors. When at the render function an error happened, the catch property will be executed and be displayed.
+
+```ts
+import plusnew, { component, Try } from 'plusnew';
+
+export default component(
+  'ComponentName',
+  () =>
+    <Try
+      catch={() => <span>Error happened</span>}
+    >
+      {() => throw new Error('something unexpected happened')}
+    </Try>
+);
+```
