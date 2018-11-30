@@ -93,7 +93,7 @@ describe('<Try />', () => {
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
   });
 
-  it('Show error and then normal again, when props change', () => {
+  it('Show error and then still error, when props change', () => {
     const counter = store(0);
     const Component = component(
       'Component',
@@ -120,7 +120,7 @@ describe('<Try />', () => {
 
     counter.dispatch(1);
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
   });
 
@@ -174,11 +174,11 @@ describe('<Try />', () => {
     plusnew.render(<Component />, container);
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
 
     counter.dispatch(1);
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
   });
 });

@@ -45,8 +45,16 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
 
   public initialiseComponent() {
     this.applicationInstance = new (this.type as any)(this.props);
-    const abstractChildren = this.applicationInstance.render(this.storeProps.Observer, this);
-    this.render(abstractChildren);
+    if (this.invokeGuard === null) {
+      this.render(
+        this.applicationInstance.render(this.storeProps.Observer, this),
+      );
+    } else {
+      const invokeHandle = this.invokeGuard(() => this.applicationInstance.render(this.storeProps.Observer, this));
+      if (invokeHandle.hasError === false) {
+        this.render(invokeHandle.result);
+      }
+    }
   }
 
   public render(abstractChildren: ApplicationElement) {

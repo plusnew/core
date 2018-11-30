@@ -4,6 +4,7 @@ import types from './types';
 
 export type predecessor = Node | null;
 export type getPredeccessor = () => predecessor;
+type invokeGuard<T> = (callback: () => T) => { hasError: true } | { hasError: false, result: T };
 
 export default abstract class Instance {
   public nodeType: types;
@@ -13,6 +14,7 @@ export default abstract class Instance {
   public getPredecessor: getPredeccessor;
   public namespace: string | null = null;
   public createChildrenComponents = true;
+  public invokeGuard: null | invokeGuard<ApplicationElement> = null;
 
   constructor(
     _abstractElement: ApplicationElement,
@@ -24,6 +26,7 @@ export default abstract class Instance {
     if (this.parentInstance) {
       this.namespace = this.parentInstance.namespace;
       this.createChildrenComponents = this.parentInstance.createChildrenComponents;
+      this.invokeGuard = this.parentInstance.invokeGuard;
     }
   }
 
