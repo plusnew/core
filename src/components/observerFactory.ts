@@ -28,9 +28,17 @@ export default function <state>(store: storeType<state, any>) {
      * so that removal of correct listener is possible
      */
     private update = () => {
-      this.instance.render(
-        ((this.instance.props.children as any)[0] as renderFunction<state>)(store.getState()),
-      );
+      const renderFunction = ((this.instance.props.children as any)[0] as renderFunction<state>);
+      if (this.instance.invokeGuard === null) {
+        this.instance.render(
+          renderFunction(store.getState()),
+        );
+      } else {
+        const invokeHandle = this.instance.invokeGuard(() => renderFunction(store.getState()));
+        if (invokeHandle.hasError === false) {
+          this.instance.render(invokeHandle.result);
+        }
+      }
     }
 
     /**

@@ -15,37 +15,19 @@ export default class Try extends Component<props> {
   private errored = false;
 
   public invokeGuard<T>(callback: () => T): { hasError: true } | { hasError: false, result: T } {
-    let hasError = false;
-    const errorChecker = () => {
-      hasError = true;
-    };
-
-    let result: any;
-
-    const callCallback = () => {
-      result = callback();
-    };
-
-    window.addEventListener('error', errorChecker);
-
-    const fakeElement = document.createElement('plusnew');
-    fakeElement.addEventListener('guard', callCallback);
-    fakeElement.dispatchEvent(new Event('guard'));
-    fakeElement.removeEventListener('guard', callCallback);
-
-    window.removeEventListener('error', errorChecker);
-
-    if (hasError as boolean === true) {
+    try {
+      return {
+        hasError: false,
+        result: callback(),
+      };
+    } catch (error) {
       this.errored = true;
       this.update();
+
       return {
         hasError: true,
       };
     }
-    return {
-      result: result as T,
-      hasError: false,
-    };
   }
 
   private setInvokeGuard() {

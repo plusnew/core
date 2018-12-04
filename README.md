@@ -216,7 +216,9 @@ export default component(
 ```
 
 ### Try
-The Try-Component is for handling errors. When at the render function an error happened, the catch property will be executed and be displayed.
+The Try-Component is for handling errors.
+When at the render function an error occured, the catch-function will be executed and the returnvalue will be displayed.
+Beware that every subcomponent of a try-component catches all exceptions in the renderfunctions
 
 ```ts
 import plusnew, { component, Try } from 'plusnew';
