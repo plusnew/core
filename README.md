@@ -1,16 +1,16 @@
 # plusnew [![Build Status](https://api.travis-ci.org/plusnew/plusnew.svg?branch=master)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/plusnew/plusnew/badge.svg?branch=master)](https://coveralls.io/github/plusnew/plusnew)
 
-This Framework is build, because we believe that having typesafety and good debuggability are key.
+This Framework is built, because we believe that having typesafety and good debuggability is key.
 Why another framework? Because plusnew puts the Developer-Expierence first, and cares strongly about maintanability.
 
 Plusnew keeps the *magic* as little as possible, and puts explicity first.
 E.G. when you write a line of code which changes the state, the dom will change immediately. This is important for predictability and testability.
 
 ## Component
-Components in plusnew just need a name and a render-function,
-the render-function gets called when a new instance of that component is created.
+Components in plusnew just need a name and a render-function.
+The render-function gets called when a new instance of that component is created.
 
-When props from the parent, or stores are changing, the render-function does not get called again. But only a subset that you can define with a closure.
+When props from the parent or stores are changing, the render-function does not get called again. But only a subset that you can define with a closure.
 
 ### Component-Types
 #### Function-Factory
@@ -65,10 +65,10 @@ export default class AppComponent extends Component<props> {
 ```
 
 ### Props
-The props-values aren't given to you directly, but as a "observer-component".
+The props-values aren't given to you directly, but as an "observer-component".
 
-This given component expects a render-function as a child. This function will be called, each time when props are changing.
-This way you have more control of what will be checked for rerender.
+This component expects a render-function as a child. This function will be called each time a prop changes.
+This way you have more control of what will be selected for rerendering.
 
 ## Stores
 
@@ -76,12 +76,12 @@ Stores are used to persist your state and inform the components when the state c
 They consist of the initialStateValue and a reducer function.
 
 The reducer function gets called, when a new action gets dispatched.
-This reducer gets the current state of the store and the action which just got dispatched. The new state will be that, what the reducer returns.
+This reducer gets the current state of the store and the action which just got dispatched. The new state will be the reducers return value.
 
-The reducer function is optional. When it is not given, the dispatched value is the new state of the store.
+The reducer function is optional. When it is not set, the dispatched value will be the new state of the store.
 
-Each store has a Observer-Component, which expects a render-function as a child.
-When a store changes it's state, this render-function gets called.
+Each store has an Observer-Component, which expects a render-function as a child.
+This render-function gets called whenever a store changes it's state.
 
 ```ts
 import plusnew, { component, store } from 'plusnew';
@@ -116,7 +116,7 @@ export default component(
 
 ## Helper-Components
 ### Portal
-With portals you can render elements outside of your normal tree, but whereever you want.
+With portals you can render elements outside of your normal tree, whereever you want.
 
 ```ts
 import plusnew, { component, Portal } from 'plusnew';
@@ -134,7 +134,7 @@ export default component(
 The Animate-Component can take care of dom-elements which were mounted and of dom-elements to be unmounted.
 When a dom-element gets created the according elementDidMount or elementWillUnmount gets called, with the dom-element as a parameter.
 
-Same goes for dom-elements which will get unmounted, simply return a resolved Promise when the animation is done and you want the dom-element to get actually be deleted.
+Same goes for dom-elements which will get unmounted. Simply return a resolved Promise when the animation is done and you want the dom-element to actually be deleted.
 
 Note: Dom-Elements inside Dom-Elements will not trigger the callbacks, only the most outer dom-elements will trigger the callback.
 
@@ -174,7 +174,7 @@ export default component(
 The Async-Component is used for displaying asynchronous content.
 Return as a promise, and it will show the loading content, until the promise got resolved.
 
-For example you can implement that a dom element gets created after a period of time, or you can lazyload another module and display it when it got loaded.
+For example, you can implement that a dom element gets created after a period of time, or you can lazyload another module and display it when it got loaded.
 The given Promise should get resolved with an JSX-Element you want to show.
 
 Note: it is necessary that the promise gets resolved and not rejected, it is recommended to catch your own promise.
@@ -199,8 +199,8 @@ export default component(
 
 ### Idle
 This component is for displaying expensive but lowpriority content.
-The children of this component will be displayed, when the browser is saying that it is in idle.
-Or until the application is telling, that it is urgent now.
+The children of this component will be displayed when the browser is in idle
+or the application is signaling that it is urgent now.
 
 ```ts
 import plusnew, { component, Idle } from 'plusnew';
