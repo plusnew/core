@@ -35,7 +35,7 @@ type inputElement = htmlGlobalAttributesElement<HTMLInputElement> & {
   step?: number;
   value?: string;
   valueAsNumber?: number;
-  valueAsDate?: number;
+  valueAsDate?: Date;
   width?: number;
 };
 
