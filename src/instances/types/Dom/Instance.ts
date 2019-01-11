@@ -46,9 +46,11 @@ export default class DomInstance extends ChildrenInstance {
     }
 
     this.setProps();
-    this.addChildren(abstractElement.props.children);
-    this.setAutofocusIfNeeded();
     this.appendToParent(this.ref, predecessor());
+    this.addChildren(abstractElement.props.children);
+    // Autofocus call has to happen, after it got appended to parent, and after children are added
+    // Some browsers ignore element.focus() when it is not yet added to the document
+    this.setAutofocusIfNeeded();
     this.elementDidMountToParent();
     this.setOnChangeEvent();
   }
@@ -93,14 +95,7 @@ export default class DomInstance extends ChildrenInstance {
    */
   private setAutofocusIfNeeded() {
     if (this.props.autofocus === true) {
-      const addFocus = () => {
-        (this.ref as HTMLElement).focus();
-        // remove eventlistener to not have memoryleaks
-        this.ref.removeEventListener('DOMNodeInsertedIntoDocument', addFocus);
-      };
-
-      // Focus can only be set from the browser, when the dom got inserted to the dom
-      (this.ref as HTMLElement).addEventListener('DOMNodeInsertedIntoDocument', addFocus);
+      (this.ref as HTMLElement).focus();
     }
   }
 
