@@ -16,6 +16,8 @@ type props = {
 class Async extends AbstractClass<props> {
   instance: ComponentInstance<props>;
 
+  static displayName = 'Async';
+
   private increment = 0;
 
   render(_Props: Props<props>, instance: ComponentInstance<props>) {

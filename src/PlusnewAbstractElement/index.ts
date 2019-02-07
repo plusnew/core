@@ -1,9 +1,11 @@
 import { props, ApplicationElement } from '../interfaces/component';
 import { ComponentContainer } from '../components/factory';
+import { TypeOfPlusnew } from '../util/symbols';
 
 type PlusnewElement = string | number | ComponentContainer<any> | Symbol;
 
 export default class PlusnewAbstractElement {
+  public $$typeof = TypeOfPlusnew;
   /**
    * The information if what domnode it is, or if it is a component
    */
