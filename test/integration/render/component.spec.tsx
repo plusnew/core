@@ -633,7 +633,7 @@ describe('rendering nested components', () => {
       expect(nestedRenderSpy.calls.count()).toBe(1);
     });
 
-    fit('nested component should not rerender with same children (even when not given as children)', () => {
+    it('nested component should not rerender with same children (even when not given as children)', () => {
       type props = { foo: any};
 
       const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
@@ -1089,7 +1089,7 @@ describe('rendering nested components', () => {
       expect(nestedRenderSpy.calls.count()).toBe(2);
     });
 
-    it('nested component should rerender when an new array occured', () => {
+    it('nested component should rerender when an new object occures', () => {
       type props = { children: any};
 
       const renderSpy = jasmine.createSpy('render', (Props: Props<props>) => <Props>{nestedRenderSpy}</Props>).and.callThrough();
@@ -1102,16 +1102,11 @@ describe('rendering nested components', () => {
         renderSpy as (Props: Props<props>) => plusnew.JSX.Element,
       );
 
-      const foo = [<div />];
-
       const MainComponent = component(
         'Component',
         () =>
-          <local.Observer>{state =>
-            state === 0 ?
-              <NestedComponent>{foo}</NestedComponent>
-            :
-              <NestedComponent>{foo}</NestedComponent>
+          <local.Observer>{_state =>
+            <NestedComponent>{{}}</NestedComponent>
           }</local.Observer>,
       );
 

@@ -1,7 +1,4 @@
 {
-  "files": [
-    "src"
-  ],
   "include": [
     "index.ts",
     "src/**/*",
