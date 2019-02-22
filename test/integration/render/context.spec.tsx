@@ -70,13 +70,35 @@ describe('context', () => {
     expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('3');
   });
 
-  describe('a component tries to use a component without a consumer, an exception is expected', () => {
+  describe('a component tries to use a component without a provider, an exception is expected', () => {
     const value = context(1, (state, action: number) => state + action);
 
     const MainComponent = component(
       'Component',
       () =>
         <NestedComponent />,
+    );
+
+    const NestedComponent = component(
+      'Component',
+      () => <value.Consumer>{state => state}</value.Consumer>,
+    );
+
+    expect(() =>
+      plusnew.render(<MainComponent />, container),
+    ).toThrow(new Error('Could not find Provider'));
+  });
+
+  describe('a component tries to use a component wit a wrong provider, an exception is expected', () => {
+    const value = context(1, (state, action: number) => state + action);
+    const anotherValue = context(1, (state, action: number) => state + action);
+
+    const MainComponent = component(
+      'Component',
+      () =>
+        <anotherValue.Provider>
+          <NestedComponent />
+        </anotherValue.Provider>,
     );
 
     const NestedComponent = component(
