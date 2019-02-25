@@ -108,7 +108,7 @@ describe('context', () => {
     expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('2');
   });
 
-  it('a component tries to use a component without a provider, an exception is expected', () => {
+  it('a component tries to use a consumer without a provider, an exception is expected', () => {
     const value = context(1, (state, action: number) => state + action);
 
     const MainComponent = component(
