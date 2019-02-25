@@ -1,4 +1,4 @@
-import plusnew, { component, context } from 'index';
+import plusnew, { component, context, store } from 'index';
 
 describe('context', () => {
 
@@ -56,7 +56,7 @@ describe('context', () => {
 
     plusnew.render(<MainComponent />, container);
 
-    expect(container.childNodes.length).toBe(1);
+    expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
     expect((container.childNodes[1] as HTMLElement).tagName).toBe('BUTTON');
@@ -69,7 +69,6 @@ describe('context', () => {
     expect((container.childNodes[1] as HTMLElement).tagName).toBe('BUTTON');
     expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('3');
   });
-
 
   it('two nested consumers are using the state, one is dispatching a value and both consumers get updated', () => {
     const value = context(1);
@@ -95,7 +94,7 @@ describe('context', () => {
 
     plusnew.render(<MainComponent />, container);
 
-    expect(container.childNodes.length).toBe(1);
+    expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
     expect((container.childNodes[1] as HTMLElement).tagName).toBe('BUTTON');
@@ -148,5 +147,46 @@ describe('context', () => {
     expect(() =>
       plusnew.render(<MainComponent />, container),
     ).toThrow(new Error('Could not find Provider'));
+  });
+
+  it('a consumer can get unmounted and doesnt crash', () => {
+    const local = store(true);
+    const value = context(1);
+
+    const MainComponent = component(
+      'Component',
+      () =>
+        <value.Provider>
+          <local.Observer>{localState => localState === true && <NestedComponent />}</local.Observer>
+          <AnotherNestedComponent />
+        </value.Provider>,
+    );
+
+    const NestedComponent = component(
+      'Component',
+      () => <div><value.Consumer>{state => state}</value.Consumer></div>,
+    );
+
+    const AnotherNestedComponent = component(
+      'Component',
+      () => <value.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</value.Consumer>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(2);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
+    expect((container.childNodes[1] as HTMLElement).tagName).toBe('BUTTON');
+    expect((container.childNodes[1] as HTMLElement).innerHTML).toBe('1');
+
+    local.dispatch(false);
+
+    expect(container.childNodes.length).toBe(1);
+
+    (container.childNodes[0] as HTMLElement).dispatchEvent(new Event('click'));
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('BUTTON');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('2');
   });
 });
