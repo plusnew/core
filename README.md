@@ -114,6 +114,49 @@ export default component(
 );
 ```
 
+## Context
+
+Context is a way to provide data for nested components, without passing everything by props.
+
+The Provider is the container who stores the state. A Consumer is a way to get the data and to dispatch a new reducer action.
+
+````ts
+import plusnew, { component, context } from 'plusnew';
+
+const INITIAL_COUNTER_VALUE = 0;
+
+const counter = context(INITIAL_COUNTER_VALUE, (previousState, action: number) => previousState + action);
+
+const ContainerComponent = component(
+  'ComponentName',
+  () =>
+    <counter.Provider>
+      <NestedComponent />
+    </counter.Provider>
+  },
+);
+
+const NestedComponent = component(
+  'ComponentName',
+  (Props, componentInstance) =>
+    <counter.Consumer>{(state, dispatch) =>
+      <div>
+        <button
+          onclick={(evt) => {
+            dispatch(1)
+          }}
+        />
+        <button
+          onclick={(evt) => dispatch(2)}
+        />
+        {state}
+      </div>
+    }</counter.Consumer>
+  );
+);
+
+````
+
 ## Helper-Components
 ### Portal
 With portals you can render elements outside of your normal tree, whereever you want.

@@ -1,4 +1,5 @@
 import store, { Observer, storeType } from './util/store';
+import context from './components/context';
 import AbstractClass from './components/AbstractClass';
 import componentFactory, { ComponentContainer } from './components/factory';
 import Animate from './components/Animate';
@@ -51,6 +52,7 @@ class Plusnew {
 
 export {
   store,
+  context,
   Plusnew,
   Instance,
   componentFactory as component,
