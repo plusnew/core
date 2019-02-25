@@ -127,7 +127,7 @@ describe('context', () => {
     ).toThrow(new Error('Could not find Provider'));
   });
 
-  it('a component tries to use a component wit a wrong provider, an exception is expected', () => {
+  it('a consumer tries to use a wrong provider, an exception is expected', () => {
     const value = context(1, (state, action: number) => state + action);
     const anotherValue = context(1, (state, action: number) => state + action);
 
