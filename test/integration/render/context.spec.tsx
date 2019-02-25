@@ -11,19 +11,22 @@ describe('context', () => {
   });
 
   it('container element uses provider and nested component consumes it', () => {
-    const value = context(1, (state, action: number) => state + action);
+    const valueContext = context<number, number>();
+    const valueStore = store(1, (state, action: number) => state + action);
 
     const MainComponent = component(
       'Component',
       () =>
-        <value.Provider>
-          <NestedComponent />
-        </value.Provider>,
+        <valueStore.Observer>{valueState =>
+          <valueContext.Provider state={valueState} dispatch={valueStore.dispatch}>
+            <NestedComponent />
+          </valueContext.Provider>
+        }</valueStore.Observer>,
     );
 
     const NestedComponent = component(
       'Component',
-      () => <value.Consumer>{state => state}</value.Consumer>,
+      () => <valueContext.Consumer>{state => state}</valueContext.Consumer>,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -32,26 +35,59 @@ describe('context', () => {
     expect(container.innerHTML).toBe('1');
   });
 
-  it('two nested consumers are using the state, one is dispatching a value and both consumers get updated', () => {
-    const value = context(1, (state, action: number) => state + action);
+  it('when a store updates, the consumer should update', () => {
+    const valueContext = context<number, number>();
+    const valueStore = store(1, (state, action: number) => state + action);
 
     const MainComponent = component(
       'Component',
       () =>
-        <value.Provider>
-          <NestedComponent />
-          <AnotherNestedComponent />
-        </value.Provider>,
+        <valueStore.Observer>{valueState =>
+          <valueContext.Provider state={valueState} dispatch={valueStore.dispatch}>
+            <NestedComponent />
+          </valueContext.Provider>
+        }</valueStore.Observer>,
     );
 
     const NestedComponent = component(
       'Component',
-      () => <div><value.Consumer>{state => state}</value.Consumer></div>,
+      () => <valueContext.Consumer>{state => state}</valueContext.Consumer>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect(container.innerHTML).toBe('1');
+
+    valueStore.dispatch(2);
+
+    expect(container.childNodes.length).toBe(1);
+    expect(container.innerHTML).toBe('3');
+  });
+
+  it('two nested consumers are using the state, one is dispatching a value and both consumers get updated', () => {
+    const valueContext = context<number, number>();
+    const valueStore = store(1, (state, action: number) => state + action);
+
+    const MainComponent = component(
+      'Component',
+      () =>
+        <valueStore.Observer>{valueState =>
+          <valueContext.Provider state={valueState} dispatch={valueStore.dispatch}>
+            <NestedComponent />
+            <AnotherNestedComponent />
+          </valueContext.Provider>
+        }</valueStore.Observer>,
+    );
+
+    const NestedComponent = component(
+      'Component',
+      () => <div><valueContext.Consumer>{state => state}</valueContext.Consumer></div>,
     );
 
     const AnotherNestedComponent = component(
       'Component',
-      () => <value.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</value.Consumer>,
+      () => <valueContext.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</valueContext.Consumer>,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -71,25 +107,28 @@ describe('context', () => {
   });
 
   it('two nested consumers are using the state, one is dispatching a value and both consumers get updated', () => {
-    const value = context(1);
+    const valueContext = context<number, number>();
+    const valueStore = store(1);
 
     const MainComponent = component(
       'Component',
       () =>
-        <value.Provider>
-          <NestedComponent />
-          <AnotherNestedComponent />
-        </value.Provider>,
+        <valueStore.Observer>{valueState =>
+          <valueContext.Provider state={valueState} dispatch={valueStore.dispatch}>
+            <NestedComponent />
+              <AnotherNestedComponent />
+            </valueContext.Provider>
+        }</valueStore.Observer>,
     );
 
     const NestedComponent = component(
       'Component',
-      () => <div><value.Consumer>{state => state}</value.Consumer></div>,
+      () => <div><valueContext.Consumer>{state => state}</valueContext.Consumer></div>,
     );
 
     const AnotherNestedComponent = component(
       'Component',
-      () => <value.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</value.Consumer>,
+      () => <valueContext.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</valueContext.Consumer>,
     );
 
     plusnew.render(<MainComponent />, container);
@@ -109,7 +148,7 @@ describe('context', () => {
   });
 
   it('a component tries to use a consumer without a provider, an exception is expected', () => {
-    const value = context(1, (state, action: number) => state + action);
+    const valueContext = context<number, number>();
 
     const MainComponent = component(
       'Component',
@@ -119,7 +158,7 @@ describe('context', () => {
 
     const NestedComponent = component(
       'Component',
-      () => <value.Consumer>{state => state}</value.Consumer>,
+      () => <valueContext.Consumer>{state => state}</valueContext.Consumer>,
     );
 
     expect(() =>
@@ -128,20 +167,20 @@ describe('context', () => {
   });
 
   it('a component tries to use a consumer with a wrong provider, an exception is expected', () => {
-    const value = context(1, (state, action: number) => state + action);
-    const anotherValue = context(1, (state, action: number) => state + action);
+    const valueContext = context<number, number>();
+    const anotherContext = context<number, number>();
 
     const MainComponent = component(
       'Component',
       () =>
-        <anotherValue.Provider>
+        <anotherContext.Provider state={1} dispatch={() => true}>
           <NestedComponent />
-        </anotherValue.Provider>,
+        </anotherContext.Provider>,
     );
 
     const NestedComponent = component(
       'Component',
-      () => <value.Consumer>{state => state}</value.Consumer>,
+      () => <valueContext.Consumer>{state => state}</valueContext.Consumer>,
     );
 
     expect(() =>
@@ -151,25 +190,28 @@ describe('context', () => {
 
   it('a consumer can get unmounted and doesnt crash', () => {
     const local = store(true);
-    const value = context(1);
+    const valueContext = context<number, number>();
+    const valueStore = store(1);
 
     const MainComponent = component(
       'Component',
       () =>
-        <value.Provider>
-          <local.Observer>{localState => localState === true && <NestedComponent />}</local.Observer>
-          <AnotherNestedComponent />
-        </value.Provider>,
+        <valueStore.Observer>{valueState =>
+          <valueContext.Provider state={valueState} dispatch={valueStore.dispatch}>
+            <local.Observer>{localState => localState === true && <NestedComponent />}</local.Observer>
+            <AnotherNestedComponent />
+          </valueContext.Provider>
+        }</valueStore.Observer>,
     );
 
     const NestedComponent = component(
       'Component',
-      () => <div><value.Consumer>{state => state}</value.Consumer></div>,
+      () => <div><valueContext.Consumer>{state => state}</valueContext.Consumer></div>,
     );
 
     const AnotherNestedComponent = component(
       'Component',
-      () => <value.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</value.Consumer>,
+      () => <valueContext.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</valueContext.Consumer>,
     );
 
     plusnew.render(<MainComponent />, container);

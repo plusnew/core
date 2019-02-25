@@ -1,21 +1,19 @@
-import store, { reducer, storeType } from '../util/store';
-import plusnew, { ComponentContainer, ApplicationElement, Component, Props, Instance } from '../';
+import plusnew, { ApplicationElement, Component, ComponentContainer, Instance, Props } from '../';
 import ComponentInstance from '../instances/types/Component/Instance';
+import { storeType } from '../util/store';
 
 type renderProps<state, action> = (state: state, dispatch: (action: action) => boolean) => ApplicationElement ;
-type providerProps = {children: ApplicationElement};
+type providerProps<state, action> = {state: state, dispatch: (action: action) => boolean, children: ApplicationElement};
 type consumerProps<state, action> = {children: renderProps<state, action>};
 type contextEntity<state, action> = {
-  Provider: ComponentContainer<providerProps>;
+  Provider: ComponentContainer<providerProps<state, action>>;
   Consumer: ComponentContainer<consumerProps<state, action>>;
 };
 
-function context<stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): contextEntity<stateType, actionType>;
-function context<stateType>(initValue: stateType): contextEntity<stateType, stateType>;
-function context<stateType, actionType>(initValue: stateType, reducer?: reducer<stateType, actionType>): contextEntity<stateType, actionType> {
-  function search(target: Instance | ComponentInstance<any>): storeType<stateType, stateType | actionType> {
+function context<stateType, actionType>(): contextEntity<stateType, actionType> {
+  function search(target: Instance | ComponentInstance<any>): ComponentInstance<providerProps<stateType, actionType>> {
     if (target instanceof ComponentInstance && target.applicationInstance instanceof Provider) {
-      return target.applicationInstance.store;
+      return target;
     }
     if (target.parentInstance) {
       return search(target.parentInstance);
@@ -24,16 +22,9 @@ function context<stateType, actionType>(initValue: stateType, reducer?: reducer<
     throw new Error('Could not find Provider');
   }
 
-  class Provider extends Component<providerProps> {
+  class Provider extends Component<providerProps<stateType, actionType>> {
     static displayName = 'Provider';
-    store: storeType<stateType, actionType | stateType>;
-    render(Props: Props<providerProps>) {
-      if (reducer) {
-        this.store = store(initValue, reducer);
-      } else {
-        this.store = store(initValue);
-      }
-
+    render(Props: Props<providerProps<stateType, actionType>>) {
       return <Props>{props => props.children}</Props>;
     }
   }
@@ -43,11 +34,12 @@ function context<stateType, actionType>(initValue: stateType, reducer?: reducer<
     Consumer: class Consumer extends Component<consumerProps<stateType, actionType>> {
       static displayName = 'Consumer';
       private instance: ComponentInstance<consumerProps<stateType, actionType>>;
-      private store: storeType<stateType, actionType | stateType>;
+      private providerPropsStore: storeType<providerProps<stateType, actionType>, any>;
 
       private getRenderPropsResult() {
         const [renderProps]: [renderProps<stateType, actionType>] = this.instance.props.children as any;
-        return renderProps(this.store.getState(), this.store.dispatch);
+        const providerPropsState = this.providerPropsStore.getState();
+        return renderProps(providerPropsState.state, providerPropsState.dispatch);
       }
 
       private update = () => {
@@ -55,12 +47,12 @@ function context<stateType, actionType>(initValue: stateType, reducer?: reducer<
       }
       render(_Props: Props<consumerProps<stateType, actionType>>, componentInstance: ComponentInstance<any>) {
         this.instance = componentInstance;
-        this.store = search(componentInstance);
-        this.store.subscribe(this.update);
+        this.providerPropsStore = search(componentInstance).storeProps;
+        this.providerPropsStore.subscribe(this.update);
         return this.getRenderPropsResult();
       }
       componentWillUnmount() {
-        this.store.unsubscribe(this.update);
+        this.providerPropsStore.unsubscribe(this.update);
       }
     },
   };

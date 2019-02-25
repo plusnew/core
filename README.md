@@ -125,21 +125,27 @@ import plusnew, { component, context } from 'plusnew';
 
 const INITIAL_COUNTER_VALUE = 0;
 
-const counter = context(INITIAL_COUNTER_VALUE, (previousState, action: number) => previousState + action);
+const counterContext = context<number, number>();
 
 const ContainerComponent = component(
   'ComponentName',
-  () =>
-    <counter.Provider>
-      <NestedComponent />
-    </counter.Provider>
-  },
+  () => {
+    const counterStore = store(INITIAL_COUNTER_VALUE, (previousState, action: number) => previousState + action)
+
+    return (
+      <counterStore.Observer>{counterState =>
+        <counterContext.Provider state={counterState} dispatch={counterStore.dispatch}>
+          <NestedComponent />
+        </counterContext.Provider>
+      }</counterStore.Observer>
+    );
+  }
 );
 
 const NestedComponent = component(
   'ComponentName',
   (Props, componentInstance) =>
-    <counter.Consumer>{(state, dispatch) =>
+    <counterContext.Consumer>{(state, dispatch) =>
       <div>
         <button
           onclick={(evt) => {
@@ -151,7 +157,7 @@ const NestedComponent = component(
         />
         {state}
       </div>
-    }</counter.Consumer>
+    }</counterContext.Consumer>
   );
 );
 
