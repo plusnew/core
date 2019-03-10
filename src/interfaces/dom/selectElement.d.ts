@@ -10,6 +10,7 @@ type selectElement = htmlGlobalAttributesElement<HTMLSelectElement> & {
   name?: string;
   required?: boolean;
   size?: number;
+  value: string;
 };
 
 export { selectElement };

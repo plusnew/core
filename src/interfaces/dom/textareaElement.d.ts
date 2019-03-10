@@ -16,6 +16,7 @@ type textareaElement = htmlGlobalAttributesElement<HTMLTextAreaElement> & {
   rows?: number;
   spellcheck?: "true" | "default" | "false";
   wrap?: "hard" | "soft";
+  value?: string;
 };
 
 export { textareaElement };

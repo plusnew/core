@@ -9,7 +9,7 @@ describe('firing input events', () => {
     document.body.appendChild(container);
   });
 
-  it('is onchange called on text', () => {
+  it('is oninput called on text', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
     const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
@@ -36,12 +36,39 @@ describe('firing input events', () => {
     const eventTwo = new CustomEvent('change', { detail: { target: input } });
     input.dispatchEvent(eventTwo);
 
-    expect(change.calls.count()).toEqual(2);
-    expect(change).toHaveBeenCalledWith(eventTwo);
-    expect(local.getState()).toBe('barbar');
+    expect(change.calls.count()).toEqual(1);
   });
 
-  it('is onchange called on explicit text', () => {
+  it('is oninput called on number', () => {
+    const local = store(0, (state, newValue: number) => newValue);
+
+    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
+      local.dispatch(evt.currentTarget.valueAsNumber);
+    }).and.callThrough();
+
+    const Component = component(
+      'Component',
+      () => <local.Observer>{state => <input type="number" onchange={change} value={`${state}`} /> }</local.Observer>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const input = container.childNodes[0] as HTMLInputElement;
+    input.value = '1';
+    const event = new CustomEvent('input', { detail: { target: input } });
+    input.dispatchEvent(event);
+
+    expect(change.calls.count()).toEqual(1);
+    expect(change).toHaveBeenCalledWith(event);
+    expect(local.getState()).toBe(1);
+
+    const eventTwo = new CustomEvent('change', { detail: { target: input } });
+    input.dispatchEvent(eventTwo);
+
+    expect(change.calls.count()).toEqual(1);
+  });
+
+  it('is oninput called on explicit text', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
     const change = jasmine.createSpy('changex', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
@@ -64,15 +91,14 @@ describe('firing input events', () => {
     expect(change).toHaveBeenCalledWith(event);
 
     input.value = 'barbar';
-    const eventTwo = new CustomEvent('change', { detail: { target: input } });
+    const eventTwo = new CustomEvent('input', { detail: { target: input } });
     input.dispatchEvent(eventTwo);
 
     expect(change.calls.count()).toEqual(2);
     expect(change).toHaveBeenCalledWith(eventTwo);
-    expect(local.getState()).toBe('barbar');
-  });
+    expect(local.getState()).toBe('barbar');  });
 
-  it('is onchange called on checkbox', () => {
+  it('is oninput called on checkbox', () => {
     const local = store(true, (_state, newValue: boolean) => newValue);
 
     const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
@@ -88,7 +114,7 @@ describe('firing input events', () => {
 
     const input = container.childNodes[0] as HTMLInputElement;
     input.checked = false;
-    const event = new Event('change');
+    const event = new Event('input');
     input.dispatchEvent(event);
 
     expect(change.calls.count()).toEqual(1);
@@ -106,7 +132,7 @@ describe('firing input events', () => {
 
     const input = container.childNodes[0] as HTMLInputElement;
     input.checked = true;
-    const event = new Event('change');
+    const event = new Event('input');
     input.dispatchEvent(event);
 
     expect((container.childNodes[0] as HTMLInputElement).checked).toBe(false);
@@ -123,7 +149,7 @@ describe('firing input events', () => {
 
     const input = container.childNodes[0] as HTMLInputElement;
     input.checked = true;
-    const event = new Event('change');
+    const event = new Event('input');
     input.dispatchEvent(event);
 
     expect((container.childNodes[0] as HTMLInputElement).checked).toBe(true);

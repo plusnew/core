@@ -178,8 +178,9 @@ export default class DomInstance extends ChildrenInstance {
 
       if (hasInputEvent(this.type, this.props)) {
         (this.ref as HTMLElement).oninput = onchangeWrapper;
+      } else {
+        (this.ref as HTMLElement).onchange = onchangeWrapper;
       }
-      (this.ref as HTMLElement).onchange = onchangeWrapper;
     }
 
     return;
