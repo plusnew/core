@@ -13,6 +13,10 @@ export function isCheckbox(type: PlusnewElement, props: props) {
   return isInputElement(type, props) && props.type === 'checkbox';
 }
 
+export function isRadio(type: PlusnewElement, props: props) {
+  return isInputElement(type, props) && props.type === 'radio';
+}
+
 export function hasInputEvent(type: PlusnewElement, props: props) {
   return isInputElement(type, props) || isTextArea(type);
 }
