@@ -80,6 +80,27 @@ describe('<Idle />', () => {
       expect(requestIdleCallbackSpy.calls.count()).toBe(1);
       expect(cancelIdleCallbackSpy.calls.count()).toBe(0);
     });
+
+    it('idle content persists when urgent gets set to false', () => {
+      const Component = component(
+        'Component',
+        () => <urgentStore.Observer>{urgentState => <Idle urgent={urgentState}><span /></Idle>}</urgentStore.Observer>,
+      );
+
+      plusnew.render(<Component />, container);
+
+      expect(container.childNodes.length).toBe(0);
+
+      urgentStore.dispatch(true);
+
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLSpanElement).tagName).toBe('SPAN');
+
+      urgentStore.dispatch(false);
+
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLSpanElement).tagName).toBe('SPAN');
+    });
   });
 
   describe('without idle callback existing in the browser', () => {

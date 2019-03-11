@@ -11,6 +11,8 @@ export default class Idle extends Component<props> {
 
   render(Props: Props<props>) {
     let idleHandle: null | number = null;
+    let wasUrgentInPast = false;
+
     const showContentStore = store(false, (_state, action: boolean) => action);
 
     if (this.hasIdleCallback() && Props.getState().urgent === false) {
@@ -27,8 +29,9 @@ export default class Idle extends Component<props> {
         {showContentState =>
           <Props>
             {(props) => {
-              const showContent = props.urgent || showContentState;
+              const showContent = props.urgent || showContentState || wasUrgentInPast;
               if (props.urgent && idleHandle !== null) {
+                wasUrgentInPast = true;
                 (window as any).cancelIdleCallback(idleHandle);
               }
 
