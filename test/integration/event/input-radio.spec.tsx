@@ -9,7 +9,7 @@ describe('firing input events', () => {
     document.body.appendChild(container);
   });
 
-  it('is oninput called on radio', () => {
+  it('is oninput called on radio, without revert', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
     const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
@@ -48,7 +48,6 @@ describe('firing input events', () => {
     const event = new CustomEvent('input', { detail: { target: secondRadio } });
     secondRadio.dispatchEvent(event);
 
-
     expect(change.calls.count()).toEqual(1);
     expect(change).toHaveBeenCalledWith(event);
     expect(local.getState()).toBe('bar');
@@ -56,8 +55,7 @@ describe('firing input events', () => {
     expect(secondRadio.checked).toBe(true);
   });
 
-
-  it('is oninput called on radio', () => {
+  it('is oninput called on radio, with revert', () => {
     const local = store('foo', (state, newValue: string) => state);
 
     const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
@@ -95,7 +93,6 @@ describe('firing input events', () => {
     secondRadio.checked = true;
     const event = new CustomEvent('input', { detail: { target: secondRadio } });
     secondRadio.dispatchEvent(event);
-
 
     expect(change.calls.count()).toEqual(1);
     expect(change).toHaveBeenCalledWith(event);

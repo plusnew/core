@@ -96,7 +96,8 @@ describe('firing input events', () => {
 
     expect(change.calls.count()).toEqual(2);
     expect(change).toHaveBeenCalledWith(eventTwo);
-    expect(local.getState()).toBe('barbar');  });
+    expect(local.getState()).toBe('barbar');
+  });
 
   it('is oninput called on checkbox', () => {
     const local = store(true, (_state, newValue: boolean) => newValue);

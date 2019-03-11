@@ -9,7 +9,7 @@ describe('firing onchange events', () => {
     document.body.appendChild(container);
   });
 
-  it('is onchange called on select', () => {
+  it('is onchange called on select, without revert', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
     const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
@@ -41,7 +41,7 @@ describe('firing onchange events', () => {
     expect(select.value).toBe('bar');
   });
 
-  it('is onchange called on select', () => {
+  it('is onchange called on select, with revert', () => {
     const local = store('foo', (state, newValue: string) => state);
 
     const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {

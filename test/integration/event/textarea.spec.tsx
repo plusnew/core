@@ -9,7 +9,7 @@ describe('firing onchange events', () => {
     document.body.appendChild(container);
   });
 
-  it('is onchange called on textarea', () => {
+  it('is onchange called on textarea, without revert', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
     const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
@@ -38,7 +38,7 @@ describe('firing onchange events', () => {
     expect(textarea.value).toBe('bar');
   });
 
-  it('is onchange called on textarea', () => {
+  it('is onchange called on textarea, with revert', () => {
     const local = store('foo', (state, newValue: string) => state);
 
     const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
