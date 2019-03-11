@@ -72,4 +72,22 @@ describe('firing onchange events', () => {
     expect(local.getState()).toBe('foo');
     expect(select.value).toBe('foo');
   });
+
+  it('initial value of option', () => {
+
+    const Component = component(
+      'Component',
+      () =>
+        <select onchange={() => null} value="bar" >
+          <option value="foo">Foo</option>
+          <option value="bar">Bar</option>
+        </select>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const select = container.childNodes[0] as HTMLSelectElement;
+
+    expect(select.value).toBe('bar');
+  });
 });
