@@ -4,7 +4,6 @@ import { htmlGlobalAttributesElement } from './abstract/htmlGlobalAttributesElem
 type optionElement = htmlGlobalAttributesElement<HTMLOptionElement> & {
   disabled?: boolean;
   label?: string;
-  selected?: boolean;
   value?: string;
 };
 

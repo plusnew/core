@@ -5,11 +5,7 @@ export function isInputElement(type: PlusnewElement, props: props) {
   return type === 'input';
 }
 
-export function isTextInput(type: PlusnewElement, props: props) {
-  return isInputElement(type, props) && (props.type === undefined || props.type === 'text');
-}
-
-export function isTextArea(type: PlusnewElement, props: props) {
+export function isTextArea(type: PlusnewElement) {
   return type === 'textarea';
 }
 
@@ -17,10 +13,18 @@ export function isCheckbox(type: PlusnewElement, props: props) {
   return isInputElement(type, props) && props.type === 'checkbox';
 }
 
+export function isRadio(type: PlusnewElement, props: props) {
+  return isInputElement(type, props) && props.type === 'radio';
+}
+
 export function hasInputEvent(type: PlusnewElement, props: props) {
-  return isTextInput(type, props) || isTextArea(type, props);
+  return isInputElement(type, props) || isTextArea(type);
+}
+
+export function isSelect(type: PlusnewElement) {
+  return type === 'select';
 }
 
 export function hasOnchangeEvent(type: PlusnewElement, props: props) {
-  return isInputElement(type, props) || isTextArea(type, props);
+  return isInputElement(type, props) || isTextArea(type) || isSelect(type);
 }

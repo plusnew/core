@@ -1,6 +1,6 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import { props } from '../../../interfaces/component';
-import { hasInputEvent, hasOnchangeEvent, isCheckbox } from '../../../util/dom';
+import { hasInputEvent, hasOnchangeEvent, isCheckbox, isRadio } from '../../../util/dom';
 import { getSpecialNamespace } from '../../../util/namespace';
 import ChildrenInstance from '../ChildrenInstance';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
@@ -150,7 +150,7 @@ export default class DomInstance extends ChildrenInstance {
       const onchangeWrapper = (evt: Event) => {
         let preventDefault = true;
         let changeKey: 'value' | 'checked' = 'value';
-        if (isCheckbox(this.type, this.props)) {
+        if (isCheckbox(this.type, this.props) || isRadio(this.type, this.props)) {
           changeKey = 'checked';
         }
 
@@ -178,8 +178,9 @@ export default class DomInstance extends ChildrenInstance {
 
       if (hasInputEvent(this.type, this.props)) {
         (this.ref as HTMLElement).oninput = onchangeWrapper;
+      } else {
+        (this.ref as HTMLElement).onchange = onchangeWrapper;
       }
-      (this.ref as HTMLElement).onchange = onchangeWrapper;
     }
 
     return;
