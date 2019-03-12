@@ -1,6 +1,6 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import { props } from '../../../interfaces/component';
-import { hasInputEvent, hasOnchangeEvent, isCheckbox, isRadio } from '../../../util/dom';
+import { hasInputEvent, hasOnchangeEvent, isCheckbox, isRadio, isSelect } from '../../../util/dom';
 import { getSpecialNamespace } from '../../../util/namespace';
 import ChildrenInstance from '../ChildrenInstance';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
@@ -51,6 +51,8 @@ export default class DomInstance extends ChildrenInstance {
     // Autofocus call has to happen, after it got appended to parent, and after children are added
     // Some browsers ignore element.focus() when it is not yet added to the document
     this.setAutofocusIfNeeded();
+    // Value on OPTION-Element has to be set, after SELECT-Children are available
+    this.setValueIfNeeded();
     this.elementDidMountToParent();
     this.setOnChangeEvent();
   }
@@ -96,6 +98,16 @@ export default class DomInstance extends ChildrenInstance {
   private setAutofocusIfNeeded() {
     if (this.props.autofocus === true) {
       (this.ref as HTMLElement).focus();
+    }
+  }
+
+  /**
+   * sets the value of an OPTION-Element
+   * that edgecase handling is needed, because value property can only be set *after* children are created
+   */
+  private setValueIfNeeded() {
+    if (isSelect(this.type) && this.props.value) {
+      this.setProp('value', this.props.value);
     }
   }
 
@@ -204,7 +216,7 @@ export default class DomInstance extends ChildrenInstance {
    * browsers tend to ignore invalid setted values, and don't show it in the inspectors
    */
   private setAttributeAsProperty(keyName: string) {
-    return this.type === 'input' && (keyName === 'value' || keyName === 'checked');
+    return keyName === 'value' || keyName === 'checked';
   }
 
   /**
