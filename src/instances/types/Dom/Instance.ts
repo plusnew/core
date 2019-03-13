@@ -1,6 +1,6 @@
 import PlusnewAbstractElement from 'PlusnewAbstractElement';
 import { props } from '../../../interfaces/component';
-import { hasInputEvent, hasOnchangeEvent, isCheckbox, isRadio, isSelect } from '../../../util/dom';
+import { hasInputEvent, hasOnchangeEvent, isCheckbox, isOption, isRadio, isSelect } from '../../../util/dom';
 import { getSpecialNamespace } from '../../../util/namespace';
 import ChildrenInstance from '../ChildrenInstance';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
@@ -52,7 +52,7 @@ export default class DomInstance extends ChildrenInstance {
     // Some browsers ignore element.focus() when it is not yet added to the document
     this.setAutofocusIfNeeded();
     // Value on OPTION-Element has to be set, after SELECT-Children are available
-    this.setValueIfNeeded();
+    this.setSelectedIfNeeded();
     this.elementDidMountToParent();
     this.setOnChangeEvent();
   }
@@ -103,11 +103,40 @@ export default class DomInstance extends ChildrenInstance {
 
   /**
    * sets the value of an OPTION-Element
-   * that edgecase handling is needed, because value property can only be set *after* children are created
+   * looks for the parent select element to set the selected property
+   * the select.value is not used, because option elements could be added asynchronously
+   * and browsers dont care about that properly
    */
-  private setValueIfNeeded() {
-    if (isSelect(this.type) && this.props.value) {
-      this.setProp('value', this.props.value);
+  private setSelectedIfNeeded() {
+    if (isOption(this.type)) {
+      const select = this.findParent(this.parentInstance, (instance) => {
+        if (instance instanceof DomInstance) {
+          if (isSelect(instance.type)) {
+            return true;
+          }
+          throw new Error(`Nearest dom of OPTION is not a SELECT but a ${instance.type.toString().toUpperCase()}`);
+        }
+        return false;
+      });
+
+      if (!select) {
+        throw new Error('Could not find SELECT-ELEMENT of OPTION');
+      }
+      this.setProp('selected', this.props.value === (select as DomInstance).props.value);
+    }
+  }
+
+  /**
+   * calls recursively a callback with the instance until the callback returns true
+   * if callback returns false, the parentInstance is called
+   * if arrived at root, and no instance got found, undefined will be returned
+   */
+  private findParent(instance: Instance | undefined, callback: (instance: Instance) => boolean): Instance | void {
+    if (instance !== undefined) {
+      if (callback(instance) === true) {
+        return instance;
+      }
+      return this.findParent(instance.parentInstance, callback);
     }
   }
 
@@ -149,10 +178,11 @@ export default class DomInstance extends ChildrenInstance {
       this.ref.setAttribute(keyName, this.getStylePropsAsAttribute(value));
     } else {
       // All the other attributes are strings
-      this.ref.setAttribute(keyName, `${value}`);
       if (this.setAttributeAsProperty(keyName)) {
         // input-values need to be set directly as property, for overwriting purpose of browser behaviour
         (this.ref as any)[keyName] = value;
+      } else {
+        this.ref.setAttribute(keyName, `${value}`);
       }
     }
   }

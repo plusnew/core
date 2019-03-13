@@ -12,7 +12,7 @@ describe('firing onchange events', () => {
   it('is onchange called on select, without revert', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
+    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement }) => {
       local.dispatch(evt.currentTarget.value);
     }).and.callThrough();
 
@@ -20,7 +20,7 @@ describe('firing onchange events', () => {
       'Component',
       () =>
         <local.Observer>{state =>
-          <select onchange={change} value={state} >
+          <select onchange={change} value={state}>
             <option value="foo">Foo</option>
             <option value="bar">Bar</option>
           </select>
@@ -41,10 +41,39 @@ describe('firing onchange events', () => {
     expect(select.value).toBe('bar');
   });
 
-  it('is onchange called on select, with revert', () => {
-    const local = store('foo', (state, newValue: string) => state);
+  it('throws exception when no select parent is found', () => {
+    const Component = component(
+      'Component',
+      () =>
+        <option />,
+    );
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
+    expect(() => {
+      plusnew.render(<Component />, container);
+    }).toThrow(new Error('Could not find SELECT-ELEMENT of OPTION'));
+  });
+
+  it('throw exception when the nearest dom is not an option', () => {
+    const Component = component(
+      'Component',
+      () =>
+        <select value="foo">
+          <div>
+            <option />
+          </div>
+        </select>,
+    );
+
+    expect(() => {
+      plusnew.render(<Component />, container);
+    }).toThrow(new Error('Nearest dom of OPTION is not a SELECT but a DIV'));
+  });
+
+  it('async option has to work', () => {
+    const local = store('bar', (_state, newValue: string) => newValue);
+    const showOption = store(false);
+
+    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement }) => {
       local.dispatch(evt.currentTarget.value);
     }).and.callThrough();
 
@@ -52,7 +81,43 @@ describe('firing onchange events', () => {
       'Component',
       () =>
         <local.Observer>{state =>
-          <select onchange={change} value={state} >
+          <select onchange={change} value={state}>
+            <option value="foo">Foo</option>
+            <showOption.Observer>{showState => showState &&
+              <>
+                <option value="bar">Bar</option>
+                <option value="baz">Baz</option>
+              </>
+            }</showOption.Observer>
+          </select>
+        }</local.Observer>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    const select = container.childNodes[0] as HTMLSelectElement;
+
+    expect(change.calls.count()).toEqual(0);
+    expect(select.value).toBe('foo');
+
+    showOption.dispatch(true);
+
+    expect(change.calls.count()).toEqual(0);
+    expect(select.value).toBe('bar');
+  });
+
+  it('is onchange called on select, with revert', () => {
+    const local = store('foo', (state, newValue: string) => state);
+
+    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement }) => {
+      local.dispatch(evt.currentTarget.value);
+    }).and.callThrough();
+
+    const Component = component(
+      'Component',
+      () =>
+        <local.Observer>{state =>
+          <select onchange={change} value={state}>
             <option value="foo">Foo</option>
             <option value="bar">Bar</option>
           </select>

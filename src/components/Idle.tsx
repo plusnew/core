@@ -3,7 +3,7 @@ import plusnew, { Props, Component, store } from '../index';
 type props = { urgent: boolean; children: any; };
 
 export default class Idle extends Component<props> {
-  static displayName = 'Idle'
+  static displayName = 'Idle';
 
   private hasIdleCallback() {
     return 'requestIdleCallback' in window;

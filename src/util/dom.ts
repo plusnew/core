@@ -25,6 +25,10 @@ export function isSelect(type: PlusnewElement) {
   return type === 'select';
 }
 
+export function isOption(type: PlusnewElement) {
+  return type === 'option';
+}
+
 export function hasOnchangeEvent(type: PlusnewElement, props: props) {
   return isInputElement(type, props) || isTextArea(type) || isSelect(type);
 }
