@@ -103,7 +103,9 @@ export default class DomInstance extends ChildrenInstance {
 
   /**
    * sets the value of an OPTION-Element
-   * that edgecase handling is needed, because value property can only be set *after* children are created
+   * looks for the parent select element to set the selected property
+   * the select.value is not used, because option elements could be added asynchronously
+   * and browsers dont care about that properly
    */
   private setSelectedIfNeeded() {
     if (isOption(this.type)) {
@@ -124,6 +126,11 @@ export default class DomInstance extends ChildrenInstance {
     }
   }
 
+  /**
+   * calls recursively a callback with the instance until the callback returns true
+   * if callback returns false, the parentInstance is called
+   * if arrived at root, and no instance got found, undefined will be returned
+   */
   private findParent(instance: Instance | undefined, callback: (instance: Instance) => boolean): Instance | void {
     if (instance !== undefined) {
       if (callback(instance) === true) {
