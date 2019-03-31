@@ -2,8 +2,8 @@ import plusnew, { ApplicationElement, Component, ComponentContainer, Instance, P
 import ComponentInstance from '../instances/types/Component/Instance';
 import { storeType } from '../util/store';
 
-type renderProps<state, action> = (state: state, dispatch: (action: action) => boolean) => ApplicationElement ;
-type providerProps<state, action> = {state: state, dispatch: (action: action) => boolean, children: ApplicationElement};
+type renderProps<state, action> = (state: state, dispatch: (action: action) => void) => ApplicationElement ;
+type providerProps<state, action> = {state: state, dispatch: (action: action) => void, children: ApplicationElement};
 type consumerProps<state, action> = {children: renderProps<state, action>};
 type contextEntity<state, action> = {
   Provider: ComponentContainer<providerProps<state, action>>;
