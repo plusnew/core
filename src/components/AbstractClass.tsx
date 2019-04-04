@@ -23,7 +23,7 @@ export default abstract class Component<componentProps extends Partial<props & {
 
   abstract render(props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps>): ApplicationElement;
 
-  componentWillUnmount(props: componentProps) {}
+  componentWillUnmount(props: componentProps, plusnewComponentInstance: ComponentInstance<componentProps>) {}
 
   static shouldCreateComponent(parentInstance: Instance) {
     return parentInstance.createChildrenComponents === true || hasComponent(parentInstance) === false;

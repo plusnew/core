@@ -49,10 +49,13 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
         this.instance = componentInstance;
         this.providerPropsStore = search(componentInstance).storeProps;
         this.providerPropsStore.subscribe(this.update);
+        componentInstance.storeProps.subscribe(this.update);
+
         return this.getRenderPropsResult();
       }
-      componentWillUnmount() {
+      componentWillUnmount(_Props: consumerProps<stateType, actionType>, componentInstance: ComponentInstance<any>) {
         this.providerPropsStore.unsubscribe(this.update);
+        componentInstance.storeProps.unsubscribe(this.update);
       }
     },
   };

@@ -95,7 +95,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
    * removes the children from the dom
    */
   public remove(prepareRemoveSelf: boolean) {
-    this.applicationInstance.componentWillUnmount(this.props);
+    this.applicationInstance.componentWillUnmount(this.props, this);
     this.mounted = false;
 
     return this.rendered.remove(prepareRemoveSelf);
