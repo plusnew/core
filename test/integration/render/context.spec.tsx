@@ -1,4 +1,4 @@
-import plusnew, { component, context, store } from 'index';
+import plusnew, { component, context, store, Props } from 'index';
 
 describe('context', () => {
 
@@ -230,5 +230,34 @@ describe('context', () => {
 
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('BUTTON');
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('2');
+  });
+
+  it('a component tries to use a consumer with a wrong provider, an exception is expected', () => {
+    const valueContext = context<number, number>();
+    const local = store(1);
+
+    const MainComponent = component(
+      'Component',
+      () =>
+        <valueContext.Provider state={1} dispatch={() => true}>
+          <local.Observer>{localState =>
+            <NestedComponent value={localState} />
+          }</local.Observer>
+        </valueContext.Provider>,
+    );
+
+    const NestedComponent = component(
+      'Component',
+    (Props: Props<{ value: number } >) => <Props>{props => <valueContext.Consumer>{state => <div>{state + props.value}</div>}</valueContext.Consumer>}</Props>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('2');
+
+    local.dispatch(2);
+
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('3');
   });
 });

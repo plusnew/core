@@ -1147,16 +1147,18 @@ describe('rendering nested components', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    const mainInstance = plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
     expect(componentWillUnmountSpy.calls.count()).toBe(0);
 
+    const nestedComponentInstance = ((mainInstance as ComponentInstance<any>).rendered as ComponentInstance<any>).rendered;
+
     local.dispatch(false);
 
     expect(componentWillUnmountSpy.calls.count()).toBe(1);
-    expect(componentWillUnmountSpy).toHaveBeenCalledWith({ children: [] });
+    expect(componentWillUnmountSpy).toHaveBeenCalledWith({ children: [] }, nestedComponentInstance);
   });
 
   it('removed nested component gets a componentWillUnmount call with props', () => {
@@ -1182,16 +1184,18 @@ describe('rendering nested components', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    const mainInstance = plusnew.render(<MainComponent />, container);
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
     expect(componentWillUnmountSpy.calls.count()).toBe(0);
 
+    const nestedComponentInstance = ((mainInstance as ComponentInstance<any>).rendered as ComponentInstance<any>).rendered;
+
     local.dispatch(false);
 
     expect(componentWillUnmountSpy.calls.count()).toBe(1);
-    expect(componentWillUnmountSpy).toHaveBeenCalledWith({ foo: 'bar', children: [] });
+    expect(componentWillUnmountSpy).toHaveBeenCalledWith({ foo: 'bar', children: [] }, nestedComponentInstance);
   });
 
   it('displayName is set', () => {
