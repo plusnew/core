@@ -10,7 +10,9 @@ function createInstance(applicationElement: ApplicationElement) {
   const wrapper = new RootInstance(true, undefined, () => null, {});
   wrapper.ref = document.createElement('div');
 
-  return factory(applicationElement, wrapper, () => null);
+  const instance = factory(applicationElement, wrapper, () => null);
+  instance.initialiseNestedElements();
+  return instance;
 }
 describe('checking if reconciler works as expected', () => {
   describe('isSameAbstractElement()', () => {

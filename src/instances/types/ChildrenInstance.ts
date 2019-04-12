@@ -1,11 +1,13 @@
 import { ApplicationElement } from '../../interfaces/component';
 import factory from '../factory';
 import Instance, { getPredeccessor, predecessor } from './Instance';
+import { PlusnewAbstractElement } from 'index';
 
 export default abstract class ChildrenInstance extends Instance {
   public rendered: Instance[];
   // Decides if the children will call elementWillUnmount
   public abstract executeChildrenElementWillUnmount: boolean;
+  public props: { children: PlusnewAbstractElement[] };
 
   constructor(
     abstractElement: ApplicationElement,
@@ -19,9 +21,13 @@ export default abstract class ChildrenInstance extends Instance {
 
   abstract getChildrenPredeccessor(): predecessor;
 
-  public addChildren(children: ApplicationElement[]) {
-    for (let i = 0; i < children.length; i += 1) {
-      this.rendered.push(factory(children[i], this, this.getLastIntrinsicElementOf.bind(this, i - 1)));
+  public addChildren() {
+    for (let i = 0; i < this.props.children.length; i += 1) {
+      if (this.rendered[i] === undefined) {
+        const instance = factory(this.props.children[i], this, this.getLastIntrinsicElementOf.bind(this, i - 1));
+        this.rendered.push(instance);
+        instance.initialiseNestedElements();
+      }
     }
   }
 

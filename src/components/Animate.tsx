@@ -1,6 +1,6 @@
 import plusnew, { Props } from '../index';
 import Instance from '../instances/types/Component/Instance';
-import factory, { ComponentContainer } from './factory';
+import component, { ComponentContainer } from './factory';
 
 type props = {
   elementDidMount?: (element: Element) => void;
@@ -8,7 +8,7 @@ type props = {
   children: any,
 };
 
-const Animate: ComponentContainer<props> = factory(
+const Animate: ComponentContainer<props> = component(
   'Animate',
   (Props: Props<props>, instance) => {
     return <Props>{(props) => {

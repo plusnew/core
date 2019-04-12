@@ -11,7 +11,7 @@ import reconcile from './reconcile';
 export default class ArrayInstance extends ChildrenInstance {
   public nodeType = types.Array;
   public type = types.Array;
-  public props: (PlusnewAbstractElement)[];
+  public props: { children: PlusnewAbstractElement[] };
   public executeChildrenElementWillUnmount = true;
 
   constructor(
@@ -20,8 +20,13 @@ export default class ArrayInstance extends ChildrenInstance {
     getPredecessor: getPredeccessor,
   ) {
     super(abstractElements, parentInstance, getPredecessor);
-    this.props = abstractElements;
-    this.addChildren(abstractElements);
+    this.props = {
+      children: abstractElements,
+    };
+  }
+
+  initialiseNestedElements() {
+    this.addChildren();
   }
 
   /**

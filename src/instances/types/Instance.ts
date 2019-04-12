@@ -31,6 +31,14 @@ export default abstract class Instance {
   }
 
   /**
+   * this will get called after constructor
+   * so that the parent already has the reference to this instance
+   *
+   * is needed for dispatching while rendering
+   */
+  initialiseNestedElements() {}
+
+  /**
    * appends the given element, to the parentinstance, if existent
    */
   public appendToParent(element: Node, predecessor: predecessor) {
@@ -58,6 +66,21 @@ export default abstract class Instance {
     } else {
       parentNode.insertBefore(target, predecessor.nextSibling);
     }
+  }
+
+  /**
+   * recursively search for another instance
+   */
+  public find(callback: (instance: Instance) => boolean): Instance | undefined {
+    if (callback(this)) {
+      return this;
+    }
+
+    if (this.parentInstance) {
+      return this.parentInstance.find(callback);
+    }
+
+    return undefined;
   }
 
   public abstract getLastIntrinsicElement(): Node | null;

@@ -18,7 +18,9 @@ export class Reconciler {
       return instance;
     }
 
-    return factory(newAbstractElement, instance.parentInstance as Instance, instance.getPredecessor);
+    const newInstance = factory(newAbstractElement, instance.parentInstance as Instance, instance.getPredecessor);
+
+    return newInstance;
   }
 
   /**

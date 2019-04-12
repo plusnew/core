@@ -1,4 +1,4 @@
-import plusnew, { ApplicationElement, Component, ComponentContainer, Instance, Props } from '../';
+import plusnew, { ApplicationElement, Component, ComponentContainer, Props, Instance } from '../';
 import ComponentInstance from '../instances/types/Component/Instance';
 import { storeType } from '../util/store';
 
@@ -8,20 +8,10 @@ type consumerProps<state, action> = {children: renderProps<state, action>};
 type contextEntity<state, action> = {
   Provider: ComponentContainer<providerProps<state, action>>;
   Consumer: ComponentContainer<consumerProps<state, action>>;
+  findProvider: (instance: Instance) => ComponentInstance<providerProps<state, action>>
 };
 
 function context<stateType, actionType>(): contextEntity<stateType, actionType> {
-  function search(target: Instance | ComponentInstance<any>): ComponentInstance<providerProps<stateType, actionType>> {
-    if (target instanceof ComponentInstance && target.applicationInstance instanceof Provider) {
-      return target;
-    }
-    if (target.parentInstance) {
-      return search(target.parentInstance);
-    }
-
-    throw new Error('Could not find Provider');
-  }
-
   class Provider extends Component<providerProps<stateType, actionType>> {
     static displayName = 'Provider';
     render(Props: Props<providerProps<stateType, actionType>>) {
@@ -29,7 +19,17 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
     }
   }
 
-  const result = {
+  const findProvider = (componentInstance: Instance) => {
+    const providerInstance = componentInstance.find(instance => instance instanceof ComponentInstance && instance.type === Provider);
+    if (providerInstance === undefined) {
+      throw new Error('Could not find Provider');
+    }
+
+    return providerInstance as ComponentInstance<providerProps<stateType, actionType>>;
+  };
+
+  const result: contextEntity<stateType, actionType> = {
+    findProvider,
     Provider,
     Consumer: class Consumer extends Component<consumerProps<stateType, actionType>> {
       static displayName = 'Consumer';
@@ -45,9 +45,11 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
       private update = () => {
         this.instance.render(this.getRenderPropsResult());
       }
+
       render(_Props: Props<consumerProps<stateType, actionType>>, componentInstance: ComponentInstance<any>) {
         this.instance = componentInstance;
-        this.providerPropsStore = search(componentInstance).storeProps;
+
+        this.providerPropsStore = findProvider(componentInstance).storeProps;
         this.providerPropsStore.subscribe(this.update);
         componentInstance.storeProps.subscribe(this.update);
 

@@ -10,11 +10,12 @@ export default function (newAbstractElement: PlusnewAbstractElement, instance: F
       if (newInstance !== instance.rendered[i]) {
         instance.rendered[i].remove(true);
         instance.rendered[i] = newInstance;
+        instance.rendered[i].initialiseNestedElements();
       }
     } else {
-      instance.rendered.push(
-        factory(newAbstractElement.props.children[i], instance, instance.getLastIntrinsicElementOf.bind(instance, i - 1)),
-      );
+      const newInstance = factory(newAbstractElement.props.children[i], instance, instance.getLastIntrinsicElementOf.bind(instance, i - 1));
+      instance.rendered.push(newInstance);
+      newInstance.initialiseNestedElements();
     }
   }
 

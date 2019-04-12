@@ -43,7 +43,10 @@ class Plusnew {
       containerElement.removeChild(containerElement.childNodes[0]);
     }
 
-    return factory(element, wrapper, predecessor);
+    const instance = factory(element, wrapper, predecessor);
+    instance.initialiseNestedElements();
+
+    return instance;
   }
 
   Fragment = Fragment;
