@@ -29,7 +29,7 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
         }
       }
 
-      if (!found) {
+      if (found === false) {
         instance.rendered[oldIndex].remove(instance.executeChildrenElementWillUnmount);
         instance.rendered.splice(oldIndex, 1);
         instance.props.children.splice(oldIndex, 1);
