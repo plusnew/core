@@ -24,7 +24,10 @@ export default class FragmentInstance extends ChildrenInstance {
   ) {
     super(abstractElement, parentInstance, getPredecessor);
     this.props = abstractElement.props;
-    this.addChildren(abstractElement.props.children);
+  }
+
+  initialiseNestedElements() {
+    this.addChildren();
   }
 
   /**

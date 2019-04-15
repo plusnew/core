@@ -1,13 +1,13 @@
 import plusnew, { Props } from '../index';
 import Instance from '../instances/types/Component/Instance';
-import factory, { ComponentContainer } from './factory';
+import component, { ComponentContainer } from './factory';
 
 type props = {
   target: Element;
   children: any,
 };
 
-const Portal: ComponentContainer<props> = factory(
+const Portal: ComponentContainer<props> = component(
   'Portal',
   (Props: Props<props>, instance) => {
     let initialised = false;

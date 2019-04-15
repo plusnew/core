@@ -58,5 +58,6 @@ export default (newAbstractChildren: ApplicationElement, instance: ComponentInst
   if (newChildrenInstance !== instance.rendered) {
     instance.rendered.remove(true);
     instance.rendered = newChildrenInstance;
+    instance.rendered.initialiseNestedElements();
   }
 };

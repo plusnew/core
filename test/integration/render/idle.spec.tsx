@@ -7,7 +7,7 @@ describe('<Idle />', () => {
   let cancelIdleCallbackSpy: jasmine.Spy;
 
   beforeEach(() => {
-    urgentStore = store(false, (_state, action: boolean) => action);
+    urgentStore = store(false as boolean, (_state, action: boolean) => action);
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
     document.body.appendChild(container);

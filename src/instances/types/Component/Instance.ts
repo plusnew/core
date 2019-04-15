@@ -7,6 +7,8 @@ import store, { storeType } from '../../../util/store';
 import factory from '../../factory';
 import reconcile, { shouldUpdate } from './reconcile';
 
+type lifecycle = 'componentDidMount' | 'componentWillUnmount';
+
 /**
  * ComponentInstances are used representing the <Component /> in the shadowdom
  * or when plusnew.createElement gets called with a function
@@ -22,6 +24,10 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
   public props: componentProps;
   public storeProps: storeType<componentProps, componentProps>;
   public mounted = true; // Has the information that the component is inside the active shadowdom
+  private lifecycleHooks = {
+    componentDidMount: [] as (() => void)[],
+    componentWillUnmount: [] as (() => void)[],
+  };
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -39,11 +45,15 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
       }
       return state;
     });
-
-    this.initialiseComponent();
   }
 
-  public initialiseComponent() {
+  /**
+   * this will get called after constructor
+   * so that the parent already has the reference to this instance
+   *
+   * is needed for dispatching while rendering
+   */
+  public initialiseNestedElements() {
     this.applicationInstance = new (this.type as any)(this.props);
     if (this.invokeGuard === null) {
       this.render(
@@ -55,6 +65,15 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
         this.render(invokeHandle.result);
       }
     }
+    this.executeLifecycleHooks('componentDidMount');
+  }
+
+  public registerLifecycleHook(lifecycle: lifecycle, hook: () => void) {
+    this.lifecycleHooks[lifecycle].push(hook);
+  }
+
+  private executeLifecycleHooks(lifecycle: lifecycle) {
+    this.lifecycleHooks[lifecycle].forEach(hook => hook());
   }
 
   public render(abstractChildren: ApplicationElement) {
@@ -63,6 +82,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
         reconcile(abstractChildren, this);
       } else {
         this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
+        this.rendered.initialiseNestedElements();
       }
     } else {
       this.throwNotMountedError();
@@ -96,8 +116,11 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
    */
   public remove(prepareRemoveSelf: boolean) {
     this.applicationInstance.componentWillUnmount(this.props, this);
+    this.executeLifecycleHooks('componentWillUnmount');
     this.mounted = false;
 
-    return this.rendered.remove(prepareRemoveSelf);
+    if (this.rendered) {
+      this.rendered.remove(prepareRemoveSelf);
+    }
   }
 }

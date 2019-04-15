@@ -17,11 +17,11 @@ function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractEle
 export default function (newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance) {
 
   // Removal of old-elements just works if key-property is existent
-  if (instance.props.length && instance.props[0] && instance.props[0].props && instance.props[0].props.key !== undefined) {
+  if (instance.props.children.length && instance.props.children[0] && instance.props.children[0].props && instance.props.children[0].props.key !== undefined) {
     // Checks old abstract elements, if they should get removed
     // reason for that is, that we dont want to move new elements, because of old elements which get deleted
     // moving causes animations to trigger, and that would be wrong in that case
-    for (let oldIndex = 0; oldIndex < instance.props.length; oldIndex += 1) {
+    for (let oldIndex = 0; oldIndex < instance.props.children.length; oldIndex += 1) {
       let found = reconciler.isSameAbstractElement(newAbstractElements[oldIndex], instance.rendered[oldIndex]);
       for (let newIndex = 0; newIndex < newAbstractElements.length && found === false; newIndex += 1) {
         if (reconciler.isSameAbstractElement(newAbstractElements[newIndex], instance.rendered[oldIndex])) {
@@ -29,10 +29,10 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
         }
       }
 
-      if (!found) {
+      if (found === false) {
         instance.rendered[oldIndex].remove(instance.executeChildrenElementWillUnmount);
         instance.rendered.splice(oldIndex, 1);
-        instance.props.splice(oldIndex, 1);
+        instance.props.children.splice(oldIndex, 1);
         oldIndex -= 1;
       }
     }
@@ -55,6 +55,7 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
       if (oldIndex === NOT_FOUND) {
         const newInstance = factory(newAbstractElement, instance, getPredecessor);
         instance.rendered.splice(i, 0, newInstance);
+        newInstance.initialiseNestedElements();
       } else {
         const moveInstance = instance.rendered[oldIndex];
         moveInstance.getPredecessor = getPredecessor;
@@ -77,5 +78,5 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
     instance.rendered.length - newAbstractElements.length,
   ).forEach(childInstance => childInstance.remove(true));
 
-  instance.props = newAbstractElements;
+  instance.props.children = newAbstractElements;
 }

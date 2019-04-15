@@ -1,7 +1,6 @@
 import factory from 'instances/factory';
 import elementTypeChecker from 'util/elementTypeChecker';
 
-
 describe('isSameAbstractElementType()', () => {
   beforeEach(() => {
     spyOn(elementTypeChecker, 'isPlaceholderElement').and.returnValue(false);

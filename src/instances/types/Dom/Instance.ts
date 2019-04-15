@@ -47,7 +47,10 @@ export default class DomInstance extends ChildrenInstance {
 
     this.setProps();
     this.appendToParent(this.ref, predecessor());
-    this.addChildren(abstractElement.props.children);
+  }
+
+  initialiseNestedElements() {
+    this.addChildren();
     // Autofocus call has to happen, after it got appended to parent, and after children are added
     // Some browsers ignore element.focus() when it is not yet added to the document
     this.setAutofocusIfNeeded();
