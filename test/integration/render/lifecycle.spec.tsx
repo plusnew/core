@@ -41,10 +41,9 @@ describe('lifecycle', () => {
       expect(componentDidMountSpy.calls.count()).toBe(1);
     });
 
-    it('hook doing sideeffect to parent', () => {
+    it('First nested component dispatches a value to local store in parent and gets rerendered and displayed in DOM only once', () => {
       const renderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, componentInstance) => {
         componentInstance.registerLifecycleHook('componentDidMount', () => {
-          debugger;
           local.dispatch(1);
         });
 
@@ -90,10 +89,9 @@ describe('lifecycle', () => {
     });
   });
 
-  it('hook doing sideeffect to parent', () => {
+  it('Second nested component dispatches a value to local store in parent and gets rerendered and displayed in DOM only once', () => {
     const renderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, componentInstance) => {
       componentInstance.registerLifecycleHook('componentDidMount', () => {
-        debugger;
         local.dispatch(1);
       });
 
