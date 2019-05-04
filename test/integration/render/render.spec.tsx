@@ -145,4 +145,31 @@ describe('rendering the elements', () => {
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
   });
+
+  it('adding element afterwards', () => {
+    const local = store(false);
+
+    const MainComponent = component(
+      'Component',
+      () =>
+        <>
+          <header />
+          <local.Observer>{localState => localState && <content />}</local.Observer>
+          <footer />
+        </>,
+    );
+
+    plusnew.render(<MainComponent />, container);
+
+    expect(container.childNodes.length).toBe(2);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('HEADER');
+    expect((container.childNodes[1] as HTMLElement).tagName).toBe('FOOTER');
+
+    local.dispatch(true);
+
+    expect(container.childNodes.length).toBe(3);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('HEADER');
+    expect((container.childNodes[1] as HTMLElement).tagName).toBe('CONTENT');
+    expect((container.childNodes[2] as HTMLElement).tagName).toBe('FOOTER');
+  });
 });

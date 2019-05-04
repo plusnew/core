@@ -1,5 +1,5 @@
 import { ApplicationElement } from '../../../interfaces/component';
-import Instance, { getPredeccessor } from '../Instance';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
 
 type renderOptions = {
@@ -33,8 +33,8 @@ export default class RootInstance extends Instance {
   /**
    * appends the element to the rootcontainer
    */
-  public appendChild(element: Element) {
-    this.ref.appendChild(element);
+  public appendChild(element: Node, predecessor: predecessor) {
+    this.insertBefore(this.ref, element, predecessor);
   }
 
   public getLastIntrinsicElement() {
