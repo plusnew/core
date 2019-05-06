@@ -286,7 +286,7 @@ export default class DomInstance extends ChildrenInstance {
    * by the children should add themselfs to our element
    */
 
-  public appendChild(element: Node, predecessor: Node | null) {
+  public appendChild(element: Node, predecessor: predecessor) {
     this.insertBefore(this.ref, element, predecessor);
   }
 

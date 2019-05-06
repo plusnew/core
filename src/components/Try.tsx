@@ -9,7 +9,7 @@ type props = {
 };
 
 export default class Try extends Component<props> {
-  static displayName = 'ComponentName';
+  static displayName = 'Try';
 
   private instance: ComponentInstance<props>;
   private errored = false;
