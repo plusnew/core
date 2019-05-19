@@ -15,7 +15,7 @@ export default function (props: props, instance: DomInstance) {
             instance.rendered[i].initialiseNestedElements();
           }
         } else {
-          const newInstance = factory(props.children[i], instance, instance.getLastIntrinsicElementOf.bind(instance, i - 1));
+          const newInstance = factory(props.children[i], instance, instance.getLastIntrinsicElementOf.bind(instance, i - 1), instance.renderOptions);
           instance.rendered.push(newInstance);
           newInstance.initialiseNestedElements();
         }

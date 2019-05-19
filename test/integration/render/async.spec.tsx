@@ -191,4 +191,54 @@ describe('<Animate />', () => {
     expect(container.childNodes.length).toBe(0);
     expect(throwNotMountedErrorSpy).not.toHaveBeenCalled();
   });
+
+  it('addAsyncListener sends promise for pending state', async () => {
+    const promise = new Promise(resolve => setTimeout(resolve));
+
+    const Component = component(
+      'Component',
+      () => <Async pendingIndicator={<span />}>{async () => {
+        await promise;
+        return <div />;
+      }}</Async>,
+    );
+
+    let asyncPromise;
+
+    plusnew.render(<Component />, container, {
+      addAsyncListener: promise => asyncPromise = promise,
+    });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    await asyncPromise;
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+  });
+
+  it('addAsyncListener sends promise for pending state, works even with resolved promise', async () => {
+    const promise = Promise.resolve();
+
+    const Component = component(
+      'Component',
+      () => <Async pendingIndicator={<span />}>{async () => {
+        await promise;
+        return <div />;
+      }}</Async>,
+    );
+
+    let asyncPromise;
+
+    plusnew.render(<Component />, container, {
+      addAsyncListener: promise => asyncPromise = promise,
+    });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    await asyncPromise;
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+  });
 });

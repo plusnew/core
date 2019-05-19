@@ -32,14 +32,23 @@ export default class Try extends Component<props> {
 
   private setInvokeGuard() {
     if (this.errored) {
-      this.instance.invokeGuard = (this.instance.parentInstance as ComponentInstance<any>).invokeGuard;
+      this.instance.renderOptions = {
+        ...this.instance.renderOptions,
+        invokeGuard: (this.instance.parentInstance as ComponentInstance<any>).renderOptions.invokeGuard,
+      };
     } else {
-      this.instance.invokeGuard = this.invokeGuard.bind(this);
+      this.instance.renderOptions = {
+        ...this.instance.renderOptions,
+        invokeGuard: this.invokeGuard.bind(this),
+      };
     }
   }
 
   private update = () => {
-    this.instance.invokeGuard = this.invokeGuard.bind(this);
+    this.instance.renderOptions = {
+      ...this.instance.renderOptions,
+      invokeGuard: this.invokeGuard.bind(this),
+    };
 
     let result: ApplicationElement;
 

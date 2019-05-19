@@ -4,6 +4,7 @@ import ChildrenInstance from '../ChildrenInstance';
 import Instance, { getPredeccessor } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
+import { renderOptions } from '../../../interfaces/renderOptions';
 
 /**
  * FragmentInstances are representations of <>
@@ -21,8 +22,9 @@ export default class FragmentInstance extends ChildrenInstance {
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
     getPredecessor: getPredeccessor,
+    renderOptions: renderOptions,
   ) {
-    super(abstractElement, parentInstance, getPredecessor);
+    super(abstractElement, parentInstance, getPredecessor, renderOptions);
     this.props = abstractElement.props;
   }
 

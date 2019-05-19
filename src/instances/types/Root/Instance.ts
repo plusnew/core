@@ -1,11 +1,7 @@
 import { ApplicationElement } from '../../../interfaces/component';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
-
-type renderOptions = {
-  createChildrenComponents?: boolean;
-  namespace?: string;
-};
+import { renderOptions } from '../../../interfaces/renderOptions';
 
 export default class RootInstance extends Instance {
   public nodeType = types.Root;
@@ -16,19 +12,9 @@ export default class RootInstance extends Instance {
     abstractElement: ApplicationElement,
     parentInstance: Instance | undefined,
     getPredecessor: getPredeccessor,
-    options?: renderOptions,
+    renderOptions: renderOptions,
   ) {
-    super(abstractElement, parentInstance, getPredecessor);
-
-    if (options) {
-      if (options.namespace !== undefined) {
-        this.namespace = options.namespace;
-      }
-
-      if (options.createChildrenComponents !== undefined) {
-        this.createChildrenComponents = options.createChildrenComponents;
-      }
-    }
+    super(abstractElement, parentInstance, getPredecessor, renderOptions);
   }
   /**
    * appends the element to the rootcontainer
@@ -62,5 +48,3 @@ export default class RootInstance extends Instance {
     throw new Error('The root element can\'t reconcile itself');
   }
 }
-
-export { renderOptions };

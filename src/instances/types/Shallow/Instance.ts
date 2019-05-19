@@ -2,6 +2,7 @@ import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import Instance, { getPredeccessor } from '../Instance';
 import types from '../types';
 import { props } from  '../../../interfaces/component';
+import { renderOptions } from '../../../interfaces/renderOptions';
 
 export default class ShallowInstance<componentProps extends Partial<props>>  extends Instance {
   public nodeType = types.Component;
@@ -11,8 +12,9 @@ export default class ShallowInstance<componentProps extends Partial<props>>  ext
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
     getPredecessor: getPredeccessor,
+    renderOptions: renderOptions,
   ) {
-    super(abstractElement, parentInstance, getPredecessor);
+    super(abstractElement, parentInstance, getPredecessor, renderOptions);
 
     this.type = abstractElement.type;
     this.props = abstractElement.props as componentProps;

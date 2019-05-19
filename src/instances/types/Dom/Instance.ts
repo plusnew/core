@@ -6,6 +6,7 @@ import ChildrenInstance from '../ChildrenInstance';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
+import { renderOptions } from '../../../interfaces/renderOptions';
 
 const PropToAttribbuteMapping = {
   acceptCharset: 'accept-charset',
@@ -33,14 +34,15 @@ export default class DomInstance extends ChildrenInstance {
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
     predecessor: getPredeccessor,
+    renderOptions: renderOptions,
   ) {
-    super(abstractElement, parentInstance, predecessor);
+    super(abstractElement, parentInstance, predecessor, renderOptions);
     this.type = abstractElement.type;
     this.props = abstractElement.props;
     this.setNamespace();
 
-    if (this.namespace) {
-      this.ref = document.createElementNS(this.namespace, abstractElement.type as string);
+    if (this.renderOptions.namespace) {
+      this.ref = document.createElementNS(this.renderOptions.namespace, abstractElement.type as string);
     } else {
       this.ref = document.createElement(abstractElement.type as string);
     }
@@ -91,7 +93,13 @@ export default class DomInstance extends ChildrenInstance {
    * sets a special namespace, in case self is an svg, so that children will created with correct namespace
    */
   private setNamespace() {
-    this.namespace = getSpecialNamespace(this.type as string) || this.namespace;
+    const currentNamespace = getSpecialNamespace(this.type as string) || this.renderOptions.namespace;
+    if (currentNamespace !== this.renderOptions.namespace) {
+      this.renderOptions = {
+        ...this.renderOptions,
+        namespace: currentNamespace,
+      };
+    }
   }
 
   /**

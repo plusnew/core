@@ -13,7 +13,7 @@ describe('isSameAbstractElementType()', () => {
   });
   it('unknown element', () => {
     expect(() => {
-      factory('string', 'another string' as any, () => null);
+      factory('string', 'another string' as any, () => null, {});
     }).toThrow(new Error('Factory couldn\'t create unknown element type'));
   });
 });

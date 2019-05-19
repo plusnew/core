@@ -53,7 +53,7 @@ export default function (newAbstractElements: PlusnewAbstractElement[], instance
     } else {
       const oldIndex = indexOf(instance, newAbstractElement, i);
       if (oldIndex === NOT_FOUND) {
-        const newInstance = factory(newAbstractElement, instance, getPredecessor);
+        const newInstance = factory(newAbstractElement, instance, getPredecessor, instance.renderOptions);
         instance.rendered.splice(i, 0, newInstance);
         newInstance.initialiseNestedElements();
       } else {

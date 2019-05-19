@@ -29,12 +29,12 @@ export default function <state>(store: storeType<state, any>) {
      */
     private update = () => {
       const renderFunction = ((this.instance.props.children as any)[0] as renderFunction<state>);
-      if (this.instance.invokeGuard === null) {
+      if (this.instance.renderOptions.invokeGuard === undefined) {
         this.instance.render(
           renderFunction(store.getState()),
         );
       } else {
-        const invokeHandle = this.instance.invokeGuard(() => renderFunction(store.getState()));
+        const invokeHandle = this.instance.renderOptions.invokeGuard(() => renderFunction(store.getState()));
         if (invokeHandle.hasError === false) {
           this.instance.render(invokeHandle.result);
         }

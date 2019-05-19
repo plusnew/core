@@ -1,6 +1,7 @@
 import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
+import { renderOptions } from '../../../interfaces/renderOptions';
 
 export default class TextInstance extends Instance {
   public nodeType = types.Text;
@@ -8,8 +9,8 @@ export default class TextInstance extends Instance {
   public props: string;
   public ref: Text;
 
-  constructor(abstractElement: string, parentInstance: Instance, getPredecessor: getPredeccessor) {
-    super(abstractElement, parentInstance, getPredecessor);
+  constructor(abstractElement: string, parentInstance: Instance, getPredecessor: getPredeccessor, renderOptions: renderOptions) {
+    super(abstractElement, parentInstance, getPredecessor, renderOptions);
 
     this.props = abstractElement;
     this.ref = document.createTextNode(abstractElement);

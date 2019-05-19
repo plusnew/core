@@ -10,6 +10,7 @@ import PlaceholderInstance from './types/Placeholder/Instance';
 import ShallowInstance from './types/Shallow/Instance';
 import TextInstance from './types/Text/Instance';
 import { ComponentContainer } from 'components/factory';
+import { renderOptions } from '../interfaces/renderOptions';
 
 /**
  * because data from jsx can be anything, this factory is needed to decide what type of instance should be created
@@ -18,26 +19,28 @@ export default function (
   abstractElement: ApplicationElement,
   parentInstance: Instance,
   getPredecessor: getPredeccessor,
+  renderOptions: renderOptions,
 ): Instance {
   // @TODO add something for invalid functions
   if (elementTypeChecker.isPlaceholderElement(abstractElement) === true) {
-    return new PlaceholderInstance(abstractElement as false, parentInstance, getPredecessor);
+    return new PlaceholderInstance(abstractElement as false, parentInstance, getPredecessor, renderOptions);
   }
   if (elementTypeChecker.isTextElement(abstractElement) === true) {
-    return new TextInstance(abstractElement as string, parentInstance, getPredecessor);
+    return new TextInstance(abstractElement as string, parentInstance, getPredecessor, renderOptions);
   }
   if (elementTypeChecker.isArrayElement(abstractElement) === true) {
     return new ArrayInstance(
       abstractElement as (PlusnewAbstractElement)[],
       parentInstance,
       getPredecessor,
+      renderOptions,
     );
   }
   if (elementTypeChecker.isFragmentElement(abstractElement) === true) {
-    return new FragmentInstance(abstractElement as PlusnewAbstractElement, parentInstance, getPredecessor);
+    return new FragmentInstance(abstractElement as PlusnewAbstractElement, parentInstance, getPredecessor, renderOptions);
   }
   if (elementTypeChecker.isDomElement(abstractElement) === true) {
-    return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, getPredecessor);
+    return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, getPredecessor, renderOptions);
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     const componentAbstractElement = abstractElement as PlusnewAbstractElement;
@@ -46,6 +49,7 @@ export default function (
         abstractElement as PlusnewAbstractElement,
         parentInstance,
         getPredecessor,
+        renderOptions,
       );
     }
 
@@ -53,6 +57,7 @@ export default function (
       abstractElement as PlusnewAbstractElement,
       parentInstance,
       getPredecessor,
+      renderOptions,
     );
   }
 

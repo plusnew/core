@@ -34,7 +34,7 @@ class Async extends AbstractClass<props> {
 
     let rendered = false;
 
-    ((this.instance.props.children as any)[0] as promiseGenerator)().then((content) => {
+    const asyncPromise = ((this.instance.props.children as any)[0] as promiseGenerator)().then((content) => {
       // Checks if between promise resolving, not another prop came
       // if inbetween a new render happened, then nothing should happen
       if (currentIncrement === this.increment && this.instance.mounted === true) {
@@ -42,6 +42,10 @@ class Async extends AbstractClass<props> {
         this.instance.render(content);
       }
     });
+
+    if (this.instance.renderOptions.addAsyncListener) {
+      this.instance.renderOptions.addAsyncListener(asyncPromise);
+    }
 
     await tick();
 

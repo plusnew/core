@@ -9,7 +9,8 @@ import Async from './components/Async';
 import Try from './components/Try';
 import factory from './instances/factory';
 import Instance from './instances/types/Instance';
-import RootInstance, { renderOptions } from './instances/types/Root/Instance';
+import RootInstance from './instances/types/Root/Instance';
+import { renderOptions } from './interfaces/renderOptions';
 import './interfaces/jsx';
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
 import elementTypeChecker from './util/elementTypeChecker';
@@ -35,7 +36,8 @@ class Plusnew {
   public render(element: PlusnewAbstractElement, containerElement: HTMLElement, options?: renderOptions) {
     // Fake RootInstance
     const predecessor = () => null;
-    const wrapper = new RootInstance(true, undefined, predecessor, options);
+    const renderOptions = options || {};
+    const wrapper = new RootInstance(true, undefined, predecessor, renderOptions);
 
     wrapper.ref = containerElement;
 
@@ -43,7 +45,7 @@ class Plusnew {
       containerElement.removeChild(containerElement.childNodes[0]);
     }
 
-    const instance = factory(element, wrapper, predecessor);
+    const instance = factory(element, wrapper, predecessor, renderOptions);
     instance.initialiseNestedElements();
 
     return instance;

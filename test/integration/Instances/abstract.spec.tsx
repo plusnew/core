@@ -14,7 +14,7 @@ describe('Does the root-instance behave correctly', () => {
       reconcile() {}
     }
 
-    abstract = new TestInstance(<div />, undefined, () => null);
+    abstract = new TestInstance(<div />, undefined, () => null, {});
   });
 
   it('appendToParent should throw exception', () => {
