@@ -10,7 +10,7 @@ function createInstance(applicationElement: ApplicationElement) {
   const wrapper = new RootInstance(true, undefined, () => null, {});
   wrapper.ref = document.createElement('div');
 
-  const instance = factory(applicationElement, wrapper, () => null);
+  const instance = factory(applicationElement, wrapper, () => null, {});
   instance.initialiseNestedElements();
   return instance;
 }

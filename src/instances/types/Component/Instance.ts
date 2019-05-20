@@ -6,6 +6,7 @@ import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import store, { storeType } from '../../../util/store';
 import factory from '../../factory';
 import reconcile, { shouldUpdate } from './reconcile';
+import { renderOptions } from '../../../interfaces/renderOptions';
 
 type lifecycle = 'componentDidMount' | 'componentWillUnmount';
 
@@ -24,6 +25,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
   public props: componentProps;
   public storeProps: storeType<componentProps, componentProps>;
   public mounted = true; // Has the information that the component is inside the active shadowdom
+  public renderOptions: renderOptions;
   private lifecycleHooks = {
     componentDidMount: [] as (() => void)[],
     componentWillUnmount: [] as (() => void)[],
@@ -33,9 +35,11 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance,
     getPredecessor: getPredeccessor,
+    renderOptions: renderOptions,
   ) {
-    super(abstractElement, parentInstance, getPredecessor);
+    super(abstractElement, parentInstance, getPredecessor, renderOptions);
 
+    this.renderOptions = renderOptions;
     this.type = abstractElement.type;
     this.props = abstractElement.props as componentProps;
     this.storeProps = store(abstractElement.props as componentProps, (state, action: componentProps) => {
@@ -55,12 +59,12 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
    */
   public initialiseNestedElements() {
     this.applicationInstance = new (this.type as any)(this.props);
-    if (this.invokeGuard === null) {
+    if (this.renderOptions.invokeGuard === undefined) {
       this.render(
         this.applicationInstance.render(this.storeProps.Observer, this),
       );
     } else {
-      const invokeHandle = this.invokeGuard(() => this.applicationInstance.render(this.storeProps.Observer, this));
+      const invokeHandle = this.renderOptions.invokeGuard(() => this.applicationInstance.render(this.storeProps.Observer, this));
       if (invokeHandle.hasError === false) {
         this.render(invokeHandle.result);
       }
@@ -81,7 +85,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
       if (this.rendered) {
         reconcile(abstractChildren, this);
       } else {
-        this.rendered = factory(abstractChildren, this, () => this.getPredecessor());
+        this.rendered = factory(abstractChildren, this, () => this.getPredecessor(), this.renderOptions);
         this.rendered.initialiseNestedElements();
       }
     } else {

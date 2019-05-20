@@ -5,7 +5,7 @@ describe('Does the root-instance behave correctly', () => {
   let root: Root;
 
   beforeEach(() => {
-    root = new Root(<div />, undefined, () => null);
+    root = new Root(<div />, undefined, () => null, {});
   });
 
   it('remove should throw exception', () => {

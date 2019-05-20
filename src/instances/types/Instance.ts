@@ -1,10 +1,10 @@
 import { ApplicationElement, props } from '../../interfaces/component';
 import { PlusnewElement } from '../../PlusnewAbstractElement';
 import types from './types';
+import { renderOptions } from '../../interfaces/renderOptions';
 
 export type predecessor = Node | null;
 export type getPredeccessor = () => predecessor;
-type invokeGuard<T> = (callback: () => T) => { hasError: true } | { hasError: false, result: T };
 
 export default abstract class Instance {
   public nodeType: types;
@@ -12,22 +12,17 @@ export default abstract class Instance {
   public type: PlusnewElement;
   public props: ApplicationElement | Partial<props>;
   public getPredecessor: getPredeccessor;
-  public namespace: string | null = null;
-  public createChildrenComponents = true;
-  public invokeGuard: null | invokeGuard<ApplicationElement> = null;
+  public renderOptions: renderOptions;
 
   constructor(
     _abstractElement: ApplicationElement,
     parentInstance: Instance | undefined,
     getPredecessor: getPredeccessor,
+    renderOptions: renderOptions,
   ) {
     this.parentInstance = parentInstance;
     this.getPredecessor = getPredecessor;
-    if (this.parentInstance) {
-      this.namespace = this.parentInstance.namespace;
-      this.createChildrenComponents = this.parentInstance.createChildrenComponents;
-      this.invokeGuard = this.parentInstance.invokeGuard;
-    }
+    this.renderOptions = renderOptions;
   }
 
   /**

@@ -2,6 +2,7 @@ import { ApplicationElement } from '../../interfaces/component';
 import factory from '../factory';
 import Instance, { getPredeccessor, predecessor } from './Instance';
 import { PlusnewAbstractElement } from 'index';
+import { renderOptions } from '../../interfaces/renderOptions';
 
 export default abstract class ChildrenInstance extends Instance {
   public rendered: Instance[];
@@ -13,9 +14,9 @@ export default abstract class ChildrenInstance extends Instance {
     abstractElement: ApplicationElement,
     parentInstance: Instance,
     getPredecessor: getPredeccessor,
+    renderOptions: renderOptions,
   ) {
-    super(abstractElement, parentInstance, getPredecessor);
-
+    super(abstractElement, parentInstance, getPredecessor, renderOptions);
     this.rendered = [];
   }
 
@@ -24,7 +25,7 @@ export default abstract class ChildrenInstance extends Instance {
   public addChildren() {
     for (let i = 0; i < this.props.children.length; i += 1) {
       if (this.rendered[i] === undefined) {
-        const instance = factory(this.props.children[i], this, this.getLastIntrinsicElementOf.bind(this, i - 1));
+        const instance = factory(this.props.children[i], this, this.getLastIntrinsicElementOf.bind(this, i - 1), this.renderOptions);
         this.rendered.push(instance);
         instance.initialiseNestedElements();
       }

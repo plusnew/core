@@ -3,6 +3,7 @@ import ChildrenInstance from '../ChildrenInstance';
 import Instance, { getPredeccessor } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
+import { renderOptions } from '../../../interfaces/renderOptions';
 
 /**
  * ArrayInstances are used for representing lists in the shadowdon
@@ -18,8 +19,9 @@ export default class ArrayInstance extends ChildrenInstance {
     abstractElements: (PlusnewAbstractElement)[],
     parentInstance: Instance,
     getPredecessor: getPredeccessor,
+    renderOptions: renderOptions,
   ) {
-    super(abstractElements, parentInstance, getPredecessor);
+    super(abstractElements, parentInstance, getPredecessor, renderOptions);
     this.props = {
       children: abstractElements,
     };
