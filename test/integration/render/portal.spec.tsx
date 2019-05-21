@@ -63,10 +63,10 @@ describe('<Portal />', () => {
       'Component',
       () =>
         <svg>
-            <Portal target={outside}>
-              <span />
-            </Portal>
-          } />
+          <Portal target={outside}>
+            <span />
+          </Portal>
+          <g />
         </svg>,
     );
 
@@ -74,6 +74,7 @@ describe('<Portal />', () => {
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).namespaceURI).toBe('http://www.w3.org/2000/svg');
+    expect((container.childNodes[0].childNodes[0] as HTMLElement).namespaceURI).toBe('http://www.w3.org/2000/svg');
 
     expect(outside.childNodes.length).toBe(1);
     expect((outside.childNodes[0] as HTMLElement).namespaceURI).toBe(outside.namespaceURI);
