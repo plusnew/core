@@ -13,7 +13,10 @@ const Portal: ComponentContainer<props> = component(
     let initialised = false;
 
     // The instance should get the namespace of the target, not the namespace from the parent-instance
-    instance.renderOptions.namespace = Props.getState().target.namespaceURI as string;
+    instance.renderOptions = {
+      ...instance.renderOptions,
+      namespace: Props.getState().target.namespaceURI as string,
+    };
 
     return <Props>{(props) => {
       if (initialised === false) {
