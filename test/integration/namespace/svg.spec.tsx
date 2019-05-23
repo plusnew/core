@@ -1,4 +1,4 @@
-import plusnew, { component } from 'index';
+import plusnew, { component, store } from 'index';
 
 const htmlNamespace = 'http://www.w3.org/1999/xhtml';
 const svgNamespace = 'http://www.w3.org/2000/svg';
@@ -80,5 +80,21 @@ describe('rendering svg components', () => {
     plusnew.render(<Component />, container, { namespace: svgNamespace });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
+  });
+
+  it('check if dom element has correct namespace, after replacement from svg', () => {
+    const local = store(true);
+    const Component = component(
+      'Component',
+      () => <local.Observer>{localState => localState ? <svg /> : <div />}</local.Observer> ,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
+
+    local.dispatch(false);
+
+    expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
   });
 });
