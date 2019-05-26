@@ -2,7 +2,10 @@ type invokeGuard<T> = (callback: () => T) => { hasError: true } | { hasError: fa
 
 export type renderOptions = {
   createChildrenComponents?: boolean;
-  namespace?: string;
+  xmlns?: string;
+  xmlnsPrefixes?: Partial<{
+    [key: string]: string;
+  }>;
   invokeGuard?: invokeGuard<any>;
   addAsyncListener?: (promise: Promise<void>) => void;
 };

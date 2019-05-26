@@ -41,8 +41,8 @@ export default class DomInstance extends ChildrenInstance {
     this.props = abstractElement.props;
     this.setNamespace();
 
-    if (this.renderOptions.namespace) {
-      this.ref = document.createElementNS(this.renderOptions.namespace, abstractElement.type as string);
+    if (this.renderOptions.xmlns) {
+      this.ref = document.createElementNS(this.renderOptions.xmlns, abstractElement.type as string);
     } else {
       this.ref = document.createElement(abstractElement.type as string);
     }
@@ -93,11 +93,11 @@ export default class DomInstance extends ChildrenInstance {
    * sets a special namespace, in case self is an svg, so that children will created with correct namespace
    */
   private setNamespace() {
-    const currentNamespace = getSpecialNamespace(this.type as string) || this.renderOptions.namespace;
-    if (currentNamespace !== this.renderOptions.namespace) {
+    const currentNamespace = getSpecialNamespace(this.type as string) || this.props.xmlns as string || this.renderOptions.xmlns;
+    if (currentNamespace !== this.renderOptions.xmlns) {
       this.renderOptions = {
         ...this.renderOptions,
-        namespace: currentNamespace,
+        xmlns: currentNamespace,
       };
     }
   }
@@ -169,19 +169,6 @@ export default class DomInstance extends ChildrenInstance {
       // When its an internal property, it should not be set to dom element
     } else if (typeof value === 'function') {
       (this.ref as any)[keyName] = value;
-    } else if (typeof(value) === 'boolean') {
-      if (this.setAttributeAsProperty(keyName)) {
-        // input-values need to be set directly as property, for overwriting purpose of browser behaviour
-        (this.ref as any)[keyName] = value;
-      } else {
-        if (value === true) {
-          // The standard says, that boolean attributes should have the keyname as the value
-          this.ref.setAttribute(keyName, keyName);
-        } else {
-          // boolean attributes have to be removed, to be invalidated
-          this.ref.removeAttribute(keyName);
-        }
-      }
     } else if (key === 'style') {
       // style gets set as a attribute, not by property
       // because of better debuggability when set by this way
@@ -192,8 +179,30 @@ export default class DomInstance extends ChildrenInstance {
       if (this.setAttributeAsProperty(keyName)) {
         // input-values need to be set directly as property, for overwriting purpose of browser behaviour
         (this.ref as any)[keyName] = value;
+      } else if (value === false) {
+        // @FIXME removing namespaced attributes needs to be implemented
+        this.ref.removeAttribute(keyName);
       } else {
-        this.ref.setAttribute(keyName, `${value}`);
+        if (keyName.indexOf(':') === -1) {
+          this.ref.setAttribute(keyName, `${value}`);
+        } else {
+          const [namespacePrefix, namespacedKeyName] = keyName.split(':');
+          if (namespacePrefix === 'xmlns') {
+            this.renderOptions = {
+              ...this.renderOptions,
+              xmlnsPrefixes: {
+                ...this.renderOptions.xmlnsPrefixes,
+                [namespacedKeyName]: value,
+              },
+            };
+          } else {
+            if (this.renderOptions && this.renderOptions.xmlnsPrefixes && typeof this.renderOptions.xmlnsPrefixes[namespacePrefix] !== undefined) {
+              this.ref.setAttributeNS(this.renderOptions.xmlnsPrefixes[namespacePrefix] as string, namespacedKeyName, `${value}`);
+            } else {
+              throw new Error(`The namespace prefix ${namespacePrefix} is not defined`);
+            }
+          }
+        }
       }
     }
   }

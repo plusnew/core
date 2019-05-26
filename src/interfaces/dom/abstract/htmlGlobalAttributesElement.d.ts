@@ -90,6 +90,7 @@ type htmlGlobalAttributesElement<currentElement> = {
   tabindex?: number;
   title?: string;
   translate?: "yes" | "no" | "";
+  xmlns?: string;
 };
 
 export { htmlGlobalAttributesElement };
