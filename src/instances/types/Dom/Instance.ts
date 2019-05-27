@@ -93,7 +93,7 @@ export default class DomInstance extends ChildrenInstance {
    * sets a special namespace, in case self is an svg, so that children will created with correct namespace
    */
   private setNamespace() {
-    const currentNamespace = getSpecialNamespace(this.type as string) || this.props.xmlns as string || this.renderOptions.xmlns;
+    const currentNamespace = this.props.xmlns as string || getSpecialNamespace(this.type as string) || this.renderOptions.xmlns;
     if (currentNamespace !== this.renderOptions.xmlns) {
       this.renderOptions = {
         ...this.renderOptions,

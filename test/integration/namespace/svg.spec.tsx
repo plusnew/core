@@ -47,6 +47,17 @@ describe('rendering svg components', () => {
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
   });
 
+  it('check if svg element has correct namespace', () => {
+    const Component = component(
+      'Component',
+      () => <svg xmlns="foo"/>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect(container.childNodes[0].namespaceURI).toBe('foo');
+  });
+
   it('check if nested svg element has correct namespace', () => {
     const Component = component(
       'Component',
