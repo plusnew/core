@@ -47,6 +47,17 @@ describe('rendering svg components', () => {
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
   });
 
+  it('check if svg element has correct namespace', () => {
+    const Component = component(
+      'Component',
+      () => <svg xmlns="foo"/>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect(container.childNodes[0].namespaceURI).toBe('foo');
+  });
+
   it('check if nested svg element has correct namespace', () => {
     const Component = component(
       'Component',
@@ -71,13 +82,26 @@ describe('rendering svg components', () => {
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
   });
 
+  it('check if nested element in svg element has correct namespace', () => {
+    const Component = component(
+      'Component',
+      () => <svg><foreignObject ><div xmlns={htmlNamespace}/></foreignObject></svg>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
+    expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
+    expect(container.childNodes[0].childNodes[0].childNodes[0].namespaceURI).toBe(htmlNamespace);
+  });
+
   it('check if element with renderoption is set to the namespace', () => {
     const Component = component(
       'Component',
       () => <g />,
     );
 
-    plusnew.render(<Component />, container, { namespace: svgNamespace });
+    plusnew.render(<Component />, container, { xmlns: svgNamespace });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
   });
@@ -96,5 +120,49 @@ describe('rendering svg components', () => {
     local.dispatch(false);
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
+  });
+
+  it('check if namespace prefix is set correctly', () => {
+    const xlinkNamespaceUrl = 'http://www.w3.org/1999/xlink';
+
+    const xlinkNamespace = {
+      'xmlns:xlink': xlinkNamespaceUrl,
+    };
+
+    const xlink = {
+      'xlink:href': 'someValue',
+    };
+
+    const Component = component(
+      'Component',
+      () =>
+        <svg xmlns={svgNamespace} {...xlinkNamespace}>
+          <use {...xlink} />{/** we have to use the spread operator, because namespace prefixes are not allowed in jsx */}
+        </svg>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect(
+      (container.childNodes[0].childNodes[0] as SVGUseElement).getAttributeNS(xlinkNamespaceUrl, 'href'),
+    ).toBe('someValue');
+  });
+
+  it('throw exception when namespace prefix is not known', () => {
+    const xlink = {
+      'xlink:href': 'someValue',
+    };
+
+    const Component = component(
+      'Component',
+      () =>
+        <svg xmlns={svgNamespace}>
+          <use {...xlink} />
+        </svg>,
+    );
+
+    expect(() =>
+      plusnew.render(<Component />, container),
+    ).toThrow(new Error('The namespace prefix xlink is not defined'));
   });
 });
