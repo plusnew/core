@@ -232,7 +232,7 @@ export default class DomInstance extends ChildrenInstance {
         }
 
         if (preventDefault === true) {
-          (this.ref as HTMLInputElement)[changeKey] = this.props[changeKey] as boolean;
+          ((this.ref as HTMLInputElement)[changeKey] as any) = this.props[changeKey];
         }
 
         delete this.setProp;

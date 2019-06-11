@@ -11,9 +11,8 @@ describe('<Idle />', () => {
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
     document.body.appendChild(container);
-    requestIdleCallbackSpy = spyOn(window, 'requestIdleCallback' as any).and.returnValue('foo');
-    cancelIdleCallbackSpy = spyOn(window, 'cancelIdleCallback' as any);
-
+    requestIdleCallbackSpy = spyOn(window as any, 'requestIdleCallback').and.returnValue('foo');
+    cancelIdleCallbackSpy = spyOn(window as any, 'cancelIdleCallback');
   });
 
   describe('with idle callback existing in the browser', () => {
