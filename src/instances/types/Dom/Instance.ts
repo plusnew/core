@@ -217,14 +217,18 @@ export default class DomInstance extends ChildrenInstance {
         }
 
         this.setProp = (key, value) => {
-          if (key === changeKey && (evt.target as HTMLInputElement)[changeKey] === value) {
-            preventDefault = false;
+          if (key === changeKey) {
+            // When value property is the same as it is before, the value doesn't need to be set
+            if ((evt.target as HTMLInputElement)[changeKey] === value) {
+              preventDefault = false;
+            } else {
+              // If the value got changed, it needs to be set
+              preventDefault = true;
+            }
           } else {
+            // every other property, which is not the one responsible for changing the value, should call the normal setProp behaviour
             DomInstance.prototype.setProp.call(this, key, value);
-            preventDefault = true;
           }
-
-          return;
         };
 
         if (this.props.onchange) {
