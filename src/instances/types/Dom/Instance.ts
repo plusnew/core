@@ -217,14 +217,15 @@ export default class DomInstance extends ChildrenInstance {
         }
 
         this.setProp = (key, value) => {
-          if (key === changeKey && (evt.target as HTMLInputElement)[changeKey] === value) {
-            preventDefault = false;
+          if (key === changeKey) {
+            if ((evt.target as HTMLInputElement)[changeKey] === value) {
+              preventDefault = false;
+            } else {
+              preventDefault = true;
+            }
           } else {
             DomInstance.prototype.setProp.call(this, key, value);
-            preventDefault = true;
           }
-
-          return;
         };
 
         if (this.props.onchange) {
