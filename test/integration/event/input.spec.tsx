@@ -43,7 +43,7 @@ describe('firing input events', () => {
     const local = store(0, (state, newValue: number) => newValue);
 
     const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
-      local.dispatch(evt.currentTarget.valueAsNumber);
+      local.dispatch(Number(evt.currentTarget.value));
     }).and.callThrough();
 
     const Component = component(
