@@ -24,9 +24,9 @@
   "homepage": "https://github.com/plusnew/plusnew#readme",
   "dependencies": {},
   "devDependencies": {
-    "copy-webpack-plugin": "^5.0.3",
+    "copy-webpack-plugin": "^5.0.4",
     "jest": "^24.8.0",
-    "plusnew-karma-config": "0.6.49",
+    "plusnew-karma-config": "0.6.50",
     "plusnew-webpack-config": "0.6.50",
     "requestidlecallback": "^0.3.0",
     "ts-jest": "^24.0.2",
