@@ -8,7 +8,9 @@
     "prepublishOnly": "yarn run test && yarn run build",
     "build": "webpack --config configs/webpack.prod.conf.js",
     "test": "karma start configs/karma.conf.js --no-auto-watch --single-run",
-    "test:watch": "karma start configs/karma.conf.js"
+    "test:watch": "karma start configs/karma.conf.js",
+    "test:jest": "jest --config=configs/jest.conf.js",
+    "test:jest:watch": "jest --config=configs/jest.conf.js --watch"
   },
   "repository": {
     "type": "git",
@@ -23,8 +25,11 @@
   "dependencies": {},
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.3",
+    "jest": "^24.8.0",
     "plusnew-karma-config": "0.6.49",
     "plusnew-webpack-config": "0.6.50",
+    "requestidlecallback": "^0.3.0",
+    "ts-jest": "^24.0.2",
     "tslint": "5.18.0",
     "tslint-config-airbnb": "5.11.1",
     "typescript": "3.5.3"
