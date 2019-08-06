@@ -1,4 +1,4 @@
-# plusnew [![Build Status](https://api.travis-ci.org/plusnew/plusnew.svg?branch=master)](https://travis-ci.org/plusnew/plusnew) [![Coverage Status](https://coveralls.io/repos/github/plusnew/plusnew/badge.svg?branch=master)](https://coveralls.io/github/plusnew/plusnew)
+# plusnew [![Build Status](https://api.travis-ci.org/plusnew/core.svg?branch=master)](https://travis-ci.org/plusnew/core) [![Coverage Status](https://coveralls.io/repos/github/plusnew/core/badge.svg?branch=master)](https://coveralls.io/github/plusnew/core)
 
 This Framework is built, because we believe that having typesafety and good debuggability is key.
 Why another framework? Because plusnew puts the Developer-Expierence first, and cares strongly about maintanability.
@@ -16,7 +16,7 @@ When props from the parent or stores are changing, the render-function does not 
 #### Function-Factory
 
 ```ts
-import plusnew, { component, Props } from 'plusnew';
+import plusnew, { component, Props } from '@plusnew/core';
 
 type props = { value: string };
 
@@ -40,7 +40,7 @@ export default component(
 #### Class
 
 ```ts
-import plusnew, { Component, Props } from 'plusnew';
+import plusnew, { Component, Props } from '@plusnew/core';
 
 type props = { value: string };
 
@@ -84,7 +84,7 @@ Each store has an Observer-Component, which expects a render-function as a child
 This render-function gets called whenever a store changes it's state.
 
 ```ts
-import plusnew, { component, store } from 'plusnew';
+import plusnew, { component, store } from '@plusnew/core';
 
 const INITIAL_COUNTER_VALUE = 0;
 
@@ -121,7 +121,7 @@ Context is a way to provide data for nested components, without passing everythi
 The Provider is the container who stores the state. A Consumer is a way to get the data and to dispatch a new reducer action.
 
 ````ts
-import plusnew, { component, context } from 'plusnew';
+import plusnew, { component, context } from '@plusnew/core';
 
 const INITIAL_COUNTER_VALUE = 0;
 
@@ -168,7 +168,7 @@ const NestedComponent = component(
 With portals you can render elements outside of your normal tree, whereever you want.
 
 ```ts
-import plusnew, { component, Portal } from 'plusnew';
+import plusnew, { component, Portal } from '@plusnew/core';
 
 export default component(
   'ComponentName',
@@ -179,8 +179,8 @@ export default component(
 );
 ```
 
-### Animate
-The Animate-Component can take care of dom-elements which were mounted and of dom-elements to be unmounted.
+### ElementLifecycle
+The ElementLifecycle-Component can take care of dom-elements which were mounted and of dom-elements to be unmounted.
 When a dom-element gets created the according elementDidMount or elementWillUnmount gets called, with the dom-element as a parameter.
 
 Same goes for dom-elements which will get unmounted. Simply return a resolved Promise when the animation is done and you want the dom-element to actually be deleted.
@@ -188,7 +188,8 @@ Same goes for dom-elements which will get unmounted. Simply return a resolved Pr
 Note: Dom-Elements inside Dom-Elements will not trigger the callbacks, only the most outer dom-elements will trigger the callback.
 
 ```ts
-import plusnew, { component, Animate, store } from 'plusnew';
+import plusnew, { component, store } from '@plusnew/core';
+import { ElementLifecycle } from '@plusnew/driver-dom';
 
 export default component(
   'ComponentName',
@@ -196,7 +197,7 @@ export default component(
     const show = store(true);
 
     return (
-      <Animate
+      <ElementLifecycle
         elementDidMount={(element) => {
           // For example you can call the Element.animate function
           // https://developer.mozilla.org/en-US/docs/Web/API/Element/animate
@@ -213,7 +214,7 @@ export default component(
           // when it gets deleted the elementWillUnmount gets called beforehand 
           state === true && <button onclick={() => show.dispatch(false)}>Remove me :)</button>
         }</show.Observer>
-      </Animate>
+      </ElementLifecycle>
     );
   },
 );
@@ -229,7 +230,7 @@ The given Promise should get resolved with an JSX-Element you want to show.
 Note: it is necessary that the promise gets resolved and not rejected, it is recommended to catch your own promise.
 
 ```ts
-import plusnew, { component, Async } from 'plusnew';
+import plusnew, { component, Async } from '@plusnew/core';
 
 const lazyModule = () => import('path/to/lazy/module')
                            .then(module => <module.default />)
@@ -252,7 +253,7 @@ The children of this component will be displayed when the browser is in idle
 or the application is signaling that it is urgent now.
 
 ```ts
-import plusnew, { component, Idle } from 'plusnew';
+import plusnew, { component, Idle } from '@plusnew/core';
 import ExpensiveComponent from './ExpensiveComponent';
 
 export default component(
@@ -270,7 +271,7 @@ When an error occured in the render function, the catch-function will be execute
 Be aware that every subcomponent of a try-component catches all exceptions in the render functions.
 
 ```ts
-import plusnew, { component, Try } from 'plusnew';
+import plusnew, { component, Try } from '@plusnew/core';
 
 export default component(
   'ComponentName',

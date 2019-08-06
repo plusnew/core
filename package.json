@@ -1,5 +1,5 @@
 {
-  "name": "plusnew",
+  "name": "@plusnew/core",
   "version": "0.6.50",
   "description": "ts component framework with an typesecure and functional approach",
   "main": "dist/index.js",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/plusnew/plusnew.git"
+    "url": "git+https://github.com/plusnew/core.git"
   },
   "author": "Carlo Jeske",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/plusnew/plusnew/issues"
+    "url": "https://github.com/plusnew/core/issues"
   },
-  "homepage": "https://github.com/plusnew/plusnew#readme",
+  "homepage": "https://github.com/plusnew/core#readme",
   "dependencies": {},
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.4",
