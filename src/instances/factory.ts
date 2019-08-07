@@ -15,12 +15,12 @@ import { renderOptions } from '../interfaces/renderOptions';
 /**
  * because data from jsx can be anything, this factory is needed to decide what type of instance should be created
  */
-export default function (
+export default function<HostElement, HostTextElement> (
   abstractElement: ApplicationElement,
-  parentInstance: Instance,
+  parentInstance: Instance<HostElement, HostTextElement>,
   getPredecessor: getPredeccessor,
-  renderOptions: renderOptions,
-): Instance {
+  renderOptions: renderOptions<HostElement, HostTextElement>,
+): Instance<HostElement, HostTextElement> {
   // @TODO add something for invalid functions
   if (elementTypeChecker.isPlaceholderElement(abstractElement) === true) {
     return new PlaceholderInstance(abstractElement as false, parentInstance, getPredecessor, renderOptions);

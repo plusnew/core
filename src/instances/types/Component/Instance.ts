@@ -18,14 +18,14 @@ type lifecycle = 'componentDidMount' | 'componentWillUnmount';
  * the render-function gets called again when a parent component rerenders
  * or when the dependencie-stores fire the change event
  */
-export default class ComponentInstance<componentProps extends Partial<props & { children: any }>> extends Instance {
+export default class ComponentInstance<componentProps extends Partial<props & { children: any }>, HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Component;
-  public rendered: Instance; // @FIXME This actually should be Instance or undefined
+  public rendered: Instance<HostElement, HostTextElement>; // @FIXME This actually should be Instance or undefined
   public applicationInstance: Component<componentProps>;
   public props: componentProps;
   public storeProps: storeType<componentProps, componentProps>;
   public mounted = true; // Has the information that the component is inside the active shadowdom
-  public renderOptions: renderOptions;
+  public renderOptions: renderOptions<HostElement, HostTextElement>;
   private lifecycleHooks = {
     componentDidMount: [] as (() => void)[],
     componentWillUnmount: [] as (() => void)[],
@@ -33,9 +33,9 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
 
   constructor(
     abstractElement: PlusnewAbstractElement,
-    parentInstance: Instance,
+    parentInstance: Instance<HostElement, HostTextElement>,
     getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
 

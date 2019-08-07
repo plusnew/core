@@ -24,17 +24,17 @@ const PropToAttribbuteMapping = {
  *
  * it also fires events like elementDidMount and elementWillUnmount
  */
-export default class DomInstance extends ChildrenInstance {
+export default class DomInstance<HostElement, HostTextElement> extends ChildrenInstance<HostElement, HostTextElement> {
   public nodeType = types.Dom;
-  public ref: Element;
+  public ref: HostElement;
   public props: props;
   public executeChildrenElementWillUnmount = false;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
-    parentInstance: Instance,
+    parentInstance: Instance<HostElement, HostTextElement>,
     predecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, predecessor, renderOptions);
     this.type = abstractElement.type;

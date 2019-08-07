@@ -4,17 +4,17 @@ import Instance, { getPredeccessor, predecessor } from './Instance';
 import { PlusnewAbstractElement } from 'index';
 import { renderOptions } from '../../interfaces/renderOptions';
 
-export default abstract class ChildrenInstance extends Instance {
-  public rendered: Instance[];
+export default abstract class ChildrenInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
+  public rendered: Instance<HostElement, HostTextElement>[];
   // Decides if the children will call elementWillUnmount
   public abstract executeChildrenElementWillUnmount: boolean;
   public props: { children: PlusnewAbstractElement[] };
 
   constructor(
     abstractElement: ApplicationElement,
-    parentInstance: Instance,
+    parentInstance: Instance<HostElement, HostTextElement>,
     getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
     this.rendered = [];

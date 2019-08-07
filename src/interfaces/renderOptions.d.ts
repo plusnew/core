@@ -1,6 +1,9 @@
+import { Driver } from "./driver";
+
 type invokeGuard<T> = (callback: () => T) => { hasError: true } | { hasError: false, result: T };
 
-export type renderOptions = {
+export type renderOptions<HostElement, HostTextElement> = {
+  driver: Driver<HostElement, HostTextElement>;
   createChildrenComponents?: boolean;
   xmlns?: string;
   xmlnsPrefixes?: Partial<{

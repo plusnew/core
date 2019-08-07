@@ -4,15 +4,15 @@ import types from '../types';
 import { props } from  '../../../interfaces/component';
 import { renderOptions } from '../../../interfaces/renderOptions';
 
-export default class ShallowInstance<componentProps extends Partial<props>>  extends Instance {
+export default class ShallowInstance<componentProps extends Partial<props>, HostElement, HostTextElement>  extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Component;
   public props: componentProps;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
-    parentInstance: Instance,
+    parentInstance: Instance<HostElement, HostTextElement>,
     getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
 

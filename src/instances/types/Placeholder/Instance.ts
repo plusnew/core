@@ -5,7 +5,7 @@ import types from '../types';
  * PlaceholderInstance is a representation of {false}
  * it is used for conditions which don't want to show something
  */
-export default class PlaceholderInstance extends Instance {
+export default class PlaceholderInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Placeholder;
   public type = types.Fragment;
 

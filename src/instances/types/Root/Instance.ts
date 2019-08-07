@@ -3,23 +3,23 @@ import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
 import { renderOptions } from '../../../interfaces/renderOptions';
 
-export default class RootInstance extends Instance {
+export default class RootInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Root;
   public type = types.Root;
-  public ref: Element;
+  public ref: HostElement;
 
   constructor(
     abstractElement: ApplicationElement,
-    parentInstance: Instance | undefined,
+    parentInstance: Instance<HostElement, HostTextElement> | undefined,
     getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
   }
   /**
    * appends the element to the rootcontainer
    */
-  public appendChild(element: Node, predecessor: predecessor) {
+  public appendChild(element: HostElement, predecessor: predecessor) {
     this.insertBefore(this.ref, element, predecessor);
   }
 

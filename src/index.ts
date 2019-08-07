@@ -33,13 +33,10 @@ class Plusnew {
   /**
    * mounts the root component
    */
-  public render(element: PlusnewAbstractElement, containerElement: HTMLElement, options?: renderOptions) {
+  public render<HostElement, HostTextElement>(options: renderOptions<HostElement, HostTextElement>) {
     // Fake RootInstance
     const predecessor = () => null;
-    const renderOptions = options || {};
-    const wrapper = new RootInstance(true, undefined, predecessor, renderOptions);
-
-    wrapper.ref = containerElement;
+    const wrapper = new RootInstance(true, undefined, predecessor, options);
 
     while (containerElement.childNodes.length) {
       containerElement.removeChild(containerElement.childNodes[0]);

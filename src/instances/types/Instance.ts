@@ -6,19 +6,19 @@ import { renderOptions } from '../../interfaces/renderOptions';
 export type predecessor = Node | null;
 export type getPredeccessor = () => predecessor;
 
-export default abstract class Instance {
+export default abstract class Instance<HostElement, HostTextElement> {
   public nodeType: types;
-  public parentInstance?: Instance;
+  public parentInstance?: Instance<HostElement, HostTextElement>;
   public type: PlusnewElement;
   public props: ApplicationElement | Partial<props>;
   public getPredecessor: getPredeccessor;
-  public renderOptions: renderOptions;
+  public renderOptions: renderOptions<HostElement, HostTextElement>;
 
   constructor(
     _abstractElement: ApplicationElement,
-    parentInstance: Instance | undefined,
+    parentInstance: Instance<HostElement, HostTextElement> | undefined,
     getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     this.parentInstance = parentInstance;
     this.getPredecessor = getPredecessor;
@@ -36,7 +36,7 @@ export default abstract class Instance {
   /**
    * appends the given element, to the parentinstance, if existent
    */
-  public appendToParent(element: Node, predecessor: predecessor) {
+  public appendToParent(element: HostElement | HostTextElement, predecessor: predecessor) {
     if (this.parentInstance === undefined) {
       throw new Error('Cant append element to not existing parent');
     } else {
@@ -47,7 +47,7 @@ export default abstract class Instance {
   /**
    * makes a insertBefore to the parent
    */
-  public appendChild(element: Node, predecessor: predecessor) {
+  public appendChild(element: HostElement | HostTextElement, predecessor: predecessor) {
     if (this.parentInstance === undefined) {
       throw new Error('Couldn\'t add child to parent');
     } else {
@@ -55,7 +55,7 @@ export default abstract class Instance {
     }
   }
 
-  public insertBefore(parentNode: Node, target: Node, predecessor: predecessor) {
+  public insertBefore(parentNode: HostElement | HostTextElement, target: HostElement | HostTextElement, predecessor: predecessor) {
     if (predecessor === null) {
       parentNode.insertBefore(target, parentNode.firstChild);
     } else {
@@ -66,7 +66,7 @@ export default abstract class Instance {
   /**
    * recursively search for another instance
    */
-  public find(callback: (instance: Instance) => boolean): Instance | undefined {
+  public find(callback: (instance: Instance<HostElement, HostTextElement>) => boolean): Instance<HostElement, HostTextElement> | undefined {
     if (callback(this)) {
       return this;
     }
@@ -78,7 +78,7 @@ export default abstract class Instance {
     return undefined;
   }
 
-  public abstract getLastIntrinsicElement(): Node | null;
+  public abstract getLastIntrinsicElement(): HostElement | HostTextElement | null;
 
   /**
    * orders to move itself to another place
@@ -91,7 +91,7 @@ export default abstract class Instance {
   /**
    * gets called with newly created elements by the children
    */
-  public elementDidMount(element: Element): Promise<any> | void {
+  public elementDidMount(element: HostElement | HostTextElement): Promise<any> | void {
     if (this.parentInstance) {
       this.parentInstance.elementDidMount(element);
     }
@@ -100,7 +100,7 @@ export default abstract class Instance {
   /**
    * gets called with deleted elements from the children
    */
-  public elementWillUnmount(element: Element): Promise<any> | void {
+  public elementWillUnmount(element: HostElement | HostTextElement): Promise<any> | void {
     if (this.parentInstance) {
       return this.parentInstance.elementWillUnmount(element);
     }
