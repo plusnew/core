@@ -4,7 +4,7 @@ import { Observer } from '../util/store';
 import Instance from '../instances/types/Instance';
 import types from '../instances/types/types';
 
-function hasComponent(instance?: Instance): boolean {
+function hasComponent(instance?: Instance<unknown, unknown>): boolean {
   if (!instance) {
     return false;
   }
@@ -21,11 +21,11 @@ export default abstract class Component<componentProps extends Partial<props & {
   constructor(props: componentProps) {
   }
 
-  abstract render(props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps>): ApplicationElement;
+  abstract render(props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps, unknown, unknown>): ApplicationElement;
 
-  componentWillUnmount(props: componentProps, plusnewComponentInstance: ComponentInstance<componentProps>) {}
+  componentWillUnmount(props: componentProps, plusnewComponentInstance: ComponentInstance<componentProps, unknown, unknown>) {}
 
-  static shouldCreateComponent(parentInstance: Instance) {
+  static shouldCreateComponent(parentInstance: Instance<unknown, unknown>) {
     return parentInstance.renderOptions.createChildrenComponents !== false || hasComponent(parentInstance) === false;
   }
 }

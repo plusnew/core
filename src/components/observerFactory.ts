@@ -12,9 +12,9 @@ export type observerProps<state> = {
 export default function <state>(store: storeType<state, any>) {
 
   return class Observer extends AbstractClass<observerProps<state>> {
-    instance: ComponentInstance<observerProps<state>>;
+    instance: ComponentInstance<observerProps<state>, unknown, unknown>;
 
-    public render(_props: any, instance: ComponentInstance<observerProps<state>>) {
+    public render(_props: any, instance: ComponentInstance<observerProps<state>, unknown, unknown>) {
       this.instance = instance;
 
       store.subscribe(this.update);

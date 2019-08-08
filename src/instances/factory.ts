@@ -9,7 +9,7 @@ import Instance, { getPredeccessor } from './types/Instance';
 import PlaceholderInstance from './types/Placeholder/Instance';
 import ShallowInstance from './types/Shallow/Instance';
 import TextInstance from './types/Text/Instance';
-import { ComponentContainer } from 'components/factory';
+import { IComponentContainer } from 'components/factory';
 import { renderOptions } from '../interfaces/renderOptions';
 
 /**
@@ -44,7 +44,7 @@ export default function<HostElement, HostTextElement> (
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     const componentAbstractElement = abstractElement as PlusnewAbstractElement;
-    if ((componentAbstractElement.type as ComponentContainer<any>).shouldCreateComponent(parentInstance)) {
+    if ((componentAbstractElement.type as IComponentContainer<any, HostElement, HostTextElement>).shouldCreateComponent(parentInstance)) {
       return new ComponentInstance(
         abstractElement as PlusnewAbstractElement,
         parentInstance,

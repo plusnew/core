@@ -63,7 +63,7 @@ export class Reconciler {
   /**
    * checks if the abstractElements are the same type
    */
-  private isSameAbstractElementType(newAbstractElement: ApplicationElement, instance: Instance<HostElement, HostTextElement>) {
+  private isSameAbstractElementType<HostElement, HostTextElement>(newAbstractElement: ApplicationElement, instance: Instance<HostElement, HostTextElement>) {
     if (elementTypeChecker.isPlaceholderElement(newAbstractElement)) {
       return instance.nodeType === types.Placeholder;
     }

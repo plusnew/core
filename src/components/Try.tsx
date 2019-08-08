@@ -11,7 +11,7 @@ type props = {
 export default class Try extends Component<props> {
   static displayName = 'Try';
 
-  private instance: ComponentInstance<props>;
+  private instance: ComponentInstance<props, any, any>;
   private errored = false;
 
   public invokeGuard<T>(callback: () => T): { hasError: true } | { hasError: false, result: T } {
@@ -34,7 +34,7 @@ export default class Try extends Component<props> {
     if (this.errored) {
       this.instance.renderOptions = {
         ...this.instance.renderOptions,
-        invokeGuard: (this.instance.parentInstance as ComponentInstance<any>).renderOptions.invokeGuard,
+        invokeGuard: (this.instance.parentInstance as ComponentInstance<any, any, any>).renderOptions.invokeGuard,
       };
     } else {
       this.instance.renderOptions = {
@@ -72,7 +72,7 @@ export default class Try extends Component<props> {
     this.instance.storeProps.unsubscribe(this.update);
   }
 
-  render(Props: Props<props>, instance: ComponentInstance<props>) {
+  render(Props: Props<props>, instance: ComponentInstance<props, any, any>) {
     this.instance = instance;
 
     this.instance.storeProps.subscribe(this.update);

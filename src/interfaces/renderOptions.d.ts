@@ -1,9 +1,9 @@
-import { Driver } from "./driver";
+import { IDriver } from "./driver";
 
 type invokeGuard<T> = (callback: () => T) => { hasError: true } | { hasError: false, result: T };
 
 export type renderOptions<HostElement, HostTextElement> = {
-  driver: Driver<HostElement, HostTextElement>;
+  driver: IDriver<HostElement, HostTextElement>;
   createChildrenComponents?: boolean;
   xmlns?: string;
   xmlnsPrefixes?: Partial<{

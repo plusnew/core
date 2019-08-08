@@ -6,9 +6,9 @@ type renderProps<state, action> = (state: state, dispatch: (action: action) => v
 type providerProps<state, action> = {state: state, dispatch: (action: action) => void, children: ApplicationElement};
 type consumerProps<state, action> = {children: renderProps<state, action>};
 type contextEntity<state, action> = {
-  Provider: ComponentContainer<providerProps<state, action>>;
-  Consumer: ComponentContainer<consumerProps<state, action>>;
-  findProvider: (instance: Instance) => ComponentInstance<providerProps<state, action>>
+  Provider: ComponentContainer<providerProps<state, action>, unknown, unknown>;
+  Consumer: ComponentContainer<consumerProps<state, action>, unknown, unknown>;
+  findProvider: (instance: Instance<unknown, unknown>) => ComponentInstance<providerProps<state, action>, unknown, unknown>;
 };
 
 function context<stateType, actionType>(): contextEntity<stateType, actionType> {
@@ -19,13 +19,13 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
     }
   }
 
-  const findProvider = (componentInstance: Instance) => {
+  const findProvider = (componentInstance: Instance<unknown, unknown>) => {
     const providerInstance = componentInstance.find(instance => instance instanceof ComponentInstance && instance.type === Provider);
     if (providerInstance === undefined) {
       throw new Error('Could not find Provider');
     }
 
-    return providerInstance as ComponentInstance<providerProps<stateType, actionType>>;
+    return providerInstance as ComponentInstance<providerProps<stateType, actionType>, unknown, unknown>;
   };
 
   const result: contextEntity<stateType, actionType> = {
@@ -33,7 +33,7 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
     Provider,
     Consumer: class Consumer extends Component<consumerProps<stateType, actionType>> {
       static displayName = 'Consumer';
-      private instance: ComponentInstance<consumerProps<stateType, actionType>>;
+      private instance: ComponentInstance<consumerProps<stateType, actionType>, unknown, unknown>;
       private providerPropsStore: storeType<providerProps<stateType, actionType>, any>;
 
       private getRenderPropsResult() {
@@ -46,7 +46,7 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
         this.instance.render(this.getRenderPropsResult());
       }
 
-      render(_Props: Props<consumerProps<stateType, actionType>>, componentInstance: ComponentInstance<any>) {
+      render(_Props: Props<consumerProps<stateType, actionType>>, componentInstance: ComponentInstance<any, unknown, unknown>) {
         this.instance = componentInstance;
 
         this.providerPropsStore = findProvider(componentInstance).storeProps;
@@ -55,7 +55,7 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
 
         return this.getRenderPropsResult();
       }
-      componentWillUnmount(_Props: consumerProps<stateType, actionType>, componentInstance: ComponentInstance<any>) {
+      componentWillUnmount(_Props: consumerProps<stateType, actionType>, componentInstance: ComponentInstance<any, unknown, unknown>) {
         this.providerPropsStore.unsubscribe(this.update);
         componentInstance.storeProps.unsubscribe(this.update);
       }

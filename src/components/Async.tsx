@@ -14,13 +14,13 @@ type props = {
 };
 
 class Async extends AbstractClass<props> {
-  instance: ComponentInstance<props>;
+  instance: ComponentInstance<props, unknown, unknown>;
 
   static displayName = 'Async';
 
   private increment = 0;
 
-  render(_Props: Props<props>, instance: ComponentInstance<props>) {
+  render(_Props: Props<props>, instance: ComponentInstance<props, unknown, unknown>) {
     this.instance = instance;
     this.instance.storeProps.subscribe(this.update);
 

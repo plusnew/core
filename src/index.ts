@@ -1,10 +1,7 @@
 import store, { Observer, storeType } from './util/store';
 import context from './components/context';
 import AbstractClass from './components/AbstractClass';
-import componentFactory, { ComponentContainer } from './components/factory';
-import Animate from './components/Animate';
-import Portal from './components/Portal';
-import Idle from './components/Idle';
+import componentFactory, { IComponentContainer } from './components/factory';
 import Async from './components/Async';
 import Try from './components/Try';
 import factory from './instances/factory';
@@ -25,7 +22,7 @@ class Plusnew {
     PlusnewAbstractElement;
   public createElement<props>(type: number, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
   public createElement<props>(type: Symbol, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
-  public createElement<props>(type: ComponentContainer<props>, props: props, ...children: ApplicationElement[]): PlusnewAbstractElement;
+  public createElement<props>(type: IComponentContainer<props, unknown, unknown>, props: props, ...children: ApplicationElement[]): PlusnewAbstractElement;
   public createElement(type: PlusnewElement, props: any, ...children: ApplicationElement[]) {
     return new PlusnewAbstractElement(type, props, children);
   }
@@ -58,14 +55,11 @@ export {
   Plusnew,
   Instance,
   componentFactory as component,
-  ComponentContainer,
+  IComponentContainer as ComponentContainer,
   renderOptions,
   PlusnewAbstractElement,
   ApplicationElement,
   elementTypeChecker,
-  Portal,
-  Idle,
-  Animate,
   Async,
   Try,
   AbstractClass as Component,
