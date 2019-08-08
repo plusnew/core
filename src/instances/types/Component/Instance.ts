@@ -21,7 +21,7 @@ type lifecycle = 'componentDidMount' | 'componentWillUnmount';
 export default class ComponentInstance<componentProps extends Partial<props & { children: any }>, HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Component;
   public rendered: Instance<HostElement, HostTextElement>; // @FIXME This actually should be Instance or undefined
-  public applicationInstance: Component<componentProps>;
+  public applicationInstance: Component<componentProps, HostElement, HostTextElement>;
   public props: componentProps;
   public storeProps: storeType<componentProps, componentProps>;
   public mounted = true; // Has the information that the component is inside the active shadowdom

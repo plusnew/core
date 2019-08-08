@@ -3,7 +3,7 @@ import factory from '../../factory';
 import reconciler from '../../reconciler';
 import DomInstance from './Instance';
 
-export default function (props: props, instance: DomInstance) {
+export default function <HostElement, HostTextElement>(props: props, instance: DomInstance<HostElement, HostTextElement>) {
   for (const propIndex in props) {
     if (propIndex === 'children') {
       for (let i = 0; i < props.children.length; i += 1) {
