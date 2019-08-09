@@ -232,6 +232,40 @@ describe('<Try />', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
   });
 
+  it('Show error when in deeply nested component something went wrong', () => {
+    const NestedComponent = component(
+      'NestedComponent',
+      () =>
+        <>
+          <span />
+          <DeeplyNestedComponent />
+          <span />
+        </>,
+    );
+
+    const DeeplyNestedComponent = component(
+      'DeepldyNestedComponent',
+      () => {
+        throw new Error('error');
+      },
+    );
+
+    const Component = component(
+      'Component',
+      () =>
+        <Try
+          catch={() => <div />}
+        >{() =>
+          <NestedComponent />
+        }</Try>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+  });
+
   it('Show error when in nested component something went wrong', () => {
     const counter = store(0);
     const NestedComponent = component(
