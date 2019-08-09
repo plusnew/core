@@ -30,16 +30,12 @@ class Plusnew {
   /**
    * mounts the root component
    */
-  public render<HostElement, HostTextElement>(options: renderOptions<HostElement, HostTextElement>) {
+  public render<HostElement, HostTextElement>(element: PlusnewAbstractElement, options: renderOptions<HostElement, HostTextElement>) {
     // Fake RootInstance
     const predecessor = () => null;
     const wrapper = new RootInstance(true, undefined, predecessor, options);
 
-    while (containerElement.childNodes.length) {
-      containerElement.removeChild(containerElement.childNodes[0]);
-    }
-
-    const instance = factory(element, wrapper, predecessor, renderOptions);
+    const instance = factory(element, wrapper, predecessor, options);
     instance.initialiseNestedElements();
 
     return instance;
