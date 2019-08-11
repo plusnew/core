@@ -4748,10 +4748,10 @@ pkg-dir@^3.0.0:
   dependencies:
     find-up "^3.0.0"
 
-plusnew-karma-config@0.6.50:
-  version "0.6.50"
-  resolved "https://registry.yarnpkg.com/plusnew-karma-config/-/plusnew-karma-config-0.6.50.tgz#ecc621a3c34ba621a19d0cc7b55f384428cb4459"
-  integrity sha512-aJRwsj2TZ2QyWha1cKbqRueHcAhXjqy4AfqNFEOoEnesetGW9SDn1aoufYAGA8yjNOZv89PzVKLhXY9C9fJxJQ==
+plusnew-karma-config@0.6.54:
+  version "0.6.54"
+  resolved "https://registry.yarnpkg.com/plusnew-karma-config/-/plusnew-karma-config-0.6.54.tgz#372c33e1b619d03cc91205912d962a04f29a23f1"
+  integrity sha512-5j+NdADI96fBoxaX1A3PJJctX6AiU5Ax44pg8bg/caYkQmRV4dX67UohRzN0zICVIWdHPe1DFoDaYrgZr126hQ==
   dependencies:
     "@types/jasmine" "^3.3.14"
     jasmine-core "^3.4.0"
