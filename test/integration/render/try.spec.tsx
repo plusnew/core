@@ -1,4 +1,4 @@
-import plusnew, { component, Try, store } from 'index';
+import plusnew, { component, Try, store, context } from 'index';
 
 describe('<Try />', () => {
   let container: HTMLElement;
@@ -159,7 +159,7 @@ describe('<Try />', () => {
         >
           {() =>
             <counter.Observer>{counterState =>
-                <span>{counterState}</span>
+              <span>{counterState}</span>
             }</counter.Observer>
           }
         </Try>,
@@ -257,7 +257,7 @@ describe('<Try />', () => {
           catch={() => <div />}
         >{() =>
           <NestedComponent />
-        }</Try>,
+          }</Try>,
     );
 
     plusnew.render(<Component />, container);
@@ -298,5 +298,89 @@ describe('<Try />', () => {
     counter.dispatch(1);
 
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+  });
+
+  describe('context', () => {
+    it('Show children and then error', () => {
+      const counter = store(0);
+      const counterContext = context<number, number>();
+
+      const NestedComponent = component(
+        'NestedComponent',
+        () =>
+          <counterContext.Consumer>{(counterState) => {
+            if (counterState === 0) {
+              return <span>{counterState}</span>;
+            }
+            throw new Error('error');
+          }}</counterContext.Consumer>,
+      );
+
+      const Component = component(
+        'Component',
+        () =>
+          <Try
+            catch={() => <div />}
+          >
+            {() =>
+              <counter.Observer>{counterState =>
+                <counterContext.Provider state={counterState} dispatch={counter.dispatch}>
+                  <NestedComponent />
+                </counterContext.Provider>
+              }</counter.Observer>
+            }
+          </Try>,
+      );
+
+      plusnew.render(<Component />, container);
+
+      expect(container.childNodes.length).toBe(1);
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+      expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+
+      counter.dispatch(1);
+
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    });
+  });
+
+  it('Show children and then update', () => {
+    const counter = store(0);
+    const counterContext = context<number, number>();
+
+    const NestedComponent = component(
+      'NestedComponent',
+      () =>
+        <counterContext.Consumer>{counterState =>
+          <span>{counterState}</span>
+        }</counterContext.Consumer>,
+    );
+
+    const Component = component(
+      'Component',
+      () =>
+        <Try
+          catch={() => <div />}
+        >
+          {() =>
+            <counter.Observer>{counterState =>
+              <counterContext.Provider state={counterState} dispatch={counter.dispatch}>
+                <NestedComponent />
+              </counterContext.Provider>
+            }</counter.Observer>
+          }
+        </Try>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+
+    counter.dispatch(1);
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
   });
 });
