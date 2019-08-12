@@ -43,7 +43,16 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
       }
 
       private update = () => {
-        this.instance.render(this.getRenderPropsResult());
+        if (this.instance.renderOptions.invokeGuard === undefined) {
+          this.instance.render(
+            this.getRenderPropsResult(),
+          );
+        } else {
+          const invokeHandle = this.instance.renderOptions.invokeGuard(() => this.getRenderPropsResult());
+          if (invokeHandle.hasError === false) {
+            this.instance.render(invokeHandle.result);
+          }
+        }
       }
 
       render(_Props: Props<consumerProps<stateType, actionType>>, componentInstance: ComponentInstance<any>) {

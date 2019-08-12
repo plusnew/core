@@ -9,7 +9,7 @@ export type componentResult<componentProps extends Partial<props>> = {
 };
 
 export interface ComponentContainer<componentProps> {
-  new (props: componentProps): AbstractClass<componentProps>;
+  new (props: componentProps, componentInstance: ComponentInstance<componentProps>): AbstractClass<componentProps>;
   prototype: AbstractClass<componentProps>;
   displayName: string;
   shouldCreateComponent(instance: Instance): boolean;
@@ -27,11 +27,10 @@ const factory: factory = <componentProps extends Partial<props>>(
   render: (Props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps>) => ApplicationElement,
 ) => {
   class Component extends AbstractClass<componentProps> {
-    dependencies = {};
-    config: any;
-
-    constructor(props: componentProps) {
-      super(props);
+    public displayName = displayName;
+    public component = render;
+    constructor(props: componentProps, componentInstance: ComponentInstance<componentProps>) {
+      super(props, componentInstance);
     }
 
     render(Props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps>) {

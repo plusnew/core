@@ -1,5 +1,6 @@
 import { Props, Component, ApplicationElement } from '../index';
 import ComponentInstance from '../instances/types/Component/Instance';
+import { invokeGuard } from '../interfaces/renderOptions';
 
 type renderFunction = () => ApplicationElement;
 
@@ -13,6 +14,20 @@ export default class Try extends Component<props> {
 
   private instance: ComponentInstance<props>;
   private errored = false;
+
+  constructor (props: props, componentInstance: ComponentInstance<props>) {
+    super(props, componentInstance);
+
+    this.instance = componentInstance;
+    this.setInvokeGuard();
+
+    componentInstance.executeUserspace = () => {
+      (componentInstance.renderOptions.invokeGuard as invokeGuard<unknown>)(() => {
+        componentInstance.render(componentInstance.applicationInstance.render(componentInstance.storeProps.Observer, componentInstance));
+        componentInstance.executeLifecycleHooks('componentDidMount');
+      });
+    };
+  }
 
   public invokeGuard<T>(callback: () => T): { hasError: true } | { hasError: false, result: T } {
     try {
@@ -73,8 +88,6 @@ export default class Try extends Component<props> {
   }
 
   render(Props: Props<props>, instance: ComponentInstance<props>) {
-    this.instance = instance;
-
     this.instance.storeProps.subscribe(this.update);
     this.setInvokeGuard();
 
