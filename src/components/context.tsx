@@ -48,10 +48,10 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
             this.getRenderPropsResult(),
           );
         } else {
-          const invokeHandle = this.instance.renderOptions.invokeGuard(() => this.getRenderPropsResult());
-          if (invokeHandle.hasError === false) {
-            this.instance.render(invokeHandle.result);
-          }
+          this.instance.renderOptions.invokeGuard(() => {
+            const result = this.getRenderPropsResult();
+            this.instance.render(result);
+          });
         }
       }
 
