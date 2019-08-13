@@ -5,7 +5,7 @@ import { invokeGuard } from '../interfaces/renderOptions';
 type renderFunction = () => ApplicationElement;
 
 type props = {
-  catch: () => ApplicationElement;
+  catch: (Error: any) => ApplicationElement;
   children: renderFunction;
 };
 
@@ -13,7 +13,7 @@ export default class Try extends Component<props> {
   static displayName = 'Try';
 
   private instance: ComponentInstance<props>;
-  private errored = false;
+  private errored: any = null;
 
   constructor (props: props, componentInstance: ComponentInstance<props>) {
     super(props, componentInstance);
@@ -29,17 +29,18 @@ export default class Try extends Component<props> {
     };
   }
 
-  public invokeGuard<T>(callback: () => T): { hasError: true } | { hasError: false, result: T } {
+  public invokeGuard<T>(callback: () => T): { hasError: true, error: any } | { hasError: false, result: T } {
     try {
       return {
         hasError: false,
         result: callback(),
       };
     } catch (error) {
-      this.errored = true;
+      this.errored = error;
       this.update();
 
       return {
+        error,
         hasError: true,
       };
     }
@@ -67,17 +68,17 @@ export default class Try extends Component<props> {
 
     let result: ApplicationElement;
 
-    if (this.errored) {
-      result = this.instance.props.catch();
-    } else {
+    if (this.errored === null) {
       try {
         result = ((this.instance.props.children as any)[0] as renderFunction)();
       } catch (error) {
-        this.errored = true;
+        this.errored = error;
         this.setInvokeGuard();
 
-        result = this.instance.props.catch();
+        result = this.instance.props.catch(this.errored);
       }
+    } else {
+      result = this.instance.props.catch(this.errored);
     }
 
     this.instance.render(result);
@@ -94,10 +95,10 @@ export default class Try extends Component<props> {
     try {
       return ((Props.getState().children as any)[0] as renderFunction)();
     } catch (error) {
-      this.errored = true;
+      this.errored = error;
       this.setInvokeGuard();
 
-      return Props.getState().catch();
+      return Props.getState().catch(this.errored);
     }
   }
 }
