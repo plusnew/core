@@ -1,4 +1,8 @@
-import plusnew, { component, Try, store, context } from 'index';
+import plusnew, { component, Try, store, context, Async } from 'index';
+
+function tick() {
+  return Promise.resolve();
+}
 
 describe('<Try />', () => {
   let container: HTMLElement;
@@ -474,5 +478,30 @@ describe('<Try />', () => {
 
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
+  });
+  it('<Async /> reject', async () => {
+    const Component = component(
+      'Component',
+      () =>
+        <Try
+          catch={() => <div />}
+        >
+          {() =>
+            <Async
+              pendingIndicator={<span />}
+            >{() => Promise.reject()}</Async>
+          }
+        </Try>,
+    );
+
+    plusnew.render(<Component />, container);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    await tick();
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
   });
 });
