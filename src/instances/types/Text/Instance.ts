@@ -12,37 +12,37 @@ export default class TextInstance<HostElement, HostTextElement> extends Instance
   constructor(
     abstractElement: string,
     parentInstance: Instance<HostElement, HostTextElement>,
-    getPredecessor: getPredeccessor,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
     renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
 
     this.props = abstractElement;
-    this.ref = renderOptions.driver.createTextElement(abstractElement);
+    this.ref = renderOptions.driver.text.create(abstractElement);
 
     this.appendToParent(this.ref, getPredecessor());
   }
 
-  public getLastIntrinsicElement() {
-    return this.ref;
+  public getLastIntrinsicInstance() {
+    return this;
   }
 
   public setText(abstractElement: string) {
-    this.renderOptions.driver.updateText(this, abstractElement);
+    this.renderOptions.driver.text.update(this, abstractElement);
   }
 
   /**
    * moves this textnode inside the dom
    */
-  public move(predecessor: predecessor) {
-    this.insertBefore(this.ref.parentNode as HostElement, this.ref, predecessor);
+  public move(predecessor: predecessor<HostElement, HostTextElement>) {
+    this.renderOptions.driver.text.moveBeforeSibling(this, predecessor);
   }
 
   /**
    * removes this textnode from the dom
    */
   public remove() {
-    this.renderOptions.driver.removeTextElement(this);
+    this.renderOptions.driver.text.remove(this);
   }
 
   public reconcile(newAbstractElement: string) {

@@ -18,7 +18,7 @@ export default class ArrayInstance<HostElement, HostTextElement> extends Childre
   constructor(
     abstractElements: (PlusnewAbstractElement)[],
     parentInstance: Instance<HostElement, HostTextElement>,
-    getPredecessor: getPredeccessor,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
     renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElements, parentInstance, getPredecessor, renderOptions);

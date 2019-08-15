@@ -29,23 +29,20 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
   public ref: HostElement;
   public props: props;
   public executeChildrenElementWillUnmount = false;
+  public type: string;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance<HostElement, HostTextElement>,
-    predecessor: getPredeccessor,
+    predecessor: getPredeccessor<HostElement, HostTextElement>,
     renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, predecessor, renderOptions);
-    this.type = abstractElement.type;
+    this.type = `${abstractElement.type}`;
     this.props = abstractElement.props;
     this.setNamespace();
 
-    if (this.renderOptions.xmlns) {
-      this.ref = document.createElementNS(this.renderOptions.xmlns, abstractElement.type as string);
-    } else {
-      this.ref = document.createElement(abstractElement.type as string);
-    }
+    this.ref = renderOptions.driver.element.create(this);
 
     this.setProps();
     this.appendToParent(this.ref, predecessor());
@@ -78,8 +75,8 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    * this function gets called, to determine predecessors from siblings, since this is an actualdom element
    * the reference to self should be returned
    */
-  public getLastIntrinsicElement() {
-    return this.ref;
+  public getLastIntrinsicInstance() {
+    return this;
   }
 
   /**
@@ -133,7 +130,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
       if (!select) {
         throw new Error('Could not find SELECT-ELEMENT of OPTION');
       }
-      this.setProp('selected', this.props.value === (select as DomInstance).props.value);
+      this.setProp('selected', this.props.value === (select as DomInstance<HostElement, HostTextElement>).props.value);
     }
   }
 
@@ -142,7 +139,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    * if callback returns false, the parentInstance is called
    * if arrived at root, and no instance got found, undefined will be returned
    */
-  private findParent(instance: Instance | undefined, callback: (instance: Instance) => boolean): Instance | void {
+  private findParent(instance: Instance<HostElement, HostTextElement> | undefined, callback: (instance: Instance<HostElement, HostTextElement) => boolean): Instance | void {
     if (instance !== undefined) {
       if (callback(instance) === true) {
         return instance;

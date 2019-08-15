@@ -1,4 +1,5 @@
 import plusnew, { Props, store, component } from 'index';
+import driver from '../../driver';
 
 const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
 const localFactory = () => store(list, (state, newValue: { key: number; value: string }) => [newValue, ...state]);
@@ -22,7 +23,7 @@ describe('rendering nested components', () => {
       () => <ul><local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer></ul>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -47,7 +48,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -71,7 +72,7 @@ describe('rendering nested components', () => {
       () => <ul><local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer></ul>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -100,7 +101,7 @@ describe('rendering nested components', () => {
       () => <ul><local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer></ul>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -370,7 +371,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -408,7 +409,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -442,7 +443,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 

@@ -34,7 +34,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance<HostElement, HostTextElement>,
-    getPredecessor: getPredeccessor,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
     renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
@@ -97,8 +97,8 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
     throw new Error('Can\'t render new content, the component got unmounted');
   }
 
-  public getLastIntrinsicElement() {
-    return this.rendered.getLastIntrinsicElement();
+  public getLastIntrinsicInstance() {
+    return this.rendered.getLastIntrinsicInstance();
   }
 
   /**
@@ -111,7 +111,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
   /**
    * moves the children to another dom position
    */
-  public move(predecessor: predecessor) {
+  public move(predecessor: predecessor<HostElement, HostTextElement>) {
     this.rendered.move(predecessor);
   }
 

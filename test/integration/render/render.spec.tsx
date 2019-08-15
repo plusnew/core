@@ -1,4 +1,5 @@
 import plusnew, { Props, store, component } from 'index';
+import driver from '../../driver';
 
 describe('rendering the elements', () => {
   const local = store(0, (previousState, action: undefined) => previousState + 1);
@@ -18,7 +19,7 @@ describe('rendering the elements', () => {
       'Component',
       (Props: Props<{}>) => <div className="foo" />,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -36,7 +37,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].childNodes.length).toBe(2);
 
@@ -58,7 +59,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -73,7 +74,7 @@ describe('rendering the elements', () => {
       () => 'foo',
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('foo');
   });
@@ -84,7 +85,7 @@ describe('rendering the elements', () => {
       () => 1,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('1');
   });
@@ -94,7 +95,7 @@ describe('rendering the elements', () => {
       'Component',
       (Props: Props<{}>) => <div className="foo">bar</div>,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -108,7 +109,7 @@ describe('rendering the elements', () => {
       'Component',
       () => null,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
@@ -120,7 +121,7 @@ describe('rendering the elements', () => {
       () => undefined,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(0);
   });
 
@@ -130,7 +131,7 @@ describe('rendering the elements', () => {
       () => true as any,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
   });
@@ -141,7 +142,7 @@ describe('rendering the elements', () => {
       () => false as any,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
   });

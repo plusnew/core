@@ -21,7 +21,7 @@ export default class FragmentInstance<HostElement, HostTextElement> extends Chil
   constructor(
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance<HostElement, HostTextElement>,
-    getPredecessor: getPredeccessor,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
     renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);

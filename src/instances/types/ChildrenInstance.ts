@@ -13,14 +13,14 @@ export default abstract class ChildrenInstance<HostElement, HostTextElement> ext
   constructor(
     abstractElement: ApplicationElement,
     parentInstance: Instance<HostElement, HostTextElement>,
-    getPredecessor: getPredeccessor,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
     renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
     this.rendered = [];
   }
 
-  abstract getChildrenPredeccessor(): predecessor;
+  abstract getChildrenPredeccessor(): predecessor<HostElement, HostTextElement>;
 
   public addChildren() {
     for (let i = 0; i < this.props.children.length; i += 1) {
@@ -32,13 +32,13 @@ export default abstract class ChildrenInstance<HostElement, HostTextElement> ext
     }
   }
 
-  public getLastIntrinsicElement() {
+  public getLastIntrinsicInstance() {
     return this.getLastIntrinsicElementOf(this.rendered.length - 1);
   }
 
   public getLastIntrinsicElementOf(index: number) {
     for (let i = index; i >= 0 && i < this.rendered.length; i -= 1) {
-      const predeccessorElement =  this.rendered[i].getLastIntrinsicElement();
+      const predeccessorElement =  this.rendered[i].getLastIntrinsicInstance();
       if (predeccessorElement !== null) {
         return predeccessorElement;
       }
@@ -49,7 +49,7 @@ export default abstract class ChildrenInstance<HostElement, HostTextElement> ext
   /**
    * moves the children to another dom position
    */
-  public move(predecessor: predecessor) {
+  public move(predecessor: predecessor<HostElement, HostTextElement>) {
     for (let i = this.rendered.length; i > 0; i -= 1) {
       this.rendered[i - 1].move(predecessor);
     }

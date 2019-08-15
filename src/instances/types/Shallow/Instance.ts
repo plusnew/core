@@ -20,7 +20,7 @@ export default class ShallowInstance<componentProps extends Partial<props>, Host
     this.props = abstractElement.props as componentProps;
   }
 
-  public getLastIntrinsicElement() {
+  public getLastIntrinsicInstance() {
     return null;
   }
 

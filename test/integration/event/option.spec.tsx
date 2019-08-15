@@ -1,4 +1,5 @@
 import plusnew, { component, store } from 'index';
+import driver from '../../driver';
 
 describe('firing onchange events', () => {
   let container: HTMLElement;
@@ -27,7 +28,7 @@ describe('firing onchange events', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const select = container.childNodes[0] as HTMLSelectElement;
 
@@ -49,7 +50,7 @@ describe('firing onchange events', () => {
     );
 
     expect(() => {
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
     }).toThrow(new Error('Could not find SELECT-ELEMENT of OPTION'));
   });
 
@@ -65,7 +66,7 @@ describe('firing onchange events', () => {
     );
 
     expect(() => {
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
     }).toThrow(new Error('Nearest dom of OPTION is not a SELECT but a DIV'));
   });
 
@@ -93,7 +94,7 @@ describe('firing onchange events', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const select = container.childNodes[0] as HTMLSelectElement;
 
@@ -124,7 +125,7 @@ describe('firing onchange events', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const select = container.childNodes[0] as HTMLSelectElement;
 
@@ -149,7 +150,7 @@ describe('firing onchange events', () => {
         </select>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const select = container.childNodes[0] as HTMLSelectElement;
 

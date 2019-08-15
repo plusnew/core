@@ -1,4 +1,5 @@
 import plusnew, { component, store } from 'index';
+import driver from '../../driver';
 
 const htmlNamespace = 'http://www.w3.org/1999/xhtml';
 const svgNamespace = 'http://www.w3.org/2000/svg';
@@ -18,7 +19,7 @@ describe('rendering svg components', () => {
       () => <div />,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
   });
@@ -29,7 +30,7 @@ describe('rendering svg components', () => {
       () => <span><div /></span>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(htmlNamespace);
@@ -42,7 +43,7 @@ describe('rendering svg components', () => {
       () => <svg />,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
   });
@@ -53,7 +54,7 @@ describe('rendering svg components', () => {
       () => <svg xmlns="foo"/>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe('foo');
   });
@@ -64,7 +65,7 @@ describe('rendering svg components', () => {
       () => <span><svg /></span>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
@@ -76,7 +77,7 @@ describe('rendering svg components', () => {
       () => <svg><g /></svg>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
@@ -88,7 +89,7 @@ describe('rendering svg components', () => {
       () => <svg><foreignObject ><div xmlns={htmlNamespace}/></foreignObject></svg>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
@@ -113,7 +114,7 @@ describe('rendering svg components', () => {
       () => <local.Observer>{localState => localState ? <svg /> : <div />}</local.Observer> ,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
 
@@ -141,7 +142,7 @@ describe('rendering svg components', () => {
         </svg>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(
       (container.childNodes[0].childNodes[0] as SVGUseElement).getAttributeNS(xlinkNamespaceUrl, 'href'),

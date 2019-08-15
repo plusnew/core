@@ -11,20 +11,22 @@ export default class RootInstance<HostElement, HostTextElement> extends Instance
   constructor(
     abstractElement: ApplicationElement,
     parentInstance: Instance<HostElement, HostTextElement> | undefined,
-    getPredecessor: getPredeccessor,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
     renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
+    this.ref = this.renderOptions.driver.getRootElement(this);
   }
   /**
    * appends the element to the rootcontainer
    */
-  public appendChild(element: HostElement, predecessor: predecessor) {
+  public appendChild(element: HostElement, predecessor: predecessor<HostElement, HostTextElement>) {
     this.insertBefore(this.ref, element, predecessor);
   }
 
-  public getLastIntrinsicElement() {
-    return this.ref;
+  public getLastIntrinsicInstance(): never {
+    throw new Error('The root Element does not allow to give you the last Element Instance');
+    // return this.ref;
   }
 
   /**

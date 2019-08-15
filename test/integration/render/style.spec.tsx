@@ -1,4 +1,5 @@
 import plusnew, { component, store } from 'index';
+import driver from '../../driver';
 
 describe('dom handling', () => {
   let container: HTMLElement;
@@ -19,7 +20,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLDivElement;
     expect(target.style.width).toBe('20px');
@@ -43,7 +44,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLDivElement;
     expect(target.style.width).toBe('');
@@ -71,7 +72,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLDivElement;
     expect(target.style.width).toBe('30px');
@@ -94,7 +95,7 @@ describe('dom handling', () => {
       () => <div style={{ width: 'foo' }}/>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLDivElement;
     expect(target.getAttribute('style')).toBe('width:foo;');

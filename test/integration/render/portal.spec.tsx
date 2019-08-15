@@ -1,4 +1,5 @@
 import plusnew, { component, store, Portal } from 'index';
+import driver from '../../driver';
 
 describe('<Portal />', () => {
   let container: HTMLElement;
@@ -28,7 +29,7 @@ describe('<Portal />', () => {
         </span>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect(container.childNodes[0].childNodes.length).toBe(1);
@@ -70,7 +71,7 @@ describe('<Portal />', () => {
         </svg>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).namespaceURI).toBe('http://www.w3.org/2000/svg');

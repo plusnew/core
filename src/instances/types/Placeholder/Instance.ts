@@ -9,7 +9,7 @@ export default class PlaceholderInstance<HostElement, HostTextElement> extends I
   public nodeType = types.Placeholder;
   public type = types.Fragment;
 
-  public getLastIntrinsicElement() {
+  public getLastIntrinsicInstance() {
     return null;
   }
 

@@ -17,6 +17,7 @@ declare global {
        * All the DOM Nodes are here
        */
       interface IntrinsicElements {
+        [foo: string]: any;
       }
 
       interface IntrinsicAttributes {

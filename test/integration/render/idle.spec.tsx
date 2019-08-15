@@ -1,4 +1,5 @@
 import plusnew, { component, store, Idle, storeType } from 'index';
+import driver from '../../driver';
 
 describe('<Idle />', () => {
   let container: HTMLElement;
@@ -26,7 +27,7 @@ describe('<Idle />', () => {
         () => <Idle urgent={true}><span /></Idle>,
       );
 
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLSpanElement).tagName).toBe('SPAN');
@@ -40,7 +41,7 @@ describe('<Idle />', () => {
         () => <urgentStore.Observer>{urgentState => <Idle urgent={urgentState}><span /></Idle>}</urgentStore.Observer>,
       );
 
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(0);
       expect(requestIdleCallbackSpy.calls.count()).toBe(1);
@@ -61,7 +62,7 @@ describe('<Idle />', () => {
         () => <urgentStore.Observer>{urgentState => <Idle urgent={urgentState}><span /></Idle>}</urgentStore.Observer>,
       );
 
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(0);
       expect(requestIdleCallbackSpy.calls.count()).toBe(1);
@@ -86,7 +87,7 @@ describe('<Idle />', () => {
         () => <urgentStore.Observer>{urgentState => <Idle urgent={urgentState}><span /></Idle>}</urgentStore.Observer>,
       );
 
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(0);
 
@@ -113,7 +114,7 @@ describe('<Idle />', () => {
         () => <Idle urgent={false}><span /></Idle>,
       );
 
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLSpanElement).tagName).toBe('SPAN');

@@ -1,4 +1,5 @@
 import plusnew, { component, store } from 'index';
+import driver from '../../driver';
 
 describe('firing onchange events', () => {
   let container: HTMLElement;
@@ -24,7 +25,7 @@ describe('firing onchange events', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const textarea = container.childNodes[0] as HTMLTextAreaElement;
 
@@ -53,7 +54,7 @@ describe('firing onchange events', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const textarea = container.childNodes[0] as HTMLTextAreaElement;
 

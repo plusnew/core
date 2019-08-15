@@ -1,4 +1,5 @@
 import plusnew, { Props, component, store, Animate } from 'index';
+import driver from '../../driver';
 
 async function tick(count: number) {
   for (let i = 0; i < count; i += 1) {
@@ -28,7 +29,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -48,7 +49,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(2);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -71,7 +72,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -91,7 +92,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(2);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -123,7 +124,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -164,7 +165,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(2);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -204,7 +205,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -245,7 +246,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(2);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -292,7 +293,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -345,7 +346,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -387,7 +388,7 @@ describe('<Animate />', () => {
                 </Animate>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -429,7 +430,7 @@ describe('<Animate />', () => {
             </>,
         );
 
-        plusnew.render(<Component />, container);
+        plusnew.render(<Component />, { driver: driver(container) });
 
         expect(container.childNodes.length).toBe(1);
         expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -479,7 +480,7 @@ describe('<Animate />', () => {
           </>,
       );
 
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -522,7 +523,7 @@ describe('<Animate />', () => {
           </>,
       );
 
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -550,7 +551,7 @@ describe('<Animate />', () => {
               </Animate>,
       );
 
-      plusnew.render(<Component />, container);
+      plusnew.render(<Component />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');

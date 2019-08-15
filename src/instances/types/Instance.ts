@@ -2,22 +2,24 @@ import { ApplicationElement, props } from '../../interfaces/component';
 import { PlusnewElement } from '../../PlusnewAbstractElement';
 import types from './types';
 import { renderOptions } from '../../interfaces/renderOptions';
+import DomInstance from './Dom/Instance';
+import TextInstance from './Text/Instance';
 
-export type predecessor = Node | null;
-export type getPredeccessor = () => predecessor;
+export type predecessor<HostElement, HostTextElement> = DomInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement> | null;
+export type getPredeccessor<HostElement, HostTextElement> = () => predecessor<HostElement, HostTextElement>;
 
 export default abstract class Instance<HostElement, HostTextElement> {
   public nodeType: types;
   public parentInstance?: Instance<HostElement, HostTextElement>;
   public type: PlusnewElement;
   public props: ApplicationElement | Partial<props>;
-  public getPredecessor: getPredeccessor;
+  public getPredecessor: getPredeccessor<HostElement, HostTextElement>;
   public renderOptions: renderOptions<HostElement, HostTextElement>;
 
   constructor(
     _abstractElement: ApplicationElement,
     parentInstance: Instance<HostElement, HostTextElement> | undefined,
-    getPredecessor: getPredeccessor,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
     renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     this.parentInstance = parentInstance;
@@ -36,7 +38,7 @@ export default abstract class Instance<HostElement, HostTextElement> {
   /**
    * appends the given element, to the parentinstance, if existent
    */
-  public appendToParent(element: HostElement | HostTextElement, predecessor: predecessor) {
+  public appendToParent(element: HostElement | HostTextElement, predecessor: predecessor<HostElement, HostTextElement>) {
     if (this.parentInstance === undefined) {
       throw new Error('Cant append element to not existing parent');
     } else {
@@ -47,7 +49,7 @@ export default abstract class Instance<HostElement, HostTextElement> {
   /**
    * makes a insertBefore to the parent
    */
-  public appendChild(element: HostElement | HostTextElement, predecessor: predecessor) {
+  public appendChild(element: HostElement | HostTextElement, predecessor: predecessor<HostElement, HostTextElement>) {
     if (this.parentInstance === undefined) {
       throw new Error('Couldn\'t add child to parent');
     } else {
@@ -55,7 +57,7 @@ export default abstract class Instance<HostElement, HostTextElement> {
     }
   }
 
-  public insertBefore(parentNode: HostElement | HostTextElement, target: HostElement | HostTextElement, predecessor: predecessor) {
+  public insertBefore(parentNode: HostElement | HostTextElement, target: HostElement | HostTextElement, predecessor: predecessor<HostElement, HostTextElement>) {
     if (predecessor === null) {
       parentNode.insertBefore(target, parentNode.firstChild);
     } else {
@@ -78,13 +80,13 @@ export default abstract class Instance<HostElement, HostTextElement> {
     return undefined;
   }
 
-  public abstract getLastIntrinsicElement(): HostElement | HostTextElement | null;
+  public abstract getLastIntrinsicInstance(): DomInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement> | null;
 
   /**
    * orders to move itself to another place
    */
 
-  public abstract move(predecessor: predecessor): void;
+  public abstract move(predecessor: predecessor<HostElement, HostTextElement>): void;
 
   public abstract remove(prepareRemoveSelf: boolean): Promise<any> | void;
 
