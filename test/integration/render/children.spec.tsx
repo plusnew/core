@@ -1,4 +1,5 @@
 import plusnew, { Props, store, component } from 'index';
+import driver from '../../driver';
 
 describe('rendering nested components', () => {
   let container: HTMLElement;
@@ -22,7 +23,7 @@ describe('rendering nested components', () => {
         () => <local.Observer>{local => <NestedComponent>{local}</NestedComponent>}</local.Observer>,
       );
 
-      plusnew.render(<MainComponent />, container);
+      plusnew.render(<MainComponent />, { driver: driver(container) });
 
       const nestedElement = container.childNodes[0] as HTMLElement;
       expect(container.childNodes.length).toBe(1);
@@ -47,7 +48,7 @@ describe('rendering nested components', () => {
         () => <NestedComponent><local.Observer>{local => local}</local.Observer></NestedComponent>,
       );
 
-      plusnew.render(<MainComponent />, container);
+      plusnew.render(<MainComponent />, { driver: driver(container) });
 
       const nestedElement = container.childNodes[0] as HTMLElement;
       expect((nestedElement.childNodes[0] as Text).textContent).toBe('0');

@@ -1,5 +1,13 @@
 import { IDriver } from 'interfaces/driver';
 
+function insertBefore(parentElement: Element, childElement: Element | Text, refChild: Element | Text | null) {
+  if (refChild === null) {
+    parentElement.insertBefore(childElement, parentElement.firstChild);
+  } else {
+    parentElement.insertBefore(childElement, refChild.nextSibling);
+  }
+}
+
 const element: IDriver<Element, Text>['element'] = {
   create: (domInstance) => {
     if (domInstance.renderOptions.xmlns) {
@@ -15,13 +23,13 @@ const element: IDriver<Element, Text>['element'] = {
   },
   moveBeforeSibling: (self, previousSiblingInstance) => {
     if (self.ref.parentElement) {
-      self.ref.parentElement.insertBefore(self.ref, previousSiblingInstance && previousSiblingInstance.ref);
+      insertBefore(self.ref.parentElement, self.ref, previousSiblingInstance && previousSiblingInstance.ref);
     } else {
       throw new Error('Could not move orphaned node');
     }
   },
   appendChildBeforeSibling: (parentInstance, childInstance, previousSiblingInstance) => {
-    parentInstance.ref.insertBefore(childInstance.ref, previousSiblingInstance && previousSiblingInstance.ref);
+    insertBefore(parentInstance.ref, childInstance.ref, previousSiblingInstance && previousSiblingInstance.ref);
   },
   elementDidMountHook: (domInstance) => {
 

@@ -150,7 +150,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const span = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -202,7 +202,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const span = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -270,7 +270,7 @@ describe('rendering nested components', () => {
         </div>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const div = container.childNodes[0].childNodes[1] as HTMLElement;
     expect(div.childNodes.length).toBe(1);
@@ -307,7 +307,7 @@ describe('rendering nested components', () => {
         </div>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const div = container.childNodes[0] as HTMLElement;
     expect(div.childNodes.length).toBe(2);
@@ -342,7 +342,7 @@ describe('rendering nested components', () => {
         </div>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const div = container.childNodes[0] as HTMLElement;
     expect(div.childNodes.length).toBe(1);
@@ -487,7 +487,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -526,7 +526,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -562,7 +562,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -599,7 +599,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -638,7 +638,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -674,7 +674,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -711,7 +711,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -752,7 +752,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -790,7 +790,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -819,7 +819,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 

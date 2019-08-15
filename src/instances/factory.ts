@@ -18,7 +18,7 @@ import { renderOptions } from '../interfaces/renderOptions';
 export default function<HostElement, HostTextElement> (
   abstractElement: ApplicationElement,
   parentInstance: Instance<HostElement, HostTextElement>,
-  getPredecessor: getPredeccessor,
+  getPredecessor: getPredeccessor<HostElement, HostTextElement>,
   renderOptions: renderOptions<HostElement, HostTextElement>,
 ): Instance<HostElement, HostTextElement> {
   // @TODO add something for invalid functions

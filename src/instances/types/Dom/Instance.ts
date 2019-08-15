@@ -3,7 +3,7 @@ import { props } from '../../../interfaces/component';
 import { hasInputEvent, hasOnchangeEvent, isCheckbox, isOption, isRadio, isSelect } from '../../../util/dom';
 import { getSpecialNamespace } from '../../../util/namespace';
 import ChildrenInstance from '../ChildrenInstance';
-import Instance, { getPredeccessor, predecessor } from '../Instance';
+import Instance, { getPredeccessor, predecessor, HostInstance } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
 import { renderOptions } from '../../../interfaces/renderOptions';
@@ -45,7 +45,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
     this.ref = renderOptions.driver.element.create(this);
 
     this.setProps();
-    this.appendToParent(this.ref, predecessor());
+    this.appendToParent(this, predecessor());
   }
 
   initialiseNestedElements() {
@@ -139,7 +139,10 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    * if callback returns false, the parentInstance is called
    * if arrived at root, and no instance got found, undefined will be returned
    */
-  private findParent(instance: Instance<HostElement, HostTextElement> | undefined, callback: (instance: Instance<HostElement, HostTextElement) => boolean): Instance | void {
+  private findParent(
+    instance: Instance<HostElement, HostTextElement> | undefined,
+    callback: (instance: Instance<HostElement, HostTextElement>) => boolean,
+  ): Instance<HostElement, HostTextElement> | void {
     if (instance !== undefined) {
       if (callback(instance) === true) {
         return instance;
@@ -304,29 +307,29 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    * by the children should add themselfs to our element
    */
 
-  public appendChild(element: Node, predecessor: predecessor) {
-    this.insertBefore(this.ref, element, predecessor);
+  public appendChild(childInstance: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
+    this.renderOptions.driver.element.appendChildBeforeSibling(this, childInstance, predecessor);
   }
 
   /**
    * moves the domnode to another place
    */
-  public move(predecessor: predecessor) {
-    this.insertBefore(this.ref.parentNode as Node, this.ref, predecessor);
+  public move(predecessor: predecessor<HostElement, HostTextElement>) {
+    this.renderOptions.driver.element.moveBeforeSibling(this, predecessor)
   }
 
   /**
    * calls the parentInstance that this module got created
    */
   public elementDidMountToParent() {
-    (this.parentInstance as Instance).elementDidMount(this.ref);
+    (this.parentInstance as Instance<HostElement, HostTextElement>).elementDidMount(this.ref);
   }
 
   /**
    * calls the parentInstance that this module got deleted
    */
   public elementWillUnmountToParent() {
-    return (this.parentInstance as Instance).elementWillUnmount(this.ref);
+    return (this.parentInstance as Instance<HostElement, HostTextElement>).elementWillUnmount(this.ref);
   }
 
   /**

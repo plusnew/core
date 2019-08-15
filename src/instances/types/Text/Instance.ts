@@ -20,7 +20,7 @@ export default class TextInstance<HostElement, HostTextElement> extends Instance
     this.props = abstractElement;
     this.ref = renderOptions.driver.text.create(abstractElement);
 
-    this.appendToParent(this.ref, getPredecessor());
+    this.appendToParent(this, getPredecessor());
   }
 
   public getLastIntrinsicInstance() {

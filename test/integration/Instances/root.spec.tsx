@@ -2,7 +2,7 @@ import Root from 'instances/types/Root/Instance';
 import plusnew from 'index';
 
 describe('Does the root-instance behave correctly', () => {
-  let root: Root;
+  let root: Root<Element, Text>;
 
   beforeEach(() => {
     root = new Root(<div />, undefined, () => null, {});

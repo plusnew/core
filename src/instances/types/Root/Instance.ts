@@ -1,5 +1,5 @@
 import { ApplicationElement } from '../../../interfaces/component';
-import Instance, { getPredeccessor, predecessor } from '../Instance';
+import Instance, { getPredeccessor, predecessor, HostInstance } from '../Instance';
 import types from '../types';
 import { renderOptions } from '../../../interfaces/renderOptions';
 
@@ -20,8 +20,8 @@ export default class RootInstance<HostElement, HostTextElement> extends Instance
   /**
    * appends the element to the rootcontainer
    */
-  public appendChild(element: HostElement, predecessor: predecessor<HostElement, HostTextElement>) {
-    this.insertBefore(this.ref, element, predecessor);
+  public appendChild(childInstance: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
+    this.renderOptions.driver.element.appendChildBeforeSibling(this, childInstance, predecessor);
   }
 
   public getLastIntrinsicInstance(): never {

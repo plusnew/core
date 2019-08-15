@@ -160,7 +160,7 @@ describe('rendering the elements', () => {
         </>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('HEADER');

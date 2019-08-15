@@ -19,7 +19,7 @@ export type IDriver<HostElement, HostTextElement> = {
         | null
     ) => void;
     appendChildBeforeSibling: (
-      parentInstance: DomInstance<HostElement, HostTextElement>,
+      parentInstance: DomInstance<HostElement, HostTextElement> | RootInstance<HostElement, HostTextElement>,
       childInstance:
         | DomInstance<HostElement, HostTextElement>
         | TextInstance<HostElement, HostTextElement>,

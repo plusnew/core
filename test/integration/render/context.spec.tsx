@@ -1,4 +1,5 @@
 import plusnew, { component, context, store, Props } from 'index';
+import driver from '../../driver';
 
 describe('context', () => {
 
@@ -29,7 +30,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{state => state}</valueContext.Consumer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('1');
@@ -54,7 +55,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{state => state}</valueContext.Consumer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('1');
@@ -90,7 +91,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</valueContext.Consumer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -131,7 +132,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</valueContext.Consumer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -214,7 +215,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</valueContext.Consumer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -251,7 +252,7 @@ describe('context', () => {
     (Props: Props<{ value: number } >) => <Props>{props => <valueContext.Consumer>{state => <div>{state + props.value}</div>}</valueContext.Consumer>}</Props>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('2');

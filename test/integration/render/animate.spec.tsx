@@ -7,7 +7,7 @@ async function tick(count: number) {
   }
 }
 
-describe('<Animate />', () => {
+xdescribe('<Animate />', () => {
   let container: HTMLElement;
 
   beforeEach(() => {

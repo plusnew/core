@@ -4,8 +4,10 @@ import types from './types';
 import { renderOptions } from '../../interfaces/renderOptions';
 import DomInstance from './Dom/Instance';
 import TextInstance from './Text/Instance';
+// import RootInstance from './Root/Instance';
 
-export type predecessor<HostElement, HostTextElement> = DomInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement> | null;
+export type HostInstance<HostElement, HostTextElement> = DomInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement>;
+export type predecessor<HostElement, HostTextElement> = HostInstance<HostElement, HostTextElement> | null;
 export type getPredeccessor<HostElement, HostTextElement> = () => predecessor<HostElement, HostTextElement>;
 
 export default abstract class Instance<HostElement, HostTextElement> {
@@ -38,30 +40,22 @@ export default abstract class Instance<HostElement, HostTextElement> {
   /**
    * appends the given element, to the parentinstance, if existent
    */
-  public appendToParent(element: HostElement | HostTextElement, predecessor: predecessor<HostElement, HostTextElement>) {
+  public appendToParent(childInstance: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
     if (this.parentInstance === undefined) {
       throw new Error('Cant append element to not existing parent');
     } else {
-      this.parentInstance.appendChild(element, predecessor);
+      this.parentInstance.appendChild(childInstance, predecessor);
     }
   }
 
   /**
    * makes a insertBefore to the parent
    */
-  public appendChild(element: HostElement | HostTextElement, predecessor: predecessor<HostElement, HostTextElement>) {
+  public appendChild(element: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
     if (this.parentInstance === undefined) {
       throw new Error('Couldn\'t add child to parent');
     } else {
       this.parentInstance.appendChild(element, predecessor);
-    }
-  }
-
-  public insertBefore(parentNode: HostElement | HostTextElement, target: HostElement | HostTextElement, predecessor: predecessor<HostElement, HostTextElement>) {
-    if (predecessor === null) {
-      parentNode.insertBefore(target, parentNode.firstChild);
-    } else {
-      parentNode.insertBefore(target, predecessor.nextSibling);
     }
   }
 

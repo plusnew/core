@@ -13,7 +13,7 @@ describe('root', () => {
     }).toThrow(new Error('The root element can\'t reconcile itself'));
   });
 
-  it('getFirstIntrinsicElement', () => {
+  xit('getFirstIntrinsicElement', () => {
     const instance = new Instance(true, undefined, () => null, {});
     instance.ref = document.createElement('div');
     expect(instance.getLastIntrinsicInstance()).toBe(instance.ref);

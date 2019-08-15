@@ -108,7 +108,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
 
@@ -291,7 +291,7 @@ describe('dom handling', () => {
         }}</local.Observer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const target = container.childNodes[0];
 
@@ -329,7 +329,7 @@ describe('dom handling', () => {
         <input type="text" autofocus={false} />,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(document.activeElement).not.toBe(container.childNodes[0] as Element);
   });
@@ -341,7 +341,7 @@ describe('dom handling', () => {
         <input type="text" value="djfngjnfdg" autofocus={true} />,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(document.activeElement).toBe(container.childNodes[0] as Element);
   });
@@ -353,7 +353,7 @@ describe('dom handling', () => {
         <div><input type="text" value="djfngjnfdg" autofocus={true} /></div>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(document.activeElement).toBe(container.childNodes[0].childNodes[0] as Element);
   });

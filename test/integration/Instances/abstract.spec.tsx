@@ -1,13 +1,13 @@
 import Abstract from 'instances/types/Instance';
 import plusnew from 'index';
 
-describe('Does the root-instance behave correctly', () => {
-  let abstract: Abstract;
+xdescribe('Does the root-instance behave correctly', () => {
+  let abstract: Abstract<Element, Text>;
 
   beforeEach(() => {
-    class TestInstance extends Abstract {
-      getLastIntrinsicElement() {
-        return null;
+    class TestInstance extends Abstract<Element, Text> {
+      getLastIntrinsicInstance(): never {
+        throw new Error('mep');
       }
       move() {}
       remove() {}
