@@ -206,7 +206,8 @@ describe('<Animate />', () => {
 
     let asyncPromise;
 
-    plusnew.render(<Component />, container, {
+    plusnew.render(<Component />, {
+      driver: driver(container),
       addAsyncListener: promise => asyncPromise = promise,
     });
 
@@ -231,7 +232,8 @@ describe('<Animate />', () => {
 
     let asyncPromise;
 
-    plusnew.render(<Component />, container, {
+    plusnew.render(<Component />, {
+      driver: driver(container),
       addAsyncListener: promise => asyncPromise = promise,
     });
 
