@@ -163,7 +163,7 @@ describe('context', () => {
     );
 
     expect(() =>
-      plusnew.render(<MainComponent />, container),
+      plusnew.render(<MainComponent />, { driver: driver(container) }),
     ).toThrow(new Error('Could not find Provider'));
   });
 
@@ -185,7 +185,7 @@ describe('context', () => {
     );
 
     expect(() =>
-      plusnew.render(<MainComponent />, container),
+      plusnew.render(<MainComponent />, { driver: driver(container) }),
     ).toThrow(new Error('Could not find Provider'));
   });
 
