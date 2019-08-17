@@ -1,6 +1,6 @@
 import { IDriver } from 'interfaces/driver';
 
-function insertBefore(parentElement: Element, childElement: Element | Text, refChild: Element | Text | null) {
+function insertAfter(parentElement: Element, childElement: Element | Text, refChild: Element | Text | null) {
   if (refChild === null) {
     parentElement.insertBefore(childElement, parentElement.firstChild);
   } else {
@@ -21,15 +21,15 @@ const element: IDriver<Element, Text>['element'] = {
   setAttribute: (domInstance, attributeName, attributeValue) => {
 
   },
-  moveBeforeSibling: (self, previousSiblingInstance) => {
+  moveAfterSibling: (self, previousSiblingInstance) => {
     if (self.ref.parentElement) {
-      insertBefore(self.ref.parentElement, self.ref, previousSiblingInstance && previousSiblingInstance.ref);
+      insertAfter(self.ref.parentElement, self.ref, previousSiblingInstance && previousSiblingInstance.ref);
     } else {
       throw new Error('Could not move orphaned node');
     }
   },
-  appendChildBeforeSibling: (parentInstance, childInstance, previousSiblingInstance) => {
-    insertBefore(parentInstance.ref, childInstance.ref, previousSiblingInstance && previousSiblingInstance.ref);
+  appendChildAfterSibling: (parentInstance, childInstance, previousSiblingInstance) => {
+    insertAfter(parentInstance.ref, childInstance.ref, previousSiblingInstance && previousSiblingInstance.ref);
   },
   elementDidMountHook: (domInstance) => {
 

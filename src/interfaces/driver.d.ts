@@ -1,6 +1,6 @@
 import DomInstance from "../instances/types/Dom/Instance";
 import TextInstance from "../instances/types/Text/Instance";
-import RootInstance from "instances/types/Root/Instance";
+import RootInstance from "../instances/types/Root/Instance";
 
 export type IDriver<HostElement, HostTextElement> = {
   element: {
@@ -11,14 +11,14 @@ export type IDriver<HostElement, HostTextElement> = {
       attributeName: string,
       attributeValue: any
     ) => void;
-    moveBeforeSibling: (
+    moveAfterSibling: (
       self: DomInstance<HostElement, HostTextElement>,
       previousSiblingInstance:
         | DomInstance<HostElement, HostTextElement>
         | TextInstance<HostElement, HostTextElement>
         | null
     ) => void;
-    appendChildBeforeSibling: (
+    appendChildAfterSibling: (
       parentInstance: DomInstance<HostElement, HostTextElement> | RootInstance<HostElement, HostTextElement>,
       childInstance:
         | DomInstance<HostElement, HostTextElement>
@@ -41,7 +41,7 @@ export type IDriver<HostElement, HostTextElement> = {
       newText: string
     ) => void;
 
-    moveBeforeSibling: (
+    moveAfterSibling: (
       self: TextInstance<HostElement, HostTextElement>,
       previousSiblingInstance:
         | DomInstance<HostElement, HostTextElement>

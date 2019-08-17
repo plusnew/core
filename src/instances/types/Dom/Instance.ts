@@ -308,14 +308,14 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    */
 
   public appendChild(childInstance: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
-    this.renderOptions.driver.element.appendChildBeforeSibling(this, childInstance, predecessor);
+    this.renderOptions.driver.element.appendChildAfterSibling(this, childInstance, predecessor);
   }
 
   /**
    * moves the domnode to another place
    */
   public move(predecessor: predecessor<HostElement, HostTextElement>) {
-    this.renderOptions.driver.element.moveBeforeSibling(this, predecessor)
+    this.renderOptions.driver.element.moveAfterSibling(this, predecessor)
   }
 
   /**

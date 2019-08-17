@@ -35,7 +35,7 @@ export default class TextInstance<HostElement, HostTextElement> extends Instance
    * moves this textnode inside the dom
    */
   public move(predecessor: predecessor<HostElement, HostTextElement>) {
-    this.renderOptions.driver.text.moveBeforeSibling(this, predecessor);
+    this.renderOptions.driver.text.moveAfterSibling(this, predecessor);
   }
 
   /**

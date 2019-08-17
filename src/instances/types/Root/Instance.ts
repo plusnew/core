@@ -21,7 +21,7 @@ export default class RootInstance<HostElement, HostTextElement> extends Instance
    * appends the element to the rootcontainer
    */
   public appendChild(childInstance: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
-    this.renderOptions.driver.element.appendChildBeforeSibling(this, childInstance, predecessor);
+    this.renderOptions.driver.element.appendChildAfterSibling(this, childInstance, predecessor);
   }
 
   public getLastIntrinsicInstance(): never {

@@ -1,6 +1,6 @@
 import { IDriver } from 'interfaces/driver';
 
-function insertBefore(parentElement: Element, childElement: Element | Text, refChild: Element | Text | null) {
+function insertAfter(parentElement: Element, childElement: Element | Text, refChild: Element | Text | null) {
   if (refChild === null) {
     parentElement.insertBefore(childElement, parentElement.firstChild);
   } else {
@@ -16,9 +16,9 @@ const text: IDriver<Element, Text>['text'] = {
   update: (textInstance, newText) => {
     textInstance.ref.textContent = newText;
   },
-  moveBeforeSibling: (self, previousSiblingInstance) => {
+  moveAfterSibling: (self, previousSiblingInstance) => {
     if (self.ref.parentElement) {
-      insertBefore(self.ref.parentElement, self.ref, previousSiblingInstance && previousSiblingInstance.ref);
+      insertAfter(self.ref.parentElement, self.ref, previousSiblingInstance && previousSiblingInstance.ref);
     } else {
       throw new Error('Could not move orphaned node');
     }
