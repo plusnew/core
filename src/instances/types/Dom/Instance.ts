@@ -105,7 +105,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    */
   private setAutofocusIfNeeded() {
     if (this.props.autofocus === true) {
-      (this.ref as HTMLElement).focus();
+      (this.ref as any).focus();
     }
   }
 
@@ -173,18 +173,18 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
       // style gets set as a attribute, not by property
       // because of better debuggability when set by this way
       // When an invalid property gets set, the browser just sucks it up and ignores it without errors
-      this.ref.setAttribute(keyName, this.getStylePropsAsAttribute(value));
+      (this.ref as any).setAttribute(keyName, this.getStylePropsAsAttribute(value));
     } else {
       // All the other attributes are strings
       if (this.setAttributeAsProperty(keyName)) {
         // input-values need to be set directly as property, for overwriting purpose of browser behaviour
-        (this.ref as any)[keyName] = value;
+        ((this.ref as any) as any)[keyName] = value;
       } else if (value === false) {
         // @FIXME removing namespaced attributes needs to be implemented
-        this.ref.removeAttribute(keyName);
+        (this.ref as any).removeAttribute(keyName);
       } else {
         if (keyName.indexOf(':') === -1) {
-          this.ref.setAttribute(keyName, `${value}`);
+          (this.ref as any).setAttribute(keyName, `${value}`);
         } else {
           const [namespacePrefix, namespacedKeyName] = keyName.split(':');
           if (namespacePrefix === 'xmlns') {
@@ -197,7 +197,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
             };
           } else {
             if (this.renderOptions && this.renderOptions.xmlnsPrefixes && typeof this.renderOptions.xmlnsPrefixes[namespacePrefix] !== undefined) {
-              this.ref.setAttributeNS(this.renderOptions.xmlnsPrefixes[namespacePrefix] as string, namespacedKeyName, `${value}`);
+              (this.ref as any).setAttributeNS(this.renderOptions.xmlnsPrefixes[namespacePrefix] as string, namespacedKeyName, `${value}`);
             } else {
               throw new Error(`The namespace prefix ${namespacePrefix} is not defined`);
             }
@@ -236,16 +236,16 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
         }
 
         if (preventDefault === true) {
-          ((this.ref as HTMLInputElement)[changeKey] as any) = this.props[changeKey];
+          ((this.ref as any)[changeKey] as any) = this.props[changeKey];
         }
 
         delete this.setProp;
       };
 
       if (hasInputEvent(this.type, this.props)) {
-        (this.ref as HTMLElement).oninput = onchangeWrapper;
+        (this.ref as any).oninput = onchangeWrapper;
       } else {
-        (this.ref as HTMLElement).onchange = onchangeWrapper;
+        (this.ref as any).onchange = onchangeWrapper;
       }
     }
 
@@ -282,7 +282,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
     if (typeof (this.ref as any)[keyName] === 'function') {
       (this.ref as any)[keyName] = null;
     } else {
-      this.ref.removeAttribute(this.getAttributeNameFromProp(key));
+      (this.ref as any).removeAttribute(this.getAttributeNameFromProp(key));
     }
   }
 
@@ -315,7 +315,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    * moves the domnode to another place
    */
   public move(predecessor: predecessor<HostElement, HostTextElement>) {
-    this.renderOptions.driver.element.moveAfterSibling(this, predecessor)
+    this.renderOptions.driver.element.moveAfterSibling(this, predecessor);
   }
 
   /**
@@ -343,7 +343,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    * actually removes this element
    */
   public removeSelf() {
-    (this.ref.parentNode as Node).removeChild(this.ref);
+    ((this.ref as any).parentNode as Node).removeChild(this.ref as any);
   }
 
   /**
