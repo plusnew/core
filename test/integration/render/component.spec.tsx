@@ -3,7 +3,7 @@ import ComponentInstance from 'instances/types/Component/Instance';
 import FragmentInstance from 'instances/types/Fragment/Instance';
 import types from 'instances/types/types';
 import PlaceholderInstance from 'instances/types/Placeholder/Instance';
-import driver from '../../driver';
+import driver from '@plusnew/driver-dom';
 
 function tick() {
   return Promise.resolve();

@@ -1,5 +1,5 @@
 import plusnew, { Props, store, component } from 'index';
-import driver from '../../driver';
+import driver from '@plusnew/driver-dom';
 
 describe('rendering the elements', () => {
   const local = store(0, (previousState, action: undefined) => previousState + 1);

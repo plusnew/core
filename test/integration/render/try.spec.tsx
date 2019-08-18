@@ -1,5 +1,5 @@
 import plusnew, { component, Try, store } from 'index';
-import driver from '../../driver';
+import driver from '@plusnew/driver-dom';
 
 describe('<Try />', () => {
   let container: HTMLElement;

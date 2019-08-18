@@ -1,5 +1,5 @@
 import plusnew, { Props, store, component } from 'index';
-import driver from '../../driver';
+import driver from '@plusnew/driver-dom';
 
 const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
 const localFactory = () => store(list, (state, newValue: { key: number; value: string }) => [newValue, ...state]);

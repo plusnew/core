@@ -1,5 +1,5 @@
 import plusnew, { Props, component, store } from 'index';
-import driver from '../../driver';
+import driver from '@plusnew/driver-dom';
 
 describe('lifecycle', () => {
   let container: HTMLElement;

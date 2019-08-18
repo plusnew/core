@@ -5,7 +5,7 @@ import RootInstance from 'instances/types/Root/Instance';
 import component from 'components/factory';
 import elementTypeChecker from 'util/elementTypeChecker';
 import { ApplicationElement } from 'interfaces/component';
-import driver from '../../driver';
+import driver from '@plusnew/driver-dom';
 
 function createInstance(applicationElement: ApplicationElement) {
   const renderOptions = { driver:driver(document.createElement('div')) };

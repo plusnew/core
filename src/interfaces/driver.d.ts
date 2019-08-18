@@ -9,14 +9,14 @@ export type IDriver<HostElement, HostTextElement> = {
     setAttribute: (
       domInstance: DomInstance<HostElement, HostTextElement>,
       attributeName: string,
-      attributeValue: any
+      attributeValue: any,
     ) => void;
     moveAfterSibling: (
       self: DomInstance<HostElement, HostTextElement>,
       previousSiblingInstance:
         | DomInstance<HostElement, HostTextElement>
         | TextInstance<HostElement, HostTextElement>
-        | null
+        | null,
     ) => void;
     appendChildAfterSibling: (
       parentInstance: DomInstance<HostElement, HostTextElement> | RootInstance<HostElement, HostTextElement>,
@@ -26,7 +26,7 @@ export type IDriver<HostElement, HostTextElement> = {
       previousSiblingInstance:
         | DomInstance<HostElement, HostTextElement>
         | TextInstance<HostElement, HostTextElement>
-        | null
+        | null,
     ) => void;
     elementDidMountHook: (
       domInstance: DomInstance<HostElement, HostTextElement>
@@ -38,7 +38,7 @@ export type IDriver<HostElement, HostTextElement> = {
     remove: (textInstance: TextInstance<HostElement, HostTextElement>) => void;
     update: (
       textInstance: TextInstance<HostElement, HostTextElement>,
-      newText: string
+      newText: string,
     ) => void;
 
     moveAfterSibling: (
@@ -46,7 +46,7 @@ export type IDriver<HostElement, HostTextElement> = {
       previousSiblingInstance:
         | DomInstance<HostElement, HostTextElement>
         | TextInstance<HostElement, HostTextElement>
-        | null
+        | null,
     ) => void;
   };
 

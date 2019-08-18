@@ -1,5 +1,5 @@
 import plusnew, { component, store, Portal } from 'index';
-import driver from '../../driver';
+import driver from '@plusnew/driver-dom';
 
 describe('<Portal />', () => {
   let container: HTMLElement;

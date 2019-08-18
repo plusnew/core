@@ -1,5 +1,5 @@
 import plusnew, { component, store } from 'index';
-import driver from '../../driver';
+import driver from '@plusnew/driver-dom';
 
 const htmlNamespace = 'http://www.w3.org/1999/xhtml';
 const svgNamespace = 'http://www.w3.org/2000/svg';

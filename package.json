@@ -1,11 +1,11 @@
 {
   "name": "@plusnew/core",
-  "version": "0.6.50",
+  "version": "1.0.0-alpha.0",
   "description": "ts component framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublishOnly": "yarn run test && yarn run build",
+    "prepublishOnly": "yarn run build",
     "build": "webpack --config configs/webpack.prod.conf.js",
     "test": "karma start configs/karma.conf.js --no-auto-watch --single-run",
     "test:watch": "karma start configs/karma.conf.js",
@@ -24,9 +24,10 @@
   "homepage": "https://github.com/plusnew/core#readme",
   "dependencies": {},
   "devDependencies": {
+    "@plusnew/driver-dom": "^0.6.63",
     "copy-webpack-plugin": "^5.0.4",
-    "jest": "^24.8.0",
-    "plusnew-karma-config": "0.6.50",
+    "jest": "^24.9.0",
+    "plusnew-karma-config": "0.6.54",
     "plusnew-webpack-config": "0.6.50",
     "requestidlecallback": "^0.3.0",
     "ts-jest": "^24.0.2",

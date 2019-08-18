@@ -1,4 +1,4 @@
-import PlusnewAbstractElement from 'PlusnewAbstractElement';
+import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import { props } from '../../../interfaces/component';
 import { hasInputEvent, hasOnchangeEvent, isCheckbox, isOption, isRadio, isSelect } from '../../../util/dom';
 import { getSpecialNamespace } from '../../../util/namespace';
