@@ -22,7 +22,7 @@ describe('firing input events', () => {
       () => <local.Observer>{state => <input type="text" onchange={change} value={state} /> }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const input = container.childNodes[0] as HTMLInputElement;
     input.value = 'bar';
@@ -52,7 +52,7 @@ describe('firing input events', () => {
       () => <local.Observer>{state => <input type="number" onchange={change} value={`${state}`} /> }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const input = container.childNodes[0] as HTMLInputElement;
     input.value = '1';
@@ -81,7 +81,7 @@ describe('firing input events', () => {
       () => <local.Observer>{state => <input type="text" onchange={change} value={state}  />}</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const input = container.childNodes[0] as HTMLInputElement;
     input.value = 'bar';
@@ -112,7 +112,7 @@ describe('firing input events', () => {
       () => <local.Observer>{state => <input onchange={change} checked={state} type="checkbox" />}</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const input = container.childNodes[0] as HTMLInputElement;
     input.checked = false;
@@ -130,7 +130,7 @@ describe('firing input events', () => {
       () => <input checked={false} type="checkbox" />,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const input = container.childNodes[0] as HTMLInputElement;
     input.checked = true;
@@ -147,7 +147,7 @@ describe('firing input events', () => {
       () => <local.Observer>{localState => <input checked={localState} type="checkbox" onchange={evt => local.dispatch(evt.currentTarget.checked)} />}</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const input = container.childNodes[0] as HTMLInputElement;
     input.checked = true;

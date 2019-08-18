@@ -17,7 +17,7 @@ describe('rendering class components', () => {
       }
     }
 
-    plusnew.render(<MainComponent />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
@@ -36,7 +36,7 @@ describe('rendering class components', () => {
       }
     }
 
-    plusnew.render(<MainComponent />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
@@ -64,7 +64,7 @@ describe('rendering class components', () => {
       }
     }
 
-    plusnew.render(<MainComponent />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');

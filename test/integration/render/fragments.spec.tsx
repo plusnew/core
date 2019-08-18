@@ -20,7 +20,7 @@ describe('fragments', () => {
         </>,
     );
 
-    plusnew.render(<MainComponent />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -53,7 +53,7 @@ describe('fragments', () => {
         </div>,
     );
 
-    plusnew.render(<MainComponent />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
     const div = container.childNodes[0];
     expect(div.childNodes.length).toBe(2);
@@ -97,7 +97,7 @@ describe('fragments', () => {
         </>,
     );
 
-    plusnew.render(<MainComponent />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -128,7 +128,7 @@ describe('fragments', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<MainComponent />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -183,7 +183,7 @@ describe('fragments', () => {
         }}</local.Observer>,
     );
 
-    plusnew.render(<MainComponent />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(3);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');

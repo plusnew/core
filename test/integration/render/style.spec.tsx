@@ -20,7 +20,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLDivElement;
     expect(target.style.width).toBe('20px');
@@ -44,7 +44,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLDivElement;
     expect(target.style.width).toBe('');
@@ -72,7 +72,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLDivElement;
     expect(target.style.width).toBe('30px');
@@ -95,7 +95,7 @@ describe('dom handling', () => {
       () => <div style={{ width: 'foo' }}/>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLDivElement;
     expect(target.getAttribute('style')).toBe('width:foo;');

@@ -1,4 +1,5 @@
 import Instance from 'instances/types/Root/Instance';
+import driver from '@plusnew/driver-dom';
 
 describe('root', () => {
   it('move', () => {
@@ -14,7 +15,7 @@ describe('root', () => {
   });
 
   xit('getFirstIntrinsicElement', () => {
-    const instance = new Instance(true, undefined, () => null, {});
+    const instance = new Instance<Element, Text>(true, undefined, () => null, { driver: driver(document.createElement('div')) });
     instance.ref = document.createElement('div');
     expect(instance.getLastIntrinsicInstance()).toBe(instance.ref);
   });

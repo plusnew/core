@@ -2,6 +2,7 @@
   "include": [
     "index.ts",
     "src/**/*",
+    "test/**/*",
   ],
   "compilerOptions": {
     /* Basic Options */

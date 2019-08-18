@@ -30,7 +30,7 @@ describe('lifecycle', () => {
         () => <local.Observer>{local => local && <NestedComponent />}</local.Observer>,
       );
 
-      plusnew.render(<MainComponent />, { driver: driver(container) });
+      plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(0);
       expect(componentDidMountSpy.calls.count()).toBe(0);
@@ -78,7 +78,7 @@ describe('lifecycle', () => {
           }</local.Observer>,
       );
 
-      plusnew.render(<MainComponent />, { driver: driver(container) });
+      plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(2);
       expect(renderSpy.calls.count()).toBe(1);
@@ -108,7 +108,7 @@ describe('lifecycle', () => {
       renderSpy,
     );
 
-    const AnotherNestedComponent = component<{value: number}, Host, Text>(
+    const AnotherNestedComponent = component<{value: number}, Element, Text>(
       'Component',
       anotherRenderSpy,
     );
@@ -126,7 +126,7 @@ describe('lifecycle', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<MainComponent />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect(renderSpy.calls.count()).toBe(1);
@@ -157,7 +157,7 @@ describe('lifecycle', () => {
         () => <local.Observer>{local => local && <NestedComponent />}</local.Observer>,
       );
 
-      plusnew.render(<MainComponent />, { driver: driver(container) });
+      plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(0);
       expect(componentWillUnmountSpy.calls.count()).toBe(0);

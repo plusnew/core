@@ -8,10 +8,10 @@ import { ApplicationElement } from 'interfaces/component';
 import driver from '@plusnew/driver-dom';
 
 function createInstance(applicationElement: ApplicationElement) {
-  const renderOptions = { driver:driver(document.createElement('div')) };
-  const wrapper = new RootInstance(true, undefined, () => null, renderOptions);
+  const renderOptions = { driver: driver(document.createElement('div')) };
+  const wrapper = new RootInstance<Element, Text>(true, undefined, () => null, renderOptions);
 
-  const instance = factory(applicationElement, wrapper, () => null, renderOptions);
+  const instance = factory<Element, Text>(applicationElement, wrapper, () => null, renderOptions);
   instance.initialiseNestedElements();
   return instance;
 }

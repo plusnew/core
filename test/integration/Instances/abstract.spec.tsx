@@ -1,5 +1,6 @@
 import Abstract from 'instances/types/Instance';
 import plusnew from 'index';
+import driver from '@plusnew/driver-dom';
 
 xdescribe('Does the root-instance behave correctly', () => {
   let abstract: Abstract<Element, Text>;
@@ -9,12 +10,12 @@ xdescribe('Does the root-instance behave correctly', () => {
       getLastIntrinsicInstance(): never {
         throw new Error('mep');
       }
-      move() {}
-      remove() {}
-      reconcile() {}
+      move() { }
+      remove() { }
+      reconcile() { }
     }
 
-    abstract = new TestInstance(<div />, undefined, () => null, {});
+    abstract = new TestInstance(<div />, undefined, () => null, { driver: driver(document.createElement('div')) });
   });
 
   it('appendToParent should throw exception', () => {

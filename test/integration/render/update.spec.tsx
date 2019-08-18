@@ -29,7 +29,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
 
@@ -57,7 +57,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
 
@@ -90,7 +90,7 @@ describe('rendering the elements', () => {
           }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
 
@@ -120,7 +120,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
       );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
 
@@ -148,7 +148,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
 
@@ -177,7 +177,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].childNodes.length).toBe(2);
     const target = container.childNodes[0].childNodes[0] as HTMLElement;
@@ -205,7 +205,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -226,7 +226,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
@@ -253,7 +253,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
@@ -286,7 +286,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.innerHTML).toBe('0');
@@ -308,7 +308,7 @@ describe('rendering the elements', () => {
             <div />
         }</local.Observer>,
     );
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
 
@@ -331,7 +331,7 @@ describe('rendering the elements', () => {
             <div />
         }</local.Observer>,
     );
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
 
@@ -350,7 +350,7 @@ describe('rendering the elements', () => {
           <div>{state}</div>
         }</local.Observer>,
     );
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const staticText = container.childNodes[0] as Text;
 
@@ -370,7 +370,7 @@ describe('rendering the elements', () => {
       () =>
         <div>static text</div>,
     );
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const staticText = container.childNodes[0] as Text;
 

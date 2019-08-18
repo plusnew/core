@@ -25,7 +25,7 @@ describe('firing onchange events', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const textarea = container.childNodes[0] as HTMLTextAreaElement;
 
@@ -54,7 +54,7 @@ describe('firing onchange events', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, { driver: driver(container) });
+    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
 
     const textarea = container.childNodes[0] as HTMLTextAreaElement;
 
