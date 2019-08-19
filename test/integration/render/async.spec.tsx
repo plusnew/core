@@ -23,7 +23,7 @@ describe('<Animate />', () => {
       () => <Async pendingIndicator={<span />}>{() => new Promise(resolve => resolve(<div />))}</Async>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -39,7 +39,7 @@ describe('<Animate />', () => {
       () => <Async pendingIndicator={<span />}>{() => Promise.resolve(<div />)}</Async>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -56,7 +56,7 @@ describe('<Animate />', () => {
       () => <local.Observer>{state => <Async pendingIndicator={<span />}>{() => Promise.resolve(<div>{state}</div>)}</Async>}</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -93,7 +93,7 @@ describe('<Animate />', () => {
         }</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -130,7 +130,7 @@ describe('<Animate />', () => {
         }</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -158,7 +158,7 @@ describe('<Animate />', () => {
       () => <Async pendingIndicator={<span />}>{async () => <div />}</Async>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -180,7 +180,7 @@ describe('<Animate />', () => {
         </local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -206,7 +206,7 @@ describe('<Animate />', () => {
 
     let asyncPromise;
 
-    plusnew.render<Element, Text>(<Component />, {
+    plusnew.render(<Component />, {
       driver: driver(container),
       addAsyncListener: promise => asyncPromise = promise,
     });
@@ -232,7 +232,7 @@ describe('<Animate />', () => {
 
     let asyncPromise;
 
-    plusnew.render<Element, Text>(<Component />, {
+    plusnew.render(<Component />, {
       driver: driver(container),
       addAsyncListener: promise => asyncPromise = promise,
     });

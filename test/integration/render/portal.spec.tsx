@@ -29,7 +29,7 @@ xdescribe('<Portal />', () => {
         </span>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect(container.childNodes[0].childNodes.length).toBe(1);
@@ -71,7 +71,7 @@ xdescribe('<Portal />', () => {
         </svg>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).namespaceURI).toBe('http://www.w3.org/2000/svg');

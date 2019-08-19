@@ -38,7 +38,7 @@ describe('firing input events', () => {
         }</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const [firstRadio, secondRadio] = container.childNodes as NodeListOf<HTMLInputElement>;
 
@@ -84,7 +84,7 @@ describe('firing input events', () => {
         }</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const [firstRadio, secondRadio] = container.childNodes as NodeListOf<HTMLInputElement>;
 

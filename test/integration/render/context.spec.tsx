@@ -30,7 +30,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{state => state}</valueContext.Consumer>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('1');
@@ -55,7 +55,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{state => state}</valueContext.Consumer>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('1');
@@ -91,7 +91,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</valueContext.Consumer>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -132,7 +132,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</valueContext.Consumer>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -163,7 +163,7 @@ describe('context', () => {
     );
 
     expect(() =>
-      plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) }),
+      plusnew.render(<MainComponent />, { driver: driver(container) }),
     ).toThrow(new Error('Could not find Provider'));
   });
 
@@ -185,7 +185,7 @@ describe('context', () => {
     );
 
     expect(() =>
-      plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) }),
+      plusnew.render(<MainComponent />, { driver: driver(container) }),
     ).toThrow(new Error('Could not find Provider'));
   });
 
@@ -215,7 +215,7 @@ describe('context', () => {
       () => <valueContext.Consumer>{(state, dispatch) => <button onclick={() => dispatch(2)}>{state}</button>}</valueContext.Consumer>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -252,7 +252,7 @@ describe('context', () => {
     (Props: Props<{ value: number } >) => <Props>{props => <valueContext.Consumer>{state => <div>{state + props.value}</div>}</valueContext.Consumer>}</Props>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('2');

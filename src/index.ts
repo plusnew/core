@@ -8,7 +8,6 @@ import factory from './instances/factory';
 import Instance from './instances/types/Instance';
 import RootInstance from './instances/types/Root/Instance';
 import { renderOptions } from './interfaces/renderOptions';
-import './interfaces/jsx';
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
 import elementTypeChecker from './util/elementTypeChecker';
 import { Fragment } from './util/symbols';

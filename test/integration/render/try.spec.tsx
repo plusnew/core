@@ -25,7 +25,7 @@ describe('<Try />', () => {
         }</counter.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -51,7 +51,7 @@ describe('<Try />', () => {
         }</counter.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -82,7 +82,7 @@ describe('<Try />', () => {
         }</counter.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -113,7 +113,7 @@ describe('<Try />', () => {
         </Try>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -139,7 +139,7 @@ describe('<Try />', () => {
         }</counter.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -166,7 +166,7 @@ describe('<Try />', () => {
         </Try>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
@@ -197,7 +197,7 @@ describe('<Try />', () => {
         }</counter.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -227,7 +227,7 @@ describe('<Try />', () => {
         </Try>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -256,7 +256,7 @@ describe('<Try />', () => {
         </Try>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');

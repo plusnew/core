@@ -19,7 +19,7 @@ describe('rendering svg components', () => {
       () => <div />,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
   });
@@ -30,7 +30,7 @@ describe('rendering svg components', () => {
       () => <span><div /></span>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(htmlNamespace);
@@ -43,7 +43,7 @@ describe('rendering svg components', () => {
       () => <svg />,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
   });
@@ -54,7 +54,7 @@ describe('rendering svg components', () => {
       () => <svg xmlns="foo" />,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe('foo');
   });
@@ -65,7 +65,7 @@ describe('rendering svg components', () => {
       () => <span><svg /></span>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(htmlNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
@@ -77,7 +77,7 @@ describe('rendering svg components', () => {
       () => <svg><g /></svg>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
@@ -89,7 +89,7 @@ describe('rendering svg components', () => {
       () => <svg><foreignObject ><div xmlns={htmlNamespace} /></foreignObject></svg>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
     expect(container.childNodes[0].childNodes[0].namespaceURI).toBe(svgNamespace);
@@ -102,7 +102,7 @@ describe('rendering svg components', () => {
       () => <g />,
     );
 
-    plusnew.render<Element, Text>(<Component />, { xmlns: svgNamespace, driver: driver(container) });
+    plusnew.render(<Component />, { xmlns: svgNamespace, driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
   });
@@ -114,7 +114,7 @@ describe('rendering svg components', () => {
       () => <local.Observer>{localState => localState ? <svg /> : <div />}</local.Observer> ,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].namespaceURI).toBe(svgNamespace);
 
@@ -142,7 +142,7 @@ describe('rendering svg components', () => {
         </svg>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(
       (container.childNodes[0].childNodes[0] as SVGUseElement).getAttributeNS(xlinkNamespaceUrl, 'href'),
@@ -163,7 +163,7 @@ describe('rendering svg components', () => {
     );
 
     expect(() =>
-      plusnew.render<Element, Text>(<Component />, { driver: driver(container) }),
+      plusnew.render(<Component />, { driver: driver(container) }),
     ).toThrow(new Error('The namespace prefix xlink is not defined'));
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@plusnew/core",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "ts component framework with an typesecure and functional approach",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/plusnew/core#readme",
   "dependencies": {},
   "devDependencies": {
-    "@plusnew/driver-dom": "^0.6.63",
+    "@plusnew/driver-dom": "^1.0.0-alpha.1",
     "copy-webpack-plugin": "^5.0.4",
     "jest": "^24.9.0",
     "plusnew-karma-config": "0.6.54",

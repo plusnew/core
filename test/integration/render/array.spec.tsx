@@ -23,7 +23,7 @@ describe('rendering nested components', () => {
       () => <ul><local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer></ul>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -48,7 +48,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -72,7 +72,7 @@ describe('rendering nested components', () => {
       () => <ul><local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer></ul>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -101,7 +101,7 @@ describe('rendering nested components', () => {
       () => <ul><local.Observer>{local => local.map(item => <li key={item.key}>{item.value}</li>)}</local.Observer></ul>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -150,7 +150,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const span = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -202,7 +202,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const span = container.childNodes[0] as HTMLElement;
     expect(container.childNodes.length).toBe(1);
@@ -270,7 +270,7 @@ describe('rendering nested components', () => {
         </div>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const div = container.childNodes[0].childNodes[1] as HTMLElement;
     expect(div.childNodes.length).toBe(1);
@@ -307,7 +307,7 @@ describe('rendering nested components', () => {
         </div>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const div = container.childNodes[0] as HTMLElement;
     expect(div.childNodes.length).toBe(2);
@@ -342,7 +342,7 @@ describe('rendering nested components', () => {
         </div>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const div = container.childNodes[0] as HTMLElement;
     expect(div.childNodes.length).toBe(1);
@@ -371,7 +371,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -409,7 +409,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -443,7 +443,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -487,7 +487,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -526,7 +526,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -562,7 +562,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -599,7 +599,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -638,7 +638,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -674,7 +674,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -711,7 +711,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -752,7 +752,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -790,7 +790,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 
@@ -819,7 +819,7 @@ describe('rendering nested components', () => {
       ),
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const ul = container.childNodes[0];
 

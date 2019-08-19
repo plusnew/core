@@ -15,7 +15,7 @@ describe('dom handling', () => {
       () =>
         <form acceptCharset="UTF-8" />,
     );
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLFormElement;
 
@@ -28,7 +28,7 @@ describe('dom handling', () => {
       () =>
         <div className="foo" />,
     );
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
 
@@ -41,7 +41,7 @@ describe('dom handling', () => {
       () =>
         <label htmlFor="foo" />,
     );
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLLabelElement;
 
@@ -54,7 +54,7 @@ describe('dom handling', () => {
       () =>
         <meta httpEquiv="refresh" />,
     );
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLMetaElement;
 
@@ -69,7 +69,7 @@ describe('dom handling', () => {
       () =>
         <span onclick={clickHandler} />,
     );
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLMetaElement;
 
@@ -83,7 +83,7 @@ describe('dom handling', () => {
         // <svg viewBox="0 0 100 100" />,
         plusnew.createElement('svg', { viewBox: '0 0 100 100' }),
     );
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as SVGSVGElement;
 
@@ -108,7 +108,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
 
@@ -142,7 +142,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect((container.childNodes[0] as HTMLInputElement).tagName).toBe('INPUT');
     expect((container.childNodes[0] as HTMLInputElement).disabled).toBe(local.getState());
@@ -162,7 +162,7 @@ describe('dom handling', () => {
       () => <div key="foo" />,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
     expect((container.childNodes[0] as any).key).toBe(undefined);
@@ -180,7 +180,7 @@ describe('dom handling', () => {
       }</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLInputElement;
     expect(target.tagName).toBe('INPUT');
@@ -215,7 +215,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLInputElement;
     expect(target.tagName).toBe('INPUT');
@@ -239,7 +239,7 @@ describe('dom handling', () => {
         }</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<Component />, { driver: driver(container) });
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLInputElement;
     expect(target.tagName).toBe('INPUT');
@@ -291,7 +291,7 @@ describe('dom handling', () => {
         }}</local.Observer>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     const target = container.childNodes[0];
 
@@ -329,7 +329,7 @@ describe('dom handling', () => {
         <input type="text" autofocus={false} />,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(document.activeElement).not.toBe(container.childNodes[0] as Element);
   });
@@ -341,7 +341,7 @@ describe('dom handling', () => {
         <input type="text" value="djfngjnfdg" autofocus={true} />,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(document.activeElement).toBe(container.childNodes[0] as Element);
   });
@@ -353,7 +353,7 @@ describe('dom handling', () => {
         <div><input type="text" value="djfngjnfdg" autofocus={true} /></div>,
     );
 
-    plusnew.render<Element, Text>(<MainComponent />, { driver: driver(container) });
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(document.activeElement).toBe(container.childNodes[0].childNodes[0] as Element);
   });
