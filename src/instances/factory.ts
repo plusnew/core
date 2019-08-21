@@ -9,7 +9,7 @@ import Instance, { getPredeccessor } from './types/Instance';
 import PlaceholderInstance from './types/Placeholder/Instance';
 import ShallowInstance from './types/Shallow/Instance';
 import TextInstance from './types/Text/Instance';
-import { IComponentContainer } from 'components/factory';
+import { IComponentContainer } from './../components/factory';
 import { renderOptions } from '../interfaces/renderOptions';
 
 /**

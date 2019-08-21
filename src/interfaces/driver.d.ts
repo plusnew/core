@@ -11,6 +11,10 @@ export type IDriver<HostElement, HostTextElement> = {
       attributeName: string,
       attributeValue: any,
     ) => void;
+    unsetAttribute: (
+      domInstance: DomInstance<HostElement, HostTextElement>,
+      attributeName: string,
+    ) => void;
     moveAfterSibling: (
       self: DomInstance<HostElement, HostTextElement>,
       previousSiblingInstance:
