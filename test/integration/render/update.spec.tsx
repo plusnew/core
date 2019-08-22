@@ -25,7 +25,7 @@ describe('rendering the elements', () => {
       'Component',
       () =>
         <local.Observer>{state =>
-          <div className={state}>{state}</div>
+          <div class={state}>{state}</div>
         }</local.Observer>,
     );
 
@@ -53,7 +53,7 @@ describe('rendering the elements', () => {
       'Component',
       () =>
         <local.Observer>{state =>
-          <div className={state}>{state}</div>
+          <div class={state}>{state}</div>
         }</local.Observer>,
     );
 
@@ -303,7 +303,7 @@ describe('rendering the elements', () => {
       () =>
         <local.Observer>{state =>
           state ?
-            <div className="foo" />
+            <div class="foo" />
           :
             <div />
         }</local.Observer>,

@@ -21,7 +21,7 @@ describe('rendering nested components', () => {
   it('checks if nesting the components works', () => {
     const NestedComponent = component(
       'Component',
-      (Props: Props<{ value: string }>) => <Props>{props => <div className={props.value}>{props.value}</div>}</Props>,
+      (Props: Props<{ value: string }>) => <Props>{props => <div class={props.value}>{props.value}</div>}</Props>,
     );
 
     const local = store('foo', (state: string, newValue: string) => newValue);

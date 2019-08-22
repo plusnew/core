@@ -324,10 +324,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@plusnew/driver-dom@^1.0.0-alpha.1":
-  version "1.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.0.0-alpha.1.tgz#a97290475e58057dfd828f54b506af454fd307c9"
-  integrity sha512-t7osazDE4iTIy0lCaJSOwdppo9FoqiYJyAeCnNCHghedNFZNY7oH/9Ab63gQ8zrFnQoD+JHOl4fmwA3IlLS2aw==
+"@plusnew/driver-dom@^1.0.0-alpha.4":
+  version "1.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.0.0-alpha.4.tgz#3976a9056b3494dc6943f9ed0f383968c3106c66"
+  integrity sha512-JoSUlf1tewVqvfpVkd2bBx258fnaKgRzz0ZgdQNL8/5BKXDi0X+RnrlhqwddY2EM3JfcUvt0h1qOrtI8J8U39A==
 
 "@types/anymatch@*":
   version "1.3.1"
@@ -5968,10 +5968,10 @@ tslint-microsoft-contrib@~5.2.1:
   dependencies:
     tsutils "^2.27.2 <2.29.0"
 
-tslint@5.18.0:
-  version "5.18.0"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.18.0.tgz#f61a6ddcf372344ac5e41708095bbf043a147ac6"
-  integrity sha512-Q3kXkuDEijQ37nXZZLKErssQVnwCV/+23gFEMROi8IlbaBG6tXqLPQJ5Wjcyt/yHPKBC+hD5SzuGaMora+ZS6w==
+tslint@5.19.0:
+  version "5.19.0"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.19.0.tgz#a2cbd4a7699386da823f6b499b8394d6c47bb968"
+  integrity sha512-1LwwtBxfRJZnUvoS9c0uj8XQtAnyhWr9KlNvDIdB+oXyT+VpsOAaEhEgKi1HrZ8rq0ki/AAnbGSv4KM6/AfVZw==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     builtin-modules "^1.1.1"

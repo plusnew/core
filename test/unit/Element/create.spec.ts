@@ -13,7 +13,7 @@ describe('checking if createElement works as expected', () => {
 
   it('Is div props correct created', () => {
     const props = {
-      className: 'foo',
+      class: 'foo',
     };
 
     const instance = plusnew.createElement('div', props);
@@ -37,7 +37,7 @@ describe('checking if createElement works as expected', () => {
   it('Is div props correct created when adding children without reference', () => {
     const child = plusnew.createElement('span', {});
     const props = {
-      className: 'foo',
+      class: 'foo',
     };
 
     const instance = plusnew.createElement('div', props, child);
@@ -49,7 +49,7 @@ describe('checking if createElement works as expected', () => {
   it('Is div props correct created when creating multiple children', () => {
     const firstChild = plusnew.createElement('span', {});
     const secondChild = plusnew.createElement('ul', {
-      className: '3',
+      class: '3',
     });
     const instance = plusnew.createElement('div', {}, firstChild, secondChild);
     expect((instance.props.children as ApplicationElement[])[0]).toBe(firstChild);
