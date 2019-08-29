@@ -27,7 +27,7 @@
     "copy-webpack-plugin": "^5.0.4",
     "jest": "^24.8.0",
     "plusnew-karma-config": "0.6.61",
-    "plusnew-webpack-config": "0.6.50",
+    "plusnew-webpack-config": "0.6.62",
     "requestidlecallback": "^0.3.0",
     "ts-jest": "^24.0.2",
     "tslint": "5.18.0",
