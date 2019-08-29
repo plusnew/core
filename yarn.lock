@@ -3757,10 +3757,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-karma-chrome-launcher@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/karma-chrome-launcher/-/karma-chrome-launcher-3.0.0.tgz#5c3a7f877a304e90781c28fcd9a49e334a890f42"
-  integrity sha512-u/PnVgDOP97AUe/gJeABlC6Wa6aQ83MZsm0JgsJQ5bGQ9XcXON/7b2aRhl59A62Zom+q3PFveBkczc7E1RT7TA==
+karma-chrome-launcher@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/karma-chrome-launcher/-/karma-chrome-launcher-3.1.0.tgz#805a586799a4d05f4e54f72a204979f3f3066738"
+  integrity sha512-3dPs/n7vgz1rxxtynpzZTvb9y/GIaW8xjAwcIGttLbycqoFtI7yo1NGnQi6oFTherRE+GIhCAHZC4vEqWGhNvg==
   dependencies:
     which "^1.2.1"
 
@@ -3798,10 +3798,10 @@ karma-webpack@^4.0.2:
     source-map "^0.7.3"
     webpack-dev-middleware "^3.7.0"
 
-karma@4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/karma/-/karma-4.2.0.tgz#27e88b310cde090d016980ff5444e3a239196fca"
-  integrity sha512-fmCuxN1rwJxTdZfOXK5LjlmS4Ana/OvzNMpkyLL/TLE8hmgSkpVpMYQ7RTVa8TNKRVQDZNl5W1oF5cfKfgIMlA==
+karma@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/karma/-/karma-4.3.0.tgz#e14471ea090a952265a42ebb442b1a3c09832559"
+  integrity sha512-NSPViHOt+RW38oJklvYxQC4BSQsv737oQlr/r06pCM+slDOr4myuI1ivkRmp+3dVpJDfZt2DmaPJ2wkx+ZZuMQ==
   dependencies:
     bluebird "^3.3.0"
     body-parser "^1.16.1"
@@ -3817,7 +3817,7 @@ karma@4.2.0:
     graceful-fs "^4.1.2"
     http-proxy "^1.13.0"
     isbinaryfile "^3.0.0"
-    lodash "^4.17.11"
+    lodash "^4.17.14"
     log4js "^4.0.0"
     mime "^2.3.1"
     minimatch "^3.0.2"
@@ -4748,15 +4748,15 @@ pkg-dir@^3.0.0:
   dependencies:
     find-up "^3.0.0"
 
-plusnew-karma-config@0.6.54:
-  version "0.6.54"
-  resolved "https://registry.yarnpkg.com/plusnew-karma-config/-/plusnew-karma-config-0.6.54.tgz#372c33e1b619d03cc91205912d962a04f29a23f1"
-  integrity sha512-5j+NdADI96fBoxaX1A3PJJctX6AiU5Ax44pg8bg/caYkQmRV4dX67UohRzN0zICVIWdHPe1DFoDaYrgZr126hQ==
+plusnew-karma-config@0.6.61:
+  version "0.6.61"
+  resolved "https://registry.yarnpkg.com/plusnew-karma-config/-/plusnew-karma-config-0.6.61.tgz#355ff490ccae0664af71d1fdde5a090e2d09120c"
+  integrity sha512-yn2Q1qQtp213jbzY3NAdpMzmYZRmehZFQ76MOcKPM+ye/AsZlR5vJzrmf7Dj/U3cSexg2wa2L8nhh4rYsORjiQ==
   dependencies:
     "@types/jasmine" "^3.3.14"
     jasmine-core "^3.4.0"
-    karma "4.2.0"
-    karma-chrome-launcher "3.0.0"
+    karma "4.3.0"
+    karma-chrome-launcher "3.1.0"
     karma-coverage-istanbul-reporter "^2.0.6"
     karma-jasmine "2.0.1"
     karma-sourcemap-loader "0.3.7"
