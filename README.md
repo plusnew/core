@@ -166,16 +166,22 @@ const NestedComponent = component(
 ## Helper-Components
 ### Portal
 With portals you can render elements outside of your normal tree, whereever you want.
+PortalExit is where all the stuff you have in PortalEntrance will land.
 
 ```ts
-import plusnew, { component, Portal } from '@plusnew/core';
+import plusnew, { component, PortalExit, PortalEntrance } from '@plusnew/core';
 
 export default component(
   'ComponentName',
   () =>
-    <Portal target={document.getElementById('somewhere') as HTMLElement}>
-      <div>your element is appended inside the #somewhere element</div>
-    </Portal>,
+    <>
+      <div>
+        <PortalExit name="portalName"/>
+      </div>
+      <div>
+        <PortalEntrance name="portalName"><span /></PortalEntrance>
+      </div>
+    </>,
 );
 ```
 

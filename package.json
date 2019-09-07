@@ -1,8 +1,9 @@
 {
   "name": "@plusnew/core",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "ts component framework with an typesecure and functional approach",
   "main": "dist/index.js",
+  "module": "src/index.ts",
   "types": "dist/index.d.ts",
   "scripts": {
     "prepublishOnly": "yarn run build",

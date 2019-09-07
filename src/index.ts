@@ -12,6 +12,7 @@ import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement
 import elementTypeChecker from './util/elementTypeChecker';
 import { Fragment } from './util/symbols';
 import { ApplicationElement } from './interfaces/component';
+import { PortalEntrance, PortalExit } from './components/portal';
 
 class Plusnew {
   /**
@@ -30,18 +31,26 @@ class Plusnew {
    * mounts the root component
    */
   public render<HostElement, HostTextElement>(element: PlusnewAbstractElement, options: renderOptions<HostElement, HostTextElement>) {
+    let internalOptions = options;
+
+    if ('portals' in options === false) {
+      internalOptions = {
+        ...internalOptions,
+        portals: {},
+      };
+    }
+
     // Fake RootInstance
     const predecessor = () => null;
-    const wrapper = new RootInstance(true, undefined, predecessor, options);
+    const wrapper = new RootInstance(true, undefined, predecessor, internalOptions);
 
-    const instance = factory(element, wrapper, predecessor, options);
+    const instance = factory(element, wrapper, predecessor, internalOptions);
     instance.initialiseNestedElements();
 
     return instance;
   }
 
   Fragment = Fragment;
-
 }
 
 export {
@@ -61,6 +70,8 @@ export {
   Observer as Props,
   Observer,
   storeType,
+  PortalEntrance,
+  PortalExit,
 };
 
 export default new Plusnew();
