@@ -12,7 +12,7 @@ describe('firing input events', () => {
   it('is oninput called on radio, without revert', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
+    const change = jasmine.createSpy('change', (evt: Event & { currentTarget: HTMLInputElement}) => {
       local.dispatch(evt.currentTarget.value);
     }).and.callThrough();
 
@@ -51,7 +51,7 @@ describe('firing input events', () => {
     secondRadio.dispatchEvent(event);
 
     expect(change.calls.count()).toEqual(1);
-    expect(change).toHaveBeenCalledWith(event);
+    expect(change).toHaveBeenCalledWith(event as any);
     expect(local.getState()).toBe('bar');
     expect(firstRadio.checked).toBe(false);
     expect(secondRadio.checked).toBe(true);
@@ -60,7 +60,7 @@ describe('firing input events', () => {
   it('is oninput called on radio, with revert', () => {
     const local = store('foo', (state, newValue: string) => state);
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
+    const change = jasmine.createSpy('change', (evt: Event & { currentTarget: HTMLInputElement}) => {
       local.dispatch(evt.currentTarget.value);
     }).and.callThrough();
 
@@ -99,7 +99,7 @@ describe('firing input events', () => {
     secondRadio.dispatchEvent(event);
 
     expect(change.calls.count()).toEqual(1);
-    expect(change).toHaveBeenCalledWith(event);
+    expect(change).toHaveBeenCalledWith(event as any);
     expect(local.getState()).toBe('foo');
     expect(firstRadio.checked).toBe(true);
     expect(secondRadio.checked).toBe(false);

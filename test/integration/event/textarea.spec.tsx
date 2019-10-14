@@ -12,7 +12,7 @@ describe('firing onchange events', () => {
   it('is onchange called on textarea, without revert', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
+    const change = jasmine.createSpy('change', (evt: Event & { currentTarget: HTMLTextAreaElement}) => {
       local.dispatch(evt.currentTarget.value);
     }).and.callThrough();
 
@@ -33,7 +33,7 @@ describe('firing onchange events', () => {
     textarea.dispatchEvent(event);
 
     expect(change.calls.count()).toEqual(1);
-    expect(change).toHaveBeenCalledWith(event);
+    expect(change).toHaveBeenCalledWith(event as any);
     expect(local.getState()).toBe('bar');
     expect(textarea.value).toBe('bar');
   });
@@ -41,7 +41,7 @@ describe('firing onchange events', () => {
   it('is onchange called on textarea, with revert', () => {
     const local = store('foo', (state, newValue: string) => state);
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement}) => {
+    const change = jasmine.createSpy('change', (evt: Event & { currentTarget: HTMLTextAreaElement}) => {
       local.dispatch(evt.currentTarget.value);
     }).and.callThrough();
 
@@ -62,7 +62,7 @@ describe('firing onchange events', () => {
     textarea.dispatchEvent(event);
 
     expect(change.calls.count()).toEqual(1);
-    expect(change).toHaveBeenCalledWith(event);
+    expect(change).toHaveBeenCalledWith(event as any);
     expect(local.getState()).toBe('foo');
     expect(textarea.value).toBe('foo');
   });

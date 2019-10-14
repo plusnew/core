@@ -12,7 +12,7 @@ describe('firing onchange events', () => {
   it('is onchange called on select, without revert', () => {
     const local = store('foo', (state, newValue: string) => newValue);
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement }) => {
+    const change = jasmine.createSpy('change', (evt: Event & { currentTarget: HTMLSelectElement }) => {
       local.dispatch(evt.currentTarget.value);
     }).and.callThrough();
 
@@ -36,7 +36,7 @@ describe('firing onchange events', () => {
     select.dispatchEvent(event);
 
     expect(change.calls.count()).toEqual(1);
-    expect(change).toHaveBeenCalledWith(event);
+    expect(change).toHaveBeenCalledWith(event as any);
     expect(local.getState()).toBe('bar');
     expect(select.value).toBe('bar');
   });
@@ -73,7 +73,7 @@ describe('firing onchange events', () => {
     const local = store('bar', (_state, newValue: string) => newValue);
     const showOption = store(false);
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement }) => {
+    const change = jasmine.createSpy('change', (evt: Event & { currentTarget: HTMLSelectElement }) => {
       local.dispatch(evt.currentTarget.value);
     }).and.callThrough();
 
@@ -109,7 +109,7 @@ describe('firing onchange events', () => {
   it('is onchange called on select, with revert', () => {
     const local = store('foo', (state, newValue: string) => state);
 
-    const change = jasmine.createSpy('change', (evt: KeyboardEvent & { currentTarget: HTMLInputElement }) => {
+    const change = jasmine.createSpy('change', (evt: Event & { currentTarget: HTMLSelectElement }) => {
       local.dispatch(evt.currentTarget.value);
     }).and.callThrough();
 
@@ -133,7 +133,7 @@ describe('firing onchange events', () => {
     select.dispatchEvent(event);
 
     expect(change.calls.count()).toEqual(1);
-    expect(change).toHaveBeenCalledWith(event);
+    expect(change).toHaveBeenCalledWith(event as any);
     expect(local.getState()).toBe('foo');
     expect(select.value).toBe('foo');
   });

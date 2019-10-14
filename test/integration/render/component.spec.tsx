@@ -1125,7 +1125,7 @@ describe('rendering nested components', () => {
   });
 
   it('removed nested component gets a componentWillUnmount call', () => {
-    const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
+    const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', (_props: any, _instance: any) => {});
 
     const local = store(true, (state, action: boolean) => action);
 
@@ -1162,7 +1162,7 @@ describe('rendering nested components', () => {
   });
 
   it('removed nested component gets a componentWillUnmount call with props', () => {
-    const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
+    const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', (_props: any, _instance: any) => {});
 
     const local = store(true, (state, action: boolean) => action);
 

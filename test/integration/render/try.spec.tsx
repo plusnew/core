@@ -538,6 +538,7 @@ describe('<Try />', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
     await tick();
+    await tick();
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
