@@ -144,6 +144,9 @@ describe('rendering svg components', () => {
     plusnew.render(<Component />, container);
 
     expect(
+      (container.childNodes[0] as SVGElement).getAttribute('xmlns:xlink'),
+    ).toBe(xlinkNamespaceUrl);
+    expect(
       (container.childNodes[0].childNodes[0] as SVGUseElement).getAttributeNS(xlinkNamespaceUrl, 'href'),
     ).toBe('someValue');
   });
