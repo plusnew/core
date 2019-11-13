@@ -195,6 +195,8 @@ export default class DomInstance extends ChildrenInstance {
                 [namespacedKeyName]: value,
               },
             };
+
+            this.ref.setAttribute(keyName, `${value}`);
           } else {
             if (this.renderOptions && this.renderOptions.xmlnsPrefixes && typeof this.renderOptions.xmlnsPrefixes[namespacePrefix] !== undefined) {
               this.ref.setAttributeNS(this.renderOptions.xmlnsPrefixes[namespacePrefix] as string, namespacedKeyName, `${value}`);
