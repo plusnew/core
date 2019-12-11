@@ -24,14 +24,14 @@
   "homepage": "https://github.com/plusnew/core#readme",
   "dependencies": {},
   "devDependencies": {
-    "copy-webpack-plugin": "^5.0.5",
+    "copy-webpack-plugin": "^5.1.0",
     "jest": "^24.8.0",
     "plusnew-karma-config": "0.6.63",
     "plusnew-webpack-config": "0.6.64",
     "requestidlecallback": "^0.3.0",
-    "ts-jest": "^24.0.2",
+    "ts-jest": "^24.2.0",
     "tslint": "5.20.1",
     "tslint-config-airbnb": "5.11.2",
-    "typescript": "3.7.2"
+    "typescript": "3.7.3"
   }
 }
