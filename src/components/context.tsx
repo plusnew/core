@@ -33,17 +33,23 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
     Provider,
     Consumer: class Consumer extends Component<consumerProps<stateType, actionType>> {
       static displayName = 'Consumer';
-      private instance: ComponentInstance<consumerProps<stateType, actionType>, unknown, unknown>;
-      private providerPropsStore: storeType<providerProps<stateType, actionType>, any>;
+      private instance?: ComponentInstance<consumerProps<stateType, actionType>, unknown, unknown>;
+      private providerPropsStore?: storeType<providerProps<stateType, actionType>, any>;
 
       private getRenderPropsResult() {
-        const [renderProps]: [renderProps<stateType, actionType>] = this.instance.props.children as any;
-        const providerPropsState = this.providerPropsStore.getState();
+        const [renderProps]: [renderProps<stateType, actionType>] = (
+          this.instance as ComponentInstance<consumerProps<stateType, actionType>, unknown, unknown>
+        ).props.children as any;
+        const providerPropsState = (
+          this.providerPropsStore as storeType<providerProps<stateType, actionType>, any>
+        ).getState();
         return renderProps(providerPropsState.state, providerPropsState.dispatch);
       }
 
       private update = () => {
-        this.instance.render(this.getRenderPropsResult());
+        (
+          this.instance as ComponentInstance<consumerProps<stateType, actionType>, unknown, unknown>
+        ).render(this.getRenderPropsResult());
       }
 
       render(_Props: Props<consumerProps<stateType, actionType>>, componentInstance: ComponentInstance<any, unknown, unknown>) {
@@ -56,7 +62,9 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
         return this.getRenderPropsResult();
       }
       componentWillUnmount(_Props: consumerProps<stateType, actionType>, componentInstance: ComponentInstance<any, unknown, unknown>) {
-        this.providerPropsStore.unsubscribe(this.update);
+        (
+          this.providerPropsStore as storeType<providerProps<stateType, actionType>, any>
+        ).unsubscribe(this.update);
         componentInstance.storeProps.unsubscribe(this.update);
       }
     },

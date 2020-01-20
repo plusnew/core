@@ -29,5 +29,5 @@ export default class PlaceholderInstance<HostElement, HostTextElement> extends I
    * a placeholder is just a element waiting to be exchanged with something else
    * but it itself doesn't need to be updated
    */
-  public reconcile(newAbstractElement: false) {}
+  public reconcile(_newAbstractElement: false) {}
 }

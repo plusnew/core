@@ -59,7 +59,7 @@ describe('checking if createElement works as expected', () => {
   it('check if component gets safed', () => {
     const Component = component(
       'Component',
-      (Props: Props<{foo: string}>) => plusnew.createElement('div', {}),
+      (_Props: Props<{foo: string}>) => plusnew.createElement('div', {}),
     );
 
     const props = { foo: 'bar' };

@@ -1,9 +1,9 @@
-import plusnew, { Props, store, component } from 'index';
+import driver from '@plusnew/driver-dom';
+import plusnew, { component, Props, store } from 'index';
 import ComponentInstance from 'instances/types/Component/Instance';
 import FragmentInstance from 'instances/types/Fragment/Instance';
-import types from 'instances/types/types';
 import PlaceholderInstance from 'instances/types/Placeholder/Instance';
-import driver from '@plusnew/driver-dom';
+import types from 'instances/types/types';
 
 function tick() {
   return Promise.resolve();
@@ -24,7 +24,7 @@ describe('rendering nested components', () => {
       (Props: Props<{ value: string }>) => <Props>{props => <div class={props.value}>{props.value}</div>}</Props>,
     );
 
-    const local = store('foo', (state: string, newValue: string) => newValue);
+    const local = store('foo', (_state: string, newValue: string) => newValue);
 
     const MainComponent = component(
       'Component',
@@ -51,8 +51,8 @@ describe('rendering nested components', () => {
   });
 
   it('saving new props of component', () => {
-    const mainStore = store('foo-0', (store, action: string) => action);
-    const nestedStore = store('bar-0', (store, action: string) => action);
+    const mainStore = store('foo-0', (_state, action: string) => action);
+    const nestedStore = store('bar-0', (_state, action: string) => action);
 
     const NestedComponent = component(
       'Component',
@@ -64,7 +64,7 @@ describe('rendering nested components', () => {
     );
     const MainComponent = component(
       'Component',
-      (Props: Props<{}>) =>
+      (_Props: Props<{}>) =>
         <mainStore.Observer>{state =>
           <NestedComponent value={state} />
         }</mainStore.Observer>,
@@ -92,21 +92,21 @@ describe('rendering nested components', () => {
   });
 
   it('unregister dependencies', () => {
-    const mainStore = store(true, (store, action: boolean) => action);
-    const counterStore = store(0, (store, action: number) => action);
+    const mainStore = store(true, (_state, action: boolean) => action);
+    const counterStore = store(0, (_state, action: number) => action);
 
     const nestedUpdateSpy = jasmine.createSpy('nestedrender', (state: number) => state).and.callThrough();
     const containerUpdateSpy = jasmine.createSpy('render', (state: number) => state).and.callThrough();
 
     const NestedComponent = component(
       'Component',
-      (Props: Props<{}>) =>
+      (_Props: Props<{}>) =>
          <span><counterStore.Observer>{nestedUpdateSpy}</counterStore.Observer></span>,
     );
 
     const MainComponent = component(
       'Component',
-      (Props: Props<{}>) =>
+      (_Props: Props<{}>) =>
         <>
           <span><counterStore.Observer>{containerUpdateSpy}</counterStore.Observer></span>
           <mainStore.Observer>{state => state && <NestedComponent />}</mainStore.Observer>
@@ -144,21 +144,21 @@ describe('rendering nested components', () => {
   });
 
   it('unregister dependencies recusively when nested in dom element', () => {
-    const mainStore = store(true, (store, action: boolean) => action);
-    const counterStore = store(0, (store, action: number) => action);
+    const mainStore = store(true, (_state, action: boolean) => action);
+    const counterStore = store(0, (_state, action: number) => action);
 
     const nestedUpdateSpy = jasmine.createSpy('nestedrender', (state: number) => state).and.callThrough();
     const containerUpdateSpy = jasmine.createSpy('render', (state: number) => state).and.callThrough();
 
     const NestedComponent = component(
       'Component',
-      (Props: Props<{}>) =>
+      (_Props: Props<{}>) =>
          <span><counterStore.Observer>{nestedUpdateSpy}</counterStore.Observer></span>,
     );
 
     const MainComponent = component(
       'Component',
-      (Props: Props<{}>) =>
+      (_Props: Props<{}>) =>
         <>
           <span><counterStore.Observer>{containerUpdateSpy}</counterStore.Observer></span>
           <mainStore.Observer>
@@ -203,21 +203,21 @@ describe('rendering nested components', () => {
   });
 
   it('unregister dependencies recusively when nested in fragment element', () => {
-    const mainStore = store(true, (store, action: boolean) => action);
-    const counterStore = store(0, (store, action: number) => action);
+    const mainStore = store(true, (_state, action: boolean) => action);
+    const counterStore = store(0, (_state, action: number) => action);
 
     const nestedUpdateSpy = jasmine.createSpy('nestedrender', (state: number) => state).and.callThrough();
     const containerUpdateSpy = jasmine.createSpy('render', (state: number) => state).and.callThrough();
 
     const NestedComponent = component(
       'Component',
-      (Props: Props<{}>) =>
+      (_Props: Props<{}>) =>
          <span><counterStore.Observer>{nestedUpdateSpy}</counterStore.Observer></span>,
     );
 
     const MainComponent = component(
       'Component',
-      (Props: Props<{}>) =>
+      (_Props: Props<{}>) =>
         <>
           <span><counterStore.Observer>{containerUpdateSpy}</counterStore.Observer></span>
           <mainStore.Observer>{state => state &&
@@ -259,21 +259,21 @@ describe('rendering nested components', () => {
   });
 
   it('unregister dependencies recusively when nested in array', () => {
-    const mainStore = store(true, (store, action: boolean) => action);
-    const counterStore = store(0, (store, action: number) => action);
+    const mainStore = store(true, (_state, action: boolean) => action);
+    const counterStore = store(0, (_state, action: number) => action);
 
     const nestedUpdateSpy = jasmine.createSpy('nestedrender', (state: number) => state).and.callThrough();
     const containerUpdateSpy = jasmine.createSpy('render', (state: number) => state).and.callThrough();
 
     const NestedComponent = component(
       'Component',
-      (Props: Props<{}>) =>
+      (_Props: Props<{}>) =>
          <span><counterStore.Observer>{nestedUpdateSpy}</counterStore.Observer></span>,
     );
 
     const MainComponent = component(
       'Component',
-      (Props: Props<{}>) =>
+      (_Props: Props<{}>) =>
         <>
           <span><counterStore.Observer>{containerUpdateSpy}</counterStore.Observer></span>
           <mainStore.Observer>{state => state &&
@@ -318,7 +318,7 @@ describe('rendering nested components', () => {
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
       'Component',
-      (Props: Props<{foo: number}>) => <div />,
+      (_Props: Props<{foo: number}>) => <div />,
     );
 
     const local = store(0, (_state, action: number) => action);
@@ -412,7 +412,7 @@ describe('rendering nested components', () => {
   it('nested component should not be created when shallow mode is active', () => {
     const NestedComponent = component(
       'Component',
-      (Props: Props<{foo: number}>) => <div />,
+      (_Props: Props<{foo: number}>) => <div />,
     );
 
     const local = store(0, (_state, action: number) => action);
@@ -1142,7 +1142,7 @@ describe('rendering nested components', () => {
   it('removed nested component gets a componentWillUnmount call', () => {
     const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
 
-    const local = store(true, (state, action: boolean) => action);
+    const local = store(true, (_state, action: boolean) => action);
 
     const NestedComponent = component(
       'Component',
@@ -1179,11 +1179,11 @@ describe('rendering nested components', () => {
   it('removed nested component gets a componentWillUnmount call with props', () => {
     const componentWillUnmountSpy = jasmine.createSpy('componentWillUnmount', () => {});
 
-    const local = store(true, (state, action: boolean) => action);
+    const local = store(true, (_state, action: boolean) => action);
 
     const NestedComponent = component(
       'Component',
-      (Props: Props<{ foo: string }>) => <div />,
+      (_Props: Props<{ foo: string }>) => <div />,
     );
 
     NestedComponent.prototype.componentWillUnmount = componentWillUnmountSpy;
@@ -1225,7 +1225,7 @@ describe('rendering nested components', () => {
   it('throw exception when render() is called, with unmounted component', async () => {
     const throwNotMountedErrorSpy = spyOn(ComponentInstance.prototype, 'throwNotMountedError' as any).and.callThrough();
 
-    const local = store(true, (state, action: boolean) => action);
+    const local = store(true, (_state, action: boolean) => action);
 
     const NestedComponent = component(
       'Component',

@@ -1,5 +1,5 @@
-import plusnew, { Props, store, component } from 'index';
 import driver from '@plusnew/driver-dom';
+import plusnew, { component, Props, store } from 'index';
 
 const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
 const localFactory = () => store(list, (state, newValue: { key: number; value: string }) => [newValue, ...state]);
@@ -65,7 +65,7 @@ describe('rendering nested components', () => {
   });
 
   it('does a initial empty list work, and updating it', () => {
-    const local =  store([] as typeof list, (store, action: typeof list) => action);
+    const local =  store([] as typeof list, (_state, action: typeof list) => action);
 
     const Component = component(
       'Component',
@@ -94,7 +94,7 @@ describe('rendering nested components', () => {
   });
 
   it('rerendering with different order and inserted elements', () => {
-    const local =  store(list, (previousStore, action: typeof list) => action);
+    const local =  store(list, (_previousState, action: typeof list) => action);
 
     const Component = component(
       'Component',
@@ -137,7 +137,7 @@ describe('rendering nested components', () => {
   });
 
   it('rerendering with different order and inserted elements', () => {
-    const local = store(list, (previousStore, action: typeof list) => action);
+    const local = store(list, (_previousState, action: typeof list) => action);
 
     const PartialComponent = component(
       'Component',
@@ -184,7 +184,7 @@ describe('rendering nested components', () => {
   });
 
   it('rerendering with different order and inserted elements', () => {
-    const local = store(list, (previousStore, action: typeof list) => action);
+    const local = store(list, (_previousState, action: typeof list) => action);
 
     const PartialComponent = component(
       'Component',
@@ -249,7 +249,7 @@ describe('rendering nested components', () => {
   });
 
   it('updating should insert correct next to siblings', () => {
-    const local = store([] as typeof list, (previousStore, action: typeof list) => action);
+    const local = store([] as typeof list, (_previousState, action: typeof list) => action);
 
     const PartialComponent = component(
       'Component',
@@ -292,7 +292,7 @@ describe('rendering nested components', () => {
   });
 
   it('updating component with text', () => {
-    const local = store([{ key: 0 }, { key: 1 }], (previousStore, action: {key: number}[]) => action);
+    const local = store([{ key: 0 }, { key: 1 }], (_previousState, action: {key: number}[]) => action);
 
     const PartialComponent = component(
       'Component',
@@ -327,7 +327,7 @@ describe('rendering nested components', () => {
   });
 
   it('moving component with boolean', () => {
-    const local = store([{ key: 0 }, { key: 1 }], (previousStore, action: {key: number}[]) => action);
+    const local = store([{ key: 0 }, { key: 1 }], (_previousState, action: {key: number}[]) => action);
 
     const PartialComponent = component(
       'Component',
@@ -359,7 +359,7 @@ describe('rendering nested components', () => {
 
   it('not moving when element got removed', () => {
     const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
-    const local = store(list, (state, newValues: { key: number; value: string }[]) => newValues);
+    const local = store(list, (_state, newValues: { key: number; value: string }[]) => newValues);
 
     const Component = component(
       'Component',
@@ -398,7 +398,7 @@ describe('rendering nested components', () => {
 
   it('last element got removed', () => {
     const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
-    const local = store(list, (state, newValues: { key: number; value: string }[]) => newValues);
+    const local = store(list, (_state, newValues: { key: number; value: string }[]) => newValues);
 
     const Component = component(
       'Component',
@@ -432,7 +432,7 @@ describe('rendering nested components', () => {
 
   it('removed without key property', () => {
     const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
-    const local = store(list, (state, newValues: { key: number; value: string }[]) => newValues);
+    const local = store(list, (_state, newValues: { key: number; value: string }[]) => newValues);
 
     const Component = component(
       'Component',
@@ -476,7 +476,7 @@ describe('rendering nested components', () => {
       <div key={2} />,
     ];
 
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',
@@ -515,7 +515,7 @@ describe('rendering nested components', () => {
       <span key={0} />,
     ];
 
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',
@@ -551,7 +551,7 @@ describe('rendering nested components', () => {
       <NestedComponent key={1} />,
     ];
 
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',
@@ -588,7 +588,7 @@ describe('rendering nested components', () => {
       <div key={2} />,
     ];
 
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',
@@ -627,7 +627,7 @@ describe('rendering nested components', () => {
       <span key={0} />,
     ];
 
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',
@@ -663,7 +663,7 @@ describe('rendering nested components', () => {
       <NestedComponent key={1} />,
     ];
 
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',
@@ -700,7 +700,7 @@ describe('rendering nested components', () => {
       <div key={2} />,
     ];
 
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',
@@ -741,7 +741,7 @@ describe('rendering nested components', () => {
       <span key={0} />,
     ];
 
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',
@@ -779,7 +779,7 @@ describe('rendering nested components', () => {
       <NestedComponent key={1} />,
     ];
 
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',
@@ -808,7 +808,7 @@ describe('rendering nested components', () => {
 
   it('ordering with text on beginning', () => {
     const list = [null, <div key={1} />] as plusnew.JSX.Element[];
-    const local = store(list, (state, action: typeof list) => action);
+    const local = store(list, (_state, action: typeof list) => action);
 
     const MainComponent = component(
       'MainComponent',

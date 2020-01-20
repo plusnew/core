@@ -2,7 +2,7 @@ import Instance, { predecessor, getPredeccessor } from '../Instance';
 import types from '../types';
 import Component from '../../../components/AbstractClass';
 import { props, ApplicationElement } from  '../../../interfaces/component';
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import PlusnewAbstractElement, { PlusnewElement } from '../../../PlusnewAbstractElement';
 import store, { storeType } from '../../../util/store';
 import factory from '../../factory';
 import reconcile, { shouldUpdate } from './reconcile';
@@ -20,8 +20,9 @@ type lifecycle = 'componentDidMount' | 'componentWillUnmount';
  */
 export default class ComponentInstance<componentProps extends Partial<props & { children: any }>, HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Component;
-  public rendered: Instance<HostElement, HostTextElement>; // @FIXME This actually should be Instance or undefined
-  public applicationInstance: Component<componentProps, HostElement, HostTextElement>;
+  public type: PlusnewElement;
+  public rendered?: Instance<HostElement, HostTextElement>;
+  public applicationInstance?: Component<componentProps, HostElement, HostTextElement>;
   public props: componentProps;
   public storeProps: storeType<componentProps, componentProps>;
   public mounted = true; // Has the information that the component is inside the active shadowdom
@@ -61,10 +62,14 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
     this.applicationInstance = new (this.type as any)(this.props);
     if (this.renderOptions.invokeGuard === undefined) {
       this.render(
-        this.applicationInstance.render(this.storeProps.Observer, this),
+        (
+          this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
+        ).render(this.storeProps.Observer, this),
       );
     } else {
-      const invokeHandle = this.renderOptions.invokeGuard(() => this.applicationInstance.render(this.storeProps.Observer, this));
+      const invokeHandle = this.renderOptions.invokeGuard(() => (
+        this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
+      ).render(this.storeProps.Observer, this));
       if (invokeHandle.hasError === false) {
         this.render(invokeHandle.result);
       }
@@ -98,7 +103,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
   }
 
   public getLastIntrinsicInstance() {
-    return this.rendered.getLastIntrinsicInstance();
+    return (this.rendered as Instance<HostElement, HostTextElement>).getLastIntrinsicInstance();
   }
 
   /**
@@ -112,14 +117,16 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
    * moves the children to another dom position
    */
   public move(predecessor: predecessor<HostElement, HostTextElement>) {
-    this.rendered.move(predecessor);
+    (this.rendered as Instance<HostElement, HostTextElement>).move(predecessor);
   }
 
   /**
    * removes the children from the dom
    */
   public remove(prepareRemoveSelf: boolean) {
-    this.applicationInstance.componentWillUnmount(this.props, this);
+    (
+      this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
+    ).componentWillUnmount(this.props, this);
     this.executeLifecycleHooks('componentWillUnmount');
     this.mounted = false;
 

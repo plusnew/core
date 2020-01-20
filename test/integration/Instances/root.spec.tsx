@@ -1,6 +1,6 @@
-import Root from 'instances/types/Root/Instance';
-import plusnew from 'index';
 import driver from '@plusnew/driver-dom';
+import plusnew from 'index';
+import Root from 'instances/types/Root/Instance';
 
 describe('Does the root-instance behave correctly', () => {
   let root: Root<Element, Text>;

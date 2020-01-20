@@ -51,7 +51,7 @@ describe('lifecycle', () => {
         return <div><Props>{props => props.value}</Props></div>;
       }).and.callThrough();
 
-      const anotherRenderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, componentInstance) => {
+      const anotherRenderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, _componentInstance) => {
         return <span><Props>{props => props.value}</Props></span>;
       }).and.callThrough();
 
@@ -99,7 +99,7 @@ describe('lifecycle', () => {
       return <div><Props>{props => props.value}</Props></div>;
     }).and.callThrough();
 
-    const anotherRenderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, componentInstance) => {
+    const anotherRenderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, _componentInstance) => {
       return <span><Props>{props => props.value}</Props></span>;
     }).and.callThrough();
 

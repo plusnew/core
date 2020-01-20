@@ -30,7 +30,7 @@ describe('reducer', () => {
   });
 
   it('eventlisteners are called when change happened', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (originalState: number, action: number) => action).and.callThrough();
+    const reducerSpy = jasmine.createSpy('reducer', (_originalState: number, action: number) => action).and.callThrough();
 
     const firstEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
     const secondEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
@@ -55,7 +55,7 @@ describe('reducer', () => {
   });
 
   it('eventlisteners are not called when no change happened', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (originalState: number, action: number) => action).and.callThrough();
+    const reducerSpy = jasmine.createSpy('reducer', (_originalState: number, action: number) => action).and.callThrough();
 
     const firstEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
     const secondEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
@@ -77,7 +77,7 @@ describe('reducer', () => {
   });
 
   it('eventlisteners are not called when no change happened', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (originalState: number, action: number) => action).and.callThrough();
+    const reducerSpy = jasmine.createSpy('reducer', (_originalState: number, action: number) => action).and.callThrough();
 
     const firstEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
     const secondEventListenerSpy = jasmine.createSpy('eventlistener', () => {});

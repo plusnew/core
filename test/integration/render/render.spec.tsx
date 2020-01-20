@@ -2,7 +2,7 @@ import plusnew, { Props, store, component } from 'index';
 import driver from '@plusnew/driver-dom';
 
 describe('rendering the elements', () => {
-  const local = store(0, (previousState, action: undefined) => previousState + 1);
+  const local = store(0, (previousState, _action: undefined) => previousState + 1);
   let container: HTMLElement;
   beforeEach(() => {
     container = document.createElement('div');
@@ -17,7 +17,7 @@ describe('rendering the elements', () => {
   it('check if element is inserted', () => {
     const Component = component(
       'Component',
-      (Props: Props<{}>) => <div class="foo" />,
+      (_Props: Props<{}>) => <div class="foo" />,
     );
     plusnew.render(<Component />, { driver: driver(container) });
 
@@ -93,7 +93,7 @@ describe('rendering the elements', () => {
   it('check if textnode is created', () => {
     const Component = component(
       'Component',
-      (Props: Props<{}>) => <div class="foo">bar</div>,
+      (_Props: Props<{}>) => <div class="foo">bar</div>,
     );
     plusnew.render(<Component />, { driver: driver(container) });
 

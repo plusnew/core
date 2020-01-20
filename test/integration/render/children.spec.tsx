@@ -1,5 +1,5 @@
-import plusnew, { Props, store, component } from 'index';
 import driver from '@plusnew/driver-dom';
+import plusnew, { component, Props, store } from 'index';
 
 describe('rendering nested components', () => {
   let container: HTMLElement;

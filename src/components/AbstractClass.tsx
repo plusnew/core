@@ -18,12 +18,12 @@ function hasComponent<HostElement, HostTextElement>(instance?: Instance<HostElem
 export default abstract class Component<componentProps extends Partial<props & { children: any}>, HostElement = unknown, HostTextElement = unknown> {
   static displayName = '';
 
-  constructor(props: componentProps) {
+  constructor(_props: componentProps) {
   }
 
   abstract render(props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps, HostElement, HostTextElement>): ApplicationElement;
 
-  componentWillUnmount(props: componentProps, plusnewComponentInstance: ComponentInstance<componentProps, HostElement, HostTextElement>) {}
+  componentWillUnmount(_props: componentProps, _plusnewComponentInstance: ComponentInstance<componentProps, HostElement, HostTextElement>) {}
 
   static shouldCreateComponent<HostElement, HostTextElement>(parentInstance: Instance<HostElement, HostTextElement>) {
     return parentInstance.renderOptions.createChildrenComponents !== false || hasComponent(parentInstance) === false;

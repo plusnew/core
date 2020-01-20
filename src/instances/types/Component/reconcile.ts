@@ -2,6 +2,7 @@ import { ApplicationElement, props } from '../../../interfaces/component';
 import { TypeOfPlusnew } from '../../../util/symbols';
 import reconciler from '../../reconciler';
 import ComponentInstance from './Instance';
+import { Instance } from '../../..';
 
 function isPlusnewElement(a: any) {
   return typeof a === 'object' && a !== null && a.$$typeof === TypeOfPlusnew;
@@ -54,9 +55,10 @@ export function shouldUpdate<HostElement, HostTextElement>(props: Partial<props>
 }
 
 export default <HostElement, HostTextElement>(newAbstractChildren: ApplicationElement, instance: ComponentInstance<any, HostElement, HostTextElement>) => {
-  const newChildrenInstance = reconciler.update(newAbstractChildren, instance.rendered);
-  if (newChildrenInstance !== instance.rendered) {
-    instance.rendered.remove(true);
+  const rendered = instance.rendered as Instance<HostElement, HostTextElement>;
+  const newChildrenInstance = reconciler.update(newAbstractChildren, rendered);
+  if (newChildrenInstance !== rendered) {
+    rendered.remove(true);
     instance.rendered = newChildrenInstance;
     instance.rendered.initialiseNestedElements();
   }

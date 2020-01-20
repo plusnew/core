@@ -1,7 +1,7 @@
-import Abstract from 'instances/types/Instance';
-import plusnew from 'index';
 import driver from '@plusnew/driver-dom';
-import DomInstance from '@plusnew/core/dist/src/instances/types/Dom/Instance';
+import plusnew from 'index';
+import DomInstance from 'instances/types/Dom/Instance';
+import Abstract from 'instances/types/Instance';
 
 xdescribe('Does the root-instance behave correctly', () => {
   let abstract: Abstract<Element, Text>;

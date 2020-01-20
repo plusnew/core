@@ -31,7 +31,7 @@ describe('fragments', () => {
 
   it('moving fragments', () => {
     type entity = {key: number, value: string};
-    const list = store([{ key: 1, value: 'one' }], (state, action: entity[]) => action);
+    const list = store([{ key: 1, value: 'one' }], (_state, action: entity[]) => action);
 
     const PartialComponent = component(
       'PartialComponent',
@@ -86,7 +86,7 @@ describe('fragments', () => {
   });
 
   it('replacing children of fragments', () => {
-    const local = store(true, (state, action: boolean) => action);
+    const local = store(true, (_state, action: boolean) => action);
     const MainComponent = component(
       'Component',
       () =>
@@ -111,7 +111,7 @@ describe('fragments', () => {
   });
 
   it('replacing children of fragments', () => {
-    const local = store(true, (state, action: boolean) => action);
+    const local = store(true, (_state, action: boolean) => action);
     const MainComponent = component(
       'Component',
       () =>
@@ -150,7 +150,7 @@ describe('fragments', () => {
   });
 
   it('removing multiple children one at a time', () => {
-    const local = store(0, (state, action: number) => action);
+    const local = store(0, (_state, action: number) => action);
 
     const MainComponent = component(
       'Component',

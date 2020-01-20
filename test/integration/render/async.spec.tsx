@@ -1,6 +1,6 @@
-import plusnew, { component, Async, store } from 'index';
-import ComponentInstance from 'instances/types/Component/Instance';
 import driver from '@plusnew/driver-dom';
+import plusnew, { Async, component, store } from 'index';
+import ComponentInstance from 'instances/types/Component/Instance';
 
 async function tick(count: number) {
   for (let i = 0; i < count; i += 1) {

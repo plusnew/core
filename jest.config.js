@@ -1,8 +1,6 @@
-const path = require('path');
-
 module.exports = {
   verbose: true,
-  rootDir: path.join(__dirname),
+  rootDir: __dirname,
   roots: [
     "<rootDir>/src",
     "<rootDir>/test",
@@ -11,6 +9,7 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": "ts-jest"
   },
+  transformIgnorePatterns: [],
   moduleFileExtensions: ['tsx', 'ts', 'js'],
   setupFiles: [
     require.resolve('requestidlecallback'),
@@ -19,5 +18,12 @@ module.exports = {
     "lcov",
     "text"
   ],
-  coverageDirectory: "coverage"
+  coverageDirectory: "coverage",
+  /*coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100
+    }
+  }*/
 }

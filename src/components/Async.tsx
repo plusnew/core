@@ -14,7 +14,7 @@ type props = {
 };
 
 class Async extends AbstractClass<props> {
-  instance: ComponentInstance<props, unknown, unknown>;
+  instance?: ComponentInstance<props, unknown, unknown>;
 
   static displayName = 'Async';
 
@@ -34,24 +34,26 @@ class Async extends AbstractClass<props> {
 
     let rendered = false;
 
-    const asyncPromise = ((this.instance.props.children as any)[0] as promiseGenerator)().then((content) => {
+    const instance = this.instance as ComponentInstance<props, unknown, unknown>;
+
+    const asyncPromise = ((instance.props.children as any)[0] as promiseGenerator)().then((content) => {
       // Checks if between promise resolving, not another prop came
       // if inbetween a new render happened, then nothing should happen
-      if (currentIncrement === this.increment && this.instance.mounted === true) {
+      if (currentIncrement === this.increment && instance.mounted === true) {
         rendered = true;
-        this.instance.render(content);
+        instance.render(content);
       }
     });
 
-    if (this.instance.renderOptions.addAsyncListener) {
-      this.instance.renderOptions.addAsyncListener(asyncPromise);
+    if (instance.renderOptions.addAsyncListener) {
+      instance.renderOptions.addAsyncListener(asyncPromise);
     }
 
     await tick();
 
     // if after one tick, it did not get rendered, than show pending indicator
-    if (rendered === false && currentIncrement === this.increment && this.instance.mounted === true) {
-      this.instance.render(this.instance.props.pendingIndicator);
+    if (rendered === false && currentIncrement === this.increment && instance.mounted === true) {
+      instance.render(instance.props.pendingIndicator);
     }
   }
 
@@ -59,7 +61,7 @@ class Async extends AbstractClass<props> {
    * unregisters the event
    */
   public componentWillUnmount() {
-    this.instance.storeProps.unsubscribe(this.update);
+    (this.instance as ComponentInstance<props, unknown, unknown>).storeProps.unsubscribe(this.update);
   }
 
 }

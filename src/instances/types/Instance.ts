@@ -11,9 +11,9 @@ export type predecessor<HostElement, HostTextElement> = HostInstance<HostElement
 export type getPredeccessor<HostElement, HostTextElement> = () => predecessor<HostElement, HostTextElement>;
 
 export default abstract class Instance<HostElement, HostTextElement> {
-  public nodeType: types;
+  abstract nodeType: types;
+  abstract type: PlusnewElement;
   public parentInstance?: Instance<HostElement, HostTextElement>;
-  public type: PlusnewElement;
   public props: ApplicationElement | Partial<props>;
   public getPredecessor: getPredeccessor<HostElement, HostTextElement>;
   public renderOptions: renderOptions<HostElement, HostTextElement>;

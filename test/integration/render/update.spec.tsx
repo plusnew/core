@@ -7,7 +7,7 @@ describe('rendering the elements', () => {
   let local: storeType<string, string>;
   let setTextSpy: jasmine.Spy;
   beforeEach(() => {
-    local = store('foo', (previousState: string, newValue: string) => newValue);
+    local = store('foo', (_previousState: string, newValue: string) => newValue);
 
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
@@ -217,7 +217,7 @@ describe('rendering the elements', () => {
   });
 
   it('nested text-elements creation of not previously existing element', () => {
-    const local = store(true, (previousState, action: boolean) => action);
+    const local = store(true, (_previousState, action: boolean) => action);
     const Component = component(
       'Component',
       () =>
@@ -240,7 +240,7 @@ describe('rendering the elements', () => {
   });
 
   it('conditional rendering - inclduing correct ordering', () => {
-    const local = store(false, (previousState, action: boolean) => action);
+    const local = store(false, (_previousState, action: boolean) => action);
     const Component = component(
       'Component',
       () => (
@@ -276,7 +276,7 @@ describe('rendering the elements', () => {
   });
 
   it('placeholder rendering - update', () => {
-    const local = store(0, (previousState, action: null) => previousState + 1);
+    const local = store(0, (previousState, _action: null) => previousState + 1);
     const Component = component(
       'Component',
       () => (
@@ -297,7 +297,7 @@ describe('rendering the elements', () => {
   });
 
   it('dom with lesser attributes after update', () => {
-    const local = store(true, (previousState, action: boolean) => action);
+    const local = store(true, (_previousState, action: boolean) => action);
     const Component = component(
       'Component',
       () =>
@@ -320,7 +320,7 @@ describe('rendering the elements', () => {
 
   it('dom with lesser attributes after update, even for events', () => {
     const clickHandler = () => {};
-    const local = store(true, (previousState, action: boolean) => action);
+    const local = store(true, (_previousState, action: boolean) => action);
     const Component = component(
       'Component',
       () =>

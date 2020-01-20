@@ -46,7 +46,7 @@ export default class RootInstance<HostElement, HostTextElement> extends Instance
   /**
    * a root instance isn't anything updatable
    */
-  public reconcile(newAbstractElement: false): never {
+  public reconcile(_newAbstractElement: false): never {
     throw new Error('The root element can\'t reconcile itself');
   }
 }

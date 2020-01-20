@@ -8,7 +8,7 @@ export default abstract class ChildrenInstance<HostElement, HostTextElement> ext
   public rendered: Instance<HostElement, HostTextElement>[];
   // Decides if the children will call elementWillUnmount
   public abstract executeChildrenElementWillUnmount: boolean;
-  public props: { children: PlusnewAbstractElement[] };
+  public abstract props: { children: PlusnewAbstractElement[] };
 
   constructor(
     abstractElement: ApplicationElement,
