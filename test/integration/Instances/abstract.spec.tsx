@@ -2,12 +2,15 @@ import driver from '@plusnew/driver-dom';
 import plusnew from 'index';
 import DomInstance from 'instances/types/Dom/Instance';
 import Abstract from 'instances/types/Instance';
+import types from 'instances/types/types';
 
 xdescribe('Does the root-instance behave correctly', () => {
   let abstract: Abstract<Element, Text>;
 
   beforeEach(() => {
     class TestInstance extends Abstract<Element, Text> {
+      public nodeType = types.Placeholder;
+      public type = 'foo';
       getLastIntrinsicInstance(): never {
         throw new Error('mep');
       }

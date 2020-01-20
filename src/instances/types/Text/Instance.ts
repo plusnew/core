@@ -1,7 +1,7 @@
+import { renderOptions } from '../../../interfaces/renderOptions';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
-import { renderOptions } from '../../../interfaces/renderOptions';
 
 export default class TextInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Text;
