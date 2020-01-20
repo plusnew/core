@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   verbose: true,
-  rootDir: path.join(__dirname, '..'),
+  rootDir: path.join(__dirname),
   roots: [
     "<rootDir>/src",
     "<rootDir>/test",
@@ -15,4 +15,9 @@ module.exports = {
   setupFiles: [
     require.resolve('requestidlecallback'),
   ],
+  coverageReporters: [
+    "lcov",
+    "text"
+  ],
+  coverageDirectory: "coverage"
 }
