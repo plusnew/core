@@ -3,6 +3,7 @@
     "index.ts",
     "src",
     "test",
+    "node_modules/@plusnew"
   ],
   "compilerOptions": {
     /* Basic Options */
