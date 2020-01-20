@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "scripts": {
+    "prepublishOnly": "yarn run test",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
