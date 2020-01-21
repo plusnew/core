@@ -1,11 +1,11 @@
 {
   "name": "@plusnew/core",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "ts component framework with an typesecure and functional approach",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "scripts": {
-    "prepublishOnly": "yarn run test",
+    "prepublishOnly": "yarn run test --no-cache",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },

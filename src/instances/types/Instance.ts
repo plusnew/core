@@ -59,6 +59,10 @@ export default abstract class Instance<HostElement, HostTextElement> {
     }
   }
 
+  findParent(callback: (instance: Instance<HostElement, HostTextElement>) => boolean): Instance<HostElement, HostTextElement> | undefined {
+    return (this.parentInstance as Instance<HostElement, HostTextElement>).find(callback);
+  }
+
   /**
    * recursively search for another instance
    */

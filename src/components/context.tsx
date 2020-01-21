@@ -20,7 +20,7 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
   }
 
   const findProvider = (componentInstance: Instance<unknown, unknown>) => {
-    const providerInstance = componentInstance.find(instance => instance instanceof ComponentInstance && instance.type === Provider);
+    const providerInstance = componentInstance.findParent(instance => instance instanceof ComponentInstance && instance.type === Provider);
     if (providerInstance === undefined) {
       throw new Error('Could not find Provider');
     }
