@@ -324,10 +324,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@plusnew/driver-dom@^1.0.0-alpha.7":
-  version "1.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.0.0-alpha.7.tgz#f8d29f1079e9db2f5643ef0054d44134f2215f8b"
-  integrity sha512-SgRjt0K+bxOtE6TwJ9pHBIbBYyGVqVrWE3wCHfeznnMWLFwVhmKy0sGLAiOcrVevTdWoQ2RyZdpqUsmTqYFxBA==
+"@plusnew/driver-dom@1.0.0-alpha.9":
+  version "1.0.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.0.0-alpha.9.tgz#754da8db5dd01e79d774155733153b5c0b4a07b3"
+  integrity sha512-7ggQGyvWxx6X7uz/Q3LvTflTMLDonDtCXHC+sKhguUJq2kVKPpEWxDYY0TGY1Yu7tyOfEqweHsesIGKE8DViZw==
 
 "@types/babel__core@^7.1.0":
   version "7.1.2"

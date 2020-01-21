@@ -1,17 +1,9 @@
-import AbstractClass from './components/AbstractClass';
-import Async from './components/Async';
-import context from './components/context';
-import componentFactory, { IComponentContainer } from './components/factory';
-import { PortalEntrance, PortalExit } from './components/portal';
-import Try from './components/Try';
+import { IComponentContainer } from './components/factory';
 import factory from './instances/factory';
-import Instance from './instances/types/Instance';
 import RootInstance from './instances/types/Root/Instance';
 import { ApplicationElement } from './interfaces/component';
 import { renderOptions } from './interfaces/renderOptions';
 import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
-import elementTypeChecker from './util/elementTypeChecker';
-import store, { Observer, storeType } from './util/store';
 import { Fragment } from './util/symbols';
 
 class Plusnew {
@@ -53,25 +45,13 @@ class Plusnew {
   Fragment = Fragment;
 }
 
-export {
-  store,
-  context,
-  Plusnew,
-  Instance,
-  componentFactory as component,
-  IComponentContainer as ComponentContainer,
-  renderOptions,
-  PlusnewAbstractElement,
-  ApplicationElement,
-  elementTypeChecker,
-  Async,
-  Try,
-  AbstractClass as Component,
-  Observer as Props,
-  Observer,
-  storeType,
-  PortalEntrance,
-  PortalExit,
-};
+export { IComponentContainer };
+export { default as component } from './components/factory';
+export { default as Component } from './components/AbstractClass';
+export { default as store, storeType } from './util/store';
+export { default as context } from './components/context';
+export { default as Async } from './components/Async';
+export { default as Try } from './components/Try';
+export { PortalEntrance, PortalExit } from './components/portal';
 
 export default new Plusnew();
