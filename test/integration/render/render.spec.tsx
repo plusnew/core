@@ -2,6 +2,12 @@ import plusnew, { Props, store, component } from 'index';
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
 
+async function tick(count: number) {
+  for (let i = 0; i < count; i += 1) {
+    await new Promise(resolve => resolve());
+  }
+}
+
 describe('rendering the elements', () => {
   const local = store(0, (previousState, _action: undefined) => previousState + 1);
   let container: HTMLElement;
@@ -173,5 +179,71 @@ describe('rendering the elements', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('HEADER');
     expect((container.childNodes[1] as HTMLElement).tagName).toBe('CONTENT');
     expect((container.childNodes[2] as HTMLElement).tagName).toBe('FOOTER');
+  });
+
+  it('removing element asynchronisly', async () => {
+    const local = store(true);
+
+    const elementWillUnmountSpy = jasmine.createSpy('elementWillUnmountSpy', (element: Element) => {
+      expect((container.childNodes[0] as HTMLElement)).toBe(element);
+      return Promise.resolve();
+    }).and.callThrough();
+
+    const MainComponent = component(
+      'Component',
+      (_Props, componentInstance) => {
+        componentInstance.elementWillUnmount = elementWillUnmountSpy;
+
+        return (
+          <local.Observer>{localState => localState && <div />}</local.Observer>
+        );
+      },
+    );
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    expect(elementWillUnmountSpy).not.toHaveBeenCalled();
+
+    local.dispatch(false);
+
+    expect(container.childNodes.length).toBe(1);
+    expect(elementWillUnmountSpy).toHaveBeenCalled();
+
+    await tick(1);
+
+    expect(container.childNodes.length).toBe(0);
+  });
+
+  it('removing multiple elements asynchronisly', async () => {
+    const local = store(true);
+
+    const elementWillUnmountSpy = jasmine.createSpy('elementWillUnmountSpy', (element: Element) => {
+      expect((container.childNodes[elementWillUnmountSpy.calls.count() - 1] as HTMLElement)).toBe(element);
+      return Promise.resolve();
+    }).and.callThrough();
+
+    const MainComponent = component(
+      'Component',
+      (_Props, componentInstance) => {
+        componentInstance.elementWillUnmount = elementWillUnmountSpy;
+
+        return (
+          <local.Observer>{localState => localState && [<div />, <div />]}</local.Observer>
+        );
+      },
+    );
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    expect(elementWillUnmountSpy).not.toHaveBeenCalled();
+
+    local.dispatch(false);
+
+    expect(container.childNodes.length).toBe(2);
+    expect(elementWillUnmountSpy).toHaveBeenCalled();
+
+    await tick(1);
+
+    expect(container.childNodes.length).toBe(0);
   });
 });
