@@ -9,7 +9,10 @@ type consumerProps<state, action> = {children: renderProps<state, action>};
 type contextEntity<state, action> = {
   Provider: ComponentContainer<providerProps<state, action>, unknown, unknown>;
   Consumer: ComponentContainer<consumerProps<state, action>, unknown, unknown>;
-  findProvider: (instance: Instance<unknown, unknown>) => ComponentInstance<providerProps<state, action>, unknown, unknown>;
+  findProvider: (instance: Instance<unknown, unknown>) => {
+    state: state,
+    dispatch: (action: action) => void,
+  };
 };
 
 function context<stateType, actionType>(): contextEntity<stateType, actionType> {
@@ -30,7 +33,6 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
   };
 
   const result: contextEntity<stateType, actionType> = {
-    findProvider,
     Provider,
     Consumer: class Consumer extends Component<consumerProps<stateType, actionType>> {
       static displayName = 'Consumer';
@@ -70,6 +72,14 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
         ).unsubscribe(this.update);
         componentInstance.storeProps.unsubscribe(this.update);
       }
+    },
+    findProvider: (componentInstance) => {
+      const providerInstance = findProvider(componentInstance);
+
+      return {
+        state: providerInstance.props.state,
+        dispatch: providerInstance.props.dispatch,
+      };
     },
   };
 

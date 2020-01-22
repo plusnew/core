@@ -118,8 +118,8 @@ describe('context', () => {
         <valueStore.Observer>{valueState =>
           <valueContext.Provider state={valueState} dispatch={valueStore.dispatch}>
             <NestedComponent />
-              <AnotherNestedComponent />
-            </valueContext.Provider>
+            <AnotherNestedComponent />
+          </valueContext.Provider>
         }</valueStore.Observer>,
     );
 
@@ -250,7 +250,7 @@ describe('context', () => {
 
     const NestedComponent = component(
       'Component',
-    (Props: Props<{ value: number } >) => <Props>{props => <valueContext.Consumer>{state => <div>{state + props.value}</div>}</valueContext.Consumer>}</Props>,
+      (Props: Props<{ value: number }>) => <Props>{props => <valueContext.Consumer>{state => <div>{state + props.value}</div>}</valueContext.Consumer>}</Props>,
     );
 
     plusnew.render(<MainComponent />, { driver: driver(container) });
@@ -261,5 +261,42 @@ describe('context', () => {
     local.dispatch(2);
 
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('3');
+  });
+
+  it('findProvider works', () => {
+    const valueStore = store(0);
+    const valueContext = context<number, number>();
+
+    const NestedComponent = component(
+      'Component',
+      (_Props, componentInstance) => {
+        const { state, dispatch } = valueContext.findProvider(componentInstance);
+
+        return (
+          <span
+            onclick={() => dispatch(state + 1)}
+          >{state}</span>
+        );
+      },
+    );
+
+    const MainComponent = component(
+      'Component',
+      () =>
+        <valueStore.Observer>{valueState =>
+          <valueContext.Provider state={valueState} dispatch={valueStore.dispatch}>
+            <NestedComponent />
+          </valueContext.Provider>
+        }</valueStore.Observer>,
+    );
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+
+    (container.childNodes[0] as HTMLElement).dispatchEvent(new Event('click'));
+
+    expect(valueStore.getState()).toBe(1);
   });
 });
