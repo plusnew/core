@@ -40,6 +40,35 @@ describe('rendering nested Portals', () => {
     expect(portalEntrance.childNodes.length).toBe(0);
   });
 
+  it('does a PortalEntrance and a PortalExit work with renderoptions', () => {
+    const Component = component(
+      'Component',
+      () =>
+        <>
+          <div>
+            <PortalExit name="foo" />
+          </div>
+          <div>
+            <PortalEntrance name="foo"><span /></PortalEntrance>
+          </div>
+        </>,
+    );
+
+    plusnew.render(<Component />, { driver: driver(container), portals: {} });
+
+    const portalExit = container.childNodes[0] as HTMLElement;
+    const portalEntrance = container.childNodes[1] as HTMLElement;
+
+    expect(container.childNodes.length).toBe(2);
+
+    expect(portalExit.tagName).toBe('DIV');
+    expect(portalExit.childNodes.length).toBe(1);
+    expect((portalExit.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    expect(portalEntrance.tagName).toBe('DIV');
+    expect(portalEntrance.childNodes.length).toBe(0);
+  });
+
   it('a PortalEntrance and a wrong PortalExit work', () => {
     const Component = component(
       'Component',
