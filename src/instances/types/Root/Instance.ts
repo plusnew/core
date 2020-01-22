@@ -26,7 +26,6 @@ export default class RootInstance<HostElement, HostTextElement> extends Instance
 
   public getLastIntrinsicInstance(): never {
     throw new Error('The root Element does not allow to give you the last Element Instance');
-    // return this.ref;
   }
 
   /**

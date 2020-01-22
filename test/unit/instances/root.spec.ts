@@ -14,9 +14,10 @@ describe('root', () => {
     }).toThrow(new Error('The root element can\'t reconcile itself'));
   });
 
-  xit('getFirstIntrinsicElement', () => {
+  it('getFirstIntrinsicElement', () => {
     const instance = new Instance<Element, Text>(true, undefined, () => null, { driver: driver(document.createElement('div')) });
-    instance.ref = document.createElement('div');
-    expect(instance.getLastIntrinsicInstance()).toBe(instance.ref);
+    expect(() => {
+      instance.getLastIntrinsicInstance();
+    }).toThrow(new Error('The root Element does not allow to give you the last Element Instance'));
   });
 });

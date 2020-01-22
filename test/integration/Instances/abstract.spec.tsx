@@ -5,7 +5,7 @@ import DomInstance from '@plusnew/core/src/instances/types/Host/Instance';
 import Abstract from 'instances/types/Instance';
 import types from 'instances/types/types';
 
-xdescribe('Does the root-instance behave correctly', () => {
+describe('Does the root-instance behave correctly', () => {
   let abstract: Abstract<Element, Text>;
 
   beforeEach(() => {
