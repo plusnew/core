@@ -1,10 +1,10 @@
-import plusnew, { store, storeType, component } from 'index';
+import plusnew, { store, Store, component } from 'index';
 import TextInstance from 'instances/types/Text/Instance';
 import driver from '@plusnew/driver-dom';
 
 describe('rendering the elements', () => {
   let container: HTMLElement;
-  let local: storeType<string, string>;
+  let local: Store<string, string>;
   let setTextSpy: jasmine.Spy;
   beforeEach(() => {
     local = store('foo', (_previousState: string, newValue: string) => newValue);

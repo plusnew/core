@@ -3,7 +3,7 @@ import types from '../types';
 import Component from '../../../components/AbstractClass';
 import { props, ApplicationElement } from  '../../../interfaces/component';
 import PlusnewAbstractElement, { PlusnewElement } from '../../../PlusnewAbstractElement';
-import store, { storeType } from '../../../util/store';
+import store, { Store } from '../../../util/store';
 import factory from '../../factory';
 import reconcile, { shouldUpdate } from './reconcile';
 import { renderOptions } from '../../../interfaces/renderOptions';
@@ -24,7 +24,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
   public rendered?: Instance<HostElement, HostTextElement>;
   public applicationInstance?: Component<componentProps, HostElement, HostTextElement>;
   public props: componentProps;
-  public storeProps: storeType<componentProps, componentProps>;
+  public storeProps: Store<componentProps, componentProps>;
   public mounted = true; // Has the information that the component is inside the active shadowdom
   public renderOptions: renderOptions<HostElement, HostTextElement>;
   private lifecycleHooks = {

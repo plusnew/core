@@ -1,4 +1,4 @@
-import { storeType } from '../util/store';
+import { Store } from '../util/store';
 import AbstractClass from './AbstractClass';
 import ComponentInstance from '../instances/types/Component/Instance';
 import { ApplicationElement } from '../interfaces/component';
@@ -9,7 +9,7 @@ export type observerProps<state> = {
   children: renderFunction<state>;
 };
 
-export default function <state>(store: storeType<state, any>) {
+export default function <state>(store: Store<state, any>) {
 
   return class Observer extends AbstractClass<observerProps<state>> {
     instance?: ComponentInstance<observerProps<state>, unknown, unknown>;
