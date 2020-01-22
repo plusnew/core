@@ -181,6 +181,39 @@ describe('rendering the elements', () => {
     expect((container.childNodes[2] as HTMLElement).tagName).toBe('FOOTER');
   });
 
+  it('removing element afterwards', () => {
+    const local = store(true);
+
+    const MainComponent = component(
+      'Component',
+      () =>
+        <local.Observer>{localState =>
+          localState ?
+            <ul>
+              <li />
+              <li />
+            </ul>
+          :
+            <ul>
+              <li />
+            </ul>
+        }</local.Observer>,
+    );
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    const target = container.childNodes[0];
+
+    expect(target.childNodes.length).toBe(2);
+    expect((target.childNodes[0] as HTMLElement).tagName).toBe('LI');
+    expect((target.childNodes[1] as HTMLElement).tagName).toBe('LI');
+
+    local.dispatch(false);
+
+    expect(target.childNodes.length).toBe(1);
+    expect((target.childNodes[0] as HTMLElement).tagName).toBe('LI');
+  });
+
   it('removing element asynchronisly', async () => {
     const local = store(true);
 
