@@ -1,8 +1,8 @@
 import { props, ApplicationElement } from '../interfaces/component';
-import { IComponentContainer } from '../components/factory';
+import { ComponentContainer } from '../components/factory';
 import { TypeOfPlusnew } from '../util/symbols';
 
-type PlusnewElement = string | number | IComponentContainer<any, any, any> | Symbol;
+type PlusnewElement = string | number | ComponentContainer<any, any, any> | Symbol;
 
 export default class PlusnewAbstractElement {
   public $$typeof = TypeOfPlusnew;

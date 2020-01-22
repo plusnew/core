@@ -1,8 +1,8 @@
-import { IComponentContainer } from '../components/factory';
+import { ComponentContainer } from '../components/factory';
 import { ApplicationElement } from '../interfaces/component';
 import observerFactory from '../components/observerFactory';
 
-export type Observer<state> = IComponentContainer<{children: (state: state) => ApplicationElement}, unknown, unknown> & { getState(): state };
+export type Observer<state> = ComponentContainer<{children: (state: state) => ApplicationElement}, unknown, unknown> & { getState(): state };
 
 export type onChangeCallback<actionType> = ((lastAction: actionType) => void);
 
@@ -13,7 +13,7 @@ export type reducer<stateType, actionType> = {
   (previousState: stateType, action: actionType): stateType;
 };
 
-export type storeType<stateType, actionType> = {
+export type Store<stateType, actionType> = {
   Observer: Observer<stateType>;
   /**
    * this value gets replaced, each time the reducer gets called
@@ -41,14 +41,14 @@ export type storeType<stateType, actionType> = {
   flush(): void;
 };
 
-function store<stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): storeType<stateType, actionType>;
-function store<stateType>(initValue: stateType): storeType<stateType, stateType>;
-function store<stateType, actionType>(initValue: stateType, reducer?: reducer<stateType, actionType>): storeType<stateType, actionType>  {
+function store<stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): Store<stateType, actionType>;
+function store<stateType>(initValue: stateType): Store<stateType, stateType>;
+function store<stateType, actionType>(initValue: stateType, reducer?: reducer<stateType, actionType>): Store<stateType, actionType>  {
 
   let subscribes: onChangeCallback<actionType>[] = [];
   let state = initValue;
 
-  const result: storeType<stateType, actionType> = {
+  const result: Store<stateType, actionType> = {
     /**
      * holds the actual value of the current store
      */

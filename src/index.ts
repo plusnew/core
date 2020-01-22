@@ -1,4 +1,4 @@
-import { IComponentContainer } from './components/factory';
+import { ComponentContainer } from './components/factory';
 import factory from './instances/factory';
 import RootInstance from './instances/types/Root/Instance';
 import { ApplicationElement } from './interfaces/component';
@@ -14,7 +14,7 @@ class Plusnew {
     PlusnewAbstractElement;
   public createElement<props>(type: number, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
   public createElement<props>(type: Symbol, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
-  public createElement<props>(type: IComponentContainer<props, unknown, unknown>, props: props, ...children: ApplicationElement[]): PlusnewAbstractElement;
+  public createElement<props>(type: ComponentContainer<props, unknown, unknown>, props: props, ...children: ApplicationElement[]): PlusnewAbstractElement;
   public createElement(type: PlusnewElement, props: any, ...children: ApplicationElement[]) {
     return new PlusnewAbstractElement(type, props, children);
   }
@@ -45,10 +45,11 @@ class Plusnew {
   Fragment = Fragment;
 }
 
-export { IComponentContainer };
+export { ComponentContainer };
+export { ApplicationElement } from './interfaces/component';
 export { default as component } from './components/factory';
 export { default as Component } from './components/AbstractClass';
-export { default as store, storeType } from './util/store';
+export { default as store, Store, Observer as Props } from './util/store';
 export { default as context } from './components/context';
 export { default as Async } from './components/Async';
 export { default as Try } from './components/Try';

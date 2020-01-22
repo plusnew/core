@@ -8,7 +8,7 @@ export type componentResult<componentProps extends Partial<props>> = {
   (props: componentProps, instance: ComponentInstance<componentProps, unknown, unknown>): plusnew.JSX.Element | null;
 };
 
-export interface IComponentContainer<componentProps, HostElement, HostTextElement> {
+export interface ComponentContainer<componentProps, HostElement, HostTextElement> {
   new (props: componentProps): AbstractClass<componentProps>;
   prototype: AbstractClass<componentProps>;
   displayName: string;
@@ -19,7 +19,7 @@ export type factory = {
   <componentProps extends Partial<props>, HostElement, HostTextElement>(
     displayName: string,
     render: (Props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps, unknown, unknown>) => ApplicationElement,
-  ): IComponentContainer<componentProps, HostElement, HostTextElement>;
+  ): ComponentContainer<componentProps, HostElement, HostTextElement>;
 };
 
 const factory: factory = <componentProps extends Partial<props>>(

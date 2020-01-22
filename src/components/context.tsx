@@ -1,6 +1,7 @@
-import plusnew, { ApplicationElement, Component, ComponentContainer, Props, Instance } from '../';
+import plusnew, { ApplicationElement, Component, ComponentContainer, Props } from '../';
+import Instance from '../instances/types/Instance';
 import ComponentInstance from '../instances/types/Component/Instance';
-import { storeType } from '../util/store';
+import { Store } from '../util/store';
 
 type renderProps<state, action> = (state: state, dispatch: (action: action) => void) => ApplicationElement ;
 type providerProps<state, action> = {state: state, dispatch: (action: action) => void, children: ApplicationElement};
@@ -34,14 +35,14 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
     Consumer: class Consumer extends Component<consumerProps<stateType, actionType>> {
       static displayName = 'Consumer';
       private instance?: ComponentInstance<consumerProps<stateType, actionType>, unknown, unknown>;
-      private providerPropsStore?: storeType<providerProps<stateType, actionType>, any>;
+      private providerPropsStore?: Store<providerProps<stateType, actionType>, any>;
 
       private getRenderPropsResult() {
         const [renderProps]: [renderProps<stateType, actionType>] = (
           this.instance as ComponentInstance<consumerProps<stateType, actionType>, unknown, unknown>
         ).props.children as any;
         const providerPropsState = (
-          this.providerPropsStore as storeType<providerProps<stateType, actionType>, any>
+          this.providerPropsStore as Store<providerProps<stateType, actionType>, any>
         ).getState();
         return renderProps(providerPropsState.state, providerPropsState.dispatch);
       }
@@ -56,14 +57,16 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
         this.instance = componentInstance;
 
         this.providerPropsStore = findProvider(componentInstance).storeProps;
-        this.providerPropsStore.subscribe(this.update);
+        (
+          this.providerPropsStore as Store<providerProps<stateType, actionType>, any>
+        ).subscribe(this.update);
         componentInstance.storeProps.subscribe(this.update);
 
         return this.getRenderPropsResult();
       }
       componentWillUnmount(_Props: consumerProps<stateType, actionType>, componentInstance: ComponentInstance<any, unknown, unknown>) {
         (
-          this.providerPropsStore as storeType<providerProps<stateType, actionType>, any>
+          this.providerPropsStore as Store<providerProps<stateType, actionType>, any>
         ).unsubscribe(this.update);
         componentInstance.storeProps.unsubscribe(this.update);
       }

@@ -2,7 +2,7 @@ import { ApplicationElement, props } from '../../../interfaces/component';
 import { TypeOfPlusnew } from '../../../util/symbols';
 import reconciler from '../../reconciler';
 import ComponentInstance from './Instance';
-import { Instance } from '../../..';
+import Instance from '../Instance';
 
 function isPlusnewElement(a: any) {
   return typeof a === 'object' && a !== null && a.$$typeof === TypeOfPlusnew;
