@@ -2,7 +2,7 @@ import { ApplicationElement, props } from '../../interfaces/component';
 import { PlusnewElement } from '../../PlusnewAbstractElement';
 import types from './types';
 import { renderOptions } from '../../interfaces/renderOptions';
-import DomInstance from './Dom/Instance';
+import DomInstance from './Host/Instance';
 import TextInstance from './Text/Instance';
 // import RootInstance from './Root/Instance';
 
@@ -78,7 +78,7 @@ export default abstract class Instance<HostElement, HostTextElement> {
     return undefined;
   }
 
-  public abstract getLastIntrinsicInstance(): DomInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement> | null;
+  public abstract getLastIntrinsicInstance(): HostInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement> | null;
 
   /**
    * orders to move itself to another place

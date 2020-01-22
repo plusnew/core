@@ -3,7 +3,7 @@ import PlusnewAbstractElement from '../PlusnewAbstractElement';
 import elementTypeChecker from '../util/elementTypeChecker';
 import ArrayInstance from './types/Array/Instance';
 import ComponentInstance from './types/Component/Instance';
-import DomInstance from './types/Dom/Instance';
+import HostInstance from './types/Host/Instance';
 import FragmentInstance from './types/Fragment/Instance';
 import Instance, { getPredeccessor } from './types/Instance';
 import PlaceholderInstance from './types/Placeholder/Instance';
@@ -40,7 +40,7 @@ export default function<HostElement, HostTextElement> (
     return new FragmentInstance(abstractElement as PlusnewAbstractElement, parentInstance, getPredecessor, renderOptions);
   }
   if (elementTypeChecker.isDomElement(abstractElement) === true) {
-    return new DomInstance(abstractElement as PlusnewAbstractElement, parentInstance, getPredecessor, renderOptions);
+    return new HostInstance(abstractElement as PlusnewAbstractElement, parentInstance, getPredecessor, renderOptions);
   }
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     const componentAbstractElement = abstractElement as PlusnewAbstractElement;

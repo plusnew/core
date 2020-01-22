@@ -1,39 +1,39 @@
-import DomInstance from '../instances/types/Dom/Instance';
+import HostInstance from '../instances/types/Host/Instance';
 import TextInstance from '../instances/types/Text/Instance';
 import RootInstance from '../instances/types/Root/Instance';
 
 export type IDriver<HostElement, HostTextElement> = {
   element: {
-    create: (domInstance: DomInstance<HostElement, HostTextElement>) => HostElement;
-    remove: (domInstance: DomInstance<HostElement, HostTextElement>) => void;
+    create: (HostInstance: HostInstance<HostElement, HostTextElement>) => HostElement;
+    remove: (HostInstance: HostInstance<HostElement, HostTextElement>) => void;
     setAttribute: (
-      domInstance: DomInstance<HostElement, HostTextElement>,
+      HostInstance: HostInstance<HostElement, HostTextElement>,
       attributeName: string,
       attributeValue: any,
     ) => void;
     unsetAttribute: (
-      domInstance: DomInstance<HostElement, HostTextElement>,
+      HostInstance: HostInstance<HostElement, HostTextElement>,
       attributeName: string,
     ) => void;
     moveAfterSibling: (
-      self: DomInstance<HostElement, HostTextElement>,
+      self: HostInstance<HostElement, HostTextElement>,
       previousSiblingInstance:
-        | DomInstance<HostElement, HostTextElement>
+        | HostInstance<HostElement, HostTextElement>
         | TextInstance<HostElement, HostTextElement>
         | null,
     ) => void;
     appendChildAfterSibling: (
-      parentInstance: DomInstance<HostElement, HostTextElement> | RootInstance<HostElement, HostTextElement>,
+      parentInstance: HostInstance<HostElement, HostTextElement> | RootInstance<HostElement, HostTextElement>,
       childInstance:
-        | DomInstance<HostElement, HostTextElement>
+        | HostInstance<HostElement, HostTextElement>
         | TextInstance<HostElement, HostTextElement>,
       previousSiblingInstance:
-        | DomInstance<HostElement, HostTextElement>
+        | HostInstance<HostElement, HostTextElement>
         | TextInstance<HostElement, HostTextElement>
         | null,
     ) => void;
     elementDidMountHook: (
-      domInstance: DomInstance<HostElement, HostTextElement>,
+      HostInstance: HostInstance<HostElement, HostTextElement>,
     ) => void;
   };
 
@@ -48,7 +48,7 @@ export type IDriver<HostElement, HostTextElement> = {
     moveAfterSibling: (
       self: TextInstance<HostElement, HostTextElement>,
       previousSiblingInstance:
-        | DomInstance<HostElement, HostTextElement>
+        | HostInstance<HostElement, HostTextElement>
         | TextInstance<HostElement, HostTextElement>
         | null,
     ) => void;

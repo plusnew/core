@@ -1,6 +1,6 @@
 import driver from '@plusnew/driver-dom';
 import plusnew from 'index';
-import DomInstance from 'instances/types/Dom/Instance';
+import DomInstance from '@plusnew/core/src/instances/types/Host/Instance';
 import Abstract from 'instances/types/Instance';
 import types from 'instances/types/types';
 
