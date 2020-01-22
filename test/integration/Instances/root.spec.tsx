@@ -1,4 +1,5 @@
-import driver from '@plusnew/driver-dom';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 import plusnew from 'index';
 import Root from 'instances/types/Root/Instance';
 

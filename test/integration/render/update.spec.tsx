@@ -1,6 +1,7 @@
 import plusnew, { store, Store, component } from 'index';
 import TextInstance from 'instances/types/Text/Instance';
-import driver from '@plusnew/driver-dom';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 
 describe('rendering the elements', () => {
   let container: HTMLElement;

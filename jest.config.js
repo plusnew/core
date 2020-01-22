@@ -11,9 +11,7 @@ module.exports = {
   },
   transformIgnorePatterns: [],
   moduleFileExtensions: ['tsx', 'ts', 'js'],
-  setupFiles: [
-    require.resolve('requestidlecallback'),
-  ],
+  setupFiles: [],
   coverageReporters: [
     "lcov",
     "text"

@@ -1,5 +1,6 @@
 import plusnew, { Props, store, component } from 'index';
-import driver from '@plusnew/driver-dom';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 
 describe('fragments', () => {
   let container: HTMLElement;

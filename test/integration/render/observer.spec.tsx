@@ -1,5 +1,6 @@
 import plusnew, { component, store } from 'index';
-import driver from '@plusnew/driver-dom';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 
 describe('<Observer />', () => {
   let container: HTMLElement;

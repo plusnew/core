@@ -1,5 +1,5 @@
+import driver from '@plusnew/driver-dom/src/driver';
 import Instance from 'instances/types/Root/Instance';
-import driver from '@plusnew/driver-dom';
 
 describe('root', () => {
   it('move', () => {

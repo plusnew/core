@@ -21,10 +21,9 @@
   "homepage": "https://github.com/plusnew/core#readme",
   "dependencies": {},
   "devDependencies": {
-    "@plusnew/driver-dom": "1.0.0-alpha.10",
+    "@plusnew/driver-dom": "1.0.0-alpha.11",
     "@types/jest": "^24.9.0",
     "jest": "^25.1.0",
-    "requestidlecallback": "^0.3.0",
     "ts-jest": "^24.3.0",
     "tslint": "6.0.0",
     "tslint-config-airbnb": "5.11.2",
