@@ -259,7 +259,8 @@ The children of this component will be displayed when the browser is in idle
 or the application is signaling that it is urgent now.
 
 ```ts
-import plusnew, { component, Idle } from '@plusnew/core';
+import plusnew, { component } from '@plusnew/core';
+import { Idle } from '@plusnew/dom';
 import ExpensiveComponent from './ExpensiveComponent';
 
 export default component(
