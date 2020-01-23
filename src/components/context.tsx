@@ -50,9 +50,18 @@ function context<stateType, actionType>(): contextEntity<stateType, actionType> 
       }
 
       private update = () => {
-        (
-          this.instance as ComponentInstance<consumerProps<stateType, actionType>, unknown, unknown>
-        ).render(this.getRenderPropsResult());
+        const instance = this.instance as ComponentInstance<consumerProps<stateType, actionType>, unknown, unknown>;
+
+        if (instance.renderOptions.invokeGuard === undefined) {
+          instance.render(
+            this.getRenderPropsResult(),
+          );
+        } else {
+          instance.renderOptions.invokeGuard(() => {
+            const result = this.getRenderPropsResult();
+            instance.render(result);
+          });
+        }
       }
 
       render(_Props: Props<consumerProps<stateType, actionType>>, componentInstance: ComponentInstance<any, unknown, unknown>) {

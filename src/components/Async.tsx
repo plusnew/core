@@ -1,7 +1,8 @@
 import { Props } from '../index';
 import ComponentInstance from '../instances/types/Component/Instance';
-import AbstractClass from './AbstractClass';
 import { ApplicationElement } from '../interfaces/component';
+import { invokeGuard } from '../interfaces/renderOptions';
+import AbstractClass from './AbstractClass';
 
 function tick() {
   return Promise.resolve();
@@ -44,6 +45,14 @@ class Async extends AbstractClass<props> {
         instance.render(content);
       }
     });
+
+    if (instance.renderOptions.invokeGuard) {
+      asyncPromise.catch((error) => {
+        (instance.renderOptions.invokeGuard as  invokeGuard<unknown>)(() => {
+          throw new error;
+        });
+      });
+    }
 
     if (instance.renderOptions.addAsyncListener) {
       instance.renderOptions.addAsyncListener(asyncPromise);

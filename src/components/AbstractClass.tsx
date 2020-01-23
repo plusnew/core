@@ -1,8 +1,8 @@
 import ComponentInstance from '../instances/types/Component/Instance';
-import { ApplicationElement, props } from '../interfaces/component';
-import { Observer } from '../util/store';
 import Instance from '../instances/types/Instance';
 import types from '../instances/types/types';
+import { ApplicationElement, props } from '../interfaces/component';
+import { Observer } from '../util/store';
 
 function hasComponent<HostElement, HostTextElement>(instance?: Instance<HostElement, HostTextElement>): boolean {
   if (!instance) {
@@ -18,8 +18,7 @@ function hasComponent<HostElement, HostTextElement>(instance?: Instance<HostElem
 export default abstract class Component<componentProps extends Partial<props & { children: any}>, HostElement = unknown, HostTextElement = unknown> {
   static displayName = '';
 
-  constructor(_props: componentProps) {
-  }
+  constructor(_props: componentProps, _componentInstance: ComponentInstance<componentProps, HostElement, HostTextElement>) {}
 
   abstract render(props: Observer<componentProps>, plusnewComponentInstance: ComponentInstance<componentProps, HostElement, HostTextElement>): ApplicationElement;
 

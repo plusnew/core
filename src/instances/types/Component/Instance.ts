@@ -7,6 +7,7 @@ import store, { Store } from '../../../util/store';
 import factory from '../../factory';
 import reconcile, { shouldUpdate } from './reconcile';
 import { renderOptions } from '../../../interfaces/renderOptions';
+import { ComponentContainer } from '../../../components/factory';
 
 type lifecycle = 'componentDidMount' | 'componentWillUnmount';
 
@@ -59,21 +60,17 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
    * is needed for dispatching while rendering
    */
   public initialiseNestedElements() {
-    this.applicationInstance = new (this.type as any)(this.props);
-    if (this.renderOptions.invokeGuard === undefined) {
-      this.render(
-        (
-          this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
-        ).render(this.storeProps.Observer, this),
-      );
-    } else {
-      const invokeHandle = this.renderOptions.invokeGuard(() => (
-        this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
-      ).render(this.storeProps.Observer, this));
-      if (invokeHandle.hasError === false) {
-        this.render(invokeHandle.result);
-      }
-    }
+    this.applicationInstance = new (this.type as ComponentContainer<componentProps, HostElement, HostTextElement>)(
+      this.props,
+      this,
+    ) as Component<componentProps, HostElement, HostTextElement>;
+    this.executeUserspace();
+  }
+
+  public executeUserspace() {
+    this.render((
+      this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
+    ).render(this.storeProps.Observer, this));
     this.executeLifecycleHooks('componentDidMount');
   }
 
@@ -81,7 +78,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
     this.lifecycleHooks[lifecycle].push(hook);
   }
 
-  private executeLifecycleHooks(lifecycle: lifecycle) {
+  public executeLifecycleHooks(lifecycle: lifecycle) {
     this.lifecycleHooks[lifecycle].forEach(hook => hook());
   }
 

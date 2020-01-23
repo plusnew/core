@@ -35,10 +35,11 @@ export default function <state>(store: Store<state, any>) {
           renderFunction(store.getState()),
         );
       } else {
-        const invokeHandle = instance.renderOptions.invokeGuard(() => renderFunction(store.getState()));
-        if (invokeHandle.hasError === false) {
-          instance.render(invokeHandle.result);
-        }
+
+        instance.renderOptions.invokeGuard(() => {
+          const result = renderFunction(store.getState());
+          instance.render(result);
+        });
       }
     }
 
