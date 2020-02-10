@@ -298,8 +298,8 @@ import driver from '@plusnew/driver';
 import MainComponent from './MainComponent';
 
 /*
-  First parameter is the Component which you wish to be rendered,
-  Second parameter are the renderOptions, with which you wish to modify the behaviour 
+  First parameter is the Component which you want to be rendered,
+  Second parameter are the renderOptions, with which you can modify the behaviour of the whole application
 */
 plusnew.render(<MainComponent />, {
   driver: driver(document.body) // the driver function needs to know where the root is gonna be 
