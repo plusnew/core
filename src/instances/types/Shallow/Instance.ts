@@ -1,18 +1,19 @@
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import PlusnewAbstractElement, { PlusnewElement } from '../../../PlusnewAbstractElement';
 import Instance, { getPredeccessor } from '../Instance';
 import types from '../types';
 import { props } from  '../../../interfaces/component';
 import { renderOptions } from '../../../interfaces/renderOptions';
 
-export default class ShallowInstance<componentProps extends Partial<props>>  extends Instance {
+export default class ShallowInstance<componentProps extends Partial<props>, HostElement, HostTextElement>  extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Component;
+  public type: PlusnewElement;
   public props: componentProps;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
-    parentInstance: Instance,
-    getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    parentInstance: Instance<HostElement, HostTextElement>,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
 
@@ -20,7 +21,7 @@ export default class ShallowInstance<componentProps extends Partial<props>>  ext
     this.props = abstractElement.props as componentProps;
   }
 
-  public getLastIntrinsicElement() {
+  public getLastIntrinsicInstance() {
     return null;
   }
 

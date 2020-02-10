@@ -1,4 +1,4 @@
-import { storeType } from '../util/store';
+import { Store } from '../util/store';
 import AbstractClass from './AbstractClass';
 import ComponentInstance from '../instances/types/Component/Instance';
 import { ApplicationElement } from '../interfaces/component';
@@ -9,12 +9,12 @@ export type observerProps<state> = {
   children: renderFunction<state>;
 };
 
-export default function <state>(store: storeType<state, any>) {
+export default function <state>(store: Store<state, any>) {
 
   return class Observer extends AbstractClass<observerProps<state>> {
-    instance: ComponentInstance<observerProps<state>>;
+    instance?: ComponentInstance<observerProps<state>, unknown, unknown>;
 
-    public render(_props: any, instance: ComponentInstance<observerProps<state>>) {
+    public render(_props: any, instance: ComponentInstance<observerProps<state>, unknown, unknown>) {
       this.instance = instance;
 
       store.subscribe(this.update);
@@ -28,15 +28,17 @@ export default function <state>(store: storeType<state, any>) {
      * so that removal of correct listener is possible
      */
     private update = () => {
-      const renderFunction = ((this.instance.props.children as any)[0] as renderFunction<state>);
-      if (this.instance.renderOptions.invokeGuard === undefined) {
-        this.instance.render(
+      const instance = this.instance as ComponentInstance<observerProps<state>, unknown, unknown>;
+      const renderFunction = ((instance.props.children as any)[0] as renderFunction<state>);
+      if (instance.renderOptions.invokeGuard === undefined) {
+        instance.render(
           renderFunction(store.getState()),
         );
       } else {
-        this.instance.renderOptions.invokeGuard(() => {
+
+        instance.renderOptions.invokeGuard(() => {
           const result = renderFunction(store.getState());
-          this.instance.render(result);
+          instance.render(result);
         });
       }
     }
@@ -46,7 +48,8 @@ export default function <state>(store: storeType<state, any>) {
      */
     public componentWillUnmount() {
       store.unsubscribe(this.update);
-      this.instance.storeProps.unsubscribe(this.update);
+      // @FIXME this cast should be removed and typechecked
+      (this.instance as ComponentInstance<observerProps<state>, unknown, unknown>).storeProps.unsubscribe(this.update);
     }
 
     /**

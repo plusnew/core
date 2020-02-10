@@ -12,13 +12,17 @@ export class Reconciler {
    * evaluates if its the same instance, and if it needs an update
    * or if it should be removed and replaced
    */
-  public update(newAbstractElement: ApplicationElement, instance: Instance): Instance {
+  public update<HostElement, HostTextElement>(newAbstractElement: ApplicationElement, instance: Instance<HostElement, HostTextElement>): Instance<HostElement, HostTextElement> {
     if (this.isSameAbstractElement(newAbstractElement, instance)) {
       instance.reconcile(newAbstractElement);
       return instance;
     }
 
-    const newInstance = factory(newAbstractElement, instance.parentInstance as Instance, instance.getPredecessor, (instance.parentInstance as Instance).renderOptions);
+    const newInstance = factory(
+      newAbstractElement,
+      instance.parentInstance as Instance<HostElement, HostTextElement>,
+      instance.getPredecessor,
+      (instance.parentInstance as Instance<HostElement, HostTextElement>).renderOptions);
 
     return newInstance;
   }
@@ -26,22 +30,22 @@ export class Reconciler {
   /**
    * checks if the abstractElements are the same
    */
-  public isSameAbstractElement(newAbstractElement: ApplicationElement, instance: Instance) {
+  public isSameAbstractElement<HostElement, HostTextElement>(newAbstractElement: ApplicationElement, instance: Instance<HostElement, HostTextElement>) {
     // The following code does the key-property check, not yet stable
     if (this.isSameAbstractElementType(newAbstractElement, instance) === true) {
       if (elementTypeChecker.isComponentElement(newAbstractElement) === true || elementTypeChecker.isDomElement(newAbstractElement) === true) {
         if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
-          if ((instance as ComponentInstance<any>).props.hasOwnProperty('key')) {
+          if ((instance as ComponentInstance<any, HostElement, HostTextElement>).props.hasOwnProperty('key')) {
             // newAbstractElement and oldAbstractElement, have a key - is it the same?
             return (
               (newAbstractElement as PlusnewAbstractElement).props.key ===
-              (instance as ComponentInstance<any>).props.key
+              (instance as ComponentInstance<any, HostElement, HostTextElement>).props.key
             );
           }
           // newAbstractElement has key, but oldAbstractElement has not
           return false;
         }
-        if ((instance as ComponentInstance<any>).props.hasOwnProperty('key')) {
+        if ((instance as ComponentInstance<any, HostElement, HostTextElement>).props.hasOwnProperty('key')) {
           // newAbstractElement has no key, but oldAbstractElement has
           return false;
         }
@@ -59,7 +63,7 @@ export class Reconciler {
   /**
    * checks if the abstractElements are the same type
    */
-  private isSameAbstractElementType(newAbstractElement: ApplicationElement, instance: Instance) {
+  private isSameAbstractElementType<HostElement, HostTextElement>(newAbstractElement: ApplicationElement, instance: Instance<HostElement, HostTextElement>) {
     if (elementTypeChecker.isPlaceholderElement(newAbstractElement)) {
       return instance.nodeType === types.Placeholder;
     }

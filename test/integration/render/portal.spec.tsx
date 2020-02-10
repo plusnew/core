@@ -1,6 +1,8 @@
-import plusnew, { component, store, Portal } from 'index';
+import plusnew, { component, PortalExit, PortalEntrance } from 'index';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 
-describe('<Portal />', () => {
+describe('rendering nested Portals', () => {
   let container: HTMLElement;
 
   beforeEach(() => {
@@ -9,75 +11,109 @@ describe('<Portal />', () => {
     document.body.appendChild(container);
   });
 
-  it('portal should show outside of the tree', () => {
-    const local = store(0, (store, action: number) => action);
-
-    const outside = document.createElement('div');
-
+  it('does a PortalEntrance and a PortalExit work', () => {
     const Component = component(
       'Component',
       () =>
-        <span>
-          <local.Observer>{state =>
-            state < 2 &&
-              <Portal target={outside}>
-                {state}
-              </Portal>
-          }</local.Observer>
-          foo
-        </span>,
+        <>
+          <div>
+            <PortalExit name="foo" />
+          </div>
+          <div>
+            <PortalEntrance name="foo"><span /></PortalEntrance>
+          </div>
+        </>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
-    expect(container.childNodes.length).toBe(1);
-    expect(container.childNodes[0].childNodes.length).toBe(1);
-    expect(container.childNodes[0].childNodes[0].textContent).toBe('foo');
+    const portalExit = container.childNodes[0] as HTMLElement;
+    const portalEntrance = container.childNodes[1] as HTMLElement;
 
-    expect(outside.childNodes.length).toBe(1);
-    const outsideElement = outside.childNodes[0] as Text;
-    expect(outsideElement.textContent).toBe('0');
+    expect(container.childNodes.length).toBe(2);
 
-    local.dispatch(1);
+    expect(portalExit.tagName).toBe('DIV');
+    expect(portalExit.childNodes.length).toBe(1);
+    expect((portalExit.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
 
-    expect(container.childNodes.length).toBe(1);
-    expect(container.childNodes[0].childNodes.length).toBe(1);
-    expect(container.childNodes[0].childNodes[0].textContent).toBe('foo');
-
-    expect(outside.childNodes.length).toBe(1);
-    expect(outsideElement.textContent).toBe('1');
-
-    local.dispatch(2);
-
-    expect(container.childNodes.length).toBe(1);
-    expect(container.childNodes[0].childNodes.length).toBe(1);
-    expect(container.childNodes[0].childNodes[0].textContent).toBe('foo');
-
-    expect(outside.childNodes.length).toBe(0);
+    expect(portalEntrance.tagName).toBe('DIV');
+    expect(portalEntrance.childNodes.length).toBe(0);
   });
 
-  it('portal should have namespace of target-element', () => {
-    const outside = document.createElement('div');
-
+  it('does a PortalEntrance and a PortalExit work with renderoptions', () => {
     const Component = component(
       'Component',
       () =>
-        <svg>
-          <Portal target={outside}>
-            <span />
-          </Portal>
-          <g />
-        </svg>,
+        <>
+          <div>
+            <PortalExit name="foo" />
+          </div>
+          <div>
+            <PortalEntrance name="foo"><span /></PortalEntrance>
+          </div>
+        </>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container), portals: {} });
 
-    expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).namespaceURI).toBe('http://www.w3.org/2000/svg');
-    expect((container.childNodes[0].childNodes[0] as HTMLElement).namespaceURI).toBe('http://www.w3.org/2000/svg');
+    const portalExit = container.childNodes[0] as HTMLElement;
+    const portalEntrance = container.childNodes[1] as HTMLElement;
 
-    expect(outside.childNodes.length).toBe(1);
-    expect((outside.childNodes[0] as HTMLElement).namespaceURI).toBe(outside.namespaceURI);
+    expect(container.childNodes.length).toBe(2);
 
+    expect(portalExit.tagName).toBe('DIV');
+    expect(portalExit.childNodes.length).toBe(1);
+    expect((portalExit.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+
+    expect(portalEntrance.tagName).toBe('DIV');
+    expect(portalEntrance.childNodes.length).toBe(0);
+  });
+
+  it('a PortalEntrance and a wrong PortalExit work', () => {
+    const Component = component(
+      'Component',
+      () =>
+        <>
+          <div>
+            <PortalExit name="foo" />
+          </div>
+          <div>
+            <PortalEntrance name="bar"><span /></PortalEntrance>
+          </div>
+        </>,
+    );
+
+    expect(() =>
+      plusnew.render(<Component />, { driver: driver(container) }),
+    ).toThrow(new Error('Could not find PortalExit with name bar'));
+  });
+
+  it('a PortalEntrance and no PortalExitk', () => {
+    const Component = component(
+      'Component',
+      () =>
+        <div>
+          <PortalEntrance name="bar"><span /></PortalEntrance>
+        </div>,
+    );
+
+    expect(() =>
+      plusnew.render(<Component />, { driver: driver(container) }),
+    ).toThrow(new Error('Could not find PortalExit with name bar'));
+  });
+
+  it('two portalExits with the same name', () => {
+    const Component = component(
+      'Component',
+      () =>
+        <div>
+          <PortalExit name="foo" />
+          <PortalExit name="foo" />
+        </div>,
+    );
+
+    expect(() =>
+      plusnew.render(<Component />, { driver: driver(container) }),
+    ).toThrow(new Error('Could not create a PortalExit with the same name foo'));
   });
 });

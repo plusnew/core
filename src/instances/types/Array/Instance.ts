@@ -9,7 +9,7 @@ import { renderOptions } from '../../../interfaces/renderOptions';
  * ArrayInstances are used for representing lists in the shadowdon
  * and they correspond for creating and deleting instances of the corresponding entities
  */
-export default class ArrayInstance extends ChildrenInstance {
+export default class ArrayInstance<HostElement, HostTextElement> extends ChildrenInstance<HostElement, HostTextElement> {
   public nodeType = types.Array;
   public type = types.Array;
   public props: { children: PlusnewAbstractElement[] };
@@ -17,9 +17,9 @@ export default class ArrayInstance extends ChildrenInstance {
 
   constructor(
     abstractElements: (PlusnewAbstractElement)[],
-    parentInstance: Instance,
-    getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    parentInstance: Instance<HostElement, HostTextElement>,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElements, parentInstance, getPredecessor, renderOptions);
     this.props = {

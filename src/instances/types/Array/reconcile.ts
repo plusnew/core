@@ -5,7 +5,7 @@ import ArrayInstance from './Instance';
 
 const NOT_FOUND = -1;
 
-function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractElement, startIndex: number) {
+function indexOf<HostElement, HostTextElement>(instance: ArrayInstance<HostElement, HostTextElement>, newAbstractElement: PlusnewAbstractElement, startIndex: number) {
   for (let i = startIndex; i < instance.rendered.length; i += 1) {
     if (reconciler.isSameAbstractElement(newAbstractElement, instance.rendered[i])) {
       return i;
@@ -14,7 +14,7 @@ function indexOf(instance: ArrayInstance, newAbstractElement: PlusnewAbstractEle
   return NOT_FOUND;
 }
 
-export default function (newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance) {
+export default function <HostElement, HostTextElement>(newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance<HostElement, HostTextElement>) {
 
   // Removal of old-elements just works if key-property is existent
   if (instance.props.children.length && instance.props.children[0] && instance.props.children[0].props && instance.props.children[0].props.key !== undefined) {

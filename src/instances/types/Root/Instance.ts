@@ -1,30 +1,31 @@
 import { ApplicationElement } from '../../../interfaces/component';
-import Instance, { getPredeccessor, predecessor } from '../Instance';
+import Instance, { getPredeccessor, predecessor, HostInstance } from '../Instance';
 import types from '../types';
 import { renderOptions } from '../../../interfaces/renderOptions';
 
-export default class RootInstance extends Instance {
+export default class RootInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Root;
   public type = types.Root;
-  public ref: Element;
+  public ref: HostElement;
 
   constructor(
     abstractElement: ApplicationElement,
-    parentInstance: Instance | undefined,
-    getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    parentInstance: Instance<HostElement, HostTextElement> | undefined,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
+    this.ref = this.renderOptions.driver.getRootElement(this);
   }
   /**
    * appends the element to the rootcontainer
    */
-  public appendChild(element: Node, predecessor: predecessor) {
-    this.insertBefore(this.ref, element, predecessor);
+  public appendChild(childInstance: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
+    this.renderOptions.driver.element.appendChildAfterSibling(this, childInstance, predecessor);
   }
 
-  public getLastIntrinsicElement() {
-    return this.ref;
+  public getLastIntrinsicInstance(): never {
+    throw new Error('The root Element does not allow to give you the last Element Instance');
   }
 
   /**
@@ -44,7 +45,7 @@ export default class RootInstance extends Instance {
   /**
    * a root instance isn't anything updatable
    */
-  public reconcile(newAbstractElement: false): never {
+  public reconcile(_newAbstractElement: false): never {
     throw new Error('The root element can\'t reconcile itself');
   }
 }

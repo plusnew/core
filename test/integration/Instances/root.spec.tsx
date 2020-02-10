@@ -1,11 +1,13 @@
-import Root from 'instances/types/Root/Instance';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 import plusnew from 'index';
+import Root from 'instances/types/Root/Instance';
 
 describe('Does the root-instance behave correctly', () => {
-  let root: Root;
+  let root: Root<Element, Text>;
 
   beforeEach(() => {
-    root = new Root(<div />, undefined, () => null, {});
+    root = new Root<Element, Text>(<div />, undefined, () => null, { driver: driver(document.createElement('div')) });
   });
 
   it('remove should throw exception', () => {

@@ -2,6 +2,7 @@ import { ApplicationElement, props } from '../../../interfaces/component';
 import { TypeOfPlusnew } from '../../../util/symbols';
 import reconciler from '../../reconciler';
 import ComponentInstance from './Instance';
+import Instance from '../Instance';
 
 function isPlusnewElement(a: any) {
   return typeof a === 'object' && a !== null && a.$$typeof === TypeOfPlusnew;
@@ -49,14 +50,15 @@ function isSameElement(a: any, b: any): boolean {
 /**
  * checks if a component needs updates, if the props are the same it does not need an update
  */
-export function shouldUpdate(props: Partial<props>, instance: ComponentInstance<any>) {
+export function shouldUpdate<HostElement, HostTextElement>(props: Partial<props>, instance: ComponentInstance<any, HostElement, HostTextElement>) {
   return isPropsEqual(props, instance.props) === false;
 }
 
-export default (newAbstractChildren: ApplicationElement, instance: ComponentInstance<any>) => {
-  const newChildrenInstance = reconciler.update(newAbstractChildren, instance.rendered);
-  if (newChildrenInstance !== instance.rendered) {
-    instance.rendered.remove(true);
+export default <HostElement, HostTextElement>(newAbstractChildren: ApplicationElement, instance: ComponentInstance<any, HostElement, HostTextElement>) => {
+  const rendered = instance.rendered as Instance<HostElement, HostTextElement>;
+  const newChildrenInstance = reconciler.update(newAbstractChildren, rendered);
+  if (newChildrenInstance !== rendered) {
+    rendered.remove(true);
     instance.rendered = newChildrenInstance;
     instance.rendered.initialiseNestedElements();
   }

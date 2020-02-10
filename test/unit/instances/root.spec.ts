@@ -1,3 +1,4 @@
+import driver from '@plusnew/driver-dom/src/driver';
 import Instance from 'instances/types/Root/Instance';
 
 describe('root', () => {
@@ -14,8 +15,9 @@ describe('root', () => {
   });
 
   it('getFirstIntrinsicElement', () => {
-    const instance = new Instance(true, undefined, () => null, {});
-    instance.ref = document.createElement('div');
-    expect(instance.getLastIntrinsicElement()).toBe(instance.ref);
+    const instance = new Instance<Element, Text>(true, undefined, () => null, { driver: driver(document.createElement('div')) });
+    expect(() => {
+      instance.getLastIntrinsicInstance();
+    }).toThrow(new Error('The root Element does not allow to give you the last Element Instance'));
   });
 });

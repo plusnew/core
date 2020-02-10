@@ -1,4 +1,6 @@
-import plusnew, { Props, Component,  store } from 'index';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
+import plusnew, { Component, Props, store } from 'index';
 
 describe('rendering class components', () => {
   let container: HTMLElement;
@@ -16,7 +18,7 @@ describe('rendering class components', () => {
       }
     }
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
@@ -35,7 +37,7 @@ describe('rendering class components', () => {
       }
     }
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
@@ -63,7 +65,7 @@ describe('rendering class components', () => {
       }
     }
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');

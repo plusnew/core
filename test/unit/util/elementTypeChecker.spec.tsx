@@ -26,7 +26,6 @@ describe('elementTypeChecker', () => {
     it('is placeholder a fragment', () => {
       const Component = component(
         'Component',
-        
         () => null,
       );
       expect(util.isFragmentElement(<Component />)).toBe(false);

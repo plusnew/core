@@ -1,16 +1,13 @@
 {
   "name": "@plusnew/core",
-  "version": "0.6.63",
+  "version": "1.0.0-beta.2",
   "description": "ts component framework with an typesecure and functional approach",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
   "scripts": {
-    "prepublishOnly": "yarn run test && yarn run build",
-    "build": "webpack --config configs/webpack.prod.conf.js",
-    "test": "karma start configs/karma.conf.js --no-auto-watch --single-run",
-    "test:watch": "karma start configs/karma.conf.js",
-    "test:jest": "jest --config=configs/jest.conf.js",
-    "test:jest:watch": "jest --config=configs/jest.conf.js --watch"
+    "prepublishOnly": "yarn run test --no-cache",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -24,13 +21,11 @@
   "homepage": "https://github.com/plusnew/core#readme",
   "dependencies": {},
   "devDependencies": {
-    "copy-webpack-plugin": "^5.1.0",
+    "@plusnew/driver-dom": "1.0.0-beta.1",
+    "@types/jest": "^24.9.0",
     "jest": "^25.1.0",
-    "plusnew-karma-config": "0.6.64",
-    "plusnew-webpack-config": "0.6.655555",
-    "requestidlecallback": "^0.3.0",
-    "ts-jest": "^25.0.0",
-    "tslint": "5.20.1",
+    "ts-jest": "^24.3.0",
+    "tslint": "6.0.0",
     "tslint-config-airbnb": "5.11.2",
     "typescript": "3.7.5"
   }

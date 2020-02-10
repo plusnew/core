@@ -5,11 +5,11 @@ import types from '../types';
  * PlaceholderInstance is a representation of {false}
  * it is used for conditions which don't want to show something
  */
-export default class PlaceholderInstance extends Instance {
+export default class PlaceholderInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Placeholder;
   public type = types.Fragment;
 
-  public getLastIntrinsicElement() {
+  public getLastIntrinsicInstance() {
     return null;
   }
 
@@ -29,5 +29,5 @@ export default class PlaceholderInstance extends Instance {
    * a placeholder is just a element waiting to be exchanged with something else
    * but it itself doesn't need to be updated
    */
-  public reconcile(newAbstractElement: false) {}
+  public reconcile(_newAbstractElement: false) {}
 }

@@ -1,21 +1,10 @@
-import store, { Observer, storeType } from './util/store';
-import context from './components/context';
-import AbstractClass from './components/AbstractClass';
-import componentFactory, { ComponentContainer } from './components/factory';
-import Animate from './components/Animate';
-import Portal from './components/Portal';
-import Idle from './components/Idle';
-import Async from './components/Async';
-import Try from './components/Try';
+import { ComponentContainer } from './components/factory';
 import factory from './instances/factory';
-import Instance from './instances/types/Instance';
 import RootInstance from './instances/types/Root/Instance';
-import { renderOptions } from './interfaces/renderOptions';
-import './interfaces/jsx';
-import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
-import elementTypeChecker from './util/elementTypeChecker';
-import { Fragment } from './util/symbols';
 import { ApplicationElement } from './interfaces/component';
+import { renderOptions } from './interfaces/renderOptions';
+import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
+import { Fragment } from './util/symbols';
 
 class Plusnew {
   /**
@@ -25,7 +14,7 @@ class Plusnew {
     PlusnewAbstractElement;
   public createElement<props>(type: number, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
   public createElement<props>(type: Symbol, props: null, ...children: ApplicationElement[]): PlusnewAbstractElement;
-  public createElement<props>(type: ComponentContainer<props>, props: props, ...children: ApplicationElement[]): PlusnewAbstractElement;
+  public createElement<props>(type: ComponentContainer<props, unknown, unknown>, props: props, ...children: ApplicationElement[]): PlusnewAbstractElement;
   public createElement(type: PlusnewElement, props: any, ...children: ApplicationElement[]) {
     return new PlusnewAbstractElement(type, props, children);
   }
@@ -33,48 +22,37 @@ class Plusnew {
   /**
    * mounts the root component
    */
-  public render(element: PlusnewAbstractElement, containerElement: HTMLElement, options?: renderOptions) {
-    // Fake RootInstance
-    const predecessor = () => null;
-    const renderOptions = options || {};
-    const wrapper = new RootInstance(true, undefined, predecessor, renderOptions);
+  public render<HostElement, HostTextElement>(element: PlusnewAbstractElement, options: renderOptions<HostElement, HostTextElement>) {
+    let internalOptions = options;
 
-    wrapper.ref = containerElement;
-
-    while (containerElement.childNodes.length) {
-      containerElement.removeChild(containerElement.childNodes[0]);
+    if ('portals' in options === false) {
+      internalOptions = {
+        ...internalOptions,
+        portals: {},
+      };
     }
 
-    const instance = factory(element, wrapper, predecessor, renderOptions);
+    // Fake RootInstance
+    const predecessor = () => null;
+    const wrapper = new RootInstance(true, undefined, predecessor, internalOptions);
+
+    const instance = factory(element, wrapper, predecessor, internalOptions);
     instance.initialiseNestedElements();
 
     return instance;
   }
 
   Fragment = Fragment;
-
 }
 
-export {
-  store,
-  context,
-  Plusnew,
-  Instance,
-  componentFactory as component,
-  ComponentContainer,
-  renderOptions,
-  PlusnewAbstractElement,
-  ApplicationElement,
-  elementTypeChecker,
-  Portal,
-  Idle,
-  Animate,
-  Async,
-  Try,
-  AbstractClass as Component,
-  Observer as Props,
-  Observer,
-  storeType,
-};
+export { ComponentContainer };
+export { ApplicationElement } from './interfaces/component';
+export { default as component } from './components/factory';
+export { default as Component } from './components/AbstractClass';
+export { default as store, Store, Observer as Props } from './util/store';
+export { default as context } from './components/context';
+export { default as Async } from './components/Async';
+export { default as Try } from './components/Try';
+export { PortalEntrance, PortalExit } from './components/portal';
 
 export default new Plusnew();

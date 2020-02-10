@@ -166,16 +166,22 @@ const NestedComponent = component(
 ## Helper-Components
 ### Portal
 With portals you can render elements outside of your normal tree, whereever you want.
+PortalExit is where all the stuff you have in PortalEntrance will land.
 
 ```ts
-import plusnew, { component, Portal } from '@plusnew/core';
+import plusnew, { component, PortalExit, PortalEntrance } from '@plusnew/core';
 
 export default component(
   'ComponentName',
   () =>
-    <Portal target={document.getElementById('somewhere') as HTMLElement}>
-      <div>your element is appended inside the #somewhere element</div>
-    </Portal>,
+    <>
+      <div>
+        <PortalExit name="portalName"/>
+      </div>
+      <div>
+        <PortalEntrance name="portalName"><span /></PortalEntrance>
+      </div>
+    </>,
 );
 ```
 
@@ -253,7 +259,8 @@ The children of this component will be displayed when the browser is in idle
 or the application is signaling that it is urgent now.
 
 ```ts
-import plusnew, { component, Idle } from '@plusnew/core';
+import plusnew, { component } from '@plusnew/core';
+import { Idle } from '@plusnew/dom';
 import ExpensiveComponent from './ExpensiveComponent';
 
 export default component(
@@ -282,4 +289,19 @@ export default component(
       {() => throw new Error('something unexpected happened')}
     </Try>
 );
+```
+
+## Mounting Application
+```ts
+import plusnew, { component, Try } from '@plusnew/core';
+import driver from '@plusnew/driver';
+import MainComponent from './MainComponent';
+
+/*
+  First parameter is the Component which you want to be rendered,
+  Second parameter are the renderOptions, with which you can modify the behaviour of the whole application
+*/
+plusnew.render(<MainComponent />, {
+  driver: driver(document.body) // the driver function needs to know where the root is gonna be 
+});
 ```

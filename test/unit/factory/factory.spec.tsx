@@ -1,5 +1,7 @@
 import factory from 'instances/factory';
 import elementTypeChecker from 'util/elementTypeChecker';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 
 describe('isSameAbstractElementType()', () => {
   beforeEach(() => {
@@ -13,7 +15,9 @@ describe('isSameAbstractElementType()', () => {
   });
   it('unknown element', () => {
     expect(() => {
-      factory('string', 'another string' as any, () => null, {});
+      factory('string', 'another string' as any, () => null, {
+        driver: driver(document.createElement('div')),
+      });
     }).toThrow(new Error('Factory couldn\'t create unknown element type'));
   });
 });

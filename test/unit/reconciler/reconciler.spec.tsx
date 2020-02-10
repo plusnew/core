@@ -5,12 +5,14 @@ import RootInstance from 'instances/types/Root/Instance';
 import component from 'components/factory';
 import elementTypeChecker from 'util/elementTypeChecker';
 import { ApplicationElement } from 'interfaces/component';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 
 function createInstance(applicationElement: ApplicationElement) {
-  const wrapper = new RootInstance(true, undefined, () => null, {});
-  wrapper.ref = document.createElement('div');
+  const renderOptions = { driver: driver(document.createElement('div')) };
+  const wrapper = new RootInstance<Element, Text>(true, undefined, () => null, renderOptions);
 
-  const instance = factory(applicationElement, wrapper, () => null, {});
+  const instance = factory<Element, Text>(applicationElement, wrapper, () => null, renderOptions);
   instance.initialiseNestedElements();
   return instance;
 }

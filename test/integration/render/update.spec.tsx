@@ -1,12 +1,14 @@
-import plusnew, { store, storeType, component } from 'index';
+import plusnew, { store, Store, component } from 'index';
 import TextInstance from 'instances/types/Text/Instance';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 
 describe('rendering the elements', () => {
   let container: HTMLElement;
-  let local: storeType<string, string>;
+  let local: Store<string, string>;
   let setTextSpy: jasmine.Spy;
   beforeEach(() => {
-    local = store('foo', (previousState: string, newValue: string) => newValue);
+    local = store('foo', (_previousState: string, newValue: string) => newValue);
 
     container = document.createElement('div');
     container.innerHTML = 'lots of stuff';
@@ -24,11 +26,11 @@ describe('rendering the elements', () => {
       'Component',
       () =>
         <local.Observer>{state =>
-          <div className={state}>{state}</div>
+          <div class={state}>{state}</div>
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
 
@@ -52,11 +54,11 @@ describe('rendering the elements', () => {
       'Component',
       () =>
         <local.Observer>{state =>
-          <div className={state}>{state}</div>
+          <div class={state}>{state}</div>
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
 
@@ -89,7 +91,7 @@ describe('rendering the elements', () => {
           }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
 
@@ -119,7 +121,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
       );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
 
@@ -147,7 +149,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('foo');
 
@@ -176,7 +178,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].childNodes.length).toBe(2);
     const target = container.childNodes[0].childNodes[0] as HTMLElement;
@@ -204,7 +206,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -216,7 +218,7 @@ describe('rendering the elements', () => {
   });
 
   it('nested text-elements creation of not previously existing element', () => {
-    const local = store(true, (previousState, action: boolean) => action);
+    const local = store(true, (_previousState, action: boolean) => action);
     const Component = component(
       'Component',
       () =>
@@ -225,7 +227,7 @@ describe('rendering the elements', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
@@ -239,7 +241,7 @@ describe('rendering the elements', () => {
   });
 
   it('conditional rendering - inclduing correct ordering', () => {
-    const local = store(false, (previousState, action: boolean) => action);
+    const local = store(false, (_previousState, action: boolean) => action);
     const Component = component(
       'Component',
       () => (
@@ -252,7 +254,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.nodeName).toBe('DIV');
@@ -275,7 +277,7 @@ describe('rendering the elements', () => {
   });
 
   it('placeholder rendering - update', () => {
-    const local = store(0, (previousState, action: null) => previousState + 1);
+    const local = store(0, (previousState, _action: null) => previousState + 1);
     const Component = component(
       'Component',
       () => (
@@ -285,7 +287,7 @@ describe('rendering the elements', () => {
         </div>
       ),
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
     expect(target.innerHTML).toBe('0');
@@ -296,18 +298,18 @@ describe('rendering the elements', () => {
   });
 
   it('dom with lesser attributes after update', () => {
-    const local = store(true, (previousState, action: boolean) => action);
+    const local = store(true, (_previousState, action: boolean) => action);
     const Component = component(
       'Component',
       () =>
         <local.Observer>{state =>
           state ?
-            <div className="foo" />
+            <div class="foo" />
           :
             <div />
         }</local.Observer>,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
 
@@ -319,7 +321,7 @@ describe('rendering the elements', () => {
 
   it('dom with lesser attributes after update, even for events', () => {
     const clickHandler = () => {};
-    const local = store(true, (previousState, action: boolean) => action);
+    const local = store(true, (_previousState, action: boolean) => action);
     const Component = component(
       'Component',
       () =>
@@ -330,7 +332,7 @@ describe('rendering the elements', () => {
             <div />
         }</local.Observer>,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0] as HTMLElement;
 
@@ -349,7 +351,7 @@ describe('rendering the elements', () => {
           <div>{state}</div>
         }</local.Observer>,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const staticText = container.childNodes[0] as Text;
 
@@ -369,7 +371,7 @@ describe('rendering the elements', () => {
       () =>
         <div>static text</div>,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const staticText = container.childNodes[0] as Text;
 

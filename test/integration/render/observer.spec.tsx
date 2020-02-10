@@ -1,4 +1,6 @@
 import plusnew, { component, store } from 'index';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 
 describe('<Observer />', () => {
   let container: HTMLElement;
@@ -19,7 +21,7 @@ describe('<Observer />', () => {
             <local.Observer>{renderSpy}</local.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
@@ -51,7 +53,7 @@ describe('<Observer />', () => {
             }</localContainer.Observer>,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     const target = (container.childNodes[0] as HTMLElement);
     expect(container.childNodes.length).toBe(1);

@@ -1,4 +1,6 @@
 import plusnew, { Props, component, store } from 'index';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
 
 describe('lifecycle', () => {
   let container: HTMLElement;
@@ -29,7 +31,7 @@ describe('lifecycle', () => {
         () => <local.Observer>{local => local && <NestedComponent />}</local.Observer>,
       );
 
-      plusnew.render(<MainComponent />, container);
+      plusnew.render(<MainComponent />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(0);
       expect(componentDidMountSpy.calls.count()).toBe(0);
@@ -50,16 +52,16 @@ describe('lifecycle', () => {
         return <div><Props>{props => props.value}</Props></div>;
       }).and.callThrough();
 
-      const anotherRenderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, componentInstance) => {
+      const anotherRenderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, _componentInstance) => {
         return <span><Props>{props => props.value}</Props></span>;
       }).and.callThrough();
 
-      const NestedComponent = component<{value: number}>(
+      const NestedComponent = component<{value: number}, Element, Text>(
         'Component',
         renderSpy,
       );
 
-      const AnotherNestedComponent = component<{value: number}>(
+      const AnotherNestedComponent = component<{value: number}, Element, Text>(
         'Component',
         anotherRenderSpy,
       );
@@ -77,7 +79,7 @@ describe('lifecycle', () => {
           }</local.Observer>,
       );
 
-      plusnew.render(<MainComponent />, container);
+      plusnew.render(<MainComponent />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(2);
       expect(renderSpy.calls.count()).toBe(1);
@@ -98,16 +100,16 @@ describe('lifecycle', () => {
       return <div><Props>{props => props.value}</Props></div>;
     }).and.callThrough();
 
-    const anotherRenderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, componentInstance) => {
+    const anotherRenderSpy = jasmine.createSpy('renderSpy', (Props: Props<{value: number}>, _componentInstance) => {
       return <span><Props>{props => props.value}</Props></span>;
     }).and.callThrough();
 
-    const NestedComponent = component<{value: number}>(
+    const NestedComponent = component<{value: number}, Element, Text>(
       'Component',
       renderSpy,
     );
 
-    const AnotherNestedComponent = component<{value: number}>(
+    const AnotherNestedComponent = component<{value: number}, Element, Text>(
       'Component',
       anotherRenderSpy,
     );
@@ -125,7 +127,7 @@ describe('lifecycle', () => {
         }</local.Observer>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect(renderSpy.calls.count()).toBe(1);
@@ -156,7 +158,7 @@ describe('lifecycle', () => {
         () => <local.Observer>{local => local && <NestedComponent />}</local.Observer>,
       );
 
-      plusnew.render(<MainComponent />, container);
+      plusnew.render(<MainComponent />, { driver: driver(container) });
 
       expect(container.childNodes.length).toBe(0);
       expect(componentWillUnmountSpy.calls.count()).toBe(0);

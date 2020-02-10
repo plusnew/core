@@ -2,23 +2,26 @@ import { ApplicationElement, props } from '../../interfaces/component';
 import { PlusnewElement } from '../../PlusnewAbstractElement';
 import types from './types';
 import { renderOptions } from '../../interfaces/renderOptions';
+import DomInstance from './Host/Instance';
+import TextInstance from './Text/Instance';
 
-export type predecessor = Node | null;
-export type getPredeccessor = () => predecessor;
+export type HostInstance<HostElement, HostTextElement> = DomInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement>;
+export type predecessor<HostElement, HostTextElement> = HostInstance<HostElement, HostTextElement> | null;
+export type getPredeccessor<HostElement, HostTextElement> = () => predecessor<HostElement, HostTextElement>;
 
-export default abstract class Instance {
-  public nodeType: types;
-  public parentInstance?: Instance;
-  public type: PlusnewElement;
+export default abstract class Instance<HostElement, HostTextElement> {
+  abstract nodeType: types;
+  abstract type: PlusnewElement;
+  public parentInstance?: Instance<HostElement, HostTextElement>;
   public props: ApplicationElement | Partial<props>;
-  public getPredecessor: getPredeccessor;
-  public renderOptions: renderOptions;
+  public getPredecessor: getPredeccessor<HostElement, HostTextElement>;
+  public renderOptions: renderOptions<HostElement, HostTextElement>;
 
   constructor(
     _abstractElement: ApplicationElement,
-    parentInstance: Instance | undefined,
-    getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    parentInstance: Instance<HostElement, HostTextElement> | undefined,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     this.parentInstance = parentInstance;
     this.getPredecessor = getPredecessor;
@@ -36,18 +39,18 @@ export default abstract class Instance {
   /**
    * appends the given element, to the parentinstance, if existent
    */
-  public appendToParent(element: Node, predecessor: predecessor) {
+  public appendToParent(childInstance: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
     if (this.parentInstance === undefined) {
       throw new Error('Cant append element to not existing parent');
     } else {
-      this.parentInstance.appendChild(element, predecessor);
+      this.parentInstance.appendChild(childInstance, predecessor);
     }
   }
 
   /**
    * makes a insertBefore to the parent
    */
-  public appendChild(element: Node, predecessor: predecessor) {
+  public appendChild(element: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
     if (this.parentInstance === undefined) {
       throw new Error('Couldn\'t add child to parent');
     } else {
@@ -55,18 +58,14 @@ export default abstract class Instance {
     }
   }
 
-  public insertBefore(parentNode: Node, target: Node, predecessor: predecessor) {
-    if (predecessor === null) {
-      parentNode.insertBefore(target, parentNode.firstChild);
-    } else {
-      parentNode.insertBefore(target, predecessor.nextSibling);
-    }
+  findParent(callback: (instance: Instance<HostElement, HostTextElement>) => boolean): Instance<HostElement, HostTextElement> | undefined {
+    return (this.parentInstance as Instance<HostElement, HostTextElement>).find(callback);
   }
 
   /**
    * recursively search for another instance
    */
-  public find(callback: (instance: Instance) => boolean): Instance | undefined {
+  public find(callback: (instance: Instance<HostElement, HostTextElement>) => boolean): Instance<HostElement, HostTextElement> | undefined {
     if (callback(this)) {
       return this;
     }
@@ -78,20 +77,20 @@ export default abstract class Instance {
     return undefined;
   }
 
-  public abstract getLastIntrinsicElement(): Node | null;
+  public abstract getLastIntrinsicInstance(): HostInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement> | null;
 
   /**
    * orders to move itself to another place
    */
 
-  public abstract move(predecessor: predecessor): void;
+  public abstract move(predecessor: predecessor<HostElement, HostTextElement>): void;
 
   public abstract remove(prepareRemoveSelf: boolean): Promise<any> | void;
 
   /**
    * gets called with newly created elements by the children
    */
-  public elementDidMount(element: Element): Promise<any> | void {
+  public elementDidMount(element: HostElement | HostTextElement): Promise<any> | void {
     if (this.parentInstance) {
       this.parentInstance.elementDidMount(element);
     }
@@ -100,7 +99,7 @@ export default abstract class Instance {
   /**
    * gets called with deleted elements from the children
    */
-  public elementWillUnmount(element: Element): Promise<any> | void {
+  public elementWillUnmount(element: HostElement | HostTextElement): Promise<any> | void {
     if (this.parentInstance) {
       return this.parentInstance.elementWillUnmount(element);
     }

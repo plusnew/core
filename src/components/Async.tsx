@@ -1,8 +1,8 @@
 import { Props } from '../index';
 import ComponentInstance from '../instances/types/Component/Instance';
-import AbstractClass from './AbstractClass';
 import { ApplicationElement } from '../interfaces/component';
 import { invokeGuard } from '../interfaces/renderOptions';
+import AbstractClass from './AbstractClass';
 
 function tick() {
   return Promise.resolve();
@@ -15,13 +15,13 @@ type props = {
 };
 
 class Async extends AbstractClass<props> {
-  instance: ComponentInstance<props>;
+  instance?: ComponentInstance<props, unknown, unknown>;
 
   static displayName = 'Async';
 
   private increment = 0;
 
-  render(_Props: Props<props>, instance: ComponentInstance<props>) {
+  render(_Props: Props<props>, instance: ComponentInstance<props, unknown, unknown>) {
     this.instance = instance;
     this.instance.storeProps.subscribe(this.update);
 
@@ -35,32 +35,34 @@ class Async extends AbstractClass<props> {
 
     let rendered = false;
 
-    const asyncPromise = ((this.instance.props.children as any)[0] as promiseGenerator)().then((content) => {
+    const instance = this.instance as ComponentInstance<props, unknown, unknown>;
+
+    const asyncPromise = ((instance.props.children as any)[0] as promiseGenerator)().then((content) => {
       // Checks if between promise resolving, not another prop came
       // if inbetween a new render happened, then nothing should happen
-      if (currentIncrement === this.increment && this.instance.mounted === true) {
+      if (currentIncrement === this.increment && instance.mounted === true) {
         rendered = true;
-        this.instance.render(content);
+        instance.render(content);
       }
     });
 
-    if (this.instance.renderOptions.invokeGuard) {
+    if (instance.renderOptions.invokeGuard) {
       asyncPromise.catch((error) => {
-        (this.instance.renderOptions.invokeGuard as invokeGuard<unknown>)(() => {
+        (instance.renderOptions.invokeGuard as  invokeGuard<unknown>)(() => {
           throw new error;
         });
       });
     }
 
-    if (this.instance.renderOptions.addAsyncListener) {
-      this.instance.renderOptions.addAsyncListener(asyncPromise);
+    if (instance.renderOptions.addAsyncListener) {
+      instance.renderOptions.addAsyncListener(asyncPromise);
     }
 
     await tick();
 
     // if after one tick, it did not get rendered, than show pending indicator
-    if (rendered === false && currentIncrement === this.increment && this.instance.mounted === true) {
-      this.instance.render(this.instance.props.pendingIndicator);
+    if (rendered === false && currentIncrement === this.increment && instance.mounted === true) {
+      instance.render(instance.props.pendingIndicator);
     }
   }
 
@@ -68,7 +70,7 @@ class Async extends AbstractClass<props> {
    * unregisters the event
    */
   public componentWillUnmount() {
-    this.instance.storeProps.unsubscribe(this.update);
+    (this.instance as ComponentInstance<props, unknown, unknown>).storeProps.unsubscribe(this.update);
   }
 
 }

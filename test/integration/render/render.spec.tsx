@@ -1,7 +1,15 @@
 import plusnew, { Props, store, component } from 'index';
+import driver from '@plusnew/driver-dom/src/driver';
+import '@plusnew/driver-dom/src/jsx';
+
+async function tick(count: number) {
+  for (let i = 0; i < count; i += 1) {
+    await new Promise(resolve => resolve());
+  }
+}
 
 describe('rendering the elements', () => {
-  const local = store(0, (previousState, action: undefined) => previousState + 1);
+  const local = store(0, (previousState, _action: undefined) => previousState + 1);
   let container: HTMLElement;
   beforeEach(() => {
     container = document.createElement('div');
@@ -16,9 +24,9 @@ describe('rendering the elements', () => {
   it('check if element is inserted', () => {
     const Component = component(
       'Component',
-      (Props: Props<{}>) => <div className="foo" />,
+      (_Props: Props<{}>) => <div class="foo" />,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -31,12 +39,12 @@ describe('rendering the elements', () => {
       'Component',
       () => (
         <div>
-          <div className="foo" />
-          <span className="bar" />
+          <div class="foo" />
+          <span class="bar" />
         </div>
       ),
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes[0].childNodes.length).toBe(2);
 
@@ -53,12 +61,12 @@ describe('rendering the elements', () => {
     const Component = component(
       'Component',
       () => (
-        <div className="foo">
-          <span className="bar" />
+        <div class="foo">
+          <span class="bar" />
         </div>
       ),
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -73,7 +81,7 @@ describe('rendering the elements', () => {
       () => 'foo',
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('foo');
   });
@@ -84,7 +92,7 @@ describe('rendering the elements', () => {
       () => 1,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(1);
     expect(container.innerHTML).toBe('1');
   });
@@ -92,9 +100,9 @@ describe('rendering the elements', () => {
   it('check if textnode is created', () => {
     const Component = component(
       'Component',
-      (Props: Props<{}>) => <div className="foo">bar</div>,
+      (_Props: Props<{}>) => <div class="foo">bar</div>,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     const target = container.childNodes[0] as HTMLElement;
@@ -108,7 +116,7 @@ describe('rendering the elements', () => {
       'Component',
       () => null,
     );
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
@@ -120,7 +128,7 @@ describe('rendering the elements', () => {
       () => undefined,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(0);
   });
 
@@ -130,7 +138,7 @@ describe('rendering the elements', () => {
       () => true as any,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
   });
@@ -141,7 +149,7 @@ describe('rendering the elements', () => {
       () => false as any,
     );
 
-    plusnew.render(<Component />, container);
+    plusnew.render(<Component />, { driver: driver(container) });
     expect(container.childNodes.length).toBe(0);
     local.dispatch(undefined);
   });
@@ -159,7 +167,7 @@ describe('rendering the elements', () => {
         </>,
     );
 
-    plusnew.render(<MainComponent />, container);
+    plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(2);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('HEADER');
@@ -171,5 +179,104 @@ describe('rendering the elements', () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe('HEADER');
     expect((container.childNodes[1] as HTMLElement).tagName).toBe('CONTENT');
     expect((container.childNodes[2] as HTMLElement).tagName).toBe('FOOTER');
+  });
+
+  it('removing element afterwards', () => {
+    const local = store(true);
+
+    const MainComponent = component(
+      'Component',
+      () =>
+        <local.Observer>{localState =>
+          localState ?
+            <ul>
+              <li />
+              <li />
+            </ul>
+          :
+            <ul>
+              <li />
+            </ul>
+        }</local.Observer>,
+    );
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    const target = container.childNodes[0];
+
+    expect(target.childNodes.length).toBe(2);
+    expect((target.childNodes[0] as HTMLElement).tagName).toBe('LI');
+    expect((target.childNodes[1] as HTMLElement).tagName).toBe('LI');
+
+    local.dispatch(false);
+
+    expect(target.childNodes.length).toBe(1);
+    expect((target.childNodes[0] as HTMLElement).tagName).toBe('LI');
+  });
+
+  it('removing element asynchronisly', async () => {
+    const local = store(true);
+
+    const elementWillUnmountSpy = jasmine.createSpy('elementWillUnmountSpy', (element: Element) => {
+      expect((container.childNodes[0] as HTMLElement)).toBe(element);
+      return Promise.resolve();
+    }).and.callThrough();
+
+    const MainComponent = component(
+      'Component',
+      (_Props, componentInstance) => {
+        componentInstance.elementWillUnmount = elementWillUnmountSpy;
+
+        return (
+          <local.Observer>{localState => localState && <div />}</local.Observer>
+        );
+      },
+    );
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    expect(elementWillUnmountSpy).not.toHaveBeenCalled();
+
+    local.dispatch(false);
+
+    expect(container.childNodes.length).toBe(1);
+    expect(elementWillUnmountSpy).toHaveBeenCalled();
+
+    await tick(1);
+
+    expect(container.childNodes.length).toBe(0);
+  });
+
+  it('removing multiple elements asynchronisly', async () => {
+    const local = store(true);
+
+    const elementWillUnmountSpy = jasmine.createSpy('elementWillUnmountSpy', (element: Element) => {
+      expect((container.childNodes[elementWillUnmountSpy.calls.count() - 1] as HTMLElement)).toBe(element);
+      return Promise.resolve();
+    }).and.callThrough();
+
+    const MainComponent = component(
+      'Component',
+      (_Props, componentInstance) => {
+        componentInstance.elementWillUnmount = elementWillUnmountSpy;
+
+        return (
+          <local.Observer>{localState => localState && [<div />, <div />]}</local.Observer>
+        );
+      },
+    );
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    expect(elementWillUnmountSpy).not.toHaveBeenCalled();
+
+    local.dispatch(false);
+
+    expect(container.childNodes.length).toBe(2);
+    expect(elementWillUnmountSpy).toHaveBeenCalled();
+
+    await tick(1);
+
+    expect(container.childNodes.length).toBe(0);
   });
 });

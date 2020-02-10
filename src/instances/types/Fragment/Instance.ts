@@ -12,7 +12,7 @@ import { renderOptions } from '../../../interfaces/renderOptions';
  *
  * it is used as a container for the given children, and doesn't do much else
  */
-export default class FragmentInstance extends ChildrenInstance {
+export default class FragmentInstance<HostElement, HostTextElement> extends ChildrenInstance<HostElement, HostTextElement> {
   public nodeType = types.Fragment;
   public type = types.Fragment;
   public props: props;
@@ -20,9 +20,9 @@ export default class FragmentInstance extends ChildrenInstance {
 
   constructor(
     abstractElement: PlusnewAbstractElement,
-    parentInstance: Instance,
-    getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    parentInstance: Instance<HostElement, HostTextElement>,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
     this.props = abstractElement.props;

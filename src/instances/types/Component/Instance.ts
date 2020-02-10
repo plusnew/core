@@ -2,8 +2,8 @@ import Instance, { predecessor, getPredeccessor } from '../Instance';
 import types from '../types';
 import Component from '../../../components/AbstractClass';
 import { props, ApplicationElement } from  '../../../interfaces/component';
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import store, { storeType } from '../../../util/store';
+import PlusnewAbstractElement, { PlusnewElement } from '../../../PlusnewAbstractElement';
+import store, { Store } from '../../../util/store';
 import factory from '../../factory';
 import reconcile, { shouldUpdate } from './reconcile';
 import { renderOptions } from '../../../interfaces/renderOptions';
@@ -19,14 +19,15 @@ type lifecycle = 'componentDidMount' | 'componentWillUnmount';
  * the render-function gets called again when a parent component rerenders
  * or when the dependencie-stores fire the change event
  */
-export default class ComponentInstance<componentProps extends Partial<props & { children: any }>> extends Instance {
+export default class ComponentInstance<componentProps extends Partial<props & { children: any }>, HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Component;
-  public rendered: Instance; // @FIXME This actually should be Instance or undefined
-  public applicationInstance: Component<componentProps>;
+  public type: PlusnewElement;
+  public rendered?: Instance<HostElement, HostTextElement>;
+  public applicationInstance?: Component<componentProps, HostElement, HostTextElement>;
   public props: componentProps;
-  public storeProps: storeType<componentProps, componentProps>;
+  public storeProps: Store<componentProps, componentProps>;
   public mounted = true; // Has the information that the component is inside the active shadowdom
-  public renderOptions: renderOptions;
+  public renderOptions: renderOptions<HostElement, HostTextElement>;
   private lifecycleHooks = {
     componentDidMount: [] as (() => void)[],
     componentWillUnmount: [] as (() => void)[],
@@ -34,9 +35,9 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
 
   constructor(
     abstractElement: PlusnewAbstractElement,
-    parentInstance: Instance,
-    getPredecessor: getPredeccessor,
-    renderOptions: renderOptions,
+    parentInstance: Instance<HostElement, HostTextElement>,
+    getPredecessor: getPredeccessor<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>,
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
 
@@ -59,12 +60,17 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
    * is needed for dispatching while rendering
    */
   public initialiseNestedElements() {
-    this.applicationInstance = new (this.type as ComponentContainer<any>)(this.props, this);
+    this.applicationInstance = new (this.type as ComponentContainer<componentProps, HostElement, HostTextElement>)(
+      this.props,
+      this,
+    ) as Component<componentProps, HostElement, HostTextElement>;
     this.executeUserspace();
   }
 
   public executeUserspace() {
-    this.render(this.applicationInstance.render(this.storeProps.Observer, this));
+    this.render((
+      this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
+    ).render(this.storeProps.Observer, this));
     this.executeLifecycleHooks('componentDidMount');
   }
 
@@ -93,8 +99,8 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
     throw new Error('Can\'t render new content, the component got unmounted');
   }
 
-  public getLastIntrinsicElement() {
-    return this.rendered.getLastIntrinsicElement();
+  public getLastIntrinsicInstance() {
+    return (this.rendered as Instance<HostElement, HostTextElement>).getLastIntrinsicInstance();
   }
 
   /**
@@ -107,15 +113,17 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
   /**
    * moves the children to another dom position
    */
-  public move(predecessor: predecessor) {
-    this.rendered.move(predecessor);
+  public move(predecessor: predecessor<HostElement, HostTextElement>) {
+    (this.rendered as Instance<HostElement, HostTextElement>).move(predecessor);
   }
 
   /**
    * removes the children from the dom
    */
   public remove(prepareRemoveSelf: boolean) {
-    this.applicationInstance.componentWillUnmount(this.props, this);
+    (
+      this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
+    ).componentWillUnmount(this.props, this);
     this.executeLifecycleHooks('componentWillUnmount');
     this.mounted = false;
 

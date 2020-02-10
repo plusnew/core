@@ -3,7 +3,7 @@ import factory from '../../factory';
 import reconciler from '../../reconciler';
 import FragmentInstance from './Instance';
 
-export default function (newAbstractElement: PlusnewAbstractElement, instance: FragmentInstance) {
+export default function <HostElement, HostTextElement>(newAbstractElement: PlusnewAbstractElement, instance: FragmentInstance<HostElement, HostTextElement>) {
   for (let i = 0; i < newAbstractElement.props.children.length; i += 1) {
     if (i < instance.rendered.length) {
       const newInstance = reconciler.update(newAbstractElement.props.children[i], instance.rendered[i]);

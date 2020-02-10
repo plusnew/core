@@ -2,7 +2,7 @@ import { props, ApplicationElement } from '../interfaces/component';
 import { ComponentContainer } from '../components/factory';
 import { TypeOfPlusnew } from '../util/symbols';
 
-type PlusnewElement = string | number | ComponentContainer<any> | Symbol;
+type PlusnewElement = string | number | ComponentContainer<any, any, any> | Symbol;
 
 export default class PlusnewAbstractElement {
   public $$typeof = TypeOfPlusnew;
@@ -20,21 +20,8 @@ export default class PlusnewAbstractElement {
    * Lightweight representation of a DOM or Component Node, this component is immutable and is used for comparison
    */
   constructor(type: PlusnewElement, props: {} | null, children: ApplicationElement[]) {
-    this.setType(type);
-    this.setProps(props, children);
-  }
-
-  /**
-   * sets the information what domnode or component this is
-   */
-  private setType(type: PlusnewElement) {
     this.type = type;
-  }
 
-  /**
-   * sets the props given from the parent
-   */
-  private setProps(props: any, children: ApplicationElement[]) {
     if (props) {
       this.props = { ...props, children }; // Spread is used to remove reference
     } else {
