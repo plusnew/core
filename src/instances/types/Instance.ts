@@ -4,7 +4,6 @@ import types from './types';
 import { renderOptions } from '../../interfaces/renderOptions';
 import DomInstance from './Host/Instance';
 import TextInstance from './Text/Instance';
-// import RootInstance from './Root/Instance';
 
 export type HostInstance<HostElement, HostTextElement> = DomInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement>;
 export type predecessor<HostElement, HostTextElement> = HostInstance<HostElement, HostTextElement> | null;
