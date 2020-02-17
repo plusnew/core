@@ -1,6 +1,12 @@
 import HostInstance from '../instances/types/Host/Instance';
 import TextInstance from '../instances/types/Text/Instance';
 import RootInstance from '../instances/types/Root/Instance';
+import { renderOptions } from './renderOptions';
+
+type Instance<HostElement, HostTextElement> = {
+  parentInstance?: Instance<HostElement, HostTextElement>;
+  renderOptions: renderOptions<HostElement, HostTextElement>;
+};
 
 export type IDriver<HostElement, HostTextElement> = {
   element: {
@@ -55,4 +61,5 @@ export type IDriver<HostElement, HostTextElement> = {
   };
 
   getRootElement: (rootInstance: RootInstance<HostElement, HostTextElement>) => HostElement;
+  setupPortal: (opt: { portalEntrance: Instance<HostElement, HostTextElement>, portalExit: Instance<HostElement, HostTextElement> }) => void;
 };

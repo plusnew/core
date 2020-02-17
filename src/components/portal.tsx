@@ -34,6 +34,11 @@ export const PortalEntrance = component(
           null, // @TODO this should be fixed, that looks wrong
         );
       };
+
+      componentInstance.renderOptions.driver.setupPortal({
+        portalEntrance: componentInstance,
+        portalExit: (componentInstance.renderOptions.portals as portalRenderOption<any, any>)[portalName]
+      });
     } else {
       throw new Error(`Could not find PortalExit with name ${portalName}`);
     }

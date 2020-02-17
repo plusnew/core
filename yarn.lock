@@ -344,10 +344,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@plusnew/driver-dom@1.0.0-beta.1":
-  version "1.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.0.0-beta.1.tgz#39018ff7b0381b8e0391b7afac8226f28ed0146c"
-  integrity sha512-iSzkjtyPMb8tjicIniJdQ9u4s/AQ1hM0U/dy6JrxKtqflnDmkAlQdYaP+/tLCKBR+G1cK36W0GzYfZcMo7OI9w==
+"@plusnew/driver-dom@^1.0.0-beta.3":
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.0.0-beta.3.tgz#9b4f6df914636beb49bad10b540a29a6dc89d677"
+  integrity sha512-KfKZD9PBASlx1pcoTSHqFFzWfr9t2IGA5vO7AYwpD/TwXxn64Lourt+IpgcpyqA+xNxE1EOY4s5wtaKaeKTXmg==
 
 "@sinonjs/commons@^1.7.0":
   version "1.7.0"
