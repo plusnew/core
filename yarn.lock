@@ -345,9 +345,9 @@
     chalk "^3.0.0"
 
 "@plusnew/driver-dom@^1.0.0-beta.3":
-  version "1.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.0.0-beta.3.tgz#9b4f6df914636beb49bad10b540a29a6dc89d677"
-  integrity sha512-KfKZD9PBASlx1pcoTSHqFFzWfr9t2IGA5vO7AYwpD/TwXxn64Lourt+IpgcpyqA+xNxE1EOY4s5wtaKaeKTXmg==
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.0.0-beta.4.tgz#d70c3799595355b029066bec5a8376202b9a133e"
+  integrity sha512-sS8EFNLaXvEXv1iCt3VPv1oRriD/wpgeRmEdj+m3uHXOZDe3UTejM1MIRKW1vvh6ihwE3nniRRVhMBTW1xFH3Q==
 
 "@sinonjs/commons@^1.7.0":
   version "1.7.0"
