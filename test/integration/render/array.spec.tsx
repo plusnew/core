@@ -1,6 +1,6 @@
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
-import plusnew, { component, Props, store } from 'index';
+import plusnew, { component, Props, store } from '../../../index';
 
 const list = [{ key: 0, value: 'first' }, { key: 1, value: 'second' }, { key: 2, value: 'third' }];
 const localFactory = () => store(list, (state, newValue: { key: number; value: string }) => [newValue, ...state]);

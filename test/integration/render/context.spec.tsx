@@ -1,6 +1,6 @@
-import plusnew, { component, context, store, Props } from 'index';
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
+import plusnew, { component, context, Props, store } from '../../../index';
 
 describe('context', () => {
 

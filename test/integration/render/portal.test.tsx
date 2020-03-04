@@ -1,5 +1,5 @@
-import plusnew, { component, PortalEntrance, PortalExit } from 'index';
 import driver from '@plusnew/driver-dom/src/driver';
+import plusnew, { component, PortalEntrance, PortalExit } from '../../../index';
 
 const htmlNamespace = 'http://www.w3.org/1999/xhtml';
 const svgNamespace = 'http://www.w3.org/2000/svg';

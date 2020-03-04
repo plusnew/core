@@ -1,5 +1,5 @@
-import factory from 'instances/factory';
-import elementTypeChecker from 'util/elementTypeChecker';
+import factory from '../../../src/instances/factory';
+import elementTypeChecker from '../../../src/util/elementTypeChecker';
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
 

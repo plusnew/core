@@ -1,7 +1,7 @@
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
-import plusnew from 'index';
-import Root from 'instances/types/Root/Instance';
+import plusnew from '../../../index';
+import Root from '../../../src/instances/types/Root/Instance';
 
 describe('Does the root-instance behave correctly', () => {
   let root: Root<Element, Text>;

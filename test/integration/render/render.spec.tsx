@@ -1,6 +1,6 @@
-import plusnew, { Props, store, component } from 'index';
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
+import plusnew, { component, Props, store } from '../../../index';
 
 async function tick(count: number) {
   for (let i = 0; i < count; i += 1) {

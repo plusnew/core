@@ -1,6 +1,6 @@
-import plusnew, { component, PortalExit, PortalEntrance } from 'index';
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
+import plusnew, { component, PortalEntrance, PortalExit } from '../../../index';
 
 describe('rendering nested Portals', () => {
   let container: HTMLElement;

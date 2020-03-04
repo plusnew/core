@@ -1,9 +1,10 @@
-import { ComponentContainer } from './components/factory';
+import type { ComponentContainer } from './components/factory';
 import factory from './instances/factory';
 import RootInstance from './instances/types/Root/Instance';
-import { ApplicationElement } from './interfaces/component';
-import { renderOptions } from './interfaces/renderOptions';
-import PlusnewAbstractElement, { PlusnewElement } from './PlusnewAbstractElement';
+import type { ApplicationElement } from './interfaces/component';
+import type { renderOptions } from './interfaces/renderOptions';
+import PlusnewAbstractElement from './PlusnewAbstractElement';
+import type { PlusnewElement } from './PlusnewAbstractElement';
 import { Fragment } from './util/symbols';
 
 class Plusnew {
@@ -45,14 +46,14 @@ class Plusnew {
   Fragment = Fragment;
 }
 
-export { ComponentContainer };
-export { ApplicationElement } from './interfaces/component';
-export { default as component } from './components/factory';
 export { default as Component } from './components/AbstractClass';
-export { default as store, Store, Observer as Props } from './util/store';
-export { default as context } from './components/context';
 export { default as Async } from './components/Async';
-export { default as Try } from './components/Try';
+export { default as context } from './components/context';
+export { default as component } from './components/factory';
 export { PortalEntrance, PortalExit } from './components/portal';
+export { default as Try } from './components/Try';
+export { ApplicationElement } from './interfaces/component';
+export { default as store, Observer as Props, Store } from './util/store';
+export { ComponentContainer };
 
 export default new Plusnew();

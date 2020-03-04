@@ -1,6 +1,6 @@
-import plusnew, { component, Try, store, context, Async } from 'index';
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
+import plusnew, { Async, component, context, store, Try } from '../../../index';
 
 function tick() {
   return Promise.resolve();

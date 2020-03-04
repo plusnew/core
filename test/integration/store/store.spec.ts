@@ -1,4 +1,4 @@
-import { store } from 'index';
+import { store } from '../../../index';
 
 describe('reducer', () => {
   it('is the reducer correctly called', () => {

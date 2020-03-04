@@ -1,12 +1,12 @@
-import plusnew from 'index';
-import reconciler from 'instances/reconciler';
-import factory from 'instances/factory';
-import RootInstance from 'instances/types/Root/Instance';
-import component from 'components/factory';
-import elementTypeChecker from 'util/elementTypeChecker';
-import { ApplicationElement } from 'interfaces/component';
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
+import plusnew from '../../../index';
+import component from '../../../src/components/factory';
+import factory from '../../../src/instances/factory';
+import reconciler from '../../../src/instances/reconciler';
+import RootInstance from '../../../src/instances/types/Root/Instance';
+import { ApplicationElement } from '../../../src/interfaces/component';
+import elementTypeChecker from '../../../src/util/elementTypeChecker';
 
 function createInstance(applicationElement: ApplicationElement) {
   const renderOptions = { driver: driver(document.createElement('div')) };

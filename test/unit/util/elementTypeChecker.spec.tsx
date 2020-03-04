@@ -1,5 +1,5 @@
-import plusnew, { component } from 'index';
-import util from 'util/elementTypeChecker';
+import plusnew, { component } from '../../../index';
+import util from '../../../src/util/elementTypeChecker';
 
 describe('elementTypeChecker', () => {
   describe('isFragmentElement()', () => {

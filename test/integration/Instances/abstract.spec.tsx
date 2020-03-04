@@ -1,9 +1,9 @@
+import DomInstance from '@plusnew/core/src/instances/types/Host/Instance';
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
-import plusnew from 'index';
-import DomInstance from '@plusnew/core/src/instances/types/Host/Instance';
-import Abstract from 'instances/types/Instance';
-import types from 'instances/types/types';
+import plusnew from '../../../index';
+import Abstract from '../../../src/instances/types/Instance';
+import types from '../../../src/instances/types/types';
 
 describe('Does the root-instance behave correctly', () => {
   let abstract: Abstract<Element, Text>;
