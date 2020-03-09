@@ -53,7 +53,8 @@ export { default as component } from './components/factory';
 export { PortalEntrance, PortalExit } from './components/portal';
 export { default as Try } from './components/Try';
 export { ApplicationElement } from './interfaces/component';
-export { default as store, Observer as Props, Store } from './util/store';
+export { default as store } from './util/store';
+export type { Observer as Props, Store } from './util/store';
 export { ComponentContainer };
 
 export default new Plusnew();
