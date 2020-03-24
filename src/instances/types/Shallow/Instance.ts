@@ -1,11 +1,12 @@
-import PlusnewAbstractElement, { PlusnewElement } from '../../../PlusnewAbstractElement';
+import type { props } from '../../../interfaces/component';
+import type { renderOptions } from '../../../interfaces/renderOptions';
+import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import type { PlusnewElement } from '../../../PlusnewAbstractElement';
 import Instance, { getPredeccessor } from '../Instance';
 import types from '../types';
-import { props } from  '../../../interfaces/component';
-import { renderOptions } from '../../../interfaces/renderOptions';
 
 export default class ShallowInstance<componentProps extends Partial<props>, HostElement, HostTextElement>  extends Instance<HostElement, HostTextElement> {
-  public nodeType = types.Component;
+  public nodeType = types.Component as const;
   public type: PlusnewElement;
   public props: componentProps;
 

@@ -1,5 +1,5 @@
-import { ApplicationElement } from '../interfaces/component';
-import PlusnewAbstractElement from '../PlusnewAbstractElement';
+import type { ApplicationElement } from '../interfaces/component';
+import type PlusnewAbstractElement from '../PlusnewAbstractElement';
 import { Fragment } from './symbols';
 
 export class ElementTypeChecker {

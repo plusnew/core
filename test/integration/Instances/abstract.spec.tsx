@@ -1,4 +1,4 @@
-import DomInstance from '@plusnew/core/src/instances/types/Host/Instance';
+import type DomInstance from '@plusnew/core/src/instances/types/Host/Instance';
 import driver from '@plusnew/driver-dom/src/driver';
 import '@plusnew/driver-dom/src/jsx';
 import plusnew from '../../../index';

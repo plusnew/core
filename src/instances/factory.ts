@@ -1,16 +1,17 @@
-import { ApplicationElement } from '../interfaces/component';
-import PlusnewAbstractElement from '../PlusnewAbstractElement';
+import type { ApplicationElement } from '../interfaces/component';
+import type { renderOptions } from '../interfaces/renderOptions';
+import type PlusnewAbstractElement from '../PlusnewAbstractElement';
 import elementTypeChecker from '../util/elementTypeChecker';
+import type { ComponentContainer } from './../components/factory';
 import ArrayInstance from './types/Array/Instance';
 import ComponentInstance from './types/Component/Instance';
-import HostInstance from './types/Host/Instance';
 import FragmentInstance from './types/Fragment/Instance';
-import Instance, { getPredeccessor } from './types/Instance';
+import HostInstance from './types/Host/Instance';
+import type Instance from './types/Instance';
+import type { getPredeccessor } from './types/Instance';
 import PlaceholderInstance from './types/Placeholder/Instance';
 import ShallowInstance from './types/Shallow/Instance';
 import TextInstance from './types/Text/Instance';
-import { ComponentContainer } from './../components/factory';
-import { renderOptions } from '../interfaces/renderOptions';
 
 /**
  * because data from jsx can be anything, this factory is needed to decide what type of instance should be created

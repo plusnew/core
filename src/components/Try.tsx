@@ -1,6 +1,7 @@
-import { Props, Component, ApplicationElement } from '../index';
-import ComponentInstance from '../instances/types/Component/Instance';
-import { invokeGuard } from '../interfaces/renderOptions';
+import type { ApplicationElement, Props } from '../';
+import { Component } from '../index';
+import type ComponentInstance from '../instances/types/Component/Instance';
+import type { invokeGuard } from '../interfaces/renderOptions';
 
 type renderFunction = () => ApplicationElement;
 

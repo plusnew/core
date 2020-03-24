@@ -1,7 +1,7 @@
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import factory from '../../factory';
 import reconciler from '../../reconciler';
-import FragmentInstance from './Instance';
+import type FragmentInstance from './Instance';
 
 export default function <HostElement, HostTextElement>(newAbstractElement: PlusnewAbstractElement, instance: FragmentInstance<HostElement, HostTextElement>) {
   for (let i = 0; i < newAbstractElement.props.children.length; i += 1) {

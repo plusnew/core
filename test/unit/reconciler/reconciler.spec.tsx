@@ -5,7 +5,7 @@ import component from '../../../src/components/factory';
 import factory from '../../../src/instances/factory';
 import reconciler from '../../../src/instances/reconciler';
 import RootInstance from '../../../src/instances/types/Root/Instance';
-import { ApplicationElement } from '../../../src/interfaces/component';
+import type { ApplicationElement } from '../../../src/interfaces/component';
 import elementTypeChecker from '../../../src/util/elementTypeChecker';
 
 function createInstance(applicationElement: ApplicationElement) {

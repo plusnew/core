@@ -1,8 +1,8 @@
-import ComponentInstance from '../instances/types/Component/Instance';
-import Instance from '../instances/types/Instance';
+import type ComponentInstance from '../instances/types/Component/Instance';
+import type Instance from '../instances/types/Instance';
 import types from '../instances/types/types';
-import { ApplicationElement, props } from '../interfaces/component';
-import { Observer } from '../util/store';
+import type { ApplicationElement, props } from '../interfaces/component';
+import type { Observer } from '../util/store';
 
 function hasComponent<HostElement, HostTextElement>(instance?: Instance<HostElement, HostTextElement>): boolean {
   if (!instance) {

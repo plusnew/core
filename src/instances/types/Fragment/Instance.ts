@@ -1,10 +1,11 @@
-import { props } from '../../../interfaces/component';
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import type { props } from '../../../interfaces/component';
+import type { renderOptions } from '../../../interfaces/renderOptions';
+import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import ChildrenInstance from '../ChildrenInstance';
-import Instance, { getPredeccessor } from '../Instance';
+import type Instance from '../Instance';
+import type { getPredeccessor } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
-import { renderOptions } from '../../../interfaces/renderOptions';
 
 /**
  * FragmentInstances are representations of <>
@@ -13,7 +14,7 @@ import { renderOptions } from '../../../interfaces/renderOptions';
  * it is used as a container for the given children, and doesn't do much else
  */
 export default class FragmentInstance<HostElement, HostTextElement> extends ChildrenInstance<HostElement, HostTextElement> {
-  public nodeType = types.Fragment;
+  public nodeType = types.Fragment as const;
   public type = types.Fragment;
   public props: props;
   public executeChildrenElementWillUnmount = true;

@@ -2,7 +2,7 @@
  * The different types of Instances: document.createElement, new ComponentHandler(), document.createTextNode
  */
 enum InstanceTypes {
-  Dom = 'host',
+  Host = 'host',
   Array = 'array',
   Text = 'text',
   Placeholder = 'placeholder',

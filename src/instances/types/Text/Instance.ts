@@ -1,10 +1,11 @@
-import { renderOptions } from '../../../interfaces/renderOptions';
+import type { TextInstance as ITextInstance } from '../../../interfaces/driver';
+import type { renderOptions } from '../../../interfaces/renderOptions';
 import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
 
-export default class TextInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
-  public nodeType = types.Text;
+export default class TextInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> implements ITextInstance<HostElement, HostTextElement> {
+  public nodeType = types.Text as const;
   public type = types.Text;
   public props: string;
   public ref: HostTextElement;

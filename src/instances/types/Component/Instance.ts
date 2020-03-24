@@ -1,13 +1,14 @@
-import Instance, { predecessor, getPredeccessor } from '../Instance';
-import types from '../types';
-import Component from '../../../components/AbstractClass';
-import { props, ApplicationElement } from  '../../../interfaces/component';
-import PlusnewAbstractElement, { PlusnewElement } from '../../../PlusnewAbstractElement';
+import type Component from '../../../components/AbstractClass';
+import type { ComponentContainer } from '../../../components/factory';
+import type { ApplicationElement, props } from '../../../interfaces/component';
+import type { renderOptions } from '../../../interfaces/renderOptions';
+import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import type { PlusnewElement } from '../../../PlusnewAbstractElement';
 import store, { Store } from '../../../util/store';
 import factory from '../../factory';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
+import types from '../types';
 import reconcile, { shouldUpdate } from './reconcile';
-import { renderOptions } from '../../../interfaces/renderOptions';
-import { ComponentContainer } from '../../../components/factory';
 
 type lifecycle = 'componentDidMount' | 'componentWillUnmount';
 
@@ -20,7 +21,7 @@ type lifecycle = 'componentDidMount' | 'componentWillUnmount';
  * or when the dependencie-stores fire the change event
  */
 export default class ComponentInstance<componentProps extends Partial<props & { children: any }>, HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
-  public nodeType = types.Component;
+  public nodeType = types.Component as const;
   public type: PlusnewElement;
   public rendered?: Instance<HostElement, HostTextElement>;
   public applicationInstance?: Component<componentProps, HostElement, HostTextElement>;

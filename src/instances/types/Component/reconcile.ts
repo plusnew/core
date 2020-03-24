@@ -1,8 +1,8 @@
-import { ApplicationElement, props } from '../../../interfaces/component';
+import type { ApplicationElement, props } from '../../../interfaces/component';
 import { TypeOfPlusnew } from '../../../util/symbols';
 import reconciler from '../../reconciler';
-import ComponentInstance from './Instance';
-import Instance from '../Instance';
+import type Instance from '../Instance';
+import type ComponentInstance from './Instance';
 
 function isPlusnewElement(a: any) {
   return typeof a === 'object' && a !== null && a.$$typeof === TypeOfPlusnew;

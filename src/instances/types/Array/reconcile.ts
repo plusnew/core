@@ -1,7 +1,7 @@
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
+import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import factory from '../../factory';
 import reconciler from '../../reconciler';
-import ArrayInstance from './Instance';
+import type ArrayInstance from './Instance';
 
 const NOT_FOUND = -1;
 

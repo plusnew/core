@@ -1,10 +1,12 @@
-import PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import { props } from '../../../interfaces/component';
+import type { props } from '../../../interfaces/component';
+import type { HostInstance } from '../../../interfaces/driver';
+import type { renderOptions } from '../../../interfaces/renderOptions';
+import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
 import ChildrenInstance from '../ChildrenInstance';
-import Instance, { getPredeccessor, predecessor, HostInstance } from '../Instance';
+import type Instance from '../Instance';
+import type { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
 import reconcile from './reconcile';
-import { renderOptions } from '../../../interfaces/renderOptions';
 
 /**
  * HostInstances are representations of <div />
@@ -15,8 +17,8 @@ import { renderOptions } from '../../../interfaces/renderOptions';
  *
  * it also fires events like elementDidMount and elementWillUnmount
  */
-export default class DomInstance<HostElement, HostTextElement> extends ChildrenInstance<HostElement, HostTextElement> {
-  public nodeType = types.Dom;
+export default class DomInstance<HostElement, HostTextElement> extends ChildrenInstance<HostElement, HostTextElement> implements HostInstance<HostElement, HostTextElement> {
+  public nodeType = types.Host as const;
   public ref: HostElement;
   public props: props;
   public executeChildrenElementWillUnmount = false;

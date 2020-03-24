@@ -1,8 +1,8 @@
-import ComponentInstance from '../instances/types/Component/Instance';
-import { props, ApplicationElement } from '../interfaces/component';
 import AbstractClass from '../components/AbstractClass';
-import { Observer } from '../util/store';
-import Instance from '../instances/types/Instance';
+import type ComponentInstance from '../instances/types/Component/Instance';
+import type Instance from '../instances/types/Instance';
+import type { ApplicationElement, props } from '../interfaces/component';
+import type { Observer } from '../util/store';
 
 export type componentResult<componentProps extends Partial<props>> = {
   (props: componentProps, instance: ComponentInstance<componentProps, unknown, unknown>): plusnew.JSX.Element | null;

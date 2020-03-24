@@ -6,7 +6,7 @@ import types from '../types';
  * it is used for conditions which don't want to show something
  */
 export default class PlaceholderInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
-  public nodeType = types.Placeholder;
+  public nodeType = types.Placeholder as const;
   public type = types.Fragment;
 
   public getLastIntrinsicInstance() {

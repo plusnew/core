@@ -1,5 +1,5 @@
-import { IDriver } from './driver';
-import { portalRenderOption } from '../components/portal';
+import type { portalRenderOption } from '../components/portal';
+import type { IDriver } from './driver';
 
 export type invokeGuard<T> = (callback: () => T) => { hasError: true } | { hasError: false, result: T };
 

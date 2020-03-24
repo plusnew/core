@@ -1,5 +1,5 @@
-import { props, ApplicationElement } from '../interfaces/component';
-import { ComponentContainer } from '../components/factory';
+import type { ComponentContainer } from '../components/factory';
+import type { ApplicationElement, props } from '../interfaces/component';
 import { TypeOfPlusnew } from '../util/symbols';
 
 type PlusnewElement = string | number | ComponentContainer<any, any, any> | Symbol;

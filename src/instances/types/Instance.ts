@@ -1,12 +1,10 @@
-import { ApplicationElement, props } from '../../interfaces/component';
-import { PlusnewElement } from '../../PlusnewAbstractElement';
-import types from './types';
-import { renderOptions } from '../../interfaces/renderOptions';
-import DomInstance from './Host/Instance';
-import TextInstance from './Text/Instance';
+import type { ApplicationElement, props } from '../../interfaces/component';
+import type { HostInstance, TextInstance } from '../../interfaces/driver';
+import type { renderOptions } from '../../interfaces/renderOptions';
+import type { PlusnewElement } from '../../PlusnewAbstractElement';
+import type types from './types';
 
-export type HostInstance<HostElement, HostTextElement> = DomInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement>;
-export type predecessor<HostElement, HostTextElement> = HostInstance<HostElement, HostTextElement> | null;
+export type predecessor<HostElement, HostTextElement> = HostInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement> | null;
 export type getPredeccessor<HostElement, HostTextElement> = () => predecessor<HostElement, HostTextElement>;
 
 export default abstract class Instance<HostElement, HostTextElement> {
@@ -39,7 +37,7 @@ export default abstract class Instance<HostElement, HostTextElement> {
   /**
    * appends the given element, to the parentinstance, if existent
    */
-  public appendToParent(childInstance: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
+  public appendToParent(childInstance: HostInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
     if (this.parentInstance === undefined) {
       throw new Error('Cant append element to not existing parent');
     } else {
@@ -50,7 +48,7 @@ export default abstract class Instance<HostElement, HostTextElement> {
   /**
    * makes a insertBefore to the parent
    */
-  public appendChild(element: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
+  public appendChild(element: HostInstance<HostElement, HostTextElement> | TextInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
     if (this.parentInstance === undefined) {
       throw new Error('Couldn\'t add child to parent');
     } else {

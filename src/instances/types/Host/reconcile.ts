@@ -1,7 +1,7 @@
-import { props } from '../../../interfaces/component';
+import type { props } from '../../../interfaces/component';
 import factory from '../../factory';
 import reconciler from '../../reconciler';
-import HostInstance from './Instance';
+import type HostInstance from './Instance';
 
 export default function <HostElement, HostTextElement>(props: props, instance: HostInstance<HostElement, HostTextElement>) {
   for (const propIndex in props) {

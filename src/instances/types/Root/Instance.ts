@@ -1,10 +1,11 @@
-import { ApplicationElement } from '../../../interfaces/component';
-import Instance, { getPredeccessor, predecessor, HostInstance } from '../Instance';
+import type { ApplicationElement } from '../../../interfaces/component';
+import type { HostInstance, RootInstance as IRootInstance } from '../../../interfaces/driver';
+import type { renderOptions } from '../../../interfaces/renderOptions';
+import Instance, { getPredeccessor, predecessor } from '../Instance';
 import types from '../types';
-import { renderOptions } from '../../../interfaces/renderOptions';
 
-export default class RootInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
-  public nodeType = types.Root;
+export default class RootInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> implements IRootInstance<HostElement, HostTextElement> {
+  public nodeType = types.Root as const;
   public type = types.Root;
   public ref: HostElement;
 

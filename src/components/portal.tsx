@@ -1,5 +1,6 @@
-import plusnew, { Props, component } from '../index';
-import ComponentInstance from '../instances/types/Component/Instance';
+import type { Props } from '../';
+import plusnew, { component } from '../index';
+import type ComponentInstance from '../instances/types/Component/Instance';
 
 export type portalRenderOption<HostElement, HostTextElement> = {
   [key: string]: ComponentInstance<portalExitProps, HostElement, HostTextElement>;

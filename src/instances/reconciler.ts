@@ -1,10 +1,10 @@
-import { ApplicationElement } from '../interfaces/component';
-import PlusnewAbstractElement from '../PlusnewAbstractElement';
+import type { ApplicationElement } from '../interfaces/component';
+import type PlusnewAbstractElement from '../PlusnewAbstractElement';
 import elementTypeChecker from '../util/elementTypeChecker';
 import factory from './factory';
-import Instance from './types/Instance';
+import type ComponentInstance from './types/Component/Instance';
+import type Instance from './types/Instance';
 import types from './types/types';
-import ComponentInstance from './types/Component/Instance';
 
 export class Reconciler {
   /**
@@ -81,7 +81,7 @@ export class Reconciler {
     }
 
     if (elementTypeChecker.isDomElement(newAbstractElement)) {
-      if (instance.nodeType === types.Dom) {
+      if (instance.nodeType === types.Host) {
         // newAbstractElement and oldAbtractElement are dom elements, but is elementNode the same
         return (
           (newAbstractElement as PlusnewAbstractElement).type === instance.type

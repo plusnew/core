@@ -1,7 +1,8 @@
-import plusnew, { ApplicationElement, Component, ComponentContainer, Props } from '../';
-import Instance from '../instances/types/Instance';
+import plusnew, { Component } from '../';
+import type { ApplicationElement, ComponentContainer, Props } from '../';
 import ComponentInstance from '../instances/types/Component/Instance';
-import { Store } from '../util/store';
+import type Instance from '../instances/types/Instance';
+import type { Store } from '../util/store';
 
 type renderProps<state, action> = (state: state, dispatch: (action: action) => void) => ApplicationElement ;
 type providerProps<state, action> = {state: state, dispatch: (action: action) => void, children: ApplicationElement};

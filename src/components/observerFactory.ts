@@ -1,7 +1,7 @@
-import { Store } from '../util/store';
+import type ComponentInstance from '../instances/types/Component/Instance';
+import type { ApplicationElement } from '../interfaces/component';
+import type { Store } from '../util/store';
 import AbstractClass from './AbstractClass';
-import ComponentInstance from '../instances/types/Component/Instance';
-import { ApplicationElement } from '../interfaces/component';
 
 type renderFunction<state> = (state: state) => ApplicationElement;
 

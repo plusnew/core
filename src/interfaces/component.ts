@@ -1,5 +1,5 @@
-import ComponentInstance from '../instances/types/Component/Instance';
-import PlusnewAbstractElement from '../PlusnewAbstractElement';
+import type ComponentInstance from '../instances/types/Component/Instance';
+import type PlusnewAbstractElement from '../PlusnewAbstractElement';
 
 export type ApplicationElement =
   | PlusnewAbstractElement
@@ -8,7 +8,7 @@ export type ApplicationElement =
   | boolean
   | null
   | undefined
-  | (PlusnewAbstractElement | string | number | boolean | null | undefined)[];
+  | ApplicationElement[];
 
 export type props = {
   [key: string]: unknown;

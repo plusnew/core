@@ -1,7 +1,7 @@
-import { Props } from '../index';
-import ComponentInstance from '../instances/types/Component/Instance';
-import { ApplicationElement } from '../interfaces/component';
-import { invokeGuard } from '../interfaces/renderOptions';
+import type { Props } from '../index';
+import type ComponentInstance from '../instances/types/Component/Instance';
+import type { ApplicationElement } from '../interfaces/component';
+import type { invokeGuard } from '../interfaces/renderOptions';
 import AbstractClass from './AbstractClass';
 
 function tick() {

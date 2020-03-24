@@ -1,6 +1,6 @@
-import { ComponentContainer } from '../components/factory';
-import { ApplicationElement } from '../interfaces/component';
+import type { ComponentContainer } from '../components/factory';
 import observerFactory from '../components/observerFactory';
+import type { ApplicationElement } from '../interfaces/component';
 
 export type Observer<state> = ComponentContainer<{children: (state: state) => ApplicationElement}, unknown, unknown> & { getState(): state };
 

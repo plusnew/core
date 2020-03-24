@@ -1,8 +1,8 @@
-import { ApplicationElement } from '../../interfaces/component';
+import type { ApplicationElement } from '../../interfaces/component';
+import type { renderOptions } from '../../interfaces/renderOptions';
+import type PlusnewAbstractElement from '../../PlusnewAbstractElement';
 import factory from '../factory';
 import Instance, { getPredeccessor, predecessor } from './Instance';
-import { renderOptions } from '../../interfaces/renderOptions';
-import PlusnewAbstractElement from '../../PlusnewAbstractElement';
 
 export default abstract class ChildrenInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
   public rendered: Instance<HostElement, HostTextElement>[];
