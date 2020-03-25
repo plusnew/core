@@ -1,4 +1,4 @@
-# plusnew [![Build Status](https://api.travis-ci.org/plusnew/core.svg?branch=master)](https://travis-ci.org/plusnew/core) [![Coverage Status](https://coveralls.io/repos/github/plusnew/core/badge.svg?branch=master)](https://coveralls.io/github/plusnew/core)
+# plusnew [![Build Status](https://api.travis-ci.com/plusnew/core.svg?branch=master)](https://travis-ci.com/plusnew/core) [![Coverage Status](https://coveralls.io/repos/github/plusnew/core/badge.svg?branch=master)](https://coveralls.io/github/plusnew/core)
 
 This Framework is built, because we believe that having typesafety and good debuggability is key.
 Why another framework? Because plusnew puts the Developer-Expierence first, and cares strongly about maintanability.
