@@ -1,16 +1,16 @@
-import type Component from '../../../components/AbstractClass';
-import type { ComponentContainer } from '../../../components/factory';
-import type { ApplicationElement, props } from '../../../interfaces/component';
-import type { renderOptions } from '../../../interfaces/renderOptions';
-import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import type { PlusnewElement } from '../../../PlusnewAbstractElement';
-import store, { Store } from '../../../util/store';
-import factory from '../../factory';
-import Instance, { getPredeccessor, predecessor } from '../Instance';
-import types from '../types';
-import reconcile, { shouldUpdate } from './reconcile';
+import type Component from "../../../components/AbstractClass";
+import type { ComponentContainer } from "../../../components/factory";
+import type { ApplicationElement, props } from "../../../interfaces/component";
+import type { renderOptions } from "../../../interfaces/renderOptions";
+import type PlusnewAbstractElement from "../../../PlusnewAbstractElement";
+import type { PlusnewElement } from "../../../PlusnewAbstractElement";
+import store, { Store } from "../../../util/store";
+import factory from "../../factory";
+import Instance, { getPredeccessor, predecessor } from "../Instance";
+import types from "../types";
+import reconcile, { shouldUpdate } from "./reconcile";
 
-type lifecycle = 'componentDidMount' | 'componentWillUnmount';
+type lifecycle = "componentDidMount" | "componentWillUnmount";
 
 /**
  * ComponentInstances are used representing the <Component /> in the shadowdom
@@ -20,11 +20,19 @@ type lifecycle = 'componentDidMount' | 'componentWillUnmount';
  * the render-function gets called again when a parent component rerenders
  * or when the dependencie-stores fire the change event
  */
-export default class ComponentInstance<componentProps extends Partial<props & { children: any }>, HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
+export default class ComponentInstance<
+  componentProps extends Partial<props & { children: any }>,
+  HostElement,
+  HostTextElement
+> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Component as const;
   public type: PlusnewElement;
   public rendered?: Instance<HostElement, HostTextElement>;
-  public applicationInstance?: Component<componentProps, HostElement, HostTextElement>;
+  public applicationInstance?: Component<
+    componentProps,
+    HostElement,
+    HostTextElement
+  >;
   public props: componentProps;
   public storeProps: Store<componentProps, componentProps>;
   public mounted = true; // Has the information that the component is inside the active shadowdom
@@ -38,20 +46,23 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance<HostElement, HostTextElement>,
     getPredecessor: getPredeccessor<HostElement, HostTextElement>,
-    renderOptions: renderOptions<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
 
     this.renderOptions = renderOptions;
     this.type = abstractElement.type;
     this.props = abstractElement.props as componentProps;
-    this.storeProps = store(abstractElement.props as componentProps, (state, action: componentProps) => {
-      if (shouldUpdate(action, this)) {
-        this.props = action;
-        return action;
+    this.storeProps = store(
+      abstractElement.props as componentProps,
+      (state, action: componentProps) => {
+        if (shouldUpdate(action, this)) {
+          this.props = action;
+          return action;
+        }
+        return state;
       }
-      return state;
-    });
+    );
   }
 
   /**
@@ -61,18 +72,27 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
    * is needed for dispatching while rendering
    */
   public initialiseNestedElements() {
-    this.applicationInstance = new (this.type as ComponentContainer<componentProps, HostElement, HostTextElement>)(
-      this.props,
-      this,
-    ) as Component<componentProps, HostElement, HostTextElement>;
+    this.applicationInstance = new (this.type as ComponentContainer<
+      componentProps,
+      HostElement,
+      HostTextElement
+    >)(this.props, this) as Component<
+      componentProps,
+      HostElement,
+      HostTextElement
+    >;
     this.executeUserspace();
   }
 
   public executeUserspace() {
-    this.render((
-      this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
-    ).render(this.storeProps.Observer, this));
-    this.executeLifecycleHooks('componentDidMount');
+    this.render(
+      (this.applicationInstance as Component<
+        componentProps,
+        HostElement,
+        HostTextElement
+      >).render(this.storeProps.Observer, this)
+    );
+    this.executeLifecycleHooks("componentDidMount");
   }
 
   public registerLifecycleHook(lifecycle: lifecycle, hook: () => void) {
@@ -80,7 +100,7 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
   }
 
   public executeLifecycleHooks(lifecycle: lifecycle) {
-    this.lifecycleHooks[lifecycle].forEach(hook => hook());
+    this.lifecycleHooks[lifecycle].forEach((hook) => hook());
   }
 
   public render(abstractChildren: ApplicationElement) {
@@ -88,7 +108,12 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
       if (this.rendered) {
         reconcile(abstractChildren, this);
       } else {
-        this.rendered = factory(abstractChildren, this, () => this.getPredecessor(), this.renderOptions);
+        this.rendered = factory(
+          abstractChildren,
+          this,
+          () => this.getPredecessor(),
+          this.renderOptions
+        );
         this.rendered.initialiseNestedElements();
       }
     } else {
@@ -97,11 +122,14 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
   }
 
   private throwNotMountedError(): never {
-    throw new Error('Can\'t render new content, the component got unmounted');
+    throw new Error("Can't render new content, the component got unmounted");
   }
 
   public getLastIntrinsicInstance() {
-    return (this.rendered as Instance<HostElement, HostTextElement>).getLastIntrinsicInstance();
+    return (this.rendered as Instance<
+      HostElement,
+      HostTextElement
+    >).getLastIntrinsicInstance();
   }
 
   /**
@@ -122,10 +150,12 @@ export default class ComponentInstance<componentProps extends Partial<props & { 
    * removes the children from the dom
    */
   public remove(prepareRemoveSelf: boolean) {
-    (
-      this.applicationInstance as Component<componentProps, HostElement, HostTextElement>
-    ).componentWillUnmount(this.props, this);
-    this.executeLifecycleHooks('componentWillUnmount');
+    (this.applicationInstance as Component<
+      componentProps,
+      HostElement,
+      HostTextElement
+    >).componentWillUnmount(this.props, this);
+    this.executeLifecycleHooks("componentWillUnmount");
     this.mounted = false;
 
     if (this.rendered) {

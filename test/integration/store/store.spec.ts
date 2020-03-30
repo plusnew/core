@@ -1,10 +1,12 @@
-import { store } from '../../../index';
+import { store } from "../../../index";
 
-describe('reducer', () => {
-  it('is the reducer correctly called', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (originalState: number, action: number) => {
-      return originalState + action;
-    }).and.callThrough();
+describe("reducer", () => {
+  it("is the reducer correctly called", () => {
+    const reducerSpy = jasmine
+      .createSpy("reducer", (originalState: number, action: number) => {
+        return originalState + action;
+      })
+      .and.callThrough();
 
     const local = store(1, reducerSpy);
 
@@ -19,7 +21,7 @@ describe('reducer', () => {
     expect(local.getState()).toBe(3);
   });
 
-  it('short store, dispatched value to be new state', () => {
+  it("short store, dispatched value to be new state", () => {
     const local = store(1);
 
     expect(local.getState()).toBe(1);
@@ -29,11 +31,19 @@ describe('reducer', () => {
     expect(local.getState()).toBe(2);
   });
 
-  it('eventlisteners are called when change happened', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (_originalState: null | {}, action: {}) => action).and.callThrough();
+  it("eventlisteners are called when change happened", () => {
+    const reducerSpy = jasmine
+      .createSpy("reducer", (_originalState: null | {}, action: {}) => action)
+      .and.callThrough();
 
-    const firstEventListenerSpy = jasmine.createSpy('eventlistener', (_action: {}) => {});
-    const secondEventListenerSpy = jasmine.createSpy('eventlistener', (_action: {}) => {});
+    const firstEventListenerSpy = jasmine.createSpy(
+      "eventlistener",
+      (_action: {}) => {}
+    );
+    const secondEventListenerSpy = jasmine.createSpy(
+      "eventlistener",
+      (_action: {}) => {}
+    );
 
     const action = {};
 
@@ -54,11 +64,13 @@ describe('reducer', () => {
     expect(secondEventListenerSpy).toHaveBeenCalledWith(action);
   });
 
-  it('eventlisteners are not called when no change happened', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (_originalState: {}, action: {}) => action).and.callThrough();
+  it("eventlisteners are not called when no change happened", () => {
+    const reducerSpy = jasmine
+      .createSpy("reducer", (_originalState: {}, action: {}) => action)
+      .and.callThrough();
 
-    const firstEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
-    const secondEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
+    const firstEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
+    const secondEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
 
     const action = {};
     const local = store(action, reducerSpy);
@@ -76,11 +88,13 @@ describe('reducer', () => {
     expect(secondEventListenerSpy.calls.count()).toBe(0);
   });
 
-  it('eventlisteners are not called when no change happened', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (_originalState: {}, action: {}) => action).and.callThrough();
+  it("eventlisteners are not called when no change happened", () => {
+    const reducerSpy = jasmine
+      .createSpy("reducer", (_originalState: {}, action: {}) => action)
+      .and.callThrough();
 
-    const firstEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
-    const secondEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
+    const firstEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
+    const secondEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
 
     const action = {};
     const local = store(action, reducerSpy);
@@ -99,13 +113,20 @@ describe('reducer', () => {
     expect(secondEventListenerSpy.calls.count()).toBe(0);
   });
 
-  it('eventlistener removed even while dispatched', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (_originalState: null | {}, action: {}) => action).and.callThrough();
+  it("eventlistener removed even while dispatched", () => {
+    const reducerSpy = jasmine
+      .createSpy("reducer", (_originalState: null | {}, action: {}) => action)
+      .and.callThrough();
 
-    const firstEventListenerSpy = jasmine.createSpy('eventlistener', (_action: {}) => {
-      local.unsubscribe(secondEventListenerSpy);
-    }).and.callThrough();
-    const secondEventListenerSpy = jasmine.createSpy('eventlistener', (_action: {}) => {});
+    const firstEventListenerSpy = jasmine
+      .createSpy("eventlistener", (_action: {}) => {
+        local.unsubscribe(secondEventListenerSpy);
+      })
+      .and.callThrough();
+    const secondEventListenerSpy = jasmine.createSpy(
+      "eventlistener",
+      (_action: {}) => {}
+    );
 
     const action = {};
 
@@ -125,13 +146,20 @@ describe('reducer', () => {
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
   });
 
-  it('eventlistener removed even while dispatched', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (_originalState: null | {}, action: {}) => action).and.callThrough();
+  it("eventlistener removed even while dispatched", () => {
+    const reducerSpy = jasmine
+      .createSpy("reducer", (_originalState: null | {}, action: {}) => action)
+      .and.callThrough();
 
-    const firstEventListenerSpy = jasmine.createSpy('eventlistener', (_action: {}) => {
-      local.unsubscribe(firstEventListenerSpy);
-    }).and.callThrough();
-    const secondEventListenerSpy = jasmine.createSpy('eventlistener', (_action: {}) => {});
+    const firstEventListenerSpy = jasmine
+      .createSpy("eventlistener", (_action: {}) => {
+        local.unsubscribe(firstEventListenerSpy);
+      })
+      .and.callThrough();
+    const secondEventListenerSpy = jasmine.createSpy(
+      "eventlistener",
+      (_action: {}) => {}
+    );
 
     const action = {};
 
@@ -151,14 +179,21 @@ describe('reducer', () => {
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
   });
 
-  it('eventlistener removed even while dispatched', () => {
-    const reducerSpy = jasmine.createSpy('reducer', (_originalState: {} | null, action: {}) => action).and.callThrough();
+  it("eventlistener removed even while dispatched", () => {
+    const reducerSpy = jasmine
+      .createSpy("reducer", (_originalState: {} | null, action: {}) => action)
+      .and.callThrough();
 
-    const zeroEventListenerSpy = jasmine.createSpy('eventlistener', (_action: {}) => {});
-    const firstEventListenerSpy = jasmine.createSpy('eventlistener', (_action: {}) => {
-      local.unsubscribe(firstEventListenerSpy);
-    }).and.callThrough();
-    const secondEventListenerSpy = jasmine.createSpy('eventlistener', () => {});
+    const zeroEventListenerSpy = jasmine.createSpy(
+      "eventlistener",
+      (_action: {}) => {}
+    );
+    const firstEventListenerSpy = jasmine
+      .createSpy("eventlistener", (_action: {}) => {
+        local.unsubscribe(firstEventListenerSpy);
+      })
+      .and.callThrough();
+    const secondEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
 
     const action = {};
 
@@ -181,10 +216,10 @@ describe('reducer', () => {
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
   });
 
-  it('flush all changelisteners', () => {
+  it("flush all changelisteners", () => {
     const local = store(0, (_state, action: number) => action);
 
-    const listenerSpy = jasmine.createSpy('listener', () => null);
+    const listenerSpy = jasmine.createSpy("listener", () => null);
 
     local.subscribe(listenerSpy);
 
@@ -195,7 +230,7 @@ describe('reducer', () => {
     expect(listenerSpy.calls.count()).toBe(0);
   });
 
-  it('get state from observer', () => {
+  it("get state from observer", () => {
     const local = store(0, (_state, action: number) => action);
 
     expect(local.Observer.getState()).toBe(0);

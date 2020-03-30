@@ -1,12 +1,12 @@
-import type { props } from '../../../interfaces/component';
-import type { HostInstance } from '../../../interfaces/driver';
-import type { renderOptions } from '../../../interfaces/renderOptions';
-import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import ChildrenInstance from '../ChildrenInstance';
-import type Instance from '../Instance';
-import type { getPredeccessor, predecessor } from '../Instance';
-import types from '../types';
-import reconcile from './reconcile';
+import type { props } from "../../../interfaces/component";
+import type { HostInstance } from "../../../interfaces/driver";
+import type { renderOptions } from "../../../interfaces/renderOptions";
+import type PlusnewAbstractElement from "../../../PlusnewAbstractElement";
+import ChildrenInstance from "../ChildrenInstance";
+import type Instance from "../Instance";
+import type { getPredeccessor, predecessor } from "../Instance";
+import types from "../types";
+import reconcile from "./reconcile";
 
 /**
  * HostInstances are representations of <div />
@@ -17,7 +17,9 @@ import reconcile from './reconcile';
  *
  * it also fires events like elementDidMount and elementWillUnmount
  */
-export default class DomInstance<HostElement, HostTextElement> extends ChildrenInstance<HostElement, HostTextElement> implements HostInstance<HostElement, HostTextElement> {
+export default class DomInstance<HostElement, HostTextElement>
+  extends ChildrenInstance<HostElement, HostTextElement>
+  implements HostInstance<HostElement, HostTextElement> {
   public nodeType = types.Host as const;
   public ref: HostElement;
   public props: props;
@@ -28,7 +30,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance<HostElement, HostTextElement>,
     predecessor: getPredeccessor<HostElement, HostTextElement>,
-    renderOptions: renderOptions<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>
   ) {
     super(abstractElement, parentInstance, predecessor, renderOptions);
     this.type = `${abstractElement.type}`;
@@ -89,11 +91,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    */
   public setProp(key: string, value: any) {
     if (this.ignoreProperty(key) === false) {
-      this.renderOptions.driver.element.setAttribute(
-        this,
-        key,
-        value,
-      );
+      this.renderOptions.driver.element.setAttribute(this, key, value);
     }
   }
 
@@ -101,10 +99,7 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    * some properties are plusnew-internally, these should not be set on the actual intrinsic-element
    */
   private ignoreProperty(key: string) {
-    return (
-      key === 'key' ||
-      key === 'children'
-    );
+    return key === "key" || key === "children";
   }
 
   /**
@@ -118,8 +113,15 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    * by the children should add themselfs to our element
    */
 
-  public appendChild(childInstance: HostInstance<HostElement, HostTextElement>, predecessor: predecessor<HostElement, HostTextElement>) {
-    this.renderOptions.driver.element.appendChildAfterSibling(this, childInstance, predecessor);
+  public appendChild(
+    childInstance: HostInstance<HostElement, HostTextElement>,
+    predecessor: predecessor<HostElement, HostTextElement>
+  ) {
+    this.renderOptions.driver.element.appendChildAfterSibling(
+      this,
+      childInstance,
+      predecessor
+    );
   }
 
   /**
@@ -133,14 +135,20 @@ export default class DomInstance<HostElement, HostTextElement> extends ChildrenI
    * calls the parentInstance that this module got created
    */
   public elementDidMountToParent() {
-    (this.parentInstance as Instance<HostElement, HostTextElement>).elementDidMount(this.ref);
+    (this.parentInstance as Instance<
+      HostElement,
+      HostTextElement
+    >).elementDidMount(this.ref);
   }
 
   /**
    * calls the parentInstance that this module got deleted
    */
   public elementWillUnmountToParent() {
-    return (this.parentInstance as Instance<HostElement, HostTextElement>).elementWillUnmount(this.ref);
+    return (this.parentInstance as Instance<
+      HostElement,
+      HostTextElement
+    >).elementWillUnmount(this.ref);
   }
 
   /**

@@ -1,10 +1,14 @@
-import type { ComponentContainer } from '../components/factory';
-import observerFactory from '../components/observerFactory';
-import type { ApplicationElement } from '../interfaces/component';
+import type { ComponentContainer } from "../components/factory";
+import observerFactory from "../components/observerFactory";
+import type { ApplicationElement } from "../interfaces/component";
 
-export type Observer<state> = ComponentContainer<{children: (state: state) => ApplicationElement}, unknown, unknown> & { getState(): state };
+export type Observer<state> = ComponentContainer<
+  { children: (state: state) => ApplicationElement },
+  unknown,
+  unknown
+> & { getState(): state };
 
-export type onChangeCallback<actionType> = ((lastAction: actionType) => void);
+export type onChangeCallback<actionType> = (lastAction: actionType) => void;
 
 /**
  * gets called when a dispatch with an action is triggered
@@ -41,10 +45,15 @@ export type Store<stateType, actionType> = {
   flush(): void;
 };
 
-function store<stateType, actionType>(initValue: stateType, reducer: reducer<stateType, actionType>): Store<stateType, actionType>;
+function store<stateType, actionType>(
+  initValue: stateType,
+  reducer: reducer<stateType, actionType>
+): Store<stateType, actionType>;
 function store<stateType>(initValue: stateType): Store<stateType, stateType>;
-function store<stateType, actionType>(initValue: stateType, reducer?: reducer<stateType, actionType>): Store<stateType, actionType>  {
-
+function store<stateType, actionType>(
+  initValue: stateType,
+  reducer?: reducer<stateType, actionType>
+): Store<stateType, actionType> {
   let subscribes: onChangeCallback<actionType>[] = [];
   let state = initValue;
 
@@ -67,7 +76,10 @@ function store<stateType, actionType>(initValue: stateType, reducer?: reducer<st
      */
     unsubscribe(removeOnChange: onChangeCallback<actionType>) {
       const previousLength = subscribes.length;
-      subscribes = subscribes.filter((currentOnChange: onChangeCallback<actionType>) => currentOnChange !== removeOnChange);
+      subscribes = subscribes.filter(
+        (currentOnChange: onChangeCallback<actionType>) =>
+          currentOnChange !== removeOnChange
+      );
 
       return previousLength !== subscribes.length;
     },

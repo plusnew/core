@@ -1,11 +1,11 @@
-import type { props } from '../../../interfaces/component';
-import type { renderOptions } from '../../../interfaces/renderOptions';
-import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import ChildrenInstance from '../ChildrenInstance';
-import type Instance from '../Instance';
-import type { getPredeccessor } from '../Instance';
-import types from '../types';
-import reconcile from './reconcile';
+import type { props } from "../../../interfaces/component";
+import type { renderOptions } from "../../../interfaces/renderOptions";
+import type PlusnewAbstractElement from "../../../PlusnewAbstractElement";
+import ChildrenInstance from "../ChildrenInstance";
+import type Instance from "../Instance";
+import type { getPredeccessor } from "../Instance";
+import types from "../types";
+import reconcile from "./reconcile";
 
 /**
  * FragmentInstances are representations of <>
@@ -13,7 +13,10 @@ import reconcile from './reconcile';
  *
  * it is used as a container for the given children, and doesn't do much else
  */
-export default class FragmentInstance<HostElement, HostTextElement> extends ChildrenInstance<HostElement, HostTextElement> {
+export default class FragmentInstance<
+  HostElement,
+  HostTextElement
+> extends ChildrenInstance<HostElement, HostTextElement> {
   public nodeType = types.Fragment as const;
   public type = types.Fragment;
   public props: props;
@@ -23,7 +26,7 @@ export default class FragmentInstance<HostElement, HostTextElement> extends Chil
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance<HostElement, HostTextElement>,
     getPredecessor: getPredeccessor<HostElement, HostTextElement>,
-    renderOptions: renderOptions<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
     this.props = abstractElement.props;

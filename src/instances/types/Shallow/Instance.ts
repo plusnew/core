@@ -1,11 +1,15 @@
-import type { props } from '../../../interfaces/component';
-import type { renderOptions } from '../../../interfaces/renderOptions';
-import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import type { PlusnewElement } from '../../../PlusnewAbstractElement';
-import Instance, { getPredeccessor } from '../Instance';
-import types from '../types';
+import type { props } from "../../../interfaces/component";
+import type { renderOptions } from "../../../interfaces/renderOptions";
+import type PlusnewAbstractElement from "../../../PlusnewAbstractElement";
+import type { PlusnewElement } from "../../../PlusnewAbstractElement";
+import Instance, { getPredeccessor } from "../Instance";
+import types from "../types";
 
-export default class ShallowInstance<componentProps extends Partial<props>, HostElement, HostTextElement>  extends Instance<HostElement, HostTextElement> {
+export default class ShallowInstance<
+  componentProps extends Partial<props>,
+  HostElement,
+  HostTextElement
+> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Component as const;
   public type: PlusnewElement;
   public props: componentProps;
@@ -14,7 +18,7 @@ export default class ShallowInstance<componentProps extends Partial<props>, Host
     abstractElement: PlusnewAbstractElement,
     parentInstance: Instance<HostElement, HostTextElement>,
     getPredecessor: getPredeccessor<HostElement, HostTextElement>,
-    renderOptions: renderOptions<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
 

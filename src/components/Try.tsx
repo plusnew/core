@@ -1,7 +1,7 @@
-import type { ApplicationElement, Props } from '../';
-import { Component } from '../index';
-import type ComponentInstance from '../instances/types/Component/Instance';
-import type { invokeGuard } from '../interfaces/renderOptions';
+import type { ApplicationElement, Props } from "../";
+import { Component } from "../index";
+import type ComponentInstance from "../instances/types/Component/Instance";
+import type { invokeGuard } from "../interfaces/renderOptions";
 
 type renderFunction = () => ApplicationElement;
 
@@ -11,29 +11,39 @@ type props = {
 };
 
 export default class Try extends Component<props> {
-  static displayName = 'Try';
+  static displayName = "Try";
 
   private instance?: ComponentInstance<props, any, any>;
   private errored: any = null;
 
-  constructor (props: props, componentInstance: ComponentInstance<props, any, any>) {
+  constructor(
+    props: props,
+    componentInstance: ComponentInstance<props, any, any>
+  ) {
     super(props, componentInstance);
 
     this.instance = componentInstance;
     this.setInvokeGuard();
 
     componentInstance.executeUserspace = () => {
-      (componentInstance.renderOptions.invokeGuard as invokeGuard<unknown>)(() => {
-        componentInstance.render(
-          (
-            componentInstance.applicationInstance as Component<props, any, any>
-          ).render(componentInstance.storeProps.Observer, componentInstance));
-        componentInstance.executeLifecycleHooks('componentDidMount');
-      });
+      (componentInstance.renderOptions.invokeGuard as invokeGuard<unknown>)(
+        () => {
+          componentInstance.render(
+            (componentInstance.applicationInstance as Component<
+              props,
+              any,
+              any
+            >).render(componentInstance.storeProps.Observer, componentInstance)
+          );
+          componentInstance.executeLifecycleHooks("componentDidMount");
+        }
+      );
     };
   }
 
-  public invokeGuard<T>(callback: () => T): { hasError: true, error: any } | { hasError: false, result: T } {
+  public invokeGuard<T>(
+    callback: () => T
+  ): { hasError: true; error: any } | { hasError: false; result: T } {
     try {
       return {
         hasError: false,
@@ -51,12 +61,20 @@ export default class Try extends Component<props> {
   }
 
   private setInvokeGuard() {
-    const instance = this.instance as ComponentInstance<props, unknown, unknown>;
+    const instance = this.instance as ComponentInstance<
+      props,
+      unknown,
+      unknown
+    >;
 
     if (this.errored) {
       instance.renderOptions = {
         ...instance.renderOptions,
-        invokeGuard: (instance.parentInstance as ComponentInstance<any, any, any>).renderOptions.invokeGuard,
+        invokeGuard: (instance.parentInstance as ComponentInstance<
+          any,
+          any,
+          any
+        >).renderOptions.invokeGuard,
       };
     } else {
       instance.renderOptions = {
@@ -67,7 +85,11 @@ export default class Try extends Component<props> {
   }
 
   private update = () => {
-    const instance = this.instance as ComponentInstance<props, unknown, unknown>;
+    const instance = this.instance as ComponentInstance<
+      props,
+      unknown,
+      unknown
+    >;
 
     instance.renderOptions = {
       ...instance.renderOptions,
@@ -90,10 +112,14 @@ export default class Try extends Component<props> {
     }
 
     instance.render(result);
-  }
+  };
 
   componentWillUnmount() {
-    (this.instance as ComponentInstance<props, unknown, unknown>).storeProps.unsubscribe(this.update);
+    (this.instance as ComponentInstance<
+      props,
+      unknown,
+      unknown
+    >).storeProps.unsubscribe(this.update);
   }
 
   render(Props: Props<props>, instance: ComponentInstance<props, any, any>) {

@@ -1,10 +1,13 @@
-import type { ApplicationElement } from '../../interfaces/component';
-import type { renderOptions } from '../../interfaces/renderOptions';
-import type PlusnewAbstractElement from '../../PlusnewAbstractElement';
-import factory from '../factory';
-import Instance, { getPredeccessor, predecessor } from './Instance';
+import type { ApplicationElement } from "../../interfaces/component";
+import type { renderOptions } from "../../interfaces/renderOptions";
+import type PlusnewAbstractElement from "../../PlusnewAbstractElement";
+import factory from "../factory";
+import Instance, { getPredeccessor, predecessor } from "./Instance";
 
-export default abstract class ChildrenInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
+export default abstract class ChildrenInstance<
+  HostElement,
+  HostTextElement
+> extends Instance<HostElement, HostTextElement> {
   public rendered: Instance<HostElement, HostTextElement>[];
   // Decides if the children will call elementWillUnmount
   public abstract executeChildrenElementWillUnmount: boolean;
@@ -14,7 +17,7 @@ export default abstract class ChildrenInstance<HostElement, HostTextElement> ext
     abstractElement: ApplicationElement,
     parentInstance: Instance<HostElement, HostTextElement>,
     getPredecessor: getPredeccessor<HostElement, HostTextElement>,
-    renderOptions: renderOptions<HostElement, HostTextElement>,
+    renderOptions: renderOptions<HostElement, HostTextElement>
   ) {
     super(abstractElement, parentInstance, getPredecessor, renderOptions);
     this.rendered = [];
@@ -25,7 +28,12 @@ export default abstract class ChildrenInstance<HostElement, HostTextElement> ext
   public addChildren() {
     for (let i = 0; i < this.props.children.length; i += 1) {
       if (this.rendered[i] === undefined) {
-        const instance = factory(this.props.children[i], this, this.getLastIntrinsicElementOf.bind(this, i - 1), this.renderOptions);
+        const instance = factory(
+          this.props.children[i],
+          this,
+          this.getLastIntrinsicElementOf.bind(this, i - 1),
+          this.renderOptions
+        );
         this.rendered.push(instance);
         instance.initialiseNestedElements();
       }
@@ -38,7 +46,7 @@ export default abstract class ChildrenInstance<HostElement, HostTextElement> ext
 
   public getLastIntrinsicElementOf(index: number) {
     for (let i = index; i >= 0 && i < this.rendered.length; i -= 1) {
-      const predeccessorElement =  this.rendered[i].getLastIntrinsicInstance();
+      const predeccessorElement = this.rendered[i].getLastIntrinsicInstance();
       if (predeccessorElement !== null) {
         return predeccessorElement;
       }
@@ -72,8 +80,13 @@ export default abstract class ChildrenInstance<HostElement, HostTextElement> ext
   }
 
   private removeChildren(prepareRemoveSelf: boolean) {
-    const executeChildrenElementWillUnmount = prepareRemoveSelf === false ? false : this.executeChildrenElementWillUnmount;
-    const result = this.rendered.map(child => child.remove(executeChildrenElementWillUnmount)).filter(result => result !== undefined);
+    const executeChildrenElementWillUnmount =
+      prepareRemoveSelf === false
+        ? false
+        : this.executeChildrenElementWillUnmount;
+    const result = this.rendered
+      .map((child) => child.remove(executeChildrenElementWillUnmount))
+      .filter((result) => result !== undefined);
 
     if (result.length === 0) {
       return this.removeSelf();

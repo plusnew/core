@@ -1,11 +1,14 @@
-import Instance from '../Instance';
-import types from '../types';
+import Instance from "../Instance";
+import types from "../types";
 
 /**
  * PlaceholderInstance is a representation of {false}
  * it is used for conditions which don't want to show something
  */
-export default class PlaceholderInstance<HostElement, HostTextElement> extends Instance<HostElement, HostTextElement> {
+export default class PlaceholderInstance<
+  HostElement,
+  HostTextElement
+> extends Instance<HostElement, HostTextElement> {
   public nodeType = types.Placeholder as const;
   public type = types.Fragment;
 

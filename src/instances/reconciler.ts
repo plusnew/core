@@ -1,10 +1,10 @@
-import type { ApplicationElement } from '../interfaces/component';
-import type PlusnewAbstractElement from '../PlusnewAbstractElement';
-import elementTypeChecker from '../util/elementTypeChecker';
-import factory from './factory';
-import type ComponentInstance from './types/Component/Instance';
-import type Instance from './types/Instance';
-import types from './types/types';
+import type { ApplicationElement } from "../interfaces/component";
+import type PlusnewAbstractElement from "../PlusnewAbstractElement";
+import elementTypeChecker from "../util/elementTypeChecker";
+import factory from "./factory";
+import type ComponentInstance from "./types/Component/Instance";
+import type Instance from "./types/Instance";
+import types from "./types/types";
 
 export class Reconciler {
   /**
@@ -12,7 +12,10 @@ export class Reconciler {
    * evaluates if its the same instance, and if it needs an update
    * or if it should be removed and replaced
    */
-  public update<HostElement, HostTextElement>(newAbstractElement: ApplicationElement, instance: Instance<HostElement, HostTextElement>): Instance<HostElement, HostTextElement> {
+  public update<HostElement, HostTextElement>(
+    newAbstractElement: ApplicationElement,
+    instance: Instance<HostElement, HostTextElement>
+  ): Instance<HostElement, HostTextElement> {
     if (this.isSameAbstractElement(newAbstractElement, instance)) {
       instance.reconcile(newAbstractElement);
       return instance;
@@ -22,7 +25,9 @@ export class Reconciler {
       newAbstractElement,
       instance.parentInstance as Instance<HostElement, HostTextElement>,
       instance.getPredecessor,
-      (instance.parentInstance as Instance<HostElement, HostTextElement>).renderOptions);
+      (instance.parentInstance as Instance<HostElement, HostTextElement>)
+        .renderOptions
+    );
 
     return newInstance;
   }
@@ -30,22 +35,37 @@ export class Reconciler {
   /**
    * checks if the abstractElements are the same
    */
-  public isSameAbstractElement<HostElement, HostTextElement>(newAbstractElement: ApplicationElement, instance: Instance<HostElement, HostTextElement>) {
+  public isSameAbstractElement<HostElement, HostTextElement>(
+    newAbstractElement: ApplicationElement,
+    instance: Instance<HostElement, HostTextElement>
+  ) {
     // The following code does the key-property check, not yet stable
     if (this.isSameAbstractElementType(newAbstractElement, instance) === true) {
-      if (elementTypeChecker.isComponentElement(newAbstractElement) === true || elementTypeChecker.isDomElement(newAbstractElement) === true) {
-        if ((newAbstractElement as PlusnewAbstractElement).props.hasOwnProperty('key')) {
-          if ((instance as ComponentInstance<any, HostElement, HostTextElement>).props.hasOwnProperty('key')) {
+      if (
+        elementTypeChecker.isComponentElement(newAbstractElement) === true ||
+        elementTypeChecker.isDomElement(newAbstractElement) === true
+      ) {
+        if ("key" in (newAbstractElement as PlusnewAbstractElement).props) {
+          if (
+            "key" in
+            (instance as ComponentInstance<any, HostElement, HostTextElement>)
+              .props
+          ) {
             // newAbstractElement and oldAbstractElement, have a key - is it the same?
             return (
               (newAbstractElement as PlusnewAbstractElement).props.key ===
-              (instance as ComponentInstance<any, HostElement, HostTextElement>).props.key
+              (instance as ComponentInstance<any, HostElement, HostTextElement>)
+                .props.key
             );
           }
           // newAbstractElement has key, but oldAbstractElement has not
           return false;
         }
-        if ((instance as ComponentInstance<any, HostElement, HostTextElement>).props.hasOwnProperty('key')) {
+        if (
+          "key" in
+          (instance as ComponentInstance<any, HostElement, HostTextElement>)
+            .props
+        ) {
           // newAbstractElement has no key, but oldAbstractElement has
           return false;
         }
@@ -63,7 +83,10 @@ export class Reconciler {
   /**
    * checks if the abstractElements are the same type
    */
-  private isSameAbstractElementType<HostElement, HostTextElement>(newAbstractElement: ApplicationElement, instance: Instance<HostElement, HostTextElement>) {
+  private isSameAbstractElementType<HostElement, HostTextElement>(
+    newAbstractElement: ApplicationElement,
+    instance: Instance<HostElement, HostTextElement>
+  ) {
     if (elementTypeChecker.isPlaceholderElement(newAbstractElement)) {
       return instance.nodeType === types.Placeholder;
     }
@@ -104,7 +127,7 @@ export class Reconciler {
       return false;
     }
 
-    throw new Error('Unknown abstractElement detected');
+    throw new Error("Unknown abstractElement detected");
   }
 }
 

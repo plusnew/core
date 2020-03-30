@@ -1,21 +1,32 @@
-import type { props } from '../../../interfaces/component';
-import factory from '../../factory';
-import reconciler from '../../reconciler';
-import type HostInstance from './Instance';
+import type { props } from "../../../interfaces/component";
+import factory from "../../factory";
+import reconciler from "../../reconciler";
+import type HostInstance from "./Instance";
 
-export default function <HostElement, HostTextElement>(props: props, instance: HostInstance<HostElement, HostTextElement>) {
+export default function <HostElement, HostTextElement>(
+  props: props,
+  instance: HostInstance<HostElement, HostTextElement>
+) {
   for (const propIndex in props) {
-    if (propIndex === 'children') {
+    if (propIndex === "children") {
       for (let i = 0; i < props.children.length; i += 1) {
         if (i < instance.rendered.length) {
-          const newInstance = reconciler.update(props.children[i], instance.rendered[i]);
+          const newInstance = reconciler.update(
+            props.children[i],
+            instance.rendered[i]
+          );
           if (newInstance !== instance.rendered[i]) {
             instance.rendered[i].remove(true);
             instance.rendered[i] = newInstance;
             instance.rendered[i].initialiseNestedElements();
           }
         } else {
-          const newInstance = factory(props.children[i], instance, instance.getLastIntrinsicElementOf.bind(instance, i - 1), instance.renderOptions);
+          const newInstance = factory(
+            props.children[i],
+            instance,
+            instance.getLastIntrinsicElementOf.bind(instance, i - 1),
+            instance.renderOptions
+          );
           instance.rendered.push(newInstance);
           newInstance.initialiseNestedElements();
         }

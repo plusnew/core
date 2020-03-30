@@ -1,19 +1,19 @@
-import driver from '@plusnew/driver-dom/src/driver';
-import '@plusnew/driver-dom/src/jsx';
-import plusnew, { Component, store } from '../../../index';
-import type { Props } from '../../../index';
+import driver from "@plusnew/driver-dom/src/driver";
+import "@plusnew/driver-dom/src/jsx";
+import plusnew, { Component, store } from "../../../index";
+import type { Props } from "../../../index";
 
-describe('rendering class components', () => {
+describe("rendering class components", () => {
   let container: HTMLElement;
 
   beforeEach(() => {
-    container = document.createElement('div');
-    container.innerHTML = 'lots of stuff';
+    container = document.createElement("div");
+    container.innerHTML = "lots of stuff";
     document.body.appendChild(container);
   });
 
-  it('class component gets rendered', () => {
-    class MainComponent extends Component<any>{
+  it("class component gets rendered", () => {
+    class MainComponent extends Component<any> {
       render() {
         return <div />;
       }
@@ -22,10 +22,10 @@ describe('rendering class components', () => {
     plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLDivElement).tagName).toBe("DIV");
   });
 
-  it('class component gets rerendered', () => {
+  it("class component gets rerendered", () => {
     const local = store(0, (_state, action: number) => action);
 
     class MainComponent extends Component<{}> {
@@ -34,46 +34,58 @@ describe('rendering class components', () => {
       };
 
       render() {
-        return <div><local.Observer>{local => local}</local.Observer></div>;
+        return (
+          <div>
+            <local.Observer>{(local) => local}</local.Observer>
+          </div>
+        );
       }
     }
 
     plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
-    expect((container.childNodes[0] as HTMLDivElement).innerHTML).toBe('0');
+    expect((container.childNodes[0] as HTMLDivElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLDivElement).innerHTML).toBe("0");
 
     local.dispatch(1);
 
-    expect((container.childNodes[0] as HTMLDivElement).innerHTML).toBe('1');
+    expect((container.childNodes[0] as HTMLDivElement).innerHTML).toBe("1");
   });
 
-  it('class component gets props', () => {
+  it("class component gets props", () => {
     const local = store(0, (_state, action: number) => action);
 
     class MainComponent extends Component<{}> {
       render() {
-        return <local.Observer>{local => <NestedComponent foo={local}/> }</local.Observer>;
+        return (
+          <local.Observer>
+            {(local) => <NestedComponent foo={local} />}
+          </local.Observer>
+        );
       }
     }
 
-    type props = {foo: number};
+    type props = { foo: number };
 
     class NestedComponent extends Component<props> {
       render(Props: Props<props>) {
-        return <div><Props>{local => local.foo}</Props></div>;
+        return (
+          <div>
+            <Props>{(local) => local.foo}</Props>
+          </div>
+        );
       }
     }
 
     plusnew.render(<MainComponent />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLDivElement).tagName).toBe('DIV');
-    expect((container.childNodes[0] as HTMLDivElement).innerHTML).toBe('0');
+    expect((container.childNodes[0] as HTMLDivElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLDivElement).innerHTML).toBe("0");
 
     local.dispatch(1);
 
-    expect((container.childNodes[0] as HTMLDivElement).innerHTML).toBe('1');
+    expect((container.childNodes[0] as HTMLDivElement).innerHTML).toBe("1");
   });
 });

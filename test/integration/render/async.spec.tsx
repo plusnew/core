@@ -1,190 +1,207 @@
-import driver from '@plusnew/driver-dom/src/driver';
-import '@plusnew/driver-dom/src/jsx';
-import plusnew, { Async, component, store } from '../../../index';
-import ComponentInstance from '../../../src/instances/types/Component/Instance';
+import driver from "@plusnew/driver-dom/src/driver";
+import "@plusnew/driver-dom/src/jsx";
+import plusnew, { Async, component, store } from "../../../index";
+import ComponentInstance from "../../../src/instances/types/Component/Instance";
 
 async function tick(count: number) {
   for (let i = 0; i < count; i += 1) {
-    await new Promise(resolve => resolve());
+    await new Promise((resolve) => resolve());
   }
 }
 
-describe('<Animate />', () => {
+describe("<Animate />", () => {
   let container: HTMLElement;
 
   beforeEach(() => {
-    container = document.createElement('div');
-    container.innerHTML = 'lots of stuff';
+    container = document.createElement("div");
+    container.innerHTML = "lots of stuff";
     document.body.appendChild(container);
   });
 
-  it('show loading when promise is not resolved yet and then show resolved promise', async () => {
-    const Component = component(
-      'Component',
-      () => <Async pendingIndicator={<span />}>{() => new Promise(resolve => resolve(<div />))}</Async>,
-    );
+  it("show loading when promise is not resolved yet and then show resolved promise", async () => {
+    const Component = component("Component", () => (
+      <Async pendingIndicator={<span />}>
+        {() => new Promise((resolve) => resolve(<div />))}
+      </Async>
+    ));
 
     plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     await tick(1);
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 
-  it('show resolved promise', async () => {
-    const Component = component(
-      'Component',
-      () => <Async pendingIndicator={<span />}>{() => Promise.resolve(<div />)}</Async>,
-    );
+  it("show resolved promise", async () => {
+    const Component = component("Component", () => (
+      <Async pendingIndicator={<span />}>
+        {() => Promise.resolve(<div />)}
+      </Async>
+    ));
 
     plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     await tick(1);
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 
-  it('change promise with props', async () => {
+  it("change promise with props", async () => {
     const local = store(0, (_state, action: number) => action);
-    const Component = component(
-      'Component',
-      () => <local.Observer>{state => <Async pendingIndicator={<span />}>{() => Promise.resolve(<div>{state}</div>)}</Async>}</local.Observer>,
-    );
+    const Component = component("Component", () => (
+      <local.Observer>
+        {(state) => (
+          <Async pendingIndicator={<span />}>
+            {() => Promise.resolve(<div>{state}</div>)}
+          </Async>
+        )}
+      </local.Observer>
+    ));
 
     plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     await tick(1);
 
     const element = container.childNodes[0] as HTMLElement;
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
-    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('0');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("0");
 
     local.dispatch(1);
 
     await tick(1);
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
-    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('1');
-    expect((container.childNodes[0] as HTMLElement)).toBe(element);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
+    expect(container.childNodes[0] as HTMLElement).toBe(element);
   });
 
-  it('discard promise resolve, when a new one was given', async () => {
+  it("discard promise resolve, when a new one was given", async () => {
     const local = store(0, (_state, action: number) => action);
 
-    const Component = component(
-      'Component',
-      () =>
-        <local.Observer>{state =>
-          <Async pendingIndicator={<span />}>{async () => {
-            if (state === 0) {
-              await tick(2);
-              return <div>old</div>;
-            }
-            return <div>new</div>;
-          }}</Async>
-        }</local.Observer>,
-    );
-
-    plusnew.render(<Component />, { driver: driver(container) });
-
-    expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
-
-    local.dispatch(1);
-
-    await tick(1);
-
-    const element = container.childNodes[0] as HTMLElement;
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
-    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('new');
-
-    await tick(1);
-
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
-    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('new');
-    expect((container.childNodes[0] as HTMLElement)).toBe(element);
-  });
-
-  it('show pending indicator', async () => {
-    const local = store(0, (_state, action: number) => action);
-
-    const Component = component(
-      'Component',
-      () =>
-        <local.Observer>{state =>
-          <Async pendingIndicator={<span />}>{async () => {
-            if (state === 1) {
-              await tick(1);
+    const Component = component("Component", () => (
+      <local.Observer>
+        {(state) => (
+          <Async pendingIndicator={<span />}>
+            {async () => {
+              if (state === 0) {
+                await tick(2);
+                return <div>old</div>;
+              }
               return <div>new</div>;
-            }
-            return <div>old</div>;
-          }}</Async>
-        }</local.Observer>,
-    );
+            }}
+          </Async>
+        )}
+      </local.Observer>
+    ));
 
     plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
+
+    local.dispatch(1);
 
     await tick(1);
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
-    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('old');
+    const element = container.childNodes[0] as HTMLElement;
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("new");
+
+    await tick(1);
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("new");
+    expect(container.childNodes[0] as HTMLElement).toBe(element);
+  });
+
+  it("show pending indicator", async () => {
+    const local = store(0, (_state, action: number) => action);
+
+    const Component = component("Component", () => (
+      <local.Observer>
+        {(state) => (
+          <Async pendingIndicator={<span />}>
+            {async () => {
+              if (state === 1) {
+                await tick(1);
+                return <div>new</div>;
+              }
+              return <div>old</div>;
+            }}
+          </Async>
+        )}
+      </local.Observer>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
+
+    await tick(1);
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("old");
 
     local.dispatch(1);
     await tick(1);
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     await tick(1);
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
-    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe('new');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("new");
   });
 
-  it('show resolved promise', async () => {
-    const Component = component(
-      'Component',
-      () => <Async pendingIndicator={<span />}>{async () => <div />}</Async>,
-    );
+  it("show resolved promise", async () => {
+    const Component = component("Component", () => (
+      <Async pendingIndicator={<span />}>{async () => <div />}</Async>
+    ));
 
     plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     await tick(1);
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 
-  it('remove async component', async () => {
-    const throwNotMountedErrorSpy = spyOn(ComponentInstance.prototype, 'throwNotMountedError' as any).and.callThrough();
+  it("remove async component", async () => {
+    const throwNotMountedErrorSpy = spyOn(
+      ComponentInstance.prototype,
+      "throwNotMountedError" as any
+    ).and.callThrough();
     const local = store(true, (_state, action: boolean) => action);
 
-    const Component = component(
-      'Component',
-      () =>
-        <local.Observer>
-          {state => state === true && <Async pendingIndicator={<span />}>{() => Promise.resolve(<div />)}</Async>}
-        </local.Observer>,
-    );
+    const Component = component("Component", () => (
+      <local.Observer>
+        {(state) =>
+          state === true && (
+            <Async pendingIndicator={<span />}>
+              {() => Promise.resolve(<div />)}
+            </Async>
+          )
+        }
+      </local.Observer>
+    ));
 
     plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
     local.dispatch(false);
     expect(container.childNodes.length).toBe(0);
 
@@ -194,55 +211,57 @@ describe('<Animate />', () => {
     expect(throwNotMountedErrorSpy).not.toHaveBeenCalled();
   });
 
-  it('addAsyncListener sends promise for pending state', async () => {
-    const promise = new Promise(resolve => setTimeout(resolve));
+  it("addAsyncListener sends promise for pending state", async () => {
+    const promise = new Promise((resolve) => setTimeout(resolve));
 
-    const Component = component(
-      'Component',
-      () => <Async pendingIndicator={<span />}>{async () => {
-        await promise;
-        return <div />;
-      }}</Async>,
-    );
+    const Component = component("Component", () => (
+      <Async pendingIndicator={<span />}>
+        {async () => {
+          await promise;
+          return <div />;
+        }}
+      </Async>
+    ));
 
     let asyncPromise;
 
     plusnew.render(<Component />, {
       driver: driver(container),
-      addAsyncListener: promise => asyncPromise = promise,
+      addAsyncListener: (promise) => (asyncPromise = promise),
     });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     await asyncPromise;
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 
-  it('addAsyncListener sends promise for pending state, works even with resolved promise', async () => {
+  it("addAsyncListener sends promise for pending state, works even with resolved promise", async () => {
     const promise = Promise.resolve();
 
-    const Component = component(
-      'Component',
-      () => <Async pendingIndicator={<span />}>{async () => {
-        await promise;
-        return <div />;
-      }}</Async>,
-    );
+    const Component = component("Component", () => (
+      <Async pendingIndicator={<span />}>
+        {async () => {
+          await promise;
+          return <div />;
+        }}
+      </Async>
+    ));
 
     let asyncPromise;
 
     plusnew.render(<Component />, {
       driver: driver(container),
-      addAsyncListener: promise => asyncPromise = promise,
+      addAsyncListener: (promise) => (asyncPromise = promise),
     });
 
     expect(container.childNodes.length).toBe(1);
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('SPAN');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     await asyncPromise;
 
-    expect((container.childNodes[0] as HTMLElement).tagName).toBe('DIV');
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 });

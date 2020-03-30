@@ -1,36 +1,67 @@
-import type PlusnewAbstractElement from '../../../PlusnewAbstractElement';
-import factory from '../../factory';
-import reconciler from '../../reconciler';
-import type ArrayInstance from './Instance';
+import type PlusnewAbstractElement from "../../../PlusnewAbstractElement";
+import factory from "../../factory";
+import reconciler from "../../reconciler";
+import type ArrayInstance from "./Instance";
 
 const NOT_FOUND = -1;
 
-function indexOf<HostElement, HostTextElement>(instance: ArrayInstance<HostElement, HostTextElement>, newAbstractElement: PlusnewAbstractElement, startIndex: number) {
+function indexOf<HostElement, HostTextElement>(
+  instance: ArrayInstance<HostElement, HostTextElement>,
+  newAbstractElement: PlusnewAbstractElement,
+  startIndex: number
+) {
   for (let i = startIndex; i < instance.rendered.length; i += 1) {
-    if (reconciler.isSameAbstractElement(newAbstractElement, instance.rendered[i])) {
+    if (
+      reconciler.isSameAbstractElement(newAbstractElement, instance.rendered[i])
+    ) {
       return i;
     }
   }
   return NOT_FOUND;
 }
 
-export default function <HostElement, HostTextElement>(newAbstractElements: PlusnewAbstractElement[], instance: ArrayInstance<HostElement, HostTextElement>) {
-
+export default function <HostElement, HostTextElement>(
+  newAbstractElements: PlusnewAbstractElement[],
+  instance: ArrayInstance<HostElement, HostTextElement>
+) {
   // Removal of old-elements just works if key-property is existent
-  if (instance.props.children.length && instance.props.children[0] && instance.props.children[0].props && instance.props.children[0].props.key !== undefined) {
+  if (
+    instance.props.children.length &&
+    instance.props.children[0] &&
+    instance.props.children[0].props &&
+    instance.props.children[0].props.key !== undefined
+  ) {
     // Checks old abstract elements, if they should get removed
     // reason for that is, that we dont want to move new elements, because of old elements which get deleted
     // moving causes animations to trigger, and that would be wrong in that case
-    for (let oldIndex = 0; oldIndex < instance.props.children.length; oldIndex += 1) {
-      let found = reconciler.isSameAbstractElement(newAbstractElements[oldIndex], instance.rendered[oldIndex]);
-      for (let newIndex = 0; newIndex < newAbstractElements.length && found === false; newIndex += 1) {
-        if (reconciler.isSameAbstractElement(newAbstractElements[newIndex], instance.rendered[oldIndex])) {
+    for (
+      let oldIndex = 0;
+      oldIndex < instance.props.children.length;
+      oldIndex += 1
+    ) {
+      let found = reconciler.isSameAbstractElement(
+        newAbstractElements[oldIndex],
+        instance.rendered[oldIndex]
+      );
+      for (
+        let newIndex = 0;
+        newIndex < newAbstractElements.length && found === false;
+        newIndex += 1
+      ) {
+        if (
+          reconciler.isSameAbstractElement(
+            newAbstractElements[newIndex],
+            instance.rendered[oldIndex]
+          )
+        ) {
           found = true;
         }
       }
 
       if (found === false) {
-        instance.rendered[oldIndex].remove(instance.executeChildrenElementWillUnmount);
+        instance.rendered[oldIndex].remove(
+          instance.executeChildrenElementWillUnmount
+        );
         instance.rendered.splice(oldIndex, 1);
         instance.props.children.splice(oldIndex, 1);
         oldIndex -= 1;
@@ -41,7 +72,10 @@ export default function <HostElement, HostTextElement>(newAbstractElements: Plus
   for (let i = 0; i < newAbstractElements.length; i += 1) {
     const newAbstractElement = newAbstractElements[i];
 
-    const getPredecessor = instance.getLastIntrinsicElementOf.bind(instance, i - 1);
+    const getPredecessor = instance.getLastIntrinsicElementOf.bind(
+      instance,
+      i - 1
+    );
 
     if (
       i < instance.rendered.length &&
@@ -53,7 +87,12 @@ export default function <HostElement, HostTextElement>(newAbstractElements: Plus
     } else {
       const oldIndex = indexOf(instance, newAbstractElement, i);
       if (oldIndex === NOT_FOUND) {
-        const newInstance = factory(newAbstractElement, instance, getPredecessor, instance.renderOptions);
+        const newInstance = factory(
+          newAbstractElement,
+          instance,
+          getPredecessor,
+          instance.renderOptions
+        );
         instance.rendered.splice(i, 0, newInstance);
         newInstance.initialiseNestedElements();
       } else {
@@ -73,10 +112,12 @@ export default function <HostElement, HostTextElement>(newAbstractElements: Plus
     }
   }
 
-  instance.rendered.splice(
-    newAbstractElements.length,
-    instance.rendered.length - newAbstractElements.length,
-  ).forEach(childInstance => childInstance.remove(true));
+  instance.rendered
+    .splice(
+      newAbstractElements.length,
+      instance.rendered.length - newAbstractElements.length
+    )
+    .forEach((childInstance) => childInstance.remove(true));
 
   instance.props.children = newAbstractElements;
 }

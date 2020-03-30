@@ -1,35 +1,45 @@
-import type DomInstance from '@plusnew/core/src/instances/types/Host/Instance';
-import driver from '@plusnew/driver-dom/src/driver';
-import '@plusnew/driver-dom/src/jsx';
-import plusnew from '../../../index';
-import Abstract from '../../../src/instances/types/Instance';
-import types from '../../../src/instances/types/types';
+import type DomInstance from "@plusnew/core/src/instances/types/Host/Instance";
+import driver from "@plusnew/driver-dom/src/driver";
+import "@plusnew/driver-dom/src/jsx";
+import plusnew from "../../../index";
+import Abstract from "../../../src/instances/types/Instance";
+import types from "../../../src/instances/types/types";
 
-describe('Does the root-instance behave correctly', () => {
+describe("Does the root-instance behave correctly", () => {
   let abstract: Abstract<Element, Text>;
 
   beforeEach(() => {
     class TestInstance extends Abstract<Element, Text> {
       public nodeType = types.Placeholder;
-      public type = 'foo';
+      public type = "foo";
       getLastIntrinsicInstance(): never {
-        throw new Error('mep');
+        throw new Error("mep");
       }
-      move() { }
-      remove() { }
-      reconcile() { }
+      move() {}
+      remove() {}
+      reconcile() {}
     }
 
-    abstract = new TestInstance(<div />, undefined, () => null, { driver: driver(document.createElement('div')) });
+    abstract = new TestInstance(<div />, undefined, () => null, {
+      driver: driver(document.createElement("div")),
+    });
   });
 
-  it('appendToParent should throw exception', () => {
-    const instance = plusnew.render(<div />, { driver: driver(document.createElement('div')) }) as DomInstance<Element, Text>;
-    expect(() => abstract.appendToParent(instance, null)).toThrow(new Error('Cant append element to not existing parent'));
+  it("appendToParent should throw exception", () => {
+    const instance = plusnew.render(<div />, {
+      driver: driver(document.createElement("div")),
+    }) as DomInstance<Element, Text>;
+    expect(() => abstract.appendToParent(instance, null)).toThrow(
+      new Error("Cant append element to not existing parent")
+    );
   });
 
-  it('appendChild should throw exception', () => {
-    const instance = plusnew.render(<div />, { driver: driver(document.createElement('div')) }) as DomInstance<Element, Text>;
-    expect(() => abstract.appendChild(instance, null)).toThrow(new Error('Couldn\'t add child to parent'));
+  it("appendChild should throw exception", () => {
+    const instance = plusnew.render(<div />, {
+      driver: driver(document.createElement("div")),
+    }) as DomInstance<Element, Text>;
+    expect(() => abstract.appendChild(instance, null)).toThrow(
+      new Error("Couldn't add child to parent")
+    );
   });
 });
