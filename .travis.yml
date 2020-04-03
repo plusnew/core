@@ -15,5 +15,6 @@ notifications:
   email:
     recipients:
       - travis@webentwickler2-0.de
+    if: branch = master
     on_success: change
     on_failure: always
