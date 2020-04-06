@@ -26,11 +26,16 @@ export const PortalExit = component(
       );
     }
 
-    // @TODO add unregister portal
     (componentInstance.renderOptions.portals as portalRenderOption<any, any>)[
       portalName
     ] = componentInstance;
 
+    componentInstance.registerLifecycleHook("componentWillUnmount", () => {
+      delete (componentInstance.renderOptions.portals as portalRenderOption<
+        any,
+        any
+      >)[portalName];
+    });
     return null;
   }
 );

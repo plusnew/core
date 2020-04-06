@@ -1,6 +1,14 @@
 import driver from "@plusnew/driver-dom/src/driver";
 import "@plusnew/driver-dom/src/jsx";
-import plusnew, { component, PortalEntrance, PortalExit } from "../../../index";
+import plusnew, {
+  component,
+  PortalEntrance,
+  PortalExit,
+  store,
+} from "../../../index";
+
+const htmlNamespace = "http://www.w3.org/1999/xhtml";
+const svgNamespace = "http://www.w3.org/2000/svg";
 
 describe("rendering nested Portals", () => {
   let container: HTMLElement;
@@ -38,6 +46,36 @@ describe("rendering nested Portals", () => {
 
     expect(portalEntrance.tagName).toBe("DIV");
     expect(portalEntrance.childNodes.length).toBe(0);
+  });
+
+  it("when PortalExit gets unmounted, the PortalEntrance should not be usable", () => {
+    const local = store(true);
+    const Component = component("Component", () => (
+      <>
+        <div>
+          <local.Observer>
+            {(localState) => localState && <PortalExit name="foo" />}
+          </local.Observer>
+        </div>
+        <div>
+          <local.Observer>
+            {(localState) =>
+              localState === false && (
+                <PortalEntrance name="foo">
+                  <span />
+                </PortalEntrance>
+              )
+            }
+          </local.Observer>
+        </div>
+      </>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(() => local.dispatch(false)).toThrow(
+      new Error("Could not find PortalExit with name foo")
+    );
   });
 
   it("does a PortalEntrance and a PortalExit work with renderoptions", () => {
@@ -115,5 +153,24 @@ describe("rendering nested Portals", () => {
     ).toThrow(
       new Error("Could not create a PortalExit with the same name foo")
     );
+  });
+
+  it("check if div element has correct namespace", () => {
+    const Component = component("Component", () => (
+      <span>
+        <PortalExit name="foo" />
+        <svg>
+          <PortalEntrance name="foo">
+            <div />
+          </PortalEntrance>
+        </svg>
+      </span>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    const target = container.childNodes[0];
+    expect(target.childNodes[0].namespaceURI).toBe(htmlNamespace);
+    expect(target.childNodes[1].namespaceURI).toBe(svgNamespace);
   });
 });
