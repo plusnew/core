@@ -38,14 +38,12 @@ class Async extends AbstractClass<props> {
 
     let rendered = false;
 
-    const instance = this.instance as ComponentInstance<
-      props,
-      unknown,
-      unknown
-    >;
+    const instance =
+      this.instance as ComponentInstance<props, unknown, unknown>;
 
-    const asyncPromise = ((instance.props
-      .children as any)[0] as promiseGenerator)().then((content) => {
+    const asyncPromise = (
+      (instance.props.children as any)[0] as promiseGenerator
+    )().then((content) => {
       // Checks if between promise resolving, not another prop came
       // if inbetween a new render happened, then nothing should happen
       if (currentIncrement === this.increment && instance.mounted === true) {
@@ -58,7 +56,7 @@ class Async extends AbstractClass<props> {
       asyncPromise.catch((error) => {
         (instance.renderOptions.invokeGuard as invokeGuard<unknown>)(() => {
           throw new error();
-        });
+        }, instance);
       });
     }
 
@@ -82,11 +80,9 @@ class Async extends AbstractClass<props> {
    * unregisters the event
    */
   public componentWillUnmount() {
-    (this.instance as ComponentInstance<
-      props,
-      unknown,
-      unknown
-    >).storeProps.unsubscribe(this.update);
+    (
+      this.instance as ComponentInstance<props, unknown, unknown>
+    ).storeProps.unsubscribe(this.update);
   }
 }
 

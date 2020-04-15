@@ -32,20 +32,18 @@ export default function <state>(store: Store<state, any>) {
      * so that removal of correct listener is possible
      */
     private update = () => {
-      const instance = this.instance as ComponentInstance<
-        observerProps<state>,
-        unknown,
-        unknown
-      >;
-      const renderFunction = (instance.props
-        .children as any)[0] as renderFunction<state>;
+      const instance =
+        this.instance as
+        ComponentInstance<observerProps<state>, unknown, unknown>;
+      const renderFunction =
+        (instance.props.children as any)[0] as renderFunction<state>;
       if (instance.renderOptions.invokeGuard === undefined) {
         instance.render(renderFunction(store.getState()));
       } else {
         instance.renderOptions.invokeGuard(() => {
           const result = renderFunction(store.getState());
           instance.render(result);
-        });
+        }, instance);
       }
     };
 
@@ -55,11 +53,10 @@ export default function <state>(store: Store<state, any>) {
     public componentWillUnmount() {
       store.unsubscribe(this.update);
       // @FIXME this cast should be removed and typechecked
-      (this.instance as ComponentInstance<
-        observerProps<state>,
-        unknown,
-        unknown
-      >).storeProps.unsubscribe(this.update);
+      (
+        this.instance as
+        ComponentInstance<observerProps<state>, unknown, unknown>
+      ).storeProps.unsubscribe(this.update);
     }
 
     /**

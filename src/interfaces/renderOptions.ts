@@ -1,8 +1,10 @@
 import type { portalRenderOption } from "../components/portal";
 import type { IDriver } from "./driver";
+import type ComponentInstance from "../instances/types/Component/Instance";
 
 export type invokeGuard<T> = (
-  callback: () => T
+  callback: () => T,
+  component: ComponentInstance<any, any, any>
 ) => { hasError: true } | { hasError: false; result: T };
 
 export type renderOptions<HostElement, HostTextElement> = {

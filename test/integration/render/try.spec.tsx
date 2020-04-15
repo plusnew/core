@@ -1,6 +1,7 @@
 import driver from "@plusnew/driver-dom/src/driver";
 import "@plusnew/driver-dom/src/jsx";
 import plusnew, { Async, component, context, store, Try } from "../../../index";
+import ComponentInstance from "../../../src/instances/types/Component/Instance";
 
 function tick() {
   return Promise.resolve();
@@ -18,13 +19,13 @@ describe("<Try />", () => {
   it("Show error message when something went wrong", () => {
     const counter = store(0);
     const error = new Error("error");
-    const catchSpy = jasmine.createSpy("catchSpy");
+    const catchSpy = jest.fn();
 
     const Component = component("Component", () => (
       <counter.Observer>
         {(counterState) => (
           <Try
-            catch={catchSpy.and.callFake(() => (
+            catch={catchSpy.mockImplementation(() => (
               <div>{counterState}</div>
             ))}
           >
@@ -44,7 +45,10 @@ describe("<Try />", () => {
 
     counter.dispatch(1);
 
-    expect(catchSpy).toHaveBeenCalledWith(error);
+    expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
+    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
+      Component
+    );
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
   });
@@ -77,13 +81,13 @@ describe("<Try />", () => {
   it("Show children and then error", () => {
     const counter = store(0);
     const error = new Error("error");
-    const catchSpy = jasmine.createSpy("catchSpy");
+    const catchSpy = jest.fn();
 
     const Component = component("Component", () => (
       <counter.Observer>
         {(counterState) => (
           <Try
-            catch={catchSpy.and.callFake(() => (
+            catch={catchSpy.mockImplementation(() => (
               <div>{counterState}</div>
             ))}
           >
@@ -106,7 +110,8 @@ describe("<Try />", () => {
 
     counter.dispatch(1);
 
-    expect(catchSpy).toHaveBeenCalledWith(error);
+    expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
+    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(Try);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
   });
@@ -114,11 +119,11 @@ describe("<Try />", () => {
   it("Show children and then error when at observer something went wrong", () => {
     const counter = store(0);
     const error = new Error("error");
-    const catchSpy = jasmine.createSpy("catchSpy");
+    const catchSpy = jest.fn();
 
     const Component = component("Component", () => (
       <Try
-        catch={catchSpy.and.callFake(() => (
+        catch={catchSpy.mockImplementation(() => (
           <div></div>
         ))}
       >
@@ -143,7 +148,10 @@ describe("<Try />", () => {
 
     counter.dispatch(1);
 
-    expect(catchSpy).toHaveBeenCalledWith(error);
+    expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
+    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
+      counter.Observer
+    );
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 
@@ -201,13 +209,13 @@ describe("<Try />", () => {
   it("Show error and then still error, when props change", () => {
     const counter = store(0);
     const error = new Error("error");
-    const catchSpy = jasmine.createSpy("catchSpy");
+    const catchSpy = jest.fn();
 
     const Component = component("Component", () => (
       <counter.Observer>
         {(counterState) => (
           <Try
-            catch={catchSpy.and.callFake(() => (
+            catch={catchSpy.mockImplementation(() => (
               <div>{counterState}</div>
             ))}
           >
@@ -230,14 +238,15 @@ describe("<Try />", () => {
 
     counter.dispatch(1);
 
-    expect(catchSpy).toHaveBeenCalledWith(error);
+    expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
+    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(Try);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
   });
 
   it("Show error when in nested component something went wrong", () => {
     const error = new Error("error");
-    const catchSpy = jasmine.createSpy("catchSpy");
+    const catchSpy = jest.fn();
 
     const NestedComponent = component("NestedComponent", () => {
       throw error;
@@ -245,7 +254,7 @@ describe("<Try />", () => {
 
     const Component = component("Component", () => (
       <Try
-        catch={catchSpy.and.callFake(() => (
+        catch={catchSpy.mockImplementation(() => (
           <div />
         ))}
       >
@@ -255,14 +264,17 @@ describe("<Try />", () => {
 
     plusnew.render(<Component />, { driver: driver(container) });
 
-    expect(catchSpy).toHaveBeenCalledWith(error);
+    expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
+    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
+      NestedComponent
+    );
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 
   it("Show error when in deeply nested component something went wrong", () => {
     const error = new Error("error");
-    const catchSpy = jasmine.createSpy("catchSpy");
+    const catchSpy = jest.fn();
 
     const NestedComponent = component("NestedComponent", () => (
       <>
@@ -278,7 +290,7 @@ describe("<Try />", () => {
 
     const Component = component("Component", () => (
       <Try
-        catch={catchSpy.and.callFake(() => (
+        catch={catchSpy.mockImplementation(() => (
           <div />
         ))}
       >
@@ -288,7 +300,10 @@ describe("<Try />", () => {
 
     plusnew.render(<Component />, { driver: driver(container) });
 
-    expect(catchSpy).toHaveBeenCalledWith(error);
+    expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
+    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
+      DeeplyNestedComponent
+    );
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
@@ -296,7 +311,7 @@ describe("<Try />", () => {
   it("Show error when in nested component something went wrong", () => {
     const counter = store(0);
     const error = new Error("error");
-    const catchSpy = jasmine.createSpy("catchSpy");
+    const catchSpy = jest.fn();
 
     const NestedComponent = component("NestedComponent", () => (
       <counter.Observer>
@@ -311,7 +326,7 @@ describe("<Try />", () => {
 
     const Component = component("Component", () => (
       <Try
-        catch={catchSpy.and.callFake(() => (
+        catch={catchSpy.mockImplementation(() => (
           <div />
         ))}
       >
@@ -327,18 +342,21 @@ describe("<Try />", () => {
 
     counter.dispatch(1);
 
-    expect(catchSpy).toHaveBeenCalledWith(error);
+    expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
+    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
+      NestedComponent
+    );
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 
   it("Show error when in deeply nested component something went wrong", () => {
     const counter = store(0);
     const error = new Error("error");
-    const catchSpy = jasmine.createSpy("catchSpy");
+    const catchSpy = jest.fn();
 
     const Component = component("Component", () => (
       <Try
-        catch={catchSpy.and.callFake(() => (
+        catch={catchSpy.mockImplementation(() => (
           <div />
         ))}
       >
@@ -369,7 +387,10 @@ describe("<Try />", () => {
 
     counter.dispatch(1);
 
-    expect(catchSpy).toHaveBeenCalledWith(error);
+    expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
+    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
+      DeeplyNestedComponent
+    );
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 
@@ -378,7 +399,7 @@ describe("<Try />", () => {
       const counter = store(0);
       const counterContext = context<number, number>();
       const error = new Error("error");
-      const catchSpy = jasmine.createSpy("catchSpy");
+      const catchSpy = jest.fn();
 
       const NestedComponent = component("NestedComponent", () => (
         <counterContext.Consumer>
@@ -393,7 +414,7 @@ describe("<Try />", () => {
 
       const Component = component("Component", () => (
         <Try
-          catch={catchSpy.and.callFake(() => (
+          catch={catchSpy.mockImplementation(() => (
             <div />
           ))}
         >
@@ -420,7 +441,13 @@ describe("<Try />", () => {
 
       counter.dispatch(1);
 
-      expect(catchSpy).toHaveBeenCalledWith(error);
+      expect(catchSpy).toHaveBeenCalledWith(
+        error,
+        expect.any(ComponentInstance)
+      );
+      expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
+        counterContext.Consumer
+      );
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     });
 
@@ -428,7 +455,7 @@ describe("<Try />", () => {
       const counter = store(0);
       const counterContext = context<number, number>();
       const error = new Error("error");
-      const catchSpy = jasmine.createSpy("catchSpy");
+      const catchSpy = jest.fn();
 
       const Component = component("Component", () => (
         <counter.Observer>
@@ -438,7 +465,7 @@ describe("<Try />", () => {
               dispatch={counter.dispatch}
             >
               <Try
-                catch={catchSpy.and.callFake(() => (
+                catch={catchSpy.mockImplementation(() => (
                   <div />
                 ))}
               >
@@ -472,7 +499,13 @@ describe("<Try />", () => {
 
       counter.dispatch(1);
 
-      expect(catchSpy).toHaveBeenCalledWith(error);
+      expect(catchSpy).toHaveBeenCalledWith(
+        error,
+        expect.any(ComponentInstance)
+      );
+      expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
+        DeeplyNestedComponent
+      );
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     });
   });

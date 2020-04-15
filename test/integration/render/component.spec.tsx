@@ -364,20 +364,20 @@ describe("rendering nested components", () => {
 
     const MainComponentElement = <MainComponent />;
 
-    const mainComponent = plusnew.render(MainComponentElement, {
-      createChildrenComponents: false,
-      driver: driver(container),
-    }) as ComponentInstance<any, Element, Text>;
+    const mainComponent =
+      plusnew.render(MainComponentElement, {
+        createChildrenComponents: false,
+        driver: driver(container),
+      }) as ComponentInstance<any, Element, Text>;
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
-    const nestedComponent = ((mainComponent.rendered as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as FragmentInstance<Element, Text>)
-      .rendered[0] as ComponentInstance<any, Element, Text>;
+    const nestedComponent =
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered[0] as ComponentInstance<any, Element, Text>;
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
 
@@ -414,23 +414,25 @@ describe("rendering nested components", () => {
 
     const MainComponentElement = <MainComponent />;
 
-    const mainComponent = plusnew.render(MainComponentElement, {
-      createChildrenComponents: false,
-      driver: driver(container),
-    }) as ComponentInstance<any, Element, Text>;
+    const mainComponent =
+      plusnew.render(MainComponentElement, {
+        createChildrenComponents: false,
+        driver: driver(container),
+      }) as ComponentInstance<any, Element, Text>;
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
-    const nestedComponent = ((mainComponent.rendered as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as FragmentInstance<Element, Text>)
-      .rendered[0] as ComponentInstance<any, Element, Text>;
+    const nestedComponent =
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered[0] as ComponentInstance<any, Element, Text>;
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered.length
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered.length
     ).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
@@ -442,17 +444,22 @@ describe("rendering nested components", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered.length
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered.length
     ).toBe(2);
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered[0] instanceof
-        PlaceholderInstance
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered[0] instanceof PlaceholderInstance
     ).toBe(true);
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered[0]
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered[0]
     ).not.toBe(nestedComponent);
   });
 
@@ -476,23 +483,25 @@ describe("rendering nested components", () => {
 
     const MainComponentElement = <MainComponent />;
 
-    const mainComponent = plusnew.render(MainComponentElement, {
-      createChildrenComponents: false,
-      driver: driver(container),
-    }) as ComponentInstance<any, Element, Text>;
+    const mainComponent =
+      plusnew.render(MainComponentElement, {
+        createChildrenComponents: false,
+        driver: driver(container),
+      }) as ComponentInstance<any, Element, Text>;
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
-    const nestedComponent = ((mainComponent.rendered as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as FragmentInstance<Element, Text>)
-      .rendered[1] as ComponentInstance<any, Element, Text>;
+    const nestedComponent =
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered[1] as ComponentInstance<any, Element, Text>;
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered.length
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered.length
     ).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
@@ -504,13 +513,16 @@ describe("rendering nested components", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>)
-        .rendered[0] as ComponentInstance<any, Element, Text>
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered[0] as ComponentInstance<any, Element, Text>
     ).toBe(nestedComponent);
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered.length
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered.length
     ).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
@@ -1367,11 +1379,10 @@ describe("rendering nested components", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     expect(componentWillUnmountSpy.calls.count()).toBe(0);
 
-    const nestedComponentInstance = ((mainInstance as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as ComponentInstance<any, Element, Text>).rendered;
+    const nestedComponentInstance = (
+      (mainInstance as ComponentInstance<any, Element, Text>).rendered as
+      ComponentInstance<any, Element, Text>
+    ).rendered;
 
     local.dispatch(false);
 
@@ -1411,11 +1422,10 @@ describe("rendering nested components", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     expect(componentWillUnmountSpy.calls.count()).toBe(0);
 
-    const nestedComponentInstance = ((mainInstance as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as ComponentInstance<any, Element, Text>).rendered;
+    const nestedComponentInstance = (
+      (mainInstance as ComponentInstance<any, Element, Text>).rendered as
+      ComponentInstance<any, Element, Text>
+    ).rendered;
 
     local.dispatch(false);
 
