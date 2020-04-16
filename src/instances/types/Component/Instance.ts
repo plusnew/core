@@ -72,22 +72,42 @@ export default class ComponentInstance<
    * is needed for dispatching while rendering
    */
   public initialiseNestedElements() {
-    this.applicationInstance =
-      new (this.type as
-        ComponentContainer<componentProps, HostElement, HostTextElement>)(
-        this.props,
-        this
-      ) as Component<componentProps, HostElement, HostTextElement>;
+    this.applicationInstance = new (this.type as ComponentContainer<
+      componentProps,
+      HostElement,
+      HostTextElement
+    >)(this.props, this) as Component<
+      componentProps,
+      HostElement,
+      HostTextElement
+    >;
     this.executeUserspace();
   }
 
   public executeUserspace() {
-    this.render(
-      (
-        this.applicationInstance as
-        Component<componentProps, HostElement, HostTextElement>
-      ).render(this.storeProps.Observer, this)
-    );
+    const invokeGuard = this.renderOptions.invokeGuard;
+    if (invokeGuard) {
+      const invokeResult = invokeGuard(
+        () =>
+          (this.applicationInstance as Component<
+            componentProps,
+            HostElement,
+            HostTextElement
+          >).render(this.storeProps.Observer, this),
+        this
+      );
+      if (invokeResult.hasError == false) {
+        this.render(invokeResult.result);
+      }
+    } else {
+      this.render(
+        (this.applicationInstance as Component<
+          componentProps,
+          HostElement,
+          HostTextElement
+        >).render(this.storeProps.Observer, this)
+      );
+    }
     this.executeLifecycleHooks("componentDidMount");
   }
 
@@ -122,9 +142,10 @@ export default class ComponentInstance<
   }
 
   public getLastIntrinsicInstance() {
-    return (
-      this.rendered as Instance<HostElement, HostTextElement>
-    ).getLastIntrinsicInstance();
+    return (this.rendered as Instance<
+      HostElement,
+      HostTextElement
+    >).getLastIntrinsicInstance();
   }
 
   /**
@@ -145,10 +166,11 @@ export default class ComponentInstance<
    * removes the children from the dom
    */
   public remove(prepareRemoveSelf: boolean) {
-    (
-      this.applicationInstance as
-      Component<componentProps, HostElement, HostTextElement>
-    ).componentWillUnmount(this.props, this);
+    (this.applicationInstance as Component<
+      componentProps,
+      HostElement,
+      HostTextElement
+    >).componentWillUnmount(this.props, this);
     this.executeLifecycleHooks("componentWillUnmount");
     this.mounted = false;
 

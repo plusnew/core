@@ -12,7 +12,7 @@ export type observerProps<state> = {
 export default function <state>(store: Store<state, any>) {
   return class Observer extends AbstractClass<observerProps<state>> {
     instance?: ComponentInstance<observerProps<state>, unknown, unknown>;
-
+    static displayName = "Observer";
     public render(
       _props: any,
       instance: ComponentInstance<observerProps<state>, unknown, unknown>
@@ -32,11 +32,13 @@ export default function <state>(store: Store<state, any>) {
      * so that removal of correct listener is possible
      */
     private update = () => {
-      const instance =
-        this.instance as
-        ComponentInstance<observerProps<state>, unknown, unknown>;
-      const renderFunction =
-        (instance.props.children as any)[0] as renderFunction<state>;
+      const instance = this.instance as ComponentInstance<
+        observerProps<state>,
+        unknown,
+        unknown
+      >;
+      const renderFunction = (instance.props
+        .children as any)[0] as renderFunction<state>;
       if (instance.renderOptions.invokeGuard === undefined) {
         instance.render(renderFunction(store.getState()));
       } else {
@@ -53,10 +55,11 @@ export default function <state>(store: Store<state, any>) {
     public componentWillUnmount() {
       store.unsubscribe(this.update);
       // @FIXME this cast should be removed and typechecked
-      (
-        this.instance as
-        ComponentInstance<observerProps<state>, unknown, unknown>
-      ).storeProps.unsubscribe(this.update);
+      (this.instance as ComponentInstance<
+        observerProps<state>,
+        unknown,
+        unknown
+      >).storeProps.unsubscribe(this.update);
     }
 
     /**

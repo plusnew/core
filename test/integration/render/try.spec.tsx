@@ -46,9 +46,7 @@ describe("<Try />", () => {
     counter.dispatch(1);
 
     expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
-    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
-      Component
-    );
+    expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(Try);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
   });
@@ -344,7 +342,7 @@ describe("<Try />", () => {
 
     expect(catchSpy).toHaveBeenCalledWith(error, expect.any(ComponentInstance));
     expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
-      NestedComponent
+      counter.Observer
     );
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
@@ -564,6 +562,53 @@ describe("<Try />", () => {
 
     await tick();
     await tick();
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+  });
+
+  it("observer with siblings", () => {
+    const local = store("");
+
+    const NestedComponent = component("NestedComponent", () => <span />);
+    const Component = component("Component", () => (
+      <Try catch={() => <div />}>
+        {() => [
+          <span />,
+          <local.Observer>
+            {() => {
+              throw new Error();
+            }}
+          </local.Observer>,
+          <NestedComponent />,
+        ]}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+  });
+
+  it("component with siblings", () => {
+    const NestedComponent = component("NestedComponent", () => {
+      throw new Error();
+    });
+    const AnotherNestedComponent = component("NestedComponent", () => <span />);
+    const Component = component("Component", () => (
+      <Try catch={() => <div />}>
+        {() => (
+          <>
+            <span />
+            <NestedComponent />
+            <AnotherNestedComponent />
+          </>
+        )}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");

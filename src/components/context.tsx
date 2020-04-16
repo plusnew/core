@@ -45,10 +45,11 @@ function context<stateType, actionType>(): contextEntity<
       throw new Error("Could not find Provider");
     }
 
-    return (
-      providerInstance as
-      ComponentInstance<providerProps<stateType, actionType>, unknown, unknown>
-    );
+    return providerInstance as ComponentInstance<
+      providerProps<stateType, actionType>,
+      unknown,
+      unknown
+    >;
   };
 
   const result: contextEntity<stateType, actionType> = {
@@ -68,19 +69,16 @@ function context<stateType, actionType>(): contextEntity<
       >;
 
       private getRenderPropsResult() {
-        const [renderProps]: [renderProps<stateType, actionType>] =
-          (
-            this.instance as
-            ComponentInstance<
-              consumerProps<stateType, actionType>,
-              unknown,
-              unknown
-            >
-          ).props.children as any;
-        const providerPropsState = (
-          this.providerPropsStore as
-          Store<providerProps<stateType, actionType>, any>
-        ).getState();
+        const [renderProps]: [renderProps<stateType, actionType>] = (this
+          .instance as ComponentInstance<
+          consumerProps<stateType, actionType>,
+          unknown,
+          unknown
+        >).props.children as any;
+        const providerPropsState = (this.providerPropsStore as Store<
+          providerProps<stateType, actionType>,
+          any
+        >).getState();
         return renderProps(
           providerPropsState.state,
           providerPropsState.dispatch
@@ -88,13 +86,11 @@ function context<stateType, actionType>(): contextEntity<
       }
 
       private update = () => {
-        const instance =
-          this.instance as
-          ComponentInstance<
-            consumerProps<stateType, actionType>,
-            unknown,
-            unknown
-          >;
+        const instance = this.instance as ComponentInstance<
+          consumerProps<stateType, actionType>,
+          unknown,
+          unknown
+        >;
 
         if (instance.renderOptions.invokeGuard === undefined) {
           instance.render(this.getRenderPropsResult());
@@ -113,10 +109,10 @@ function context<stateType, actionType>(): contextEntity<
         this.instance = componentInstance;
 
         this.providerPropsStore = findProvider(componentInstance).storeProps;
-        (
-          this.providerPropsStore as
-          Store<providerProps<stateType, actionType>, any>
-        ).subscribe(this.update);
+        (this.providerPropsStore as Store<
+          providerProps<stateType, actionType>,
+          any
+        >).subscribe(this.update);
         componentInstance.storeProps.subscribe(this.update);
 
         return this.getRenderPropsResult();
@@ -125,10 +121,10 @@ function context<stateType, actionType>(): contextEntity<
         _Props: consumerProps<stateType, actionType>,
         componentInstance: ComponentInstance<any, unknown, unknown>
       ) {
-        (
-          this.providerPropsStore as
-          Store<providerProps<stateType, actionType>, any>
-        ).unsubscribe(this.update);
+        (this.providerPropsStore as Store<
+          providerProps<stateType, actionType>,
+          any
+        >).unsubscribe(this.update);
         componentInstance.storeProps.unsubscribe(this.update);
       }
     },
