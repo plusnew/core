@@ -6,7 +6,10 @@ import type { invokeGuard } from "../interfaces/renderOptions";
 type renderFunction = () => ApplicationElement;
 
 type props = {
-  catch: (Error: any) => ApplicationElement;
+  catch: (
+    Error: any,
+    componentInstance: ComponentInstance<any, any, any>
+  ) => ApplicationElement;
   children: renderFunction;
 };
 
@@ -14,7 +17,10 @@ export default class Try extends Component<props> {
   static displayName = "Try";
 
   private instance?: ComponentInstance<props, any, any>;
-  private errored: any = null;
+  private errored: null | {
+    error: any;
+    component: ComponentInstance<any, any, any>;
+  } = null;
 
   constructor(
     props: props,
@@ -36,13 +42,15 @@ export default class Try extends Component<props> {
             >).render(componentInstance.storeProps.Observer, componentInstance)
           );
           componentInstance.executeLifecycleHooks("componentDidMount");
-        }
+        },
+        componentInstance
       );
     };
   }
 
   public invokeGuard<T>(
-    callback: () => T
+    callback: () => T,
+    component: ComponentInstance<any, any, any>
   ): { hasError: true; error: any } | { hasError: false; result: T } {
     try {
       return {
@@ -50,7 +58,11 @@ export default class Try extends Component<props> {
         result: callback(),
       };
     } catch (error) {
-      this.errored = error;
+      this.errored = {
+        error,
+        component,
+      };
+
       this.update();
 
       return {
@@ -102,13 +114,19 @@ export default class Try extends Component<props> {
       try {
         result = ((instance.props.children as any)[0] as renderFunction)();
       } catch (error) {
-        this.errored = error;
+        this.errored = {
+          error,
+          component: this.instance as ComponentInstance<any, any, any>,
+        };
         this.setInvokeGuard();
 
-        result = instance.props.catch(this.errored);
+        result = instance.props.catch(
+          this.errored.error,
+          this.errored.component
+        );
       }
     } else {
-      result = instance.props.catch(this.errored);
+      result = instance.props.catch(this.errored.error, this.errored.component);
     }
 
     instance.render(result);
@@ -129,10 +147,14 @@ export default class Try extends Component<props> {
     try {
       return ((Props.getState().children as any)[0] as renderFunction)();
     } catch (error) {
-      this.errored = error;
+      this.errored = {
+        error,
+        component: instance,
+      };
+
       this.setInvokeGuard();
 
-      return Props.getState().catch(this.errored);
+      return Props.getState().catch(this.errored.error, this.errored.component);
     }
   }
 }

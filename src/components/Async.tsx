@@ -58,7 +58,7 @@ class Async extends AbstractClass<props> {
       asyncPromise.catch((error) => {
         (instance.renderOptions.invokeGuard as invokeGuard<unknown>)(() => {
           throw new error();
-        });
+        }, instance);
       });
     }
 

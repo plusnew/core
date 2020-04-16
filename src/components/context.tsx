@@ -98,7 +98,7 @@ function context<stateType, actionType>(): contextEntity<
           instance.renderOptions.invokeGuard(() => {
             const result = this.getRenderPropsResult();
             instance.render(result);
-          });
+          }, instance);
         }
       };
 

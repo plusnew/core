@@ -85,13 +85,29 @@ export default class ComponentInstance<
   }
 
   public executeUserspace() {
-    this.render(
-      (this.applicationInstance as Component<
-        componentProps,
-        HostElement,
-        HostTextElement
-      >).render(this.storeProps.Observer, this)
-    );
+    const invokeGuard = this.renderOptions.invokeGuard;
+    if (invokeGuard) {
+      const invokeResult = invokeGuard(
+        () =>
+          (this.applicationInstance as Component<
+            componentProps,
+            HostElement,
+            HostTextElement
+          >).render(this.storeProps.Observer, this),
+        this
+      );
+      if (invokeResult.hasError == false) {
+        this.render(invokeResult.result);
+      }
+    } else {
+      this.render(
+        (this.applicationInstance as Component<
+          componentProps,
+          HostElement,
+          HostTextElement
+        >).render(this.storeProps.Observer, this)
+      );
+    }
     this.executeLifecycleHooks("componentDidMount");
   }
 

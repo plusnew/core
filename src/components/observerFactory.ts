@@ -12,7 +12,7 @@ export type observerProps<state> = {
 export default function <state>(store: Store<state, any>) {
   return class Observer extends AbstractClass<observerProps<state>> {
     instance?: ComponentInstance<observerProps<state>, unknown, unknown>;
-
+    static displayName = "Observer";
     public render(
       _props: any,
       instance: ComponentInstance<observerProps<state>, unknown, unknown>
@@ -45,7 +45,7 @@ export default function <state>(store: Store<state, any>) {
         instance.renderOptions.invokeGuard(() => {
           const result = renderFunction(store.getState());
           instance.render(result);
-        });
+        }, instance);
       }
     };
 
