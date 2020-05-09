@@ -233,22 +233,21 @@ Return as a promise, and it will show the loading content, until the promise got
 For example, you can implement that a dom element gets created after a period of time, or you can lazyload another module and display it when it got loaded.
 The given Promise should get resolved with an JSX-Element you want to show.
 
-Note: it is necessary that the promise gets resolved and not rejected, it is recommended to catch your own promise.
 
 ```ts
 import plusnew, { component, Async } from '@plusnew/core';
 
-const lazyModule = () => import('path/to/lazy/module')
-                           .then(module => <module.default />)
-                           .catch(() => <span>Could not load the module</span>)
 
 export default component(
   'ComponentName',
   () =>
     <Async
       pendingIndicator={<span>Loading asynchronously a module</span>}
+      constructor={() => import('path/to/lazy/module')} // This function will only be called once, if you want to call it another time than destroy the Async-Component with a different key property
     >
-      {lazyModule}
+      {module => // The given parameter is the value of your resolved promise
+        <module.default />
+      }
     </Async>
 );
 ```
