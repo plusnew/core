@@ -323,7 +323,7 @@ describe("<Async />", () => {
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("foo");
   });
 
-  it("When promise gets rejected, the exception will bubble to the try component", async () => {
+  it("When promise gets rejected, the exception will be unhandled and a unhandledrejection should be raised", async () => {
     const unhandledrejectionSpy = jest.fn();
     window.addEventListener("unhandledrejection", unhandledrejectionSpy);
 
@@ -343,6 +343,7 @@ describe("<Async />", () => {
 
     await tick(5);
 
+    // @TODO Jest doesn't let me do it like that, i have to figure out how to do it instead
     // expect(unhandledrejectionSpy).toHaveBeenCalledTimes(1);
     // expect(unhandledrejectionSpy).toHaveBeenCalledWith("foo");
 
