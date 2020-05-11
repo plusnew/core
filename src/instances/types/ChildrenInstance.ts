@@ -26,7 +26,11 @@ export default abstract class ChildrenInstance<
   abstract getChildrenPredeccessor(): predecessor<HostElement, HostTextElement>;
 
   public addChildren() {
-    for (let i = 0; i < this.props.children.length; i += 1) {
+    for (
+      let i = 0;
+      i < this.props.children.length && this.errored === false;
+      i += 1
+    ) {
       if (this.rendered[i] === undefined) {
         const instance = factory(
           this.props.children[i],
@@ -35,7 +39,14 @@ export default abstract class ChildrenInstance<
           this.renderOptions
         );
         this.rendered.push(instance);
-        instance.initialiseNestedElements();
+        this.errored = instance.errored;
+        if (this.errored) {
+          break;
+        } else {
+          instance.initialiseNestedElements();
+
+          this.errored = instance.errored;
+        }
       }
     }
   }

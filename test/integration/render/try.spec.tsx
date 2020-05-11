@@ -547,8 +547,10 @@ describe("<Try />", () => {
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
   });
   it("<Async /> reject", async () => {
+    const catchSpy = jest.fn(() => <div />);
+
     const Component = component("Component", () => (
-      <Try catch={() => <div />}>
+      <Try catch={catchSpy}>
         {() => (
           <Async pendingIndicator={<span />}>{() => Promise.reject()}</Async>
         )}
@@ -565,14 +567,16 @@ describe("<Try />", () => {
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
   });
 
   it("observer with siblings", () => {
     const local = store("");
 
+    const catchSpy = jest.fn(() => <div />);
     const NestedComponent = component("NestedComponent", () => <span />);
     const Component = component("Component", () => (
-      <Try catch={() => <div />}>
+      <Try catch={catchSpy}>
         {() => [
           <span />,
           <local.Observer>
@@ -589,15 +593,21 @@ describe("<Try />", () => {
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("component with siblings", () => {
+  it("component with siblings component", () => {
     const NestedComponent = component("NestedComponent", () => {
       throw new Error();
     });
-    const AnotherNestedComponent = component("NestedComponent", () => <span />);
+    const catchSpy = jest.fn(() => <div />);
+    const nestedComponentRenderSpy = jest.fn(() => <span />);
+    const AnotherNestedComponent = component(
+      "NestedComponent",
+      nestedComponentRenderSpy
+    );
     const Component = component("Component", () => (
-      <Try catch={() => <div />}>
+      <Try catch={catchSpy}>
         {() => (
           <>
             <span />
@@ -612,5 +622,154 @@ describe("<Try />", () => {
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
+    expect(nestedComponentRenderSpy).toHaveBeenCalledTimes(0);
+  });
+
+  it("component with siblings dom", () => {
+    const NestedComponent = component("NestedComponent", () => {
+      throw new Error();
+    });
+    const catchSpy = jest.fn(() => <div />);
+
+    const Component = component("Component", () => (
+      <Try catch={catchSpy}>
+        {() => (
+          <>
+            <span />
+            <NestedComponent />
+            <span />
+          </>
+        )}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("component with siblings inside an nested array", () => {
+    const NestedComponent = component("NestedComponent", () => {
+      throw new Error();
+    });
+    const catchSpy = jest.fn(() => <div />);
+
+    const Component = component("Component", () => (
+      <Try catch={catchSpy}>
+        {() => (
+          <>
+            <span />
+            {[<NestedComponent />]}
+            <span />
+          </>
+        )}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("component with siblings inside an nested fragment", () => {
+    const NestedComponent = component("NestedComponent", () => {
+      throw new Error();
+    });
+    const catchSpy = jest.fn(() => <div />);
+
+    const Component = component("Component", () => (
+      <Try catch={catchSpy}>
+        {() => (
+          <>
+            <span />
+            <>
+              <NestedComponent />
+            </>
+            <span />
+          </>
+        )}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("component with siblings inside a containered array", () => {
+    const NestedComponent = component("NestedComponent", () => {
+      throw new Error();
+    });
+    const catchSpy = jest.fn(() => <div />);
+
+    const Component = component("Component", () => (
+      <Try catch={catchSpy}>
+        {() => [<span />, <NestedComponent />, <span />]}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("deeply nested component with siblings dom", () => {
+    const DeeplyNestedComponent = component("NestedComponent", () => {
+      throw new Error();
+    });
+
+    const NestedComponent = component("NestedComponent", () => (
+      <DeeplyNestedComponent />
+    ));
+
+    const catchSpy = jest.fn(() => <div />);
+
+    const Component = component("Component", () => (
+      <Try catch={catchSpy}>
+        {() => [<span />, <NestedComponent />, <span />]}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("component with siblings nested dom", () => {
+    const NestedComponent = component("NestedComponent", () => {
+      throw new Error();
+    });
+    const catchSpy = jest.fn(() => <div />);
+
+    const Component = component("Component", () => (
+      <Try catch={catchSpy}>
+        {() => (
+          <>
+            <span />
+            <span>
+              <NestedComponent />
+            </span>
+            <span />
+          </>
+        )}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
   });
 });

@@ -96,7 +96,9 @@ export default class ComponentInstance<
           >).render(this.storeProps.Observer, this),
         this
       );
-      if (invokeResult.hasError == false) {
+      if (invokeResult.hasError == true) {
+        this.errored = true;
+      } else {
         this.render(invokeResult.result);
       }
     } else {
@@ -132,6 +134,7 @@ export default class ComponentInstance<
         );
         this.rendered.initialiseNestedElements();
       }
+      this.errored = this.rendered.errored;
     } else {
       this.throwNotMountedError();
     }

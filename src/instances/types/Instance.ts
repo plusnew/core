@@ -20,6 +20,7 @@ export default abstract class Instance<HostElement, HostTextElement> {
   public props: ApplicationElement | Partial<props>;
   public getPredecessor: getPredeccessor<HostElement, HostTextElement>;
   public renderOptions: renderOptions<HostElement, HostTextElement>;
+  public errored = false;
 
   constructor(
     _abstractElement: ApplicationElement,
