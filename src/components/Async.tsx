@@ -1,7 +1,6 @@
 import type { Props } from "../index";
 import type ComponentInstance from "../instances/types/Component/Instance";
 import type { ApplicationElement } from "../interfaces/component";
-// import type { invokeGuard } from "../interfaces/renderOptions";
 import AbstractClass from "./AbstractClass";
 
 type renderFunction<T> = (value: T) => ApplicationElement;
