@@ -20,7 +20,7 @@ type contextEntity<state, action> = {
   findProvider: (
     instance: Instance<unknown, unknown>
   ) => {
-    state: state;
+    getState: () => state;
     dispatch: (action: action) => void;
   };
 };
@@ -132,7 +132,7 @@ function context<stateType, actionType>(): contextEntity<
       const providerInstance = findProvider(componentInstance);
 
       return {
-        state: providerInstance.props.state,
+        getState: () => providerInstance.props.state,
         dispatch: providerInstance.props.dispatch,
       };
     },
