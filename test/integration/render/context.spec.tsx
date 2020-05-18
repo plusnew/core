@@ -295,11 +295,13 @@ describe("context", () => {
     const NestedComponent = component(
       "Component",
       (_Props, componentInstance) => {
-        const { state, dispatch } = valueContext.findProvider(
+        const { getState, dispatch } = valueContext.findProvider(
           componentInstance
         );
 
-        return <span onclick={() => dispatch(state + 1)}>{state}</span>;
+        return (
+          <span onclick={() => dispatch(getState() + 1)}>{getState()}</span>
+        );
       }
     );
 
@@ -324,5 +326,39 @@ describe("context", () => {
     (container.childNodes[0] as HTMLElement).dispatchEvent(new Event("click"));
 
     expect(valueStore.getState()).toBe(1);
+  });
+
+  it("findProvider works with referencing", () => {
+    const valueStore = store(0);
+    const valueContext = context<number, number>();
+
+    const NestedComponent = component(
+      "Component",
+      (_Props, componentInstance) => {
+        const providerInstance = valueContext.findProvider(componentInstance);
+
+        providerInstance.dispatch(1);
+
+        return <span>{providerInstance.getState()}</span>;
+      }
+    );
+
+    const MainComponent = component("Component", () => (
+      <valueStore.Observer>
+        {(valueState) => (
+          <valueContext.Provider
+            state={valueState}
+            dispatch={valueStore.dispatch}
+          >
+            <NestedComponent />
+          </valueContext.Provider>
+        )}
+      </valueStore.Observer>
+    ));
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
   });
 });
