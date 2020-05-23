@@ -76,6 +76,7 @@ class Plusnew {
 export { default as Component } from "./components/AbstractClass";
 export { default as Async } from "./components/Async";
 export { default as context } from "./components/context";
+export type { Context } from "./components/context";
 export { default as component } from "./components/factory";
 export { PortalEntrance, PortalExit } from "./components/portal";
 export { default as Try } from "./components/Try";
