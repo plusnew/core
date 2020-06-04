@@ -8,6 +8,7 @@ export type ApplicationElement =
   | boolean
   | null
   | undefined
+  | Promise<ApplicationElement>
   | ApplicationElement[];
 
 export type props = {

@@ -1,4 +1,5 @@
 const Fragment = Symbol("fragment");
+const Suspense = Symbol("Suspense");
 const TypeOfPlusnew = Symbol("plusnew");
 
-export { Fragment, TypeOfPlusnew };
+export { Fragment, Suspense, TypeOfPlusnew };
