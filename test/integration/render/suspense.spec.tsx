@@ -3,6 +3,7 @@ import driver from "@plusnew/driver-dom/src/driver";
 import "@plusnew/driver-dom/src/jsx";
 import plusnew, { component, Component, Props } from "../../../index";
 import { Suspense as SuspenseSymbol } from "../../../src/util/symbols";
+import { store } from "@plusnew/core/src/index";
 
 function tick() {
   return Promise.resolve();
@@ -68,5 +69,50 @@ describe("<Suspense />", () => {
     expect(container.childNodes.length).toBe(1);
     expect(container.childNodes[0].nodeName).toBe("#text");
     expect((container.childNodes[0] as Text).textContent).toBe("foo");
+  });
+
+  it("Call suspense when promise got unmounted", async () => {
+    const local = store(true);
+    const removePromiseSpy = jest.fn();
+    class SuspenseMock extends Component<{ children: any }>
+      implements Suspense {
+      identifier = SuspenseSymbol;
+      addPromise() {
+        return removePromiseSpy();
+      }
+
+      removePromise() {
+        return null;
+      }
+
+      render(Props: Props<{ children: any }>) {
+        return <Props>{(props) => props.children}</Props>;
+      }
+    }
+
+    const promise = Promise.resolve("foo");
+    const MainComponent = component("Component", () => promise);
+
+    plusnew.render(
+      <SuspenseMock>
+        <local.Observer>{localState =>
+          localState && <MainComponent />
+        }</local.Observer>
+      </SuspenseMock>,
+      { driver: driver(container) }
+    );
+
+    expect(container.childNodes.length).toBe(0);
+    expect(removePromiseSpy).toHaveBeenCalledTimes(0);
+
+    local.dispatch(false);
+
+    expect(container.childNodes.length).toBe(0);
+    expect(removePromiseSpy).toHaveBeenCalledTimes(1);
+    expect(removePromiseSpy).toHaveBeenCalledWith(promise);
+
+    await tick();
+
+    expect(container.childNodes.length).toBe(0);
   });
 });
