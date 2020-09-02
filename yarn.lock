@@ -460,10 +460,10 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@plusnew/driver-dom@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.1.1.tgz#d2725698664ec7055dec604841ce5aa60ccc9694"
-  integrity sha512-eNHIQX64H2lOUKjSXB4zITDuBSby1AFV9ztNRwI8K3cspouhN7gDqMh1EFZFFiK9YCX0LhlY58ojCIkDgVJ6HQ==
+"@plusnew/driver-dom@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@plusnew/driver-dom/-/driver-dom-1.1.2.tgz#ef933e2e9d82f7afc353b32f2f362eb510edeb35"
+  integrity sha512-nhd5Rq9wMXR600DVPy29aYrTxONNnbVu0wWYb6CGL1814+ecVzhCyArRuaABIxNNBDIayWutLndglUvjO/hmIA==
 
 "@sinonjs/commons@^1.7.0":
   version "1.7.1"
