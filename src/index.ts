@@ -80,7 +80,7 @@ export type { Context } from "./components/context";
 export { default as component } from "./components/factory";
 export { PortalEntrance, PortalExit } from "./components/portal";
 export { default as Try } from "./components/Try";
-export { ApplicationElement } from "./interfaces/component";
+export type { ApplicationElement } from "./interfaces/component";
 export { default as store } from "./util/store";
 export type { Observer as Props, Store } from "./util/store";
 export type { ComponentContainer };
