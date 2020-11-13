@@ -546,13 +546,47 @@ describe("<Try />", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
   });
+
   it("<Async /> reject", async () => {
     const catchSpy = jest.fn(() => <div />);
 
     const Component = component("Component", () => (
       <Try catch={catchSpy}>
         {() => (
-          <Async pendingIndicator={<span />}>{() => Promise.reject()}</Async>
+          <Async
+            pendingIndicator={<span />}
+            constructor={() => Promise.reject()}
+          >
+            {() => null}
+          </Async>
+        )}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
+
+    await tick();
+    await tick();
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+  });
+
+  it("<Async /> resolve, but renderfunction exception", async () => {
+    const Component = component("Component", () => (
+      <Try catch={() => <div />}>
+        {() => (
+          <Async
+            pendingIndicator={<span />}
+            constructor={() => Promise.resolve()}
+          >
+            {() => {
+              throw new Error();
+            }}
+          </Async>
         )}
       </Try>
     ));

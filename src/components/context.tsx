@@ -14,21 +14,18 @@ type providerProps<state, action> = {
   children: ApplicationElement;
 };
 type consumerProps<state, action> = { children: renderProps<state, action> };
-type contextEntity<state, action> = {
+export type Context<state, action> = {
   Provider: ComponentContainer<providerProps<state, action>, unknown, unknown>;
   Consumer: ComponentContainer<consumerProps<state, action>, unknown, unknown>;
   findProvider: (
     instance: Instance<unknown, unknown>
   ) => {
-    state: state;
+    getState: () => state;
     dispatch: (action: action) => void;
   };
 };
 
-function context<stateType, actionType>(): contextEntity<
-  stateType,
-  actionType
-> {
+function context<stateType, actionType>(): Context<stateType, actionType> {
   class Provider extends Component<providerProps<stateType, actionType>> {
     static displayName = "Provider";
     render(Props: Props<providerProps<stateType, actionType>>) {
@@ -52,7 +49,7 @@ function context<stateType, actionType>(): contextEntity<
     >;
   };
 
-  const result: contextEntity<stateType, actionType> = {
+  const result: Context<stateType, actionType> = {
     Provider,
     Consumer: class Consumer extends Component<
       consumerProps<stateType, actionType>
@@ -132,7 +129,7 @@ function context<stateType, actionType>(): contextEntity<
       const providerInstance = findProvider(componentInstance);
 
       return {
-        state: providerInstance.props.state,
+        getState: () => providerInstance.props.state,
         dispatch: providerInstance.props.dispatch,
       };
     },

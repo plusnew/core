@@ -1,6 +1,6 @@
 import driver from "@plusnew/driver-dom/src/driver";
 import "@plusnew/driver-dom/src/jsx";
-import TextInstance from "instances/types/Text/Instance";
+import TextInstance from "../../../src/instances/types/Text/Instance";
 import plusnew, { component, store } from "../../../index";
 import type { Store } from "../../../index";
 
