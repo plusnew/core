@@ -39,14 +39,10 @@ export default abstract class ChildrenInstance<
           this.renderOptions
         );
         this.rendered.push(instance);
-        this.errored = instance.errored;
-        if (this.errored) {
-          break;
-        } else {
-          instance.initialiseNestedElements();
 
-          this.errored = instance.errored;
-        }
+        instance.initialiseNestedElements();
+
+        this.errored = instance.errored;
       }
     }
   }

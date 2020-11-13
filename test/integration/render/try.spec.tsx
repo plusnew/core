@@ -1,6 +1,6 @@
 import driver from "@plusnew/driver-dom/src/driver";
 import "@plusnew/driver-dom/src/jsx";
-import plusnew, { Async, component, context, store, Try } from "../../../index";
+import plusnew, { Async, component, context, store, Try, PortalEntrance } from "../../../index";
 import ComponentInstance from "../../../src/instances/types/Component/Instance";
 
 function tick() {
@@ -576,8 +576,10 @@ describe("<Try />", () => {
   });
 
   it("<Async /> resolve, but renderfunction exception", async () => {
+    const catchSpy = jest.fn(() => <div />);
+
     const Component = component("Component", () => (
-      <Try catch={() => <div />}>
+      <Try catch={catchSpy}>
         {() => (
           <Async
             pendingIndicator={<span />}
@@ -756,8 +758,7 @@ describe("<Try />", () => {
     expect(catchSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("deeply nested component with siblings dom", () => {
-    const DeeplyNestedComponent = component("NestedComponent", () => {
+  it("deeply nested component with siblings dom, with deeply nested components", () => {    const DeeplyNestedComponent = component("NestedComponent", () => {
       throw new Error();
     });
 
@@ -794,6 +795,28 @@ describe("<Try />", () => {
             <span>
               <NestedComponent />
             </span>
+            <span />
+          </>
+        )}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect(catchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("component with siblings portal", () => {
+    const catchSpy = jest.fn(() => <div />);
+
+    const Component = component("Component", () => (
+      <Try catch={catchSpy}>
+        {() => (
+          <>
+            <span />
+            <PortalEntrance name="not-existent"><span /></PortalEntrance>
             <span />
           </>
         )}
