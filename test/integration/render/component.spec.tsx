@@ -1443,7 +1443,11 @@ describe("rendering nested components", () => {
     const NestedComponent = component(
       "Component",
       (_Props, componentInstance) => {
-        tick().then(() => componentInstance.render(<span />));
+        tick().then(() => {
+          expect(() => componentInstance.render(<span />)).toThrow(
+            new Error("Can't render new content, the component got unmounted")
+          );
+        });
         return <div />;
       }
     );

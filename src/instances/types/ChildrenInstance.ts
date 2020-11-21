@@ -99,7 +99,7 @@ export default abstract class ChildrenInstance<
       return this.removeSelf();
     }
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
       Promise.all(result).then(() => {
         this.removeSelf();
         resolve();

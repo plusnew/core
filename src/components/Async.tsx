@@ -29,6 +29,7 @@ class Async<T> extends AbstractClass<props<T>> {
       .constructor()
       .catch((reason) => {
         errored = true;
+        /* istanbul ignore else */
         if (instance.renderOptions.invokeGuard) {
           instance.renderOptions.invokeGuard(() => {
             throw reason;
