@@ -21,7 +21,7 @@
   "homepage": "https://github.com/plusnew/core#readme",
   "dependencies": {},
   "devDependencies": {
-    "@plusnew/driver-dom": "^1.1.2",
+    "@plusnew/driver-dom": "^1.2.0",
     "@types/jest": "^26.0.15",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
