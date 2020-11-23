@@ -5,7 +5,7 @@ import type { Props } from "../../../index";
 
 async function tick(count: number) {
   for (let i = 0; i < count; i += 1) {
-    await new Promise((resolve) => resolve());
+    await new Promise<void>((resolve) => resolve());
   }
 }
 
