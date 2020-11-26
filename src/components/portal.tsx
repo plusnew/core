@@ -58,6 +58,9 @@ export const PortalEntrance = component(
         );
       };
 
+      componentInstance.getLastIntrinsicInstance =
+        componentInstance.getPredecessor; // When portalentrance gets asked, what its own hostelement it is, the predecessor of its environment should answer for it
+
       componentInstance.renderOptions.driver.setupPortal({
         portalEntrance: componentInstance,
         portalExit: (componentInstance.renderOptions
