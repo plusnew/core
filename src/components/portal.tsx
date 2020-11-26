@@ -58,6 +58,7 @@ export const PortalEntrance = component(
         );
       };
 
+      componentInstance.move = () => {};
       componentInstance.getLastIntrinsicInstance =
         componentInstance.getPredecessor; // When portalentrance gets asked, what its own hostelement it is, the predecessor of its environment should answer for it
 
