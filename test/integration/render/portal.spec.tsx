@@ -174,7 +174,7 @@ describe("rendering nested Portals", () => {
     expect(target.childNodes[1].namespaceURI).toBe(svgNamespace);
   });
 
-  it("does environment changing PortalEntrance work", () => {
+  it("does appending element after PortalEntrance work", () => {
     const toggle = store(true);
 
     const Component = component("Component", () => (
@@ -240,7 +240,7 @@ describe("rendering nested Portals", () => {
     expect((portalEntrance.childNodes[0] as SVGElement).tagName).toBe("svg");
   });
 
-  it("does environment changing PortalEntrance work", () => {
+  it("does moving PortalEntrance work", () => {
     const toggle = store(true);
 
     const Component = component("Component", () => (
@@ -250,25 +250,21 @@ describe("rendering nested Portals", () => {
             <div>
               <PortalExit name="foo" />
             </div>
-            {toggleState ? (
-              <div>
-                {[
-                  <svg />,
-                  <PortalEntrance name="foo">
-                    <span />
-                  </PortalEntrance>,
-                ]}
-              </div>
-            ) : (
-              <div>
-                {[
-                  <PortalEntrance name="foo">
-                    <span />
-                  </PortalEntrance>,
-                  <svg />,
-                ]}
-              </div>
-            )}
+            <div>
+              {toggleState
+                ? [
+                    <svg key="element" />,
+                    <PortalEntrance key="portal" name="foo">
+                      <span />
+                    </PortalEntrance>,
+                  ]
+                : [
+                    <PortalEntrance key="portal" name="foo">
+                      <span />
+                    </PortalEntrance>,
+                    <svg key="element" />,
+                  ]}
+            </div>
           </>
         )}
       </toggle.Observer>
