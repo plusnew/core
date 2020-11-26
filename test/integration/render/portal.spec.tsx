@@ -239,4 +239,74 @@ describe("rendering nested Portals", () => {
     expect(portalEntrance.childNodes.length).toBe(1);
     expect((portalEntrance.childNodes[0] as SVGElement).tagName).toBe("svg");
   });
+
+  it("does environment changing PortalEntrance work", () => {
+    const toggle = store(true);
+
+    const Component = component("Component", () => (
+      <toggle.Observer>
+        {(toggleState) => (
+          <>
+            <div>
+              <PortalExit name="foo" />
+            </div>
+            {toggleState ? (
+              <div>
+                {[
+                  <svg />,
+                  <PortalEntrance name="foo">
+                    <span />
+                  </PortalEntrance>,
+                ]}
+              </div>
+            ) : (
+              <div>
+                {[
+                  <PortalEntrance name="foo">
+                    <span />
+                  </PortalEntrance>,
+                  <svg />,
+                ]}
+              </div>
+            )}
+          </>
+        )}
+      </toggle.Observer>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    const portalExit = container.childNodes[0] as HTMLElement;
+    const portalEntrance = container.childNodes[1] as HTMLElement;
+
+    expect(container.childNodes.length).toBe(2);
+
+    expect(portalExit.tagName).toBe("DIV");
+    expect(portalExit.childNodes.length).toBe(1);
+    expect((portalExit.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
+
+    expect(portalEntrance.tagName).toBe("DIV");
+    expect(portalEntrance.childNodes.length).toBe(1);
+    expect((portalEntrance.childNodes[0] as SVGElement).tagName).toBe("svg");
+
+    toggle.dispatch(false);
+
+    expect(portalExit.tagName).toBe("DIV");
+    expect(portalExit.childNodes.length).toBe(1);
+    expect((portalExit.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
+
+    expect(portalEntrance.tagName).toBe("DIV");
+    expect(portalEntrance.childNodes.length).toBe(1);
+    expect((portalEntrance.childNodes[0] as SVGElement).tagName).toBe("svg");
+
+    toggle.dispatch(true);
+
+    expect(portalExit.tagName).toBe("DIV");
+    expect(portalExit.childNodes.length).toBe(1);
+    expect((portalExit.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
+
+    expect(portalEntrance.tagName).toBe("DIV");
+    expect(portalEntrance.childNodes.length).toBe(1);
+    expect((portalEntrance.childNodes[0] as SVGElement).tagName).toBe("svg");
+  });
 });
