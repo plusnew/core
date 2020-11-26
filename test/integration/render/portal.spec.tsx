@@ -253,12 +253,14 @@ describe("rendering nested Portals", () => {
             <div>
               {toggleState
                 ? [
+                    <ul key="anchor" />,
                     <svg key="element" />,
                     <PortalEntrance key="portal" name="foo">
                       <span />
                     </PortalEntrance>,
                   ]
                 : [
+                    <ul key="anchor" />,
                     <PortalEntrance key="portal" name="foo">
                       <span />
                     </PortalEntrance>,
@@ -282,8 +284,11 @@ describe("rendering nested Portals", () => {
     expect((portalExit.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     expect(portalEntrance.tagName).toBe("DIV");
-    expect(portalEntrance.childNodes.length).toBe(1);
-    expect((portalEntrance.childNodes[0] as SVGElement).tagName).toBe("svg");
+    expect(portalEntrance.childNodes.length).toBe(2);
+    expect((portalEntrance.childNodes[0] as HTMLUListElement).tagName).toBe(
+      "UL"
+    );
+    expect((portalEntrance.childNodes[1] as SVGElement).tagName).toBe("svg");
 
     toggle.dispatch(false);
 
@@ -292,8 +297,11 @@ describe("rendering nested Portals", () => {
     expect((portalExit.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     expect(portalEntrance.tagName).toBe("DIV");
-    expect(portalEntrance.childNodes.length).toBe(1);
-    expect((portalEntrance.childNodes[0] as SVGElement).tagName).toBe("svg");
+    expect(portalEntrance.childNodes.length).toBe(2);
+    expect((portalEntrance.childNodes[0] as HTMLUListElement).tagName).toBe(
+      "UL"
+    );
+    expect((portalEntrance.childNodes[1] as SVGElement).tagName).toBe("svg");
 
     toggle.dispatch(true);
 
@@ -302,7 +310,10 @@ describe("rendering nested Portals", () => {
     expect((portalExit.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     expect(portalEntrance.tagName).toBe("DIV");
-    expect(portalEntrance.childNodes.length).toBe(1);
-    expect((portalEntrance.childNodes[0] as SVGElement).tagName).toBe("svg");
+    expect(portalEntrance.childNodes.length).toBe(2);
+    expect((portalEntrance.childNodes[0] as HTMLUListElement).tagName).toBe(
+      "UL"
+    );
+    expect((portalEntrance.childNodes[1] as SVGElement).tagName).toBe("svg");
   });
 });
