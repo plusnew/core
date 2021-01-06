@@ -38,6 +38,7 @@ export type IDriver<HostElement, HostTextElement> = {
       HostInstance: HostInstance<HostElement, HostTextElement>
     ) => HostElement;
     remove: (HostInstance: HostInstance<HostElement, HostTextElement>) => void;
+    dealloc: (HostInstance: HostInstance<HostElement, HostTextElement>) => void;
     setAttribute: (
       HostInstance: HostInstance<HostElement, HostTextElement>,
       attributeName: string,

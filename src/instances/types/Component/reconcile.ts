@@ -68,7 +68,7 @@ export default <HostElement, HostTextElement>(
   const rendered = instance.rendered as Instance<HostElement, HostTextElement>;
   const newChildrenInstance = reconciler.update(newAbstractChildren, rendered);
   if (newChildrenInstance !== rendered) {
-    rendered.remove(true);
+    rendered.remove(false);
     instance.rendered = newChildrenInstance;
     instance.rendered.initialiseNestedElements();
   }

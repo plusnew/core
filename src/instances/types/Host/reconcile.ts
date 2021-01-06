@@ -16,7 +16,7 @@ export default function <HostElement, HostTextElement>(
             instance.rendered[i]
           );
           if (newInstance !== instance.rendered[i]) {
-            instance.rendered[i].remove(true);
+            instance.rendered[i].remove(false);
             instance.rendered[i] = newInstance;
             instance.rendered[i].initialiseNestedElements();
           }
@@ -39,7 +39,7 @@ export default function <HostElement, HostTextElement>(
   }
 
   while (instance.rendered.length > props.children.length) {
-    instance.rendered[props.children.length].remove(true);
+    instance.rendered[props.children.length].remove(false);
     instance.rendered.splice(props.children.length, 1);
   }
 

@@ -20,7 +20,6 @@ export default class FragmentInstance<
   public nodeType = types.Fragment as const;
   public type = types.Fragment;
   public props: props;
-  public executeChildrenElementWillUnmount = true;
 
   constructor(
     abstractElement: PlusnewAbstractElement,

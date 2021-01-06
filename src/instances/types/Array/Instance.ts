@@ -17,7 +17,6 @@ export default class ArrayInstance<
   public nodeType = types.Array as const;
   public type = types.Array;
   public props: { children: PlusnewAbstractElement[] };
-  public executeChildrenElementWillUnmount = true;
 
   constructor(
     abstractElements: PlusnewAbstractElement[],

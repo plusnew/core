@@ -10,8 +10,8 @@ export default abstract class ChildrenInstance<
 > extends Instance<HostElement, HostTextElement> {
   public rendered: Instance<HostElement, HostTextElement>[];
   // Decides if the children will call elementWillUnmount
-  public abstract executeChildrenElementWillUnmount: boolean;
   public abstract props: { children: PlusnewAbstractElement[] };
+  public switchToDeallocMode = false;
 
   constructor(
     abstractElement: ApplicationElement,
@@ -73,47 +73,27 @@ export default abstract class ChildrenInstance<
   /**
    * removes the domnode from the parent
    */
-  public remove(prepareRemoveSelf: boolean) {
-    let result: Promise<any> | void;
+  public remove(deallocMode: boolean) {
+    const result = this.removeChildren(deallocMode || this.switchToDeallocMode);
 
-    if (prepareRemoveSelf) {
-      result = this.prepareRemoveSelf();
+    if (result instanceof Promise) {
+      return result.then(() => this.removeSelf(deallocMode));
     }
-
-    if (result) {
-      return result.then(() => this.removeChildren(prepareRemoveSelf));
-    }
-    return this.removeChildren(prepareRemoveSelf);
+    return this.removeSelf(deallocMode);
   }
 
-  private removeChildren(prepareRemoveSelf: boolean) {
-    const executeChildrenElementWillUnmount =
-      prepareRemoveSelf === false
-        ? false
-        : this.executeChildrenElementWillUnmount;
+  private removeChildren(deallocMode: boolean): Promise<any> | void {
     const result = this.rendered
-      .map((child) => child.remove(executeChildrenElementWillUnmount))
-      .filter((result) => result !== undefined);
+      .map((child) => child.remove(deallocMode))
+      .filter((result) => result instanceof Promise);
 
-    if (result.length === 0) {
-      return this.removeSelf();
+    if (result.length > 0) {
+      return Promise.all(result);
     }
-
-    return new Promise<void>((resolve) => {
-      Promise.all(result).then(() => {
-        this.removeSelf();
-        resolve();
-      });
-    });
   }
-
-  /**
-   * checks if there is a a hook going on
-   */
-  public prepareRemoveSelf(): Promise<any> | void {}
 
   /**
    * removes the children from the dom
    */
-  public removeSelf(): Promise<any> | void {}
+  public removeSelf(_deallocMode: boolean): Promise<any> | void {}
 }

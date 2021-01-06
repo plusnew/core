@@ -168,7 +168,7 @@ export default class ComponentInstance<
   /**
    * removes the children from the dom
    */
-  public remove(prepareRemoveSelf: boolean) {
+  public remove(deallocMode: boolean) {
     (this.applicationInstance as Component<
       componentProps,
       HostElement,
@@ -178,7 +178,7 @@ export default class ComponentInstance<
     this.mounted = false;
 
     if (this.rendered) {
-      this.rendered.remove(prepareRemoveSelf);
+      this.rendered.remove(deallocMode);
     }
   }
 }

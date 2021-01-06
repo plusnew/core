@@ -59,9 +59,7 @@ export default function <HostElement, HostTextElement>(
       }
 
       if (found === false) {
-        instance.rendered[oldIndex].remove(
-          instance.executeChildrenElementWillUnmount
-        );
+        instance.rendered[oldIndex].remove(false);
         instance.rendered.splice(oldIndex, 1);
         instance.props.children.splice(oldIndex, 1);
         oldIndex -= 1;
@@ -117,7 +115,7 @@ export default function <HostElement, HostTextElement>(
       newAbstractElements.length,
       instance.rendered.length - newAbstractElements.length
     )
-    .forEach((childInstance) => childInstance.remove(true));
+    .forEach((childInstance) => childInstance.remove(false));
 
   instance.props.children = newAbstractElements;
 }

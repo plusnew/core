@@ -270,4 +270,47 @@ describe("rendering the elements", () => {
 
     expect(container.childNodes.length).toBe(0);
   });
+
+  it("nested elements should not be triggering a remove", () => {
+    const local = store(true);
+
+    const MainComponent = component("Component", () => (
+      <local.Observer>
+        {(localState) => (
+          <div>
+            {localState && (
+              <picture>
+                <source src="bar" />
+                <img src="foo" />
+              </picture>
+            )}
+          </div>
+        )}
+      </local.Observer>
+    ));
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    const divContainer = container.childNodes[0] as HTMLElement;
+    expect(divContainer.childNodes.length).toBe(1);
+    expect(divContainer.childNodes[0].childNodes.length).toBe(2);
+
+    const sourceElementRemoveSpy = spyOn(
+      divContainer.childNodes[0].childNodes[0],
+      "remove"
+    );
+    const imgElementRemoveSpy = spyOn(
+      divContainer.childNodes[0].childNodes[1],
+      "remove"
+    );
+
+    local.dispatch(false);
+
+    expect(divContainer.innerHTML).toBe("");
+    expect(container.childNodes.length).toBe(1);
+    expect(divContainer.childNodes.length).toBe(0);
+    expect(sourceElementRemoveSpy).not.toHaveBeenCalled();
+    expect(imgElementRemoveSpy).not.toHaveBeenCalled();
+  });
 });
