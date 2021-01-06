@@ -1,6 +1,6 @@
 {
   "name": "@plusnew/core",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "ts component framework with an typesecure and functional approach",
   "main": "src/index.ts",
   "module": "src/index.ts",
