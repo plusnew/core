@@ -76,7 +76,7 @@ export default abstract class ChildrenInstance<
   public remove(deallocMode: boolean) {
     const result = this.removeChildren(deallocMode || this.switchToDeallocMode);
 
-    if (result instanceof Promise) {
+    if (result instanceof Promise && deallocMode === true) {
       return result.then(() => this.removeSelf(deallocMode));
     }
     return this.removeSelf(deallocMode);

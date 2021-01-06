@@ -230,6 +230,55 @@ describe("rendering the elements", () => {
     expect(container.childNodes.length).toBe(0);
   });
 
+  it("removing nested element asynchronisly", async () => {
+    const local = store(true);
+
+    const elementWillUnmountSpy = jasmine
+      .createSpy("elementWillUnmountSpy", (element: Element) => {
+        expect(container.childNodes[0].childNodes[0] as HTMLElement).toBe(
+          element
+        );
+        return Promise.resolve();
+      })
+      .and.callThrough();
+
+    const MainComponent = component("Component", (_Props) => (
+      <local.Observer>
+        {(localState) =>
+          localState && (
+            <div>
+              <>
+                <NestedComponent />
+              </>
+            </div>
+          )
+        }
+      </local.Observer>
+    ));
+
+    const NestedComponent = component(
+      "Component",
+      (_Props, componentInstance) => {
+        componentInstance.elementWillUnmount = elementWillUnmountSpy;
+
+        return <div />;
+      }
+    );
+
+    plusnew.render(<MainComponent />, { driver: driver(container) });
+
+    expect(elementWillUnmountSpy).not.toHaveBeenCalled();
+
+    local.dispatch(false);
+
+    expect(container.childNodes.length).toBe(0);
+    expect(elementWillUnmountSpy).toHaveBeenCalled();
+
+    await tick(1);
+
+    expect(container.childNodes.length).toBe(0);
+  });
+
   it("removing multiple elements asynchronisly", async () => {
     const local = store(true);
 
@@ -273,6 +322,7 @@ describe("rendering the elements", () => {
 
   it("nested elements should not be triggering a remove", () => {
     const local = store(true);
+    const clickSpy = jasmine.createSpy("clickspy");
 
     const MainComponent = component("Component", () => (
       <local.Observer>
@@ -281,7 +331,7 @@ describe("rendering the elements", () => {
             {localState && (
               <picture>
                 <source src="bar" />
-                <img src="foo" />
+                <img src="foo" onclick={clickSpy} />
               </picture>
             )}
           </div>
@@ -296,14 +346,12 @@ describe("rendering the elements", () => {
     expect(divContainer.childNodes.length).toBe(1);
     expect(divContainer.childNodes[0].childNodes.length).toBe(2);
 
+    const imgElement = divContainer.childNodes[0].childNodes[1];
     const sourceElementRemoveSpy = spyOn(
       divContainer.childNodes[0].childNodes[0],
       "remove"
     );
-    const imgElementRemoveSpy = spyOn(
-      divContainer.childNodes[0].childNodes[1],
-      "remove"
-    );
+    const imgElementRemoveSpy = spyOn(imgElement, "remove");
 
     local.dispatch(false);
 
@@ -312,5 +360,9 @@ describe("rendering the elements", () => {
     expect(divContainer.childNodes.length).toBe(0);
     expect(sourceElementRemoveSpy).not.toHaveBeenCalled();
     expect(imgElementRemoveSpy).not.toHaveBeenCalled();
+
+    imgElement.dispatchEvent(new Event("click"));
+
+    expect(clickSpy).not.toHaveBeenCalled();
   });
 });

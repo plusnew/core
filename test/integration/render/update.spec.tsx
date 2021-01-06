@@ -298,7 +298,7 @@ describe("rendering the elements", () => {
   });
 
   it("dom with lesser attributes after update, even for events", () => {
-    const clickHandler = () => {};
+    const clickHandler = jasmine.createSpy();
     const local = store(true, (_previousState, action: boolean) => action);
     const Component = component("Component", () => (
       <local.Observer>
@@ -309,10 +309,19 @@ describe("rendering the elements", () => {
 
     const target = container.childNodes[0] as HTMLElement;
 
-    expect(target.onclick).toBe(clickHandler);
+    const clickEvent = new Event("click");
+    target.dispatchEvent(clickEvent);
+
+    expect(clickHandler).toHaveBeenCalledTimes(1);
+    expect(clickHandler).toHaveBeenCalledWith(clickEvent);
+
     local.dispatch(false);
 
-    expect(target.onclick).toBe(null);
+    const anotherClickEvent = new Event("click");
+    target.dispatchEvent(clickEvent);
+
+    expect(clickHandler).toHaveBeenCalledTimes(1);
+    expect(clickHandler).toHaveBeenCalledWith(anotherClickEvent);
   });
 
   it("dont call setText when text changed", () => {

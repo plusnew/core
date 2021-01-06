@@ -156,9 +156,11 @@ export default class DomInstance<HostElement, HostTextElement>
    */
   public removeSelf(deallocMode: boolean) {
     const result = this.elementWillUnmountToParent();
-    if (result instanceof Promise && deallocMode === false) {
+    if (deallocMode) {
+      this.renderOptions.driver.element.dealloc(this);
+    } else if (result instanceof Promise) {
       return result.then(() => this.renderOptions.driver.element.remove(this));
-    } else if (deallocMode === false) {
+    } else {
       this.renderOptions.driver.element.remove(this);
     }
     return result;

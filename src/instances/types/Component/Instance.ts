@@ -178,7 +178,7 @@ export default class ComponentInstance<
     this.mounted = false;
 
     if (this.rendered) {
-      this.rendered.remove(deallocMode);
+      return this.rendered.remove(deallocMode);
     }
   }
 }
