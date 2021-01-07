@@ -23,8 +23,8 @@ export default class DomInstance<HostElement, HostTextElement>
   public nodeType = types.Host as const;
   public ref: HostElement;
   public props: props;
-  public executeChildrenElementWillUnmount = false;
   public type: string;
+  public switchToDeallocMode = true;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -152,17 +152,18 @@ export default class DomInstance<HostElement, HostTextElement>
   }
 
   /**
-   * checks if parents want to do stuff with unmounting element, e.g. animate it
-   */
-  public prepareRemoveSelf() {
-    return this.elementWillUnmountToParent();
-  }
-
-  /**
    * actually removes this element
    */
-  public removeSelf() {
-    this.renderOptions.driver.element.remove(this);
+  public removeSelf(deallocMode: boolean) {
+    const result = this.elementWillUnmountToParent();
+    if (deallocMode) {
+      this.renderOptions.driver.element.dealloc(this);
+    } else if (result instanceof Promise) {
+      return result.then(() => this.renderOptions.driver.element.remove(this));
+    } else {
+      this.renderOptions.driver.element.remove(this);
+    }
+    return result;
   }
 
   /**

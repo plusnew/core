@@ -111,7 +111,7 @@ export default abstract class Instance<HostElement, HostTextElement> {
     predecessor: predecessor<HostElement, HostTextElement>
   ): void;
 
-  public abstract remove(prepareRemoveSelf: boolean): Promise<any> | void;
+  public abstract remove(deallocMode: boolean): Promise<any> | void;
 
   /**
    * gets called with newly created elements by the children
