@@ -177,6 +177,10 @@ export default class ComponentInstance<
     this.executeLifecycleHooks("componentWillUnmount");
     this.mounted = false;
 
+    return this.removeChild(deallocMode);
+  }
+
+  public removeChild(deallocMode: boolean) {
     if (this.rendered) {
       return this.rendered.remove(deallocMode);
     }

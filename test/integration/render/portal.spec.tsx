@@ -316,4 +316,37 @@ describe("rendering nested Portals", () => {
     );
     expect((portalEntrance.childNodes[1] as SVGElement).tagName).toBe("svg");
   });
+
+  it("portalEntrance remove should remove the element, even when deallocmode is enabled", () => {
+    const toggle = store(true);
+
+    const Component = component("Component", () => (
+      <toggle.Observer>
+        {(toggleState) => (
+          <>
+            <div>
+              <PortalExit name="foo" />
+            </div>
+            {toggleState && (
+              <div>
+                <PortalEntrance name="foo">
+                  <span />
+                </PortalEntrance>
+              </div>
+            )}
+          </>
+        )}
+      </toggle.Observer>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(2);
+    expect(container.childNodes[0].childNodes.length).toBe(1);
+
+    toggle.dispatch(false);
+
+    expect(container.childNodes.length).toBe(1);
+    expect(container.childNodes[0].childNodes.length).toBe(0);
+  });
 });
