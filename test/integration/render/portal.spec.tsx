@@ -5,6 +5,7 @@ import plusnew, {
   PortalEntrance,
   PortalExit,
   store,
+  Try,
 } from "../../../index";
 
 const htmlNamespace = "http://www.w3.org/1999/xhtml";
@@ -345,6 +346,33 @@ describe("rendering nested Portals", () => {
     expect(container.childNodes[0].childNodes.length).toBe(1);
 
     toggle.dispatch(false);
+
+    expect(container.childNodes.length).toBe(1);
+    expect(container.childNodes[0].childNodes.length).toBe(0);
+  });
+
+  it("portalEntrance remove should remove the element, even when deallocmode is enabled and that in a exception case", () => {
+    const NestedComponent = component("NestedComponent", () => {
+      throw new Error("error");
+    });
+    const Component = component("Component", () => (
+      <>
+        <div>
+          <PortalExit name="foo" />
+        </div>
+        <Try catch={() => null}>
+          {() => (
+            <div>
+              <PortalEntrance name="foo">
+                <NestedComponent />
+              </PortalEntrance>
+            </div>
+          )}
+        </Try>
+      </>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
 
     expect(container.childNodes.length).toBe(1);
     expect(container.childNodes[0].childNodes.length).toBe(0);
