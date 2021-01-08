@@ -48,6 +48,12 @@ export const PortalEntrance = component(
       componentInstance.renderOptions.portals !== undefined &&
       portalName in componentInstance.renderOptions.portals === true
     ) {
+      componentInstance.removeChild = () => {
+        (componentInstance.rendered as ComponentInstance<any, any, any>).remove(
+          false
+        ); // Deallocmode needs to be overwritten, so that kids actually get removed
+      };
+
       componentInstance.appendChild = (childInstance) => {
         (componentInstance.renderOptions.portals as portalRenderOption<
           any,
