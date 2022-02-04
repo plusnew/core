@@ -3,10 +3,10 @@ import type { ComponentContainer } from "../../../components/factory";
 import type { ApplicationElement, props } from "../../../interfaces/component";
 import type { renderOptions } from "../../../interfaces/renderOptions";
 import type PlusnewAbstractElement from "../../../PlusnewAbstractElement";
-import type { PlusnewElement } from "../../../PlusnewAbstractElement";
-import store, { Store } from "../../../util/store";
+import type { PlusnewElement } from "../../../PlusnewAbstractElement"; 
+import store, { type Store } from "../../../util/store";
 import factory from "../../factory";
-import Instance, { getPredeccessor, predecessor } from "../Instance";
+import Instance, { type getPredeccessor, type predecessor } from "../Instance";
 import types from "../types";
 import reconcile, { shouldUpdate } from "./reconcile";
 

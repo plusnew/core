@@ -4,7 +4,7 @@ import type {
   RootInstance as IRootInstance,
 } from "../../../interfaces/driver";
 import type { renderOptions } from "../../../interfaces/renderOptions";
-import Instance, { getPredeccessor, predecessor } from "../Instance";
+import Instance, { type getPredeccessor, type predecessor } from "../Instance";
 import types from "../types";
 
 export default class RootInstance<HostElement, HostTextElement>

@@ -2,7 +2,7 @@ import type { props } from "../../../interfaces/component";
 import type { renderOptions } from "../../../interfaces/renderOptions";
 import type PlusnewAbstractElement from "../../../PlusnewAbstractElement";
 import type { PlusnewElement } from "../../../PlusnewAbstractElement";
-import Instance, { getPredeccessor } from "../Instance";
+import Instance, { type getPredeccessor } from "../Instance";
 import types from "../types";
 
 export default class ShallowInstance<

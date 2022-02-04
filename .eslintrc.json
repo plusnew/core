@@ -34,6 +34,7 @@
     "@typescript-eslint/no-use-before-define": "off",
     "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/restrict-template-expressions": "error"
+    "@typescript-eslint/restrict-template-expressions": "error",
+    "@typescript-eslint/consistent-type-imports": "error"
   }
 }

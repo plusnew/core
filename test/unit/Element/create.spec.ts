@@ -1,4 +1,4 @@
-import plusnew, { component, Props, ApplicationElement } from "../../../index";
+import plusnew, { component, type Props, ApplicationElement } from "../../../index";
 
 describe("checking if createElement works as expected", () => {
   it("Is div element created", () => {
