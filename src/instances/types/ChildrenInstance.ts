@@ -2,7 +2,8 @@ import type { ApplicationElement } from "../../interfaces/component";
 import type { renderOptions } from "../../interfaces/renderOptions";
 import type PlusnewAbstractElement from "../../PlusnewAbstractElement";
 import factory from "../factory";
-import Instance, { getPredeccessor, predecessor } from "./Instance";
+import type { getPredeccessor, predecessor } from "./Instance";
+import Instance from "./Instance";
 
 export default abstract class ChildrenInstance<
   HostElement,

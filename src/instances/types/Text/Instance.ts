@@ -6,7 +6,8 @@ import reconcile from "./reconcile";
 
 export default class TextInstance<HostElement, HostTextElement>
   extends Instance<HostElement, HostTextElement>
-  implements ITextInstance<HostElement, HostTextElement> {
+  implements ITextInstance<HostElement, HostTextElement>
+{
   public nodeType = types.Text as const;
   public type = types.Text;
   public props: string;

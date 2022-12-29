@@ -9,7 +9,8 @@ import types from "../types";
 
 export default class RootInstance<HostElement, HostTextElement>
   extends Instance<HostElement, HostTextElement>
-  implements IRootInstance<HostElement, HostTextElement> {
+  implements IRootInstance<HostElement, HostTextElement>
+{
   public nodeType = types.Root as const;
   public type = types.Root;
   public ref: HostElement;

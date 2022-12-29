@@ -1,6 +1,13 @@
 import driver from "@plusnew/driver-dom/src/driver";
 import "@plusnew/driver-dom/src/jsx";
-import plusnew, { Async, component, context, store, Try, PortalEntrance } from "../../../index";
+import plusnew, {
+  Async,
+  component,
+  context,
+  store,
+  Try,
+  PortalEntrance,
+} from "../../../index";
 import ComponentInstance from "../../../src/instances/types/Component/Instance";
 
 function tick() {
@@ -758,7 +765,8 @@ describe("<Try />", () => {
     expect(catchSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("deeply nested component with siblings dom, with deeply nested components", () => {    const DeeplyNestedComponent = component("NestedComponent", () => {
+  it("deeply nested component with siblings dom, with deeply nested components", () => {
+    const DeeplyNestedComponent = component("NestedComponent", () => {
       throw new Error();
     });
 
@@ -816,7 +824,9 @@ describe("<Try />", () => {
         {() => (
           <>
             <span />
-            <PortalEntrance name="not-existent"><span /></PortalEntrance>
+            <PortalEntrance name="not-existent">
+              <span />
+            </PortalEntrance>
             <span />
           </>
         )}

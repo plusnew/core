@@ -35,11 +35,13 @@ export default class Try extends Component<props> {
       (componentInstance.renderOptions.invokeGuard as invokeGuard<unknown>)(
         () => {
           componentInstance.render(
-            (componentInstance.applicationInstance as Component<
-              props,
-              any,
-              any
-            >).render(componentInstance.storeProps.Observer, componentInstance)
+            (
+              componentInstance.applicationInstance as Component<
+                props,
+                any,
+                any
+              >
+            ).render(componentInstance.storeProps.Observer, componentInstance)
           );
           componentInstance.executeLifecycleHooks("componentDidMount");
         },
@@ -82,11 +84,9 @@ export default class Try extends Component<props> {
     if (this.errored) {
       instance.renderOptions = {
         ...instance.renderOptions,
-        invokeGuard: (instance.parentInstance as ComponentInstance<
-          any,
-          any,
-          any
-        >).renderOptions.invokeGuard,
+        invokeGuard: (
+          instance.parentInstance as ComponentInstance<any, any, any>
+        ).renderOptions.invokeGuard,
       };
     } else {
       instance.renderOptions = {
@@ -133,11 +133,9 @@ export default class Try extends Component<props> {
   };
 
   componentWillUnmount() {
-    (this.instance as ComponentInstance<
-      props,
-      unknown,
-      unknown
-    >).storeProps.unsubscribe(this.update);
+    (
+      this.instance as ComponentInstance<props, unknown, unknown>
+    ).storeProps.unsubscribe(this.update);
   }
 
   render(Props: Props<props>, instance: ComponentInstance<props, any, any>) {

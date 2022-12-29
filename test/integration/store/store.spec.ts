@@ -2,21 +2,19 @@ import { store } from "../../../index";
 
 describe("reducer", () => {
   it("is the reducer correctly called", () => {
-    const reducerSpy = jasmine
-      .createSpy("reducer", (originalState: number, action: number) => {
-        return originalState + action;
-      })
-      .and.callThrough();
+    const reducerSpy = jest.fn((originalState: number, action: number) => {
+      return originalState + action;
+    });
 
     const local = store(1, reducerSpy);
 
-    expect(reducerSpy.calls.count()).toBe(0);
+    expect(reducerSpy).toHaveBeenCalledTimes(0);
 
     expect(local.getState()).toBe(1);
 
     local.dispatch(2);
 
-    expect(reducerSpy.calls.count()).toBe(1);
+    expect(reducerSpy).toHaveBeenCalledTimes(1);
     expect(reducerSpy).toHaveBeenCalledWith(1, 2);
     expect(local.getState()).toBe(3);
   });
@@ -32,18 +30,12 @@ describe("reducer", () => {
   });
 
   it("eventlisteners are called when change happened", () => {
-    const reducerSpy = jasmine
-      .createSpy("reducer", (_originalState: null | {}, action: {}) => action)
-      .and.callThrough();
+    const reducerSpy = jest.fn(
+      (_originalState: null | {}, action: {}) => action
+    );
 
-    const firstEventListenerSpy = jasmine.createSpy(
-      "eventlistener",
-      (_action: {}) => {}
-    );
-    const secondEventListenerSpy = jasmine.createSpy(
-      "eventlistener",
-      (_action: {}) => {}
-    );
+    const firstEventListenerSpy = jest.fn((_action: {}) => {});
+    const secondEventListenerSpy = jest.fn((_action: {}) => {});
 
     const action = {};
 
@@ -52,25 +44,23 @@ describe("reducer", () => {
     local.subscribe(secondEventListenerSpy);
 
     expect(local.getState()).toBe(null);
-    expect(firstEventListenerSpy.calls.count()).toBe(0);
-    expect(secondEventListenerSpy.calls.count()).toBe(0);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(0);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(0);
 
     local.dispatch(action);
 
     expect(local.getState()).toBe(action);
-    expect(firstEventListenerSpy.calls.count()).toBe(1);
-    expect(secondEventListenerSpy.calls.count()).toBe(1);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(1);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(1);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
     expect(secondEventListenerSpy).toHaveBeenCalledWith(action);
   });
 
   it("eventlisteners are not called when no change happened", () => {
-    const reducerSpy = jasmine
-      .createSpy("reducer", (_originalState: {}, action: {}) => action)
-      .and.callThrough();
+    const reducerSpy = jest.fn((_originalState: {}, action: {}) => action);
 
-    const firstEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
-    const secondEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
+    const firstEventListenerSpy = jest.fn(() => {});
+    const secondEventListenerSpy = jest.fn(() => {});
 
     const action = {};
     const local = store(action, reducerSpy);
@@ -78,23 +68,21 @@ describe("reducer", () => {
     local.subscribe(secondEventListenerSpy);
 
     expect(local.getState()).toBe(action);
-    expect(firstEventListenerSpy.calls.count()).toBe(0);
-    expect(secondEventListenerSpy.calls.count()).toBe(0);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(0);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(0);
 
     local.dispatch(action);
 
     expect(local.getState()).toBe(action);
-    expect(firstEventListenerSpy.calls.count()).toBe(0);
-    expect(secondEventListenerSpy.calls.count()).toBe(0);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(0);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(0);
   });
 
   it("eventlisteners are not called when no change happened", () => {
-    const reducerSpy = jasmine
-      .createSpy("reducer", (_originalState: {}, action: {}) => action)
-      .and.callThrough();
+    const reducerSpy = jest.fn((_originalState: {}, action: {}) => action);
 
-    const firstEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
-    const secondEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
+    const firstEventListenerSpy = jest.fn(() => {});
+    const secondEventListenerSpy = jest.fn(() => {});
 
     const action = {};
     const local = store(action, reducerSpy);
@@ -103,30 +91,26 @@ describe("reducer", () => {
 
     expect(local.getState()).toBe(action);
 
-    expect(firstEventListenerSpy.calls.count()).toBe(0);
-    expect(secondEventListenerSpy.calls.count()).toBe(0);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(0);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(0);
 
     local.dispatch(action);
 
     expect(local.getState()).toBe(action);
-    expect(firstEventListenerSpy.calls.count()).toBe(0);
-    expect(secondEventListenerSpy.calls.count()).toBe(0);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(0);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(0);
   });
 
   it("eventlistener removed even while dispatched", () => {
-    const reducerSpy = jasmine
-      .createSpy("reducer", (_originalState: null | {}, action: {}) => action)
-      .and.callThrough();
-
-    const firstEventListenerSpy = jasmine
-      .createSpy("eventlistener", (_action: {}) => {
-        local.unsubscribe(secondEventListenerSpy);
-      })
-      .and.callThrough();
-    const secondEventListenerSpy = jasmine.createSpy(
-      "eventlistener",
-      (_action: {}) => {}
+    const reducerSpy = jest.fn(
+      (_originalState: null | {}, action: {}) => action
     );
+
+    const firstEventListenerSpy = jest.fn((_action: {}) => {
+      local.unsubscribe(secondEventListenerSpy);
+    });
+
+    const secondEventListenerSpy = jest.fn((_action: {}) => {});
 
     const action = {};
 
@@ -135,31 +119,27 @@ describe("reducer", () => {
     local.subscribe(secondEventListenerSpy);
 
     expect(local.getState()).toBe(null);
-    expect(firstEventListenerSpy.calls.count()).toBe(0);
-    expect(secondEventListenerSpy.calls.count()).toBe(0);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(0);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(0);
 
     local.dispatch(action);
 
     expect(local.getState()).toBe(action);
-    expect(firstEventListenerSpy.calls.count()).toBe(1);
-    expect(secondEventListenerSpy.calls.count()).toBe(0);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(1);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(0);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
   });
 
   it("eventlistener removed even while dispatched", () => {
-    const reducerSpy = jasmine
-      .createSpy("reducer", (_originalState: null | {}, action: {}) => action)
-      .and.callThrough();
-
-    const firstEventListenerSpy = jasmine
-      .createSpy("eventlistener", (_action: {}) => {
-        local.unsubscribe(firstEventListenerSpy);
-      })
-      .and.callThrough();
-    const secondEventListenerSpy = jasmine.createSpy(
-      "eventlistener",
-      (_action: {}) => {}
+    const reducerSpy = jest.fn(
+      (_originalState: null | {}, action: {}) => action
     );
+
+    const firstEventListenerSpy = jest.fn((_action: {}) => {
+      local.unsubscribe(firstEventListenerSpy);
+    });
+
+    const secondEventListenerSpy = jest.fn((_action: {}) => {});
 
     const action = {};
 
@@ -168,32 +148,28 @@ describe("reducer", () => {
     local.subscribe(secondEventListenerSpy);
 
     expect(local.getState()).toBe(null);
-    expect(firstEventListenerSpy.calls.count()).toBe(0);
-    expect(secondEventListenerSpy.calls.count()).toBe(0);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(0);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(0);
 
     local.dispatch(action);
 
     expect(local.getState()).toBe(action);
-    expect(firstEventListenerSpy.calls.count()).toBe(1);
-    expect(secondEventListenerSpy.calls.count()).toBe(1);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(1);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(1);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
   });
 
   it("eventlistener removed even while dispatched", () => {
-    const reducerSpy = jasmine
-      .createSpy("reducer", (_originalState: {} | null, action: {}) => action)
-      .and.callThrough();
-
-    const zeroEventListenerSpy = jasmine.createSpy(
-      "eventlistener",
-      (_action: {}) => {}
+    const reducerSpy = jest.fn(
+      (_originalState: {} | null, action: {}) => action
     );
-    const firstEventListenerSpy = jasmine
-      .createSpy("eventlistener", (_action: {}) => {
-        local.unsubscribe(firstEventListenerSpy);
-      })
-      .and.callThrough();
-    const secondEventListenerSpy = jasmine.createSpy("eventlistener", () => {});
+
+    const zeroEventListenerSpy = jest.fn((_action: {}) => {});
+    const firstEventListenerSpy = jest.fn((_action: {}) => {
+      local.unsubscribe(firstEventListenerSpy);
+    });
+
+    const secondEventListenerSpy = jest.fn(() => {});
 
     const action = {};
 
@@ -203,23 +179,23 @@ describe("reducer", () => {
     local.subscribe(secondEventListenerSpy);
 
     expect(local.getState()).toBe(null);
-    expect(zeroEventListenerSpy.calls.count()).toBe(0);
-    expect(firstEventListenerSpy.calls.count()).toBe(0);
-    expect(secondEventListenerSpy.calls.count()).toBe(0);
+    expect(zeroEventListenerSpy).toHaveBeenCalledTimes(0);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(0);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(0);
 
     local.dispatch(action);
 
     expect(local.getState()).toBe(action);
-    expect(zeroEventListenerSpy.calls.count()).toBe(1);
-    expect(firstEventListenerSpy.calls.count()).toBe(1);
-    expect(secondEventListenerSpy.calls.count()).toBe(1);
+    expect(zeroEventListenerSpy).toHaveBeenCalledTimes(1);
+    expect(firstEventListenerSpy).toHaveBeenCalledTimes(1);
+    expect(secondEventListenerSpy).toHaveBeenCalledTimes(1);
     expect(firstEventListenerSpy).toHaveBeenCalledWith(action);
   });
 
   it("flush all changelisteners", () => {
     const local = store(0, (_state, action: number) => action);
 
-    const listenerSpy = jasmine.createSpy("listener", () => null);
+    const listenerSpy = jest.fn(() => null);
 
     local.subscribe(listenerSpy);
 
@@ -227,7 +203,7 @@ describe("reducer", () => {
 
     local.dispatch(1);
 
-    expect(listenerSpy.calls.count()).toBe(0);
+    expect(listenerSpy).toHaveBeenCalledTimes(0);
   });
 
   it("get state from observer", () => {

@@ -196,12 +196,10 @@ describe("rendering the elements", () => {
   it("removing element asynchronisly", async () => {
     const local = store(true);
 
-    const elementWillUnmountSpy = jasmine
-      .createSpy("elementWillUnmountSpy", (element: Element) => {
-        expect(container.childNodes[0] as HTMLElement).toBe(element);
-        return Promise.resolve();
-      })
-      .and.callThrough();
+    const elementWillUnmountSpy = jest.fn((element: Element) => {
+      expect(container.childNodes[0] as HTMLElement).toBe(element);
+      return Promise.resolve();
+    });
 
     const MainComponent = component(
       "Component",
@@ -233,14 +231,12 @@ describe("rendering the elements", () => {
   it("removing nested element asynchronisly", async () => {
     const local = store(true);
 
-    const elementWillUnmountSpy = jasmine
-      .createSpy("elementWillUnmountSpy", (element: Element) => {
-        expect(container.childNodes[0].childNodes[0] as HTMLElement).toBe(
-          element
-        );
-        return Promise.resolve();
-      })
-      .and.callThrough();
+    const elementWillUnmountSpy = jest.fn((element: Element) => {
+      expect(container.childNodes[0].childNodes[0] as HTMLElement).toBe(
+        element
+      );
+      return Promise.resolve();
+    });
 
     const MainComponent = component("Component", (_Props) => (
       <local.Observer>
@@ -282,16 +278,14 @@ describe("rendering the elements", () => {
   it("removing multiple elements asynchronisly", async () => {
     const local = store(true);
 
-    const elementWillUnmountSpy = jasmine
-      .createSpy("elementWillUnmountSpy", (element: Element) => {
-        expect(
-          container.childNodes[
-            elementWillUnmountSpy.calls.count() - 1
-          ] as HTMLElement
-        ).toBe(element);
-        return Promise.resolve();
-      })
-      .and.callThrough();
+    const elementWillUnmountSpy = jest.fn((element: Element) => {
+      expect(
+        container.childNodes[
+          elementWillUnmountSpy.mock.calls.length - 1
+        ] as HTMLElement
+      ).toBe(element);
+      return Promise.resolve();
+    });
 
     const MainComponent = component(
       "Component",
@@ -322,7 +316,7 @@ describe("rendering the elements", () => {
 
   it("nested elements should not be triggering a remove", () => {
     const local = store(true);
-    const clickSpy = jasmine.createSpy("clickspy");
+    const clickSpy = jest.fn();
 
     const MainComponent = component("Component", () => (
       <local.Observer>
@@ -347,11 +341,11 @@ describe("rendering the elements", () => {
     expect(divContainer.childNodes[0].childNodes.length).toBe(2);
 
     const imgElement = divContainer.childNodes[0].childNodes[1];
-    const sourceElementRemoveSpy = spyOn(
+    const sourceElementRemoveSpy = jest.spyOn(
       divContainer.childNodes[0].childNodes[0],
       "remove"
     );
-    const imgElementRemoveSpy = spyOn(imgElement, "remove");
+    const imgElementRemoveSpy = jest.spyOn(imgElement, "remove");
 
     local.dispatch(false);
 

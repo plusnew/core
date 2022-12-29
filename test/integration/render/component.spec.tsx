@@ -101,12 +101,8 @@ describe("rendering nested components", () => {
     const mainStore = store(true, (_state, action: boolean) => action);
     const counterStore = store(0, (_state, action: number) => action);
 
-    const nestedUpdateSpy = jasmine
-      .createSpy("nestedrender", (state: number) => state)
-      .and.callThrough();
-    const containerUpdateSpy = jasmine
-      .createSpy("render", (state: number) => state)
-      .and.callThrough();
+    const nestedUpdateSpy = jest.fn((state: number) => state);
+    const containerUpdateSpy = jest.fn((state: number) => state);
 
     const NestedComponent = component("Component", (_Props: Props<{}>) => (
       <span>
@@ -133,8 +129,8 @@ describe("rendering nested components", () => {
     const nestedNode = container.childNodes[1] as HTMLElement;
     expect(nestedNode.tagName).toBe("SPAN");
     expect(nestedNode.innerHTML).toBe("0");
-    expect(containerUpdateSpy.calls.count()).toBe(1);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(1);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
 
     mainStore.dispatch(false);
 
@@ -144,8 +140,8 @@ describe("rendering nested components", () => {
 
     counterStore.dispatch(1);
 
-    expect(containerUpdateSpy.calls.count()).toBe(2);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(2);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
@@ -159,12 +155,9 @@ describe("rendering nested components", () => {
     const mainStore = store(true, (_state, action: boolean) => action);
     const counterStore = store(0, (_state, action: number) => action);
 
-    const nestedUpdateSpy = jasmine
-      .createSpy("nestedrender", (state: number) => state)
-      .and.callThrough();
-    const containerUpdateSpy = jasmine
-      .createSpy("render", (state: number) => state)
-      .and.callThrough();
+    const nestedUpdateSpy = jest.fn((state: number) => state);
+
+    const containerUpdateSpy = jest.fn((state: number) => state);
 
     const NestedComponent = component("Component", (_Props: Props<{}>) => (
       <span>
@@ -197,21 +190,21 @@ describe("rendering nested components", () => {
     const nestedNode = container.childNodes[1].childNodes[0] as HTMLElement;
     expect(nestedNode.tagName).toBe("SPAN");
     expect(nestedNode.innerHTML).toBe("0");
-    expect(containerUpdateSpy.calls.count()).toBe(1);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(1);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
 
     mainStore.dispatch(false);
 
-    expect(containerUpdateSpy.calls.count()).toBe(1);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(1);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("0");
 
     counterStore.dispatch(1);
 
-    expect(containerUpdateSpy.calls.count()).toBe(2);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(2);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
@@ -224,12 +217,9 @@ describe("rendering nested components", () => {
     const mainStore = store(true, (_state, action: boolean) => action);
     const counterStore = store(0, (_state, action: number) => action);
 
-    const nestedUpdateSpy = jasmine
-      .createSpy("nestedrender", (state: number) => state)
-      .and.callThrough();
-    const containerUpdateSpy = jasmine
-      .createSpy("render", (state: number) => state)
-      .and.callThrough();
+    const nestedUpdateSpy = jest.fn((state: number) => state);
+
+    const containerUpdateSpy = jest.fn((state: number) => state);
 
     const NestedComponent = component("Component", (_Props: Props<{}>) => (
       <span>
@@ -262,21 +252,21 @@ describe("rendering nested components", () => {
     const nestedNode = container.childNodes[1] as HTMLElement;
     expect(nestedNode.tagName).toBe("SPAN");
     expect(nestedNode.innerHTML).toBe("0");
-    expect(containerUpdateSpy.calls.count()).toBe(1);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(1);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
 
     mainStore.dispatch(false);
 
-    expect(containerUpdateSpy.calls.count()).toBe(1);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(1);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("0");
 
     counterStore.dispatch(1);
 
-    expect(containerUpdateSpy.calls.count()).toBe(2);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(2);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
 
@@ -288,12 +278,9 @@ describe("rendering nested components", () => {
     const mainStore = store(true, (_state, action: boolean) => action);
     const counterStore = store(0, (_state, action: number) => action);
 
-    const nestedUpdateSpy = jasmine
-      .createSpy("nestedrender", (state: number) => state)
-      .and.callThrough();
-    const containerUpdateSpy = jasmine
-      .createSpy("render", (state: number) => state)
-      .and.callThrough();
+    const nestedUpdateSpy = jest.fn((state: number) => state);
+
+    const containerUpdateSpy = jest.fn((state: number) => state);
 
     const NestedComponent = component("Component", (_Props: Props<{}>) => (
       <span>
@@ -320,21 +307,21 @@ describe("rendering nested components", () => {
     const nestedNode = container.childNodes[1] as HTMLElement;
     expect(nestedNode.tagName).toBe("SPAN");
     expect(nestedNode.innerHTML).toBe("0");
-    expect(containerUpdateSpy.calls.count()).toBe(1);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(1);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
 
     mainStore.dispatch(false);
 
-    expect(containerUpdateSpy.calls.count()).toBe(1);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(1);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("0");
 
     counterStore.dispatch(1);
 
-    expect(containerUpdateSpy.calls.count()).toBe(2);
-    expect(nestedUpdateSpy.calls.count()).toBe(1);
+    expect(containerUpdateSpy).toHaveBeenCalledTimes(2);
+    expect(nestedUpdateSpy).toHaveBeenCalledTimes(1);
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
@@ -372,12 +359,10 @@ describe("rendering nested components", () => {
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
-    const nestedComponent = ((mainComponent.rendered as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as FragmentInstance<Element, Text>)
-      .rendered[0] as ComponentInstance<any, Element, Text>;
+    const nestedComponent = (
+      (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+        .rendered as FragmentInstance<Element, Text>
+    ).rendered[0] as ComponentInstance<any, Element, Text>;
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
 
@@ -422,15 +407,15 @@ describe("rendering nested components", () => {
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
-    const nestedComponent = ((mainComponent.rendered as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as FragmentInstance<Element, Text>)
-      .rendered[0] as ComponentInstance<any, Element, Text>;
+    const nestedComponent = (
+      (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+        .rendered as FragmentInstance<Element, Text>
+    ).rendered[0] as ComponentInstance<any, Element, Text>;
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered.length
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered.length
     ).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
@@ -442,17 +427,22 @@ describe("rendering nested components", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered.length
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered.length
     ).toBe(2);
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered[0] instanceof
-        PlaceholderInstance
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered[0] instanceof PlaceholderInstance
     ).toBe(true);
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered[0]
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered[0]
     ).not.toBe(nestedComponent);
   });
 
@@ -484,15 +474,15 @@ describe("rendering nested components", () => {
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
-    const nestedComponent = ((mainComponent.rendered as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as FragmentInstance<Element, Text>)
-      .rendered[1] as ComponentInstance<any, Element, Text>;
+    const nestedComponent = (
+      (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+        .rendered as FragmentInstance<Element, Text>
+    ).rendered[1] as ComponentInstance<any, Element, Text>;
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered.length
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered.length
     ).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
@@ -504,13 +494,16 @@ describe("rendering nested components", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
 
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>)
-        .rendered[0] as ComponentInstance<any, Element, Text>
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered[0] as ComponentInstance<any, Element, Text>
     ).toBe(nestedComponent);
     expect(
-      ((mainComponent.rendered as ComponentInstance<any, Element, Text>)
-        .rendered as FragmentInstance<Element, Text>).rendered.length
+      (
+        (mainComponent.rendered as ComponentInstance<any, Element, Text>)
+          .rendered as FragmentInstance<Element, Text>
+      ).rendered.length
     ).toBe(2);
     expect(nestedComponent.nodeType).toBe(types.Component);
     expect(nestedComponent.type as any).toBe(NestedComponent);
@@ -521,14 +514,11 @@ describe("rendering nested components", () => {
     it("nested component should not rerender without properties", () => {
       type props = {};
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -543,26 +533,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
     });
 
     it("nested component should not rerender with properties", () => {
       type props = { foo: {} };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -581,26 +568,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
     });
 
     it("nested component should rerender on propertychange", () => {
       type props = { foo: {} };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -628,26 +612,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should rerender on more propertychange", () => {
       type props = { foo: {}; bar?: {} };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -675,26 +656,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should not rerender with same children", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -725,26 +703,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
     });
 
     it("nested component should not rerender with same children (even when not given as children)", () => {
       type props = { foo: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -771,26 +746,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
     });
 
     it("nested component should rerender with changed children", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -822,26 +794,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should rerender with different amount children", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -873,26 +842,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should rerender with different amount children", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -924,26 +890,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should rerender with different types of children", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -974,26 +937,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should rerender with different types of multiple children", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -1025,26 +985,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should not rerender with same content", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -1069,26 +1026,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
     });
 
     it("nested component should rerender with different content", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -1113,26 +1067,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should rerender with different content types", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -1157,26 +1108,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should rerender with null types", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -1201,26 +1149,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
     });
 
     it("nested component should rerender with null types", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -1247,26 +1192,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should rerender with null types", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -1293,26 +1235,23 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
 
     it("nested component should rerender when an new object occures", () => {
       type props = { children: any };
 
-      const renderSpy = jasmine
-        .createSpy("render", (Props: Props<props>) => (
-          <Props>{nestedRenderSpy}</Props>
-        ))
-        .and.callThrough();
-      const nestedRenderSpy = jasmine
-        .createSpy("nestedrender", () => <div />)
-        .and.callThrough();
+      const renderSpy = jest.fn((Props: Props<props>) => (
+        <Props>{nestedRenderSpy}</Props>
+      ));
+
+      const nestedRenderSpy = jest.fn(() => <div />);
 
       const local = store(0, (state, action: number) => state + action);
 
@@ -1331,19 +1270,18 @@ describe("rendering nested components", () => {
 
       expect(container.childNodes.length).toBe(1);
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(1);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(1);
 
       local.dispatch(1);
 
-      expect(renderSpy.calls.count()).toBe(1);
-      expect(nestedRenderSpy.calls.count()).toBe(2);
+      expect(renderSpy).toHaveBeenCalledTimes(1);
+      expect(nestedRenderSpy).toHaveBeenCalledTimes(2);
     });
   });
 
   it("removed nested component gets a componentWillUnmount call", () => {
-    const componentWillUnmountSpy = jasmine.createSpy(
-      "componentWillUnmount",
+    const componentWillUnmountSpy = jest.fn(
       (_props: any, _instance: any) => {}
     );
 
@@ -1365,17 +1303,16 @@ describe("rendering nested components", () => {
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-    expect(componentWillUnmountSpy.calls.count()).toBe(0);
+    expect(componentWillUnmountSpy).toHaveBeenCalledTimes(0);
 
-    const nestedComponentInstance = ((mainInstance as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as ComponentInstance<any, Element, Text>).rendered;
+    const nestedComponentInstance = (
+      (mainInstance as ComponentInstance<any, Element, Text>)
+        .rendered as ComponentInstance<any, Element, Text>
+    ).rendered;
 
     local.dispatch(false);
 
-    expect(componentWillUnmountSpy.calls.count()).toBe(1);
+    expect(componentWillUnmountSpy).toHaveBeenCalledTimes(1);
     expect(componentWillUnmountSpy).toHaveBeenCalledWith(
       { children: [] },
       nestedComponentInstance
@@ -1383,8 +1320,7 @@ describe("rendering nested components", () => {
   });
 
   it("removed nested component gets a componentWillUnmount call with props", () => {
-    const componentWillUnmountSpy = jasmine.createSpy(
-      "componentWillUnmount",
+    const componentWillUnmountSpy = jest.fn(
       (_props: any, _instance: any) => {}
     );
 
@@ -1409,17 +1345,16 @@ describe("rendering nested components", () => {
 
     expect(container.childNodes.length).toBe(1);
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
-    expect(componentWillUnmountSpy.calls.count()).toBe(0);
+    expect(componentWillUnmountSpy).toHaveBeenCalledTimes(0);
 
-    const nestedComponentInstance = ((mainInstance as ComponentInstance<
-      any,
-      Element,
-      Text
-    >).rendered as ComponentInstance<any, Element, Text>).rendered;
+    const nestedComponentInstance = (
+      (mainInstance as ComponentInstance<any, Element, Text>)
+        .rendered as ComponentInstance<any, Element, Text>
+    ).rendered;
 
     local.dispatch(false);
 
-    expect(componentWillUnmountSpy.calls.count()).toBe(1);
+    expect(componentWillUnmountSpy).toHaveBeenCalledTimes(1);
     expect(componentWillUnmountSpy).toHaveBeenCalledWith(
       { foo: "bar", children: [] },
       nestedComponentInstance
@@ -1433,10 +1368,10 @@ describe("rendering nested components", () => {
   });
 
   it("throw exception when render() is called, with unmounted component", async () => {
-    const throwNotMountedErrorSpy = spyOn(
+    const throwNotMountedErrorSpy = jest.spyOn(
       ComponentInstance.prototype,
       "throwNotMountedError" as any
-    ).and.callThrough();
+    );
 
     const local = store(true, (_state, action: boolean) => action);
 

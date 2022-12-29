@@ -12,9 +12,8 @@ describe("<Observer />", () => {
   });
 
   it("observer are rerendering when store changes", () => {
-    const renderSpy = jasmine
-      .createSpy("render", (value: number) => <div>{value}</div>)
-      .and.callThrough();
+    const renderSpy = jest.fn((value: number) => <div>{value}</div>);
+
     const local = store(1, (_state, action: number) => action);
 
     const Component = component("Component", () => (
@@ -27,7 +26,7 @@ describe("<Observer />", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("1");
 
-    expect(renderSpy.calls.count()).toBe(1);
+    expect(renderSpy).toHaveBeenCalledTimes(1);
     expect(renderSpy).toHaveBeenCalledWith(1);
 
     local.dispatch(2);
@@ -35,14 +34,12 @@ describe("<Observer />", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("2");
 
-    expect(renderSpy.calls.count()).toBe(2);
+    expect(renderSpy).toHaveBeenCalledTimes(2);
     expect(renderSpy).toHaveBeenCalledWith(2);
   });
 
   it("observer are rerendering when props changes", () => {
-    const renderSpy = jasmine
-      .createSpy("render", (value: number) => <div>{value}</div>)
-      .and.callThrough();
+    const renderSpy = jest.fn((value: number) => <div>{value}</div>);
 
     const local = store(0, (_state, action: number) => action);
     const localContainer = store(
@@ -63,12 +60,11 @@ describe("<Observer />", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("0");
 
-    expect(renderSpy.calls.count()).toBe(1);
+    expect(renderSpy).toHaveBeenCalledTimes(1);
     expect(renderSpy).toHaveBeenCalledWith(0);
 
-    const newRenderSpy = jasmine
-      .createSpy("render", (value: number) => <div>{value}</div>)
-      .and.callThrough();
+    const newRenderSpy = jest.fn((value: number) => <div>{value}</div>);
+
     localContainer.dispatch(newRenderSpy);
 
     expect(container.childNodes.length).toBe(1);
@@ -76,8 +72,8 @@ describe("<Observer />", () => {
     expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("0");
     expect(container.childNodes[0] as HTMLElement).toBe(target);
 
-    expect(renderSpy.calls.count()).toBe(1);
-    expect(newRenderSpy.calls.count()).toBe(1);
+    expect(renderSpy).toHaveBeenCalledTimes(1);
+    expect(newRenderSpy).toHaveBeenCalledTimes(1);
     expect(newRenderSpy).toHaveBeenCalledWith(0);
   });
 });

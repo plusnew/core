@@ -295,9 +295,8 @@ describe("context", () => {
     const NestedComponent = component(
       "Component",
       (_Props, componentInstance) => {
-        const { getState, dispatch } = valueContext.findProvider(
-          componentInstance
-        );
+        const { getState, dispatch } =
+          valueContext.findProvider(componentInstance);
 
         return (
           <span onclick={() => dispatch(getState() + 1)}>{getState()}</span>

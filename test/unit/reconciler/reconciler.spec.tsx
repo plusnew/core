@@ -228,12 +228,18 @@ describe("checking if reconciler works as expected", () => {
 
   describe("isSameAbstractElementType()", () => {
     beforeEach(() => {
-      spyOn(elementTypeChecker, "isPlaceholderElement").and.returnValue(false);
-      spyOn(elementTypeChecker, "isTextElement").and.returnValue(false);
-      spyOn(elementTypeChecker, "isArrayElement").and.returnValue(false);
-      spyOn(elementTypeChecker, "isFragmentElement").and.returnValue(false);
-      spyOn(elementTypeChecker, "isDomElement").and.returnValue(false);
-      spyOn(elementTypeChecker, "isComponentElement").and.returnValue(false);
+      jest
+        .spyOn(elementTypeChecker, "isPlaceholderElement")
+        .mockReturnValue(false);
+      jest.spyOn(elementTypeChecker, "isTextElement").mockReturnValue(false);
+      jest.spyOn(elementTypeChecker, "isArrayElement").mockReturnValue(false);
+      jest
+        .spyOn(elementTypeChecker, "isFragmentElement")
+        .mockReturnValue(false);
+      jest.spyOn(elementTypeChecker, "isDomElement").mockReturnValue(false);
+      jest
+        .spyOn(elementTypeChecker, "isComponentElement")
+        .mockReturnValue(false);
     });
     it("unknown element", () => {
       expect(() => {

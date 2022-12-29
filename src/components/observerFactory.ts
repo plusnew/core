@@ -37,8 +37,9 @@ export default function <state>(store: Store<state, any>) {
         unknown,
         unknown
       >;
-      const renderFunction = (instance.props
-        .children as any)[0] as renderFunction<state>;
+      const renderFunction = (
+        instance.props.children as any
+      )[0] as renderFunction<state>;
       if (instance.renderOptions.invokeGuard === undefined) {
         instance.render(renderFunction(store.getState()));
       } else {
@@ -55,11 +56,13 @@ export default function <state>(store: Store<state, any>) {
     public componentWillUnmount() {
       store.unsubscribe(this.update);
       // @FIXME this cast should be removed and typechecked
-      (this.instance as ComponentInstance<
-        observerProps<state>,
-        unknown,
-        unknown
-      >).storeProps.unsubscribe(this.update);
+      (
+        this.instance as ComponentInstance<
+          observerProps<state>,
+          unknown,
+          unknown
+        >
+      ).storeProps.unsubscribe(this.update);
     }
 
     /**

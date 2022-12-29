@@ -7,7 +7,7 @@ import type { Store } from "../../../index";
 describe("rendering the elements", () => {
   let container: HTMLElement;
   let local: Store<string, string>;
-  let setTextSpy: jasmine.Spy;
+  let setTextSpy: jest.SpyInstance;
   beforeEach(() => {
     local = store(
       "foo",
@@ -17,8 +17,11 @@ describe("rendering the elements", () => {
     container = document.createElement("div");
     container.innerHTML = "lots of stuff";
     document.body.appendChild(container);
+    if (setTextSpy) {
+      setTextSpy.mockRestore();
+    }
 
-    setTextSpy = spyOn(TextInstance.prototype, "setText").and.callThrough();
+    setTextSpy = jest.spyOn(TextInstance.prototype, "setText");
   });
 
   afterEach(() => {
@@ -298,7 +301,7 @@ describe("rendering the elements", () => {
   });
 
   it("dom with lesser attributes after update, even for events", () => {
-    const clickHandler = jasmine.createSpy();
+    const clickHandler = jest.fn();
     const local = store(true, (_previousState, action: boolean) => action);
     const Component = component("Component", () => (
       <local.Observer>
@@ -337,12 +340,12 @@ describe("rendering the elements", () => {
     const staticText = container.childNodes[0] as Text;
 
     expect(staticText.textContent).toBe("0");
-    expect(setTextSpy.calls.count()).toBe(0);
+    expect(setTextSpy).toHaveBeenCalledTimes(0);
 
     local.dispatch(1);
 
     expect(staticText.textContent).toBe("1");
-    expect(setTextSpy.calls.count()).toBe(1);
+    expect(setTextSpy).toHaveBeenCalledTimes(1);
   });
 
   it("dont call setText when text didnt change", () => {
@@ -356,11 +359,11 @@ describe("rendering the elements", () => {
     const staticText = container.childNodes[0] as Text;
 
     expect(staticText.textContent).toBe("static text");
-    expect(setTextSpy.calls.count()).toBe(0);
+    expect(setTextSpy).toHaveBeenCalledTimes(0);
 
     local.dispatch(1);
 
     expect(staticText.textContent).toBe("static text");
-    expect(setTextSpy.calls.count()).toBe(0);
+    expect(setTextSpy).toHaveBeenCalledTimes(0);
   });
 });

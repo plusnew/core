@@ -16,14 +16,17 @@ const localFactory = () =>
 
 describe("rendering nested components", () => {
   let container: HTMLElement;
-  let moveSpy: jasmine.Spy;
+  let moveSpy: jest.SpyInstance;
 
   beforeEach(() => {
     container = document.createElement("div");
     container.innerHTML = "lots of stuff";
     document.body.appendChild(container);
 
-    moveSpy = spyOn(HTMLElement.prototype, "insertBefore").and.callThrough();
+    if (moveSpy) {
+      moveSpy.mockRestore();
+    }
+    moveSpy = jest.spyOn(HTMLElement.prototype, "insertBefore");
   });
 
   it("does a initial list work, with pushing values with placeholder", () => {
@@ -455,7 +458,7 @@ describe("rendering nested components", () => {
     expect((ul.childNodes[2] as HTMLElement).tagName).toBe("LI");
     expect((ul.childNodes[2] as HTMLElement).innerHTML).toBe("third");
 
-    moveSpy.calls.reset();
+    moveSpy.mockReset();
 
     local.dispatch([list[0], list[2]]);
 
@@ -465,7 +468,7 @@ describe("rendering nested components", () => {
     expect((ul.childNodes[1] as HTMLElement).tagName).toBe("LI");
     expect((ul.childNodes[1] as HTMLElement).innerHTML).toBe("third");
 
-    expect(moveSpy.calls.count()).toBe(0);
+    expect(moveSpy).toHaveBeenCalledTimes(0);
   });
 
   it("last element got removed", () => {

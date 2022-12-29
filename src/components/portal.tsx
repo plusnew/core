@@ -31,10 +31,9 @@ export const PortalExit = component(
     ] = componentInstance;
 
     componentInstance.registerLifecycleHook("componentWillUnmount", () => {
-      delete (componentInstance.renderOptions.portals as portalRenderOption<
-        any,
-        any
-      >)[portalName];
+      delete (
+        componentInstance.renderOptions.portals as portalRenderOption<any, any>
+      )[portalName];
     });
     return null;
   }
@@ -55,10 +54,12 @@ export const PortalEntrance = component(
       };
 
       componentInstance.appendChild = (childInstance) => {
-        (componentInstance.renderOptions.portals as portalRenderOption<
-          any,
-          any
-        >)[portalName].appendChild(
+        (
+          componentInstance.renderOptions.portals as portalRenderOption<
+            any,
+            any
+          >
+        )[portalName].appendChild(
           childInstance,
           null // @TODO this should be fixed, that looks wrong
         );
@@ -70,8 +71,12 @@ export const PortalEntrance = component(
 
       componentInstance.renderOptions.driver.setupPortal({
         portalEntrance: componentInstance,
-        portalExit: (componentInstance.renderOptions
-          .portals as portalRenderOption<any, any>)[portalName],
+        portalExit: (
+          componentInstance.renderOptions.portals as portalRenderOption<
+            any,
+            any
+          >
+        )[portalName],
       });
     } else {
       throw new Error(`Could not find PortalExit with name ${portalName}`);

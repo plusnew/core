@@ -19,7 +19,8 @@ import reconcile from "./reconcile";
  */
 export default class DomInstance<HostElement, HostTextElement>
   extends ChildrenInstance<HostElement, HostTextElement>
-  implements HostInstance<HostElement, HostTextElement> {
+  implements HostInstance<HostElement, HostTextElement>
+{
   public nodeType = types.Host as const;
   public ref: HostElement;
   public props: props;
@@ -135,20 +136,18 @@ export default class DomInstance<HostElement, HostTextElement>
    * calls the parentInstance that this module got created
    */
   public elementDidMountToParent() {
-    (this.parentInstance as Instance<
-      HostElement,
-      HostTextElement
-    >).elementDidMount(this.ref);
+    (
+      this.parentInstance as Instance<HostElement, HostTextElement>
+    ).elementDidMount(this.ref);
   }
 
   /**
    * calls the parentInstance that this module got deleted
    */
   public elementWillUnmountToParent() {
-    return (this.parentInstance as Instance<
-      HostElement,
-      HostTextElement
-    >).elementWillUnmount(this.ref);
+    return (
+      this.parentInstance as Instance<HostElement, HostTextElement>
+    ).elementWillUnmount(this.ref);
   }
 
   /**

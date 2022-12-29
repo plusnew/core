@@ -66,11 +66,13 @@ export default function <HostElement, HostTextElement>(
   if (elementTypeChecker.isComponentElement(abstractElement)) {
     const componentAbstractElement = abstractElement as PlusnewAbstractElement;
     if (
-      (componentAbstractElement.type as ComponentContainer<
-        any,
-        HostElement,
-        HostTextElement
-      >).shouldCreateComponent(parentInstance)
+      (
+        componentAbstractElement.type as ComponentContainer<
+          any,
+          HostElement,
+          HostTextElement
+        >
+      ).shouldCreateComponent(parentInstance)
     ) {
       return new ComponentInstance(
         abstractElement as PlusnewAbstractElement,

@@ -17,9 +17,7 @@ type consumerProps<state, action> = { children: renderProps<state, action> };
 export type Context<state, action> = {
   Provider: ComponentContainer<providerProps<state, action>, unknown, unknown>;
   Consumer: ComponentContainer<consumerProps<state, action>, unknown, unknown>;
-  findProvider: (
-    instance: Instance<unknown, unknown>
-  ) => {
+  findProvider: (instance: Instance<unknown, unknown>) => {
     getState: () => state;
     dispatch: (action: action) => void;
   };
@@ -66,16 +64,19 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
       >;
 
       private getRenderPropsResult() {
-        const [renderProps]: [renderProps<stateType, actionType>] = (this
-          .instance as ComponentInstance<
-          consumerProps<stateType, actionType>,
-          unknown,
-          unknown
-        >).props.children as any;
-        const providerPropsState = (this.providerPropsStore as Store<
-          providerProps<stateType, actionType>,
-          any
-        >).getState();
+        const [renderProps]: [renderProps<stateType, actionType>] = (
+          this.instance as ComponentInstance<
+            consumerProps<stateType, actionType>,
+            unknown,
+            unknown
+          >
+        ).props.children as any;
+        const providerPropsState = (
+          this.providerPropsStore as Store<
+            providerProps<stateType, actionType>,
+            any
+          >
+        ).getState();
         return renderProps(
           providerPropsState.state,
           providerPropsState.dispatch
@@ -106,10 +107,12 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
         this.instance = componentInstance;
 
         this.providerPropsStore = findProvider(componentInstance).storeProps;
-        (this.providerPropsStore as Store<
-          providerProps<stateType, actionType>,
-          any
-        >).subscribe(this.update);
+        (
+          this.providerPropsStore as Store<
+            providerProps<stateType, actionType>,
+            any
+          >
+        ).subscribe(this.update);
         componentInstance.storeProps.subscribe(this.update);
 
         return this.getRenderPropsResult();
@@ -118,10 +121,12 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
         _Props: consumerProps<stateType, actionType>,
         componentInstance: ComponentInstance<any, unknown, unknown>
       ) {
-        (this.providerPropsStore as Store<
-          providerProps<stateType, actionType>,
-          any
-        >).unsubscribe(this.update);
+        (
+          this.providerPropsStore as Store<
+            providerProps<stateType, actionType>,
+            any
+          >
+        ).unsubscribe(this.update);
         componentInstance.storeProps.unsubscribe(this.update);
       }
     },

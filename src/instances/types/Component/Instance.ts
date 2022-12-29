@@ -3,7 +3,7 @@ import type { ComponentContainer } from "../../../components/factory";
 import type { ApplicationElement, props } from "../../../interfaces/component";
 import type { renderOptions } from "../../../interfaces/renderOptions";
 import type PlusnewAbstractElement from "../../../PlusnewAbstractElement";
-import type { PlusnewElement } from "../../../PlusnewAbstractElement"; 
+import type { PlusnewElement } from "../../../PlusnewAbstractElement";
 import store, { type Store } from "../../../util/store";
 import factory from "../../factory";
 import Instance, { type getPredeccessor, type predecessor } from "../Instance";
@@ -89,11 +89,13 @@ export default class ComponentInstance<
     if (invokeGuard) {
       const invokeResult = invokeGuard(
         () =>
-          (this.applicationInstance as Component<
-            componentProps,
-            HostElement,
-            HostTextElement
-          >).render(this.storeProps.Observer, this),
+          (
+            this.applicationInstance as Component<
+              componentProps,
+              HostElement,
+              HostTextElement
+            >
+          ).render(this.storeProps.Observer, this),
         this
       );
       if (invokeResult.hasError == true) {
@@ -103,11 +105,13 @@ export default class ComponentInstance<
       }
     } else {
       this.render(
-        (this.applicationInstance as Component<
-          componentProps,
-          HostElement,
-          HostTextElement
-        >).render(this.storeProps.Observer, this)
+        (
+          this.applicationInstance as Component<
+            componentProps,
+            HostElement,
+            HostTextElement
+          >
+        ).render(this.storeProps.Observer, this)
       );
     }
     this.executeLifecycleHooks("componentDidMount");
@@ -145,10 +149,9 @@ export default class ComponentInstance<
   }
 
   public getLastIntrinsicInstance() {
-    return (this.rendered as Instance<
-      HostElement,
-      HostTextElement
-    >).getLastIntrinsicInstance();
+    return (
+      this.rendered as Instance<HostElement, HostTextElement>
+    ).getLastIntrinsicInstance();
   }
 
   /**
@@ -169,11 +172,13 @@ export default class ComponentInstance<
    * removes the children from the dom
    */
   public remove(deallocMode: boolean) {
-    (this.applicationInstance as Component<
-      componentProps,
-      HostElement,
-      HostTextElement
-    >).componentWillUnmount(this.props, this);
+    (
+      this.applicationInstance as Component<
+        componentProps,
+        HostElement,
+        HostTextElement
+      >
+    ).componentWillUnmount(this.props, this);
     this.executeLifecycleHooks("componentWillUnmount");
     this.mounted = false;
 

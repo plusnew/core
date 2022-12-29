@@ -90,11 +90,9 @@ class Async<T> extends AbstractClass<props<T>> {
    * unregisters the event
    */
   public componentWillUnmount() {
-    (this.instance as ComponentInstance<
-      props<T>,
-      unknown,
-      unknown
-    >).storeProps.unsubscribe(this.update);
+    (
+      this.instance as ComponentInstance<props<T>, unknown, unknown>
+    ).storeProps.unsubscribe(this.update);
   }
 }
 

@@ -202,10 +202,10 @@ describe("<Async />", () => {
   });
 
   it("remove async component", async () => {
-    const throwNotMountedErrorSpy = spyOn(
+    const throwNotMountedErrorSpy = jest.spyOn(
       ComponentInstance.prototype,
       "throwNotMountedError" as any
-    ).and.callThrough();
+    );
     const local = store(true, (_state, action: boolean) => action);
 
     const Component = component("Component", () => (
