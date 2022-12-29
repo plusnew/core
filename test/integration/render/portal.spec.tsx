@@ -171,8 +171,8 @@ describe("rendering nested Portals", () => {
     plusnew.render(<Component />, { driver: driver(container) });
 
     const target = container.childNodes[0];
-    expect(target.childNodes[0].namespaceURI).toBe(htmlNamespace);
-    expect(target.childNodes[1].namespaceURI).toBe(svgNamespace);
+    expect((target.childNodes[0] as Element).namespaceURI).toBe(htmlNamespace);
+    expect((target.childNodes[1] as Element).namespaceURI).toBe(svgNamespace);
   });
 
   it("does appending element after PortalEntrance work", () => {

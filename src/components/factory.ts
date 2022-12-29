@@ -12,7 +12,7 @@ export type componentResult<componentProps extends Partial<props>> = {
 };
 
 export interface ComponentContainer<
-  componentProps,
+  componentProps extends Partial<props & { children: any }>,
   HostElement,
   HostTextElement
 > {

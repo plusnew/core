@@ -1,7 +1,7 @@
 import type { ComponentContainer } from "./components/factory";
 import factory from "./instances/factory";
 import RootInstance from "./instances/types/Root/Instance";
-import type { ApplicationElement } from "./interfaces/component";
+import type { ApplicationElement, props } from "./interfaces/component";
 import type { renderOptions } from "./interfaces/renderOptions";
 import PlusnewAbstractElement from "./PlusnewAbstractElement";
 import type { PlusnewElement } from "./PlusnewAbstractElement";
@@ -26,9 +26,11 @@ class Plusnew {
     props: null,
     ...children: ApplicationElement[]
   ): PlusnewAbstractElement;
-  public createElement<props>(
-    type: ComponentContainer<props, unknown, unknown>,
-    props: props,
+  public createElement<
+    componentProps extends Partial<props & { children: any }>
+  >(
+    type: ComponentContainer<componentProps, unknown, unknown>,
+    props: componentProps,
     ...children: ApplicationElement[]
   ): PlusnewAbstractElement;
   public createElement(

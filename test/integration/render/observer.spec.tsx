@@ -1,6 +1,7 @@
 import driver from "@plusnew/driver-dom/src/driver";
 import "@plusnew/driver-dom/src/jsx";
 import plusnew, { component, store } from "../../../index";
+import type PlusnewAbstractElement from "../../../src/PlusnewAbstractElement";
 
 describe("<Observer />", () => {
   let container: HTMLElement;
@@ -42,10 +43,10 @@ describe("<Observer />", () => {
     const renderSpy = jest.fn((value: number) => <div>{value}</div>);
 
     const local = store(0, (_state, action: number) => action);
-    const localContainer = store(
-      renderSpy,
-      (_state, action: jasmine.Spy) => action
-    );
+    const localContainer = store<
+      (value: number) => PlusnewAbstractElement,
+      (value: number) => PlusnewAbstractElement
+    >(renderSpy, (_state, action) => action);
 
     const Component = component("Component", () => (
       <localContainer.Observer>
