@@ -1,6 +1,8 @@
+import { effect } from "@preact/signals-core";
 import type { ApplicationElement, Props } from "../";
 import { Component } from "../index";
 import type ComponentInstance from "../instances/types/Component/Instance";
+import { active } from "../instances/types/Component/Instance";
 import type { invokeGuard } from "../interfaces/renderOptions";
 
 type renderFunction = () => ApplicationElement;
@@ -108,28 +110,36 @@ export default class Try extends Component<props> {
       invokeGuard: this.invokeGuard.bind(this),
     };
 
-    let result: ApplicationElement;
+    instance.disconnectSignal();
+    instance.disconnectSignal = effect(() => {
+      active.renderingComponent = instance;
+      let result: ApplicationElement;
 
-    if (this.errored === null) {
-      try {
-        result = ((instance.props.children as any)[0] as renderFunction)();
-      } catch (error) {
-        this.errored = {
-          error,
-          component: this.instance as ComponentInstance<any, any, any>,
-        };
-        this.setInvokeGuard();
+      if (this.errored === null) {
+        try {
+          result = ((instance.props.children as any)[0] as renderFunction)();
+        } catch (error) {
+          this.errored = {
+            error,
+            component: this.instance as ComponentInstance<any, any, any>,
+          };
+          this.setInvokeGuard();
 
+          result = instance.props.catch(
+            this.errored.error,
+            this.errored.component
+          );
+        }
+      } else {
         result = instance.props.catch(
           this.errored.error,
           this.errored.component
         );
       }
-    } else {
-      result = instance.props.catch(this.errored.error, this.errored.component);
-    }
 
-    instance.render(result);
+      instance.render(result);
+      active.renderingComponent = null;
+    });
   };
 
   componentWillUnmount() {

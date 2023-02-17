@@ -1,3 +1,4 @@
+import { effect } from "@preact/signals-core";
 import type Component from "../../../components/AbstractClass";
 import type { ComponentContainer } from "../../../components/factory";
 import type { ApplicationElement, props } from "../../../interfaces/component";
@@ -11,6 +12,10 @@ import types from "../types";
 import reconcile, { shouldUpdate } from "./reconcile";
 
 type lifecycle = "componentDidMount" | "componentWillUnmount";
+
+export const active = {
+  renderingComponent: null as null | ComponentInstance<any, any, any>,
+};
 
 /**
  * ComponentInstances are used representing the <Component /> in the shadowdom
@@ -41,6 +46,7 @@ export default class ComponentInstance<
     componentDidMount: [] as (() => void)[],
     componentWillUnmount: [] as (() => void)[],
   };
+  public disconnectSignal: () => void = () => null;
 
   constructor(
     abstractElement: PlusnewAbstractElement,
@@ -86,34 +92,43 @@ export default class ComponentInstance<
 
   public executeUserspace() {
     const invokeGuard = this.renderOptions.invokeGuard;
-    if (invokeGuard) {
-      const invokeResult = invokeGuard(
-        () =>
-          (
-            this.applicationInstance as Component<
-              componentProps,
-              HostElement,
-              HostTextElement
-            >
-          ).render(this.storeProps.Observer, this),
-        this
-      );
-      if (invokeResult.hasError == true) {
-        this.errored = true;
+    active.renderingComponent = this;
+
+    effect(() => {
+      let result;
+
+      if (invokeGuard) {
+        const invokeResult = invokeGuard(
+          () =>
+            (
+              this.applicationInstance as Component<
+                componentProps,
+                HostElement,
+                HostTextElement
+              >
+            ).render(this.storeProps.Observer, this),
+          this
+        );
+        if (invokeResult.hasError == true) {
+          this.errored = true;
+        } else {
+          result = invokeResult.result;
+        }
       } else {
-        this.render(invokeResult.result);
-      }
-    } else {
-      this.render(
-        (
+        result = (
           this.applicationInstance as Component<
             componentProps,
             HostElement,
             HostTextElement
           >
-        ).render(this.storeProps.Observer, this)
-      );
-    }
+        ).render(this.storeProps.Observer, this);
+      }
+
+      active.renderingComponent = null;
+      if (this.errored === false) {
+        this.render(result);
+      }
+    });
     this.executeLifecycleHooks("componentDidMount");
   }
 
@@ -172,6 +187,7 @@ export default class ComponentInstance<
    * removes the children from the dom
    */
   public remove(deallocMode: boolean) {
+    this.disconnectSignal();
     (
       this.applicationInstance as Component<
         componentProps,

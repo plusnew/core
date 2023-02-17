@@ -1,11 +1,5 @@
 module.exports = {
   verbose: true,
-  preset: 'ts-jest',
-  globals: {
-    'ts-jest': {
-      diagnostics: false
-    }
-  },
   rootDir: __dirname,
   roots: [
     "<rootDir>/src",
@@ -13,7 +7,7 @@ module.exports = {
   ],
   modulePaths: ["src"],
   transform: {
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.[t|j]sx?$": "ts-jest"
   },
   transformIgnorePatterns: [],
   moduleFileExtensions: ['tsx', 'ts', 'js'],

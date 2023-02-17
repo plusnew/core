@@ -1,4 +1,6 @@
+import { effect } from "@preact/signals-core";
 import type ComponentInstance from "../instances/types/Component/Instance";
+import { active } from "../instances/types/Component/Instance";
 import type { ApplicationElement } from "../interfaces/component";
 import type { Store } from "../util/store";
 import AbstractClass from "./AbstractClass";
@@ -37,17 +39,23 @@ export default function <state>(store: Store<state, any>) {
         unknown,
         unknown
       >;
-      const renderFunction = (
-        instance.props.children as any
-      )[0] as renderFunction<state>;
-      if (instance.renderOptions.invokeGuard === undefined) {
-        instance.render(renderFunction(store.getState()));
-      } else {
-        instance.renderOptions.invokeGuard(() => {
-          const result = renderFunction(store.getState());
-          instance.render(result);
-        }, instance);
-      }
+
+      instance.disconnectSignal();
+      instance.disconnectSignal = effect(() => {
+        active.renderingComponent = instance;
+        const renderFunction = (
+          instance.props.children as any
+        )[0] as renderFunction<state>;
+        if (instance.renderOptions.invokeGuard === undefined) {
+          instance.render(renderFunction(store.getState()));
+        } else {
+          instance.renderOptions.invokeGuard(() => {
+            const result = renderFunction(store.getState());
+            instance.render(result);
+          }, instance);
+        }
+        active.renderingComponent = null;
+      });
     };
 
     /**

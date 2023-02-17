@@ -1,6 +1,9 @@
-import plusnew, { Component } from "../";
+import { effect } from "@preact/signals-core";
 import type { ApplicationElement, ComponentContainer, Props } from "../";
-import ComponentInstance from "../instances/types/Component/Instance";
+import plusnew, { Component } from "../";
+import ComponentInstance, {
+  active,
+} from "../instances/types/Component/Instance";
 import type Instance from "../instances/types/Instance";
 import type { Store } from "../util/store";
 
@@ -90,14 +93,21 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
           unknown
         >;
 
-        if (instance.renderOptions.invokeGuard === undefined) {
-          instance.render(this.getRenderPropsResult());
-        } else {
-          instance.renderOptions.invokeGuard(() => {
-            const result = this.getRenderPropsResult();
-            instance.render(result);
-          }, instance);
-        }
+        instance.disconnectSignal();
+        instance.disconnectSignal = effect(() => {
+          active.renderingComponent = instance;
+
+          if (instance.renderOptions.invokeGuard === undefined) {
+            instance.render(this.getRenderPropsResult());
+          } else {
+            instance.renderOptions.invokeGuard(() => {
+              const result = this.getRenderPropsResult();
+              instance.render(result);
+            }, instance);
+          }
+
+          active.renderingComponent = null;
+        });
       };
 
       render(
