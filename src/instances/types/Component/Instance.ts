@@ -92,9 +92,9 @@ export default class ComponentInstance<
 
   public executeUserspace() {
     const invokeGuard = this.renderOptions.invokeGuard;
-    active.renderingComponent = this;
 
     effect(() => {
+      active.renderingComponent = this;
       let result;
 
       if (invokeGuard) {
