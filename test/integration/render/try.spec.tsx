@@ -456,6 +456,53 @@ describe("<Try />", () => {
       expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
     });
 
+    it("Show children immidiatley", () => {
+      const counter = store(0);
+      const counterContext = context<number, number>();
+      const error = new Error("error");
+      const catchSpy = jest.fn();
+
+      const NestedComponent = component("NestedComponent", () => (
+        <counterContext.Consumer>
+          {(_counterState) => {
+            throw error;
+          }}
+        </counterContext.Consumer>
+      ));
+
+      const Component = component("Component", () => (
+        <Try
+          catch={catchSpy.mockImplementation(() => (
+            <div />
+          ))}
+        >
+          {() => (
+            <counter.Observer>
+              {(counterState) => (
+                <counterContext.Provider
+                  state={counterState}
+                  dispatch={counter.dispatch}
+                >
+                  <NestedComponent />
+                </counterContext.Provider>
+              )}
+            </counter.Observer>
+          )}
+        </Try>
+      ));
+
+      plusnew.render(<Component />, { driver: driver(container) });
+
+      expect(catchSpy).toHaveBeenCalledWith(
+        error,
+        expect.any(ComponentInstance)
+      );
+      expect(catchSpy.mock.calls[0][1].applicationInstance).toBeInstanceOf(
+        counterContext.Consumer
+      );
+      expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    });
+
     it("Show children and then error by deeply nested component", () => {
       const counter = store(0);
       const counterContext = context<number, number>();
