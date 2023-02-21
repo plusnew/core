@@ -1,4 +1,4 @@
-import { effect } from "@preact/signals-core";
+import { computed } from "@preact/signals-core";
 import type ComponentInstance from "../instances/types/Component/Instance";
 import { active } from "../instances/types/Component/Instance";
 import type { ApplicationElement } from "../interfaces/component";
@@ -24,38 +24,60 @@ export default function <state>(store: Store<state, any>) {
       store.subscribe(this.update);
       instance.storeProps.subscribe(this.update);
 
-      return ((instance.props.children as any)[0] as renderFunction<state>)(
-        store.getState()
-      );
+      const renderResult = this.update();
+      if (renderResult.hasError) {
+        throw (renderResult as any).result;
+      }
+      return renderResult.result;
     }
 
-    /**
-     * has to be a property on the componentinstance, to create new reference each time
-     * so that removal of correct listener is possible
-     */
     private update = () => {
       const instance = this.instance as ComponentInstance<
         observerProps<state>,
         unknown,
         unknown
       >;
-
       instance.disconnectSignal();
-      instance.disconnectSignal = effect(() => {
-        active.renderingComponent = instance;
+
+      const computedResult = computed(() => {
         const renderFunction = (
           instance.props.children as any
         )[0] as renderFunction<state>;
-        if (instance.renderOptions.invokeGuard === undefined) {
-          instance.render(renderFunction(store.getState()));
+
+        active.renderingComponent = instance;
+        let result: { hasError: boolean; result?: any };
+
+        if (
+          instance.rendered === undefined ||
+          instance.renderOptions.invokeGuard === undefined
+        ) {
+          try {
+            result = {
+              hasError: false as const,
+              result: renderFunction(store.getState()),
+            };
+          } catch (errored) {
+            result = { hasError: true as const, result: errored };
+          }
         } else {
-          instance.renderOptions.invokeGuard(() => {
-            const result = renderFunction(store.getState());
-            instance.render(result);
-          }, instance);
+          result = instance.renderOptions.invokeGuard(
+            () => renderFunction(store.getState()),
+            instance
+          );
         }
+
         active.renderingComponent = null;
+
+        return result;
       });
+
+      instance.disconnectSignal = computedResult.subscribe((value) => {
+        if (instance.rendered && value.hasError === false) {
+          instance.render(value.result);
+        }
+      });
+
+      return computedResult.peek();
     };
 
     /**

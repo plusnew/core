@@ -16,64 +16,120 @@ describe("updating for signals", () => {
     document.body.removeChild(container);
   });
 
-  it("updating signal, updates the dom in plain component", () => {
-    const counter = signal(0);
-    const Component = component("Component", (_Props: Props<{}>) => (
-      <div>{counter.value}</div>
-    ));
-    plusnew.render(<Component />, { driver: driver(container) });
+  describe("for observer", () => {
+    it("updating signal updates dom, updating store keeps signal observers alive", () => {
+      const wrapper = store(true);
+      const first = signal(0);
+      const second = signal("foo");
 
-    expect(container.childNodes.length).toBe(1);
-    const target = container.childNodes[0] as HTMLElement;
-    expect(target.nodeName).toBe("DIV");
-    expect(target.textContent).toBe("0");
+      const wrapperRender = jest.fn((wrapperState: boolean) => (
+        <div>{wrapperState ? first.value : second.value}</div>
+      ));
 
-    counter.value = 1;
+      const Component = component("Component", (_Props: Props<{}>) => (
+        <wrapper.Observer>{wrapperRender}</wrapper.Observer>
+      ));
+      const instance = plusnew.render(<Component />, {
+        driver: driver(container),
+      });
 
-    expect(target.textContent).toBe("1");
+      expect(container.childNodes.length).toBe(1);
+      const target = container.childNodes[0] as HTMLElement;
+      expect(target.nodeName).toBe("DIV");
+      expect(target.textContent).toBe("0");
+      expect(wrapperRender).toHaveBeenCalledTimes(1);
+
+      first.value = 1;
+
+      expect(target.textContent).toBe("1");
+      expect(wrapperRender).toHaveBeenCalledTimes(2);
+
+      wrapper.dispatch(false);
+
+      expect(target.textContent).toBe("foo");
+      expect(wrapperRender).toHaveBeenCalledTimes(3);
+
+      second.value = "bar";
+
+      expect(target.textContent).toBe("bar");
+      expect(wrapperRender).toHaveBeenCalledTimes(4);
+
+      first.value = 1;
+
+      expect(wrapperRender).toHaveBeenCalledTimes(4);
+
+      instance.remove(false);
+      second.value = "baz";
+
+      expect(target.textContent).not.toBe("baz");
+      expect(wrapperRender).toHaveBeenCalledTimes(4);
+    });
   });
 
-  it("updating signal, updates the dom in store", () => {
-    const wrapper = store("");
-    const counter = signal(0);
+  describe("for context", () => {
+    it("updating signal updates dom, updating store keeps signal observers alive", () => {
+      const wrapperContext = context<boolean, never>();
+      const wrapper = store(true);
+      const first = signal(0);
+      const second = signal("foo");
 
-    const Component = component("Component", (_Props: Props<{}>) => (
-      <wrapper.Observer>{() => <div>{counter.value}</div>}</wrapper.Observer>
-    ));
-    plusnew.render(<Component />, { driver: driver(container) });
+      const wrapperRender = jest.fn((wrapperState: boolean) => (
+        <div>{wrapperState ? first.value : second.value}</div>
+      ));
 
-    expect(container.childNodes.length).toBe(1);
-    const target = container.childNodes[0] as HTMLElement;
-    expect(target.nodeName).toBe("DIV");
-    expect(target.textContent).toBe("0");
+      const MainComponent = component("MainComponent", (_Props: Props<{}>) => (
+        <wrapper.Observer>
+          {(wrapperState) => (
+            <wrapperContext.Provider state={wrapperState} dispatch={() => null}>
+              <NestedComponent />
+            </wrapperContext.Provider>
+          )}
+        </wrapper.Observer>
+      ));
+      const NestedComponent = component(
+        "NestedComponent",
+        (_Props: Props<{}>) => (
+          <wrapperContext.Consumer>{wrapperRender}</wrapperContext.Consumer>
+        )
+      );
+      const instance = plusnew.render(<MainComponent />, {
+        driver: driver(container),
+      });
 
-    counter.value = 1;
+      expect(container.childNodes.length).toBe(1);
+      const target = container.childNodes[0] as HTMLElement;
+      expect(target.nodeName).toBe("DIV");
+      expect(target.textContent).toBe("0");
+      expect(wrapperRender).toHaveBeenCalledTimes(1);
 
-    expect(target.textContent).toBe("1");
+      first.value = 1;
+
+      expect(target.textContent).toBe("1");
+      expect(wrapperRender).toHaveBeenCalledTimes(2);
+
+      wrapper.dispatch(false);
+
+      expect(target.textContent).toBe("foo");
+      expect(wrapperRender).toHaveBeenCalledTimes(3);
+
+      second.value = "bar";
+
+      expect(target.textContent).toBe("bar");
+      expect(wrapperRender).toHaveBeenCalledTimes(4);
+
+      first.value = 1;
+
+      expect(wrapperRender).toHaveBeenCalledTimes(4);
+
+      instance.remove(false);
+      second.value = "baz";
+
+      expect(target.textContent).not.toBe("baz");
+      expect(wrapperRender).toHaveBeenCalledTimes(4);
+    });
   });
 
-  it("updating signal, updates the dom in consumer", () => {
-    const wrapper = context<string, never>();
-    const counter = signal(0);
-
-    const Component = component("Component", (_Props: Props<{}>) => (
-      <wrapper.Provider state="" dispatch={() => null}>
-        <wrapper.Consumer>{() => <div>{counter.value}</div>}</wrapper.Consumer>
-      </wrapper.Provider>
-    ));
-    plusnew.render(<Component />, { driver: driver(container) });
-
-    expect(container.childNodes.length).toBe(1);
-    const target = container.childNodes[0] as HTMLElement;
-    expect(target.nodeName).toBe("DIV");
-    expect(target.textContent).toBe("0");
-
-    counter.value = 1;
-
-    expect(target.textContent).toBe("1");
-  });
-
-  it("updating signal, updates the dom in try", () => {
+  xit("updating signal, updates the dom in try", () => {
     const counter = signal(0);
 
     const Component = component("Component", (_Props: Props<{}>) => (

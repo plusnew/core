@@ -1,11 +1,11 @@
-import { effect } from "@preact/signals-core";
-import type { ApplicationElement, ComponentContainer, Props } from "../";
 import plusnew, { Component } from "../";
+import type { ApplicationElement, ComponentContainer, Props } from "../";
 import ComponentInstance, {
   active,
 } from "../instances/types/Component/Instance";
 import type Instance from "../instances/types/Instance";
 import type { Store } from "../util/store";
+import { computed } from "@preact/signals-core";
 
 type renderProps<state, action> = (
   state: state,
@@ -66,50 +66,6 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
         any
       >;
 
-      private getRenderPropsResult() {
-        const [renderProps]: [renderProps<stateType, actionType>] = (
-          this.instance as ComponentInstance<
-            consumerProps<stateType, actionType>,
-            unknown,
-            unknown
-          >
-        ).props.children as any;
-        const providerPropsState = (
-          this.providerPropsStore as Store<
-            providerProps<stateType, actionType>,
-            any
-          >
-        ).getState();
-        return renderProps(
-          providerPropsState.state,
-          providerPropsState.dispatch
-        );
-      }
-
-      private update = () => {
-        const instance = this.instance as ComponentInstance<
-          consumerProps<stateType, actionType>,
-          unknown,
-          unknown
-        >;
-
-        instance.disconnectSignal();
-        instance.disconnectSignal = effect(() => {
-          active.renderingComponent = instance;
-
-          if (instance.renderOptions.invokeGuard === undefined) {
-            instance.render(this.getRenderPropsResult());
-          } else {
-            instance.renderOptions.invokeGuard(() => {
-              const result = this.getRenderPropsResult();
-              instance.render(result);
-            }, instance);
-          }
-
-          active.renderingComponent = null;
-        });
-      };
-
       render(
         _Props: Props<consumerProps<stateType, actionType>>,
         componentInstance: ComponentInstance<any, unknown, unknown>
@@ -125,8 +81,74 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
         ).subscribe(this.update);
         componentInstance.storeProps.subscribe(this.update);
 
-        return this.getRenderPropsResult();
+        const renderResult = this.update();
+        if (renderResult.hasError) {
+          throw (renderResult as any).result;
+        }
+        return renderResult.result;
       }
+
+      private update = () => {
+        const instance = this.instance as ComponentInstance<
+          consumerProps<stateType, actionType>,
+          unknown,
+          unknown
+        >;
+        instance.disconnectSignal();
+
+        const computedResult = computed(() => {
+          const [renderFunction]: [renderProps<stateType, actionType>] =
+            instance.props.children as any;
+          const providerPropsState = (
+            this.providerPropsStore as Store<
+              providerProps<stateType, actionType>,
+              any
+            >
+          ).getState();
+
+          active.renderingComponent = instance;
+          let result: { hasError: boolean; result?: any };
+
+          if (
+            instance.rendered === undefined ||
+            instance.renderOptions.invokeGuard === undefined
+          ) {
+            try {
+              result = {
+                hasError: false as const,
+                result: renderFunction(
+                  providerPropsState.state,
+                  providerPropsState.dispatch
+                ),
+              };
+            } catch (errored) {
+              result = { hasError: true as const, result: errored };
+            }
+          } else {
+            result = instance.renderOptions.invokeGuard(
+              () =>
+                renderFunction(
+                  providerPropsState.state,
+                  providerPropsState.dispatch
+                ),
+              instance
+            );
+          }
+
+          active.renderingComponent = null;
+
+          return result;
+        });
+
+        instance.disconnectSignal = computedResult.subscribe((value) => {
+          if (instance.rendered && value.hasError === false) {
+            instance.render(value.result);
+          }
+        });
+
+        return computedResult.peek();
+      };
+
       componentWillUnmount(
         _Props: consumerProps<stateType, actionType>,
         componentInstance: ComponentInstance<any, unknown, unknown>

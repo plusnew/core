@@ -1,4 +1,3 @@
-import { effect } from "@preact/signals-core";
 import type Component from "../../../components/AbstractClass";
 import type { ComponentContainer } from "../../../components/factory";
 import type { ApplicationElement, props } from "../../../interfaces/component";
@@ -92,43 +91,34 @@ export default class ComponentInstance<
 
   public executeUserspace() {
     const invokeGuard = this.renderOptions.invokeGuard;
-
-    effect(() => {
-      active.renderingComponent = this;
-      let result;
-
-      if (invokeGuard) {
-        const invokeResult = invokeGuard(
-          () =>
-            (
-              this.applicationInstance as Component<
-                componentProps,
-                HostElement,
-                HostTextElement
-              >
-            ).render(this.storeProps.Observer, this),
-          this
-        );
-        if (invokeResult.hasError == true) {
-          this.errored = true;
-        } else {
-          result = invokeResult.result;
-        }
+    if (invokeGuard) {
+      const invokeResult = invokeGuard(
+        () =>
+          (
+            this.applicationInstance as Component<
+              componentProps,
+              HostElement,
+              HostTextElement
+            >
+          ).render(this.storeProps.Observer, this),
+        this
+      );
+      if (invokeResult.hasError == true) {
+        this.errored = true;
       } else {
-        result = (
+        this.render(invokeResult.result);
+      }
+    } else {
+      this.render(
+        (
           this.applicationInstance as Component<
             componentProps,
             HostElement,
             HostTextElement
           >
-        ).render(this.storeProps.Observer, this);
-      }
-
-      active.renderingComponent = null;
-      if (this.errored === false) {
-        this.render(result);
-      }
-    });
+        ).render(this.storeProps.Observer, this)
+      );
+    }
     this.executeLifecycleHooks("componentDidMount");
   }
 
@@ -187,7 +177,6 @@ export default class ComponentInstance<
    * removes the children from the dom
    */
   public remove(deallocMode: boolean) {
-    this.disconnectSignal();
     (
       this.applicationInstance as Component<
         componentProps,
@@ -196,6 +185,7 @@ export default class ComponentInstance<
       >
     ).componentWillUnmount(this.props, this);
     this.executeLifecycleHooks("componentWillUnmount");
+    this.disconnectSignal();
     this.mounted = false;
 
     return this.removeChild(deallocMode);
