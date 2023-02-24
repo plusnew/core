@@ -17,4 +17,5 @@ export type renderOptions<HostElement, HostTextElement> = {
   invokeGuard?: invokeGuard<any>;
   addAsyncListener?: (promise: Promise<void>) => void;
   portals?: portalRenderOption<HostElement, HostTextElement>;
+  contexts?: { [context: symbol]: ComponentInstance<any, any, any> };
 };

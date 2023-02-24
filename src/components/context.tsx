@@ -1,8 +1,7 @@
 import plusnew, { Component } from "../";
 import type { ApplicationElement, ComponentContainer, Props } from "../";
-import ComponentInstance, {
-  active,
-} from "../instances/types/Component/Instance";
+import type ComponentInstance from "../instances/types/Component/Instance";
+import { active } from "../instances/types/Component/Instance";
 import type Instance from "../instances/types/Instance";
 import type { Store } from "../util/store";
 import { computed } from "@preact/signals-core";
@@ -27,18 +26,34 @@ export type Context<state, action> = {
 };
 
 function context<stateType, actionType>(): Context<stateType, actionType> {
+  const identifier = Symbol();
+
   class Provider extends Component<providerProps<stateType, actionType>> {
     static displayName = "Provider";
-    render(Props: Props<providerProps<stateType, actionType>>) {
+    render(
+      Props: Props<providerProps<stateType, actionType>>,
+      componentInstance: ComponentInstance<
+        providerProps<stateType, actionType>,
+        unknown,
+        unknown
+      >
+    ) {
+      componentInstance.renderOptions = {
+        ...componentInstance.renderOptions,
+        contexts: {
+          ...componentInstance.renderOptions.contexts,
+          [identifier]: componentInstance,
+        },
+      };
       return <Props>{(props) => props.children}</Props>;
     }
   }
 
   const findProvider = (componentInstance: Instance<unknown, unknown>) => {
-    const providerInstance = componentInstance.findParent(
-      (instance) =>
-        instance instanceof ComponentInstance && instance.type === Provider
-    );
+    const providerInstance =
+      componentInstance.renderOptions.contexts === undefined
+        ? undefined
+        : componentInstance.renderOptions.contexts[identifier];
     if (providerInstance === undefined) {
       throw new Error("Could not find Provider");
     }
