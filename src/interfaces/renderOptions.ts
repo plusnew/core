@@ -5,7 +5,7 @@ import type ComponentInstance from "../instances/types/Component/Instance";
 export type invokeGuard<T> = (
   callback: () => T,
   component: ComponentInstance<any, any, any>
-) => { hasError: true } | { hasError: false; result: T };
+) => { hasError: true; error: any } | { hasError: false; result: T };
 
 export type renderOptions<HostElement, HostTextElement> = {
   driver: IDriver<HostElement, HostTextElement>;

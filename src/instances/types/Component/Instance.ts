@@ -1,3 +1,4 @@
+import { computed } from "@preact/signals-core";
 import type Component from "../../../components/AbstractClass";
 import type { ComponentContainer } from "../../../components/factory";
 import type { ApplicationElement, props } from "../../../interfaces/component";
@@ -90,35 +91,65 @@ export default class ComponentInstance<
   }
 
   public executeUserspace() {
-    const invokeGuard = this.renderOptions.invokeGuard;
-    if (invokeGuard) {
-      const invokeResult = invokeGuard(
-        () =>
-          (
-            this.applicationInstance as Component<
-              componentProps,
-              HostElement,
-              HostTextElement
-            >
-          ).render(this.storeProps.Observer, this),
-        this
-      );
-      if (invokeResult.hasError == true) {
-        this.errored = true;
+    const computedResult = computed(() => {
+      active.renderingComponent = this;
+
+      active.renderingComponent = this;
+      let result:
+        | { hasError: false; result?: any }
+        | { hasError: true; error: any };
+
+      if (this.renderOptions.invokeGuard === undefined) {
+        try {
+          result = {
+            hasError: false as const,
+            result: (
+              this.applicationInstance as Component<
+                componentProps,
+                HostElement,
+                HostTextElement
+              >
+            ).render(this.storeProps.Observer, this),
+          };
+        } catch (errored) {
+          result = { hasError: true as const, error: errored };
+        }
       } else {
-        this.render(invokeResult.result);
+        result = this.renderOptions.invokeGuard(
+          () =>
+            (
+              this.applicationInstance as Component<
+                componentProps,
+                HostElement,
+                HostTextElement
+              >
+            ).render(this.storeProps.Observer, this),
+          this
+        );
       }
-    } else {
-      this.render(
-        (
-          this.applicationInstance as Component<
-            componentProps,
-            HostElement,
-            HostTextElement
-          >
-        ).render(this.storeProps.Observer, this)
-      );
+
+      active.renderingComponent = null;
+
+      return result;
+    });
+
+    this.disconnectSignal = computedResult.subscribe((value) => {
+      if (value.hasError === false) {
+        this.render(value.result);
+      } else {
+        this.errored = true;
+      }
+    });
+
+    const result = computedResult.peek();
+
+    if (
+      result.hasError === true &&
+      this.renderOptions.invokeGuard === undefined
+    ) {
+      throw result.error;
     }
+
     this.executeLifecycleHooks("componentDidMount");
   }
 
