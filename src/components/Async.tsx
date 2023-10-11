@@ -1,5 +1,6 @@
 import type { Props } from "../index";
 import type ComponentInstance from "../instances/types/Component/Instance";
+import { active } from "../instances/types/Component/Instance";
 import type { ApplicationElement } from "../interfaces/component";
 import AbstractClass from "./AbstractClass";
 
@@ -61,8 +62,11 @@ class Async<T> extends AbstractClass<props<T>> {
       unknown
     >;
 
+    active.renderingComponent = instance;
+
     if (this.promiseResolve.isResolved) {
       const payload = this.promiseResolve.payload;
+
       if (instance.mounted) {
         if (instance.renderOptions.invokeGuard) {
           const result = instance.renderOptions.invokeGuard(
@@ -84,6 +88,8 @@ class Async<T> extends AbstractClass<props<T>> {
     } else {
       instance.render(instance.props.pendingIndicator);
     }
+
+    active.renderingComponent = null;
   };
 
   /**
