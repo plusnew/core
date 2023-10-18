@@ -64,6 +64,8 @@ class Async<T> extends AbstractClass<props<T>> {
       unknown
     >;
 
+    this.disconnect();
+
     const computedResult = computed(() => {
       const renderFunction = (
         instance.props.children as any

@@ -16,7 +16,7 @@ export default function <state>(store: Store<state, any>) {
     instance?: ComponentInstance<observerProps<state>, unknown, unknown>;
     static displayName = "Observer";
 
-    private disconnect: () => void = null as any as () => void;
+    private disconnect = () => {};
 
     public render(
       _props: any,
@@ -35,6 +35,7 @@ export default function <state>(store: Store<state, any>) {
     }
 
     private update = () => {
+      this.disconnect();
       const instance = this.instance as ComponentInstance<
         observerProps<state>,
         unknown,

@@ -80,7 +80,7 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
         providerProps<stateType, actionType>,
         any
       >;
-      private disconnect: () => void = null as any as () => void;
+      private disconnect = () => {};
 
       render(
         _Props: Props<consumerProps<stateType, actionType>>,
@@ -105,6 +105,8 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
       }
 
       private update = () => {
+        this.disconnect();
+
         const instance = this.instance as ComponentInstance<
           consumerProps<stateType, actionType>,
           unknown,
