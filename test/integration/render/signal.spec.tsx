@@ -217,4 +217,38 @@ describe("updating for signals", () => {
       expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("foo2");
     });
   });
+
+  it("show resolved promise", async () => {
+    const signalValue = signal(0);
+    const Component = component("Component", () => (
+      <Async
+        pendingIndicator={<span />}
+        constructor={() => new Promise<string>((resolve) => resolve("foo"))}
+      >
+        {(value) => (
+          <div>
+            {value}
+            {signalValue.value}
+          </div>
+        )}
+      </Async>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
+
+    await tick(1);
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("foo0");
+
+    signalValue.value = 1;
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
+    expect((container.childNodes[0] as HTMLElement).innerHTML).toBe("foo1");
+  });
 });

@@ -1,3 +1,4 @@
+import { computed } from "@preact/signals-core";
 import type { Props } from "../index";
 import type ComponentInstance from "../instances/types/Component/Instance";
 import { active } from "../instances/types/Component/Instance";
@@ -61,35 +62,53 @@ class Async<T> extends AbstractClass<props<T>> {
       unknown,
       unknown
     >;
+    instance.disconnectSignal();
 
-    active.renderingComponent = instance;
+    const computedResult = computed(() => {
+      const renderFunction = (
+        instance.props.children as any
+      )[0] as renderFunction<T>;
 
-    if (this.promiseResolve.isResolved) {
-      const payload = this.promiseResolve.payload;
+      active.renderingComponent = instance;
+      let result: { hasError: boolean; result?: any };
 
-      if (instance.mounted) {
-        if (instance.renderOptions.invokeGuard) {
-          const result = instance.renderOptions.invokeGuard(
-            () =>
-              ((instance.props.children as any)[0] as renderFunction<T>)(
-                payload
-              ),
-            instance
-          );
-          if (result.hasError === false) {
-            instance.render(result.result);
+      if (this.promiseResolve.isResolved) {
+        const payload = this.promiseResolve.payload;
+
+        if (instance.renderOptions.invokeGuard === undefined) {
+          try {
+            result = {
+              hasError: false as const,
+              result: renderFunction(payload),
+            };
+          } catch (errored) {
+            result = { hasError: true as const, result: errored };
           }
         } else {
-          instance.render(
-            ((instance.props.children as any)[0] as renderFunction<T>)(payload)
+          result = instance.renderOptions.invokeGuard(
+            () => renderFunction(payload),
+            instance
           );
         }
-      }
-    } else {
-      instance.render(instance.props.pendingIndicator);
-    }
 
-    active.renderingComponent = null;
+        return result;
+      } else {
+        result = {
+          hasError: false,
+          result: instance.props.pendingIndicator,
+        };
+      }
+
+      active.renderingComponent = null;
+
+      return result;
+    });
+
+    instance.disconnectSignal = computedResult.subscribe((value) => {
+      if (instance.rendered && instance.mounted && value.hasError === false) {
+        instance.render(value.result);
+      }
+    });
   };
 
   /**
