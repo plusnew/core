@@ -76,14 +76,10 @@ class Async<T> extends AbstractClass<props<T>> {
         const payload = this.promiseResolve.payload;
 
         if (instance.renderOptions.invokeGuard === undefined) {
-          try {
-            result = {
-              hasError: false as const,
-              result: renderFunction(payload),
-            };
-          } catch (errored) {
-            result = { hasError: true as const, result: errored };
-          }
+          result = {
+            hasError: false as const,
+            result: renderFunction(payload),
+          };
         } else {
           result = instance.renderOptions.invokeGuard(
             () => renderFunction(payload),

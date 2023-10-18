@@ -62,6 +62,32 @@ describe("<Async />", () => {
     expect((container.childNodes[0] as HTMLElement).tagName).toBe("DIV");
   });
 
+  it("show loading when promise is not resolved yet and then show resolved promise, with invokeguard", async () => {
+    const Component = component("Component", () => (
+      <Try catch={() => <h1 />}>
+        {() => (
+          <Async
+            pendingIndicator={<span />}
+            constructor={() => new Promise<string>((resolve) => resolve("foo"))}
+          >
+            {(_value) => {
+              throw new Error("some error");
+            }}
+          </Async>
+        )}
+      </Try>
+    ));
+
+    plusnew.render(<Component />, { driver: driver(container) });
+
+    expect(container.childNodes.length).toBe(1);
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("SPAN");
+
+    await tick(1);
+
+    expect((container.childNodes[0] as HTMLElement).tagName).toBe("H1");
+  });
+
   it("show resolved promise", async () => {
     const Component = component("Component", () => (
       <Async
