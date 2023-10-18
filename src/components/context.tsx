@@ -80,6 +80,7 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
         providerProps<stateType, actionType>,
         any
       >;
+      private disconnect: () => void = null as any as () => void;
 
       render(
         _Props: Props<consumerProps<stateType, actionType>>,
@@ -109,7 +110,6 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
           unknown,
           unknown
         >;
-        instance.disconnectSignal();
 
         const computedResult = computed(() => {
           const [renderFunction]: [renderProps<stateType, actionType>] =
@@ -155,7 +155,7 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
           return result;
         });
 
-        instance.disconnectSignal = computedResult.subscribe((value) => {
+        this.disconnect = computedResult.subscribe((value) => {
           if (instance.rendered && value.hasError === false) {
             instance.render(value.result);
           }
@@ -175,6 +175,7 @@ function context<stateType, actionType>(): Context<stateType, actionType> {
           >
         ).unsubscribe(this.update);
         componentInstance.storeProps.unsubscribe(this.update);
+        this.disconnect();
       }
     },
     findProvider: (componentInstance) => {

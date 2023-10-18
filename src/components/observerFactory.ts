@@ -15,6 +15,9 @@ export default function <state>(store: Store<state, any>) {
   return class Observer extends AbstractClass<observerProps<state>> {
     instance?: ComponentInstance<observerProps<state>, unknown, unknown>;
     static displayName = "Observer";
+
+    private disconnect: () => void = null as any as () => void;
+
     public render(
       _props: any,
       instance: ComponentInstance<observerProps<state>, unknown, unknown>
@@ -37,7 +40,6 @@ export default function <state>(store: Store<state, any>) {
         unknown,
         unknown
       >;
-      instance.disconnectSignal();
 
       const computedResult = computed(() => {
         const renderFunction = (
@@ -71,7 +73,7 @@ export default function <state>(store: Store<state, any>) {
         return result;
       });
 
-      instance.disconnectSignal = computedResult.subscribe((value) => {
+      this.disconnect = computedResult.subscribe((value) => {
         if (instance.rendered && value.hasError === false) {
           instance.render(value.result);
         }
@@ -93,6 +95,7 @@ export default function <state>(store: Store<state, any>) {
           unknown
         >
       ).storeProps.unsubscribe(this.update);
+      this.disconnect();
     }
 
     /**

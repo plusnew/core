@@ -20,6 +20,7 @@ class Async<T> extends AbstractClass<props<T>> {
   private promiseResolve:
     | { isResolved: false }
     | { isResolved: true; payload: T } = { isResolved: false };
+  private disconnect = () => {};
 
   render(
     Props: Props<props<T>>,
@@ -62,7 +63,6 @@ class Async<T> extends AbstractClass<props<T>> {
       unknown,
       unknown
     >;
-    instance.disconnectSignal();
 
     const computedResult = computed(() => {
       const renderFunction = (
@@ -100,7 +100,7 @@ class Async<T> extends AbstractClass<props<T>> {
       return result;
     });
 
-    instance.disconnectSignal = computedResult.subscribe((value) => {
+    this.disconnect = computedResult.subscribe((value) => {
       if (instance.rendered && instance.mounted && value.hasError === false) {
         instance.render(value.result);
       }
@@ -114,6 +114,7 @@ class Async<T> extends AbstractClass<props<T>> {
     (
       this.instance as ComponentInstance<props<T>, unknown, unknown>
     ).storeProps.unsubscribe(this.update);
+    this.disconnect();
   }
 }
 
