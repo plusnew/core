@@ -1,7 +1,6 @@
 import type { ApplicationElement, Props } from "../";
 import { Component } from "../index";
 import type ComponentInstance from "../instances/types/Component/Instance";
-import type { invokeGuard } from "../interfaces/renderOptions";
 
 type renderFunction = () => ApplicationElement;
 
@@ -30,24 +29,6 @@ export default class Try extends Component<props> {
 
     this.instance = componentInstance;
     this.setInvokeGuard();
-
-    componentInstance.executeUserspace = () => {
-      (componentInstance.renderOptions.invokeGuard as invokeGuard<unknown>)(
-        () => {
-          componentInstance.render(
-            (
-              componentInstance.applicationInstance as Component<
-                props,
-                any,
-                any
-              >
-            ).render(componentInstance.storeProps.Observer, componentInstance)
-          );
-          componentInstance.executeLifecycleHooks("componentDidMount");
-        },
-        componentInstance
-      );
-    };
   }
 
   public invokeGuard<T>(
