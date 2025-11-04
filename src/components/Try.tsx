@@ -1,6 +1,7 @@
 import type { ApplicationElement, Props } from "../";
 import { Component } from "../index";
 import type ComponentInstance from "../instances/types/Component/Instance";
+import { active } from "../instances/types/Component/Instance";
 
 type renderFunction = () => ApplicationElement;
 
@@ -91,9 +92,11 @@ export default class Try extends Component<props> {
 
     let result: ApplicationElement;
 
+    active.renderingComponent = instance;
     if (this.errored === null) {
       try {
         result = ((instance.props.children as any)[0] as renderFunction)();
+        active.renderingComponent = null;
       } catch (error) {
         this.errored = {
           error,
@@ -109,6 +112,7 @@ export default class Try extends Component<props> {
     } else {
       result = instance.props.catch(this.errored.error, this.errored.component);
     }
+    active.renderingComponent = null;
 
     instance.render(result);
   };
