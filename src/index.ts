@@ -16,12 +16,12 @@ class Plusnew {
     props: plusnew.JSX.IntrinsicElements[element],
     ...children: ApplicationElement[]
   ): PlusnewAbstractElement;
-  public createElement<props>(
+  public createElement(
     type: number,
     props: null,
     ...children: ApplicationElement[]
   ): PlusnewAbstractElement;
-  public createElement<props>(
+  public createElement(
     type: symbol,
     props: null,
     ...children: ApplicationElement[]
