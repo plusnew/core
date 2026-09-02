@@ -40,7 +40,7 @@ export class ElementTypeChecker {
       this.isTextElement(abstractElement) === false
     ) {
       return (
-        typeof (abstractElement as PlusnewAbstractElement).type === "string"
+        typeof (abstractElement as PlusnewAbstractElement).type === "string" || Element.isPrototypeOf((abstractElement as PlusnewAbstractElement).type)
       );
     }
 

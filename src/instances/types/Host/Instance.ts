@@ -34,7 +34,7 @@ export default class DomInstance<HostElement, HostTextElement>
     renderOptions: renderOptions<HostElement, HostTextElement>
   ) {
     super(abstractElement, parentInstance, predecessor, renderOptions);
-    this.type = `${abstractElement.type as string}`;
+    this.type = abstractElement.type as string;
     this.props = abstractElement.props;
 
     this.ref = renderOptions.driver.element.create(this);
